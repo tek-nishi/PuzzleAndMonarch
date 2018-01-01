@@ -5,6 +5,8 @@
 * TODO iOS:未ログイン時に課金処理へ移行すると何度もサインインを求められる
 * TODO iOS:処理の思い箇所を探して修正
 * TODO iOS:AppStore提出に必要な書類や素材
+* DONE 結果画面での点滅がWindows版で微妙
+CLOSED: [2018-01-01 Mon 10:11]
 * DONE ローカライズ
 CLOSED: [2018-10-29 月 23:01]
 * DONE iOS:実績のローカライズ
