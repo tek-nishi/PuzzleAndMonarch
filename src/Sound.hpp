@@ -254,6 +254,24 @@ class Sound
     }
   }
 
+#if defined (DEBUG)
+
+  void setEnabled(bool enable)
+  {
+    auto* ctx = ci::audio::Context::master();
+    ctx->setEnabled(enable);
+
+    DOUT << "Sound: " << enable << std::endl;
+  }
+
+  bool isEnabled()
+  {
+    auto* ctx = ci::audio::Context::master();
+    return ctx->isEnabled();
+  }
+
+#endif
+
 
 public:
   Sound(const ci::JsonTree& params, Event<Arguments>& event) noexcept
@@ -351,6 +369,9 @@ public:
                              [this](const Connection&, const Arguments& args) noexcept
                              {
                                const auto& events = boost::any_cast<const std::set<std::string>&>(args.at("event"));
+                               
+                               if (events.empty()) return;
+
                                for (const auto& e : events)
                                {
                                  if (game_sound_.count(e))
@@ -358,14 +379,22 @@ public:
                                    // TIPS 関数ポインタを使っている
                                    game_sound_.at(e)();
                                  }
-#if !defined (DEBUG)
+#if defined (DEBUG)
                                  else
                                  {
-                                   DOUT << "no event: " << e << std::endl;
+                                   DOUT << "no sound event: " << e << std::endl;
                                  }
 #endif
                                }
                              });
+
+#if defined (DEBUG)
+    holder_ += event.connect("debug-sound",
+                             [this](const Connection&, const Arguments&)
+                             {
+                               setEnabled(!isEnabled()); 
+                             });
+#endif
 
     ctx->enable();
   }

@@ -16,7 +16,8 @@
       [ "e", "debug-effect" ],
       [ "p", "debug-purchase" ],
       [ "w", "debug-timeout" ],
-      [ "a", "debug-reset-camera" ]
+      [ "a", "debug-reset-camera" ],
+      [ "j", "debug-sound" ]
     ],
 
     "app_size": [
