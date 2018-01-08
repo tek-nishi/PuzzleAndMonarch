@@ -8,6 +8,7 @@
 #include <fstream>
 #include <utility>
 #include <regex>
+#include <cassert>
 #include <cinder/gl/GlslProg.h>
 #include "Path.hpp"
 
@@ -20,6 +21,7 @@ using Shader = std::pair<std::string, std::string>;
 std::string readFile(const std::string& path) noexcept
 {
   std::ifstream ifs(path);
+  assert(ifs);
 
   std::string str((std::istreambuf_iterator<char>(ifs)),
                   std::istreambuf_iterator<char>());
@@ -55,15 +57,14 @@ std::string replaceText(std::string text) noexcept
 Shader readShader(const std::string& vertex_path,
                   const std::string& fragment_path) noexcept
 {
-  auto vertex_shader   = readFile(getAssetPath(vertex_path + ".vsh").string());
-  vertex_shader = replaceText(vertex_shader);
+  auto vertex_shader = readFile(getAssetPath(vertex_path + ".vsh").string());
+  vertex_shader      = replaceText(vertex_shader);
   
   auto fragment_shader = readFile(getAssetPath(fragment_path + ".fsh").string());
-  fragment_shader = replaceText(fragment_shader);
+  fragment_shader      = replaceText(fragment_shader);
 
   return std::make_pair(vertex_shader, fragment_shader);
 }
-
 
 // 生成
 ci::gl::GlslProgRef createShader(const std::string& vertex_path,

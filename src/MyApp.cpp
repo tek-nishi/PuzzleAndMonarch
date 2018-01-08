@@ -13,6 +13,8 @@
 #include <cinder/CameraUi.h>
 #include <cinder/Sphere.h>
 #include <cinder/Ray.h>
+#include "Params.hpp"
+#include "JsonUtil.hpp"
 #include "Game.hpp"
 #include "Counter.hpp"
 #include "Font.hpp"
@@ -290,7 +292,7 @@ private:
                             -1, 1);
     ui_camera.lookAt(vec3(0), vec3(0, 0, -1));
 
-    DOUT << "resize: " << half_size << std::endl;
+    DOUT << "resize: " << half_size * 2 << std::endl;
   }
 
 
@@ -641,9 +643,13 @@ private:
 }
 
 
+// アプリのラウンチコード
 CINDER_APP(ngs::MyApp, RendererGl,
            [](App::Settings* settings) {
-             settings->setWindowSize(ivec2(960, 640));
+             // FIXME:ここで設定ファイルを読むなんて...
+             auto params = ngs::Params::load("params.json");
+
+             settings->setWindowSize(ngs::Json::getVec<ci::ivec2>(params["app.size"]));
              settings->setTitle(PREPRO_TO_STR(PRODUCT_NAME));
              
              settings->setPowerManagementEnabled(true);

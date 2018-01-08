@@ -32,6 +32,7 @@ std::vector<std::string> split(const std::string& text) {
 
 ci::TriMesh load(const std::string& path) {
   std::ifstream ifs(getAssetPath(path).string());
+  assert(ifs);
 
   // 頂点カラーを含むTriMeshを準備
   ci::TriMesh mesh(ci::TriMesh::Format().positions().normals().colors());
