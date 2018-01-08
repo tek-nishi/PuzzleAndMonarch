@@ -1,0 +1,11 @@
+* TODO タッチ操作
+* TODO iOSでの柔軟なUIの解像度
+* TODO 点光源
+* TODO 本格的な画面設計
+* TODO 本格的に見た目を決める
+* TODO サウンド周りの再設計
+* TODO イベントシステム導入
+* TODO タスク導入
+* TODO JSONによるデータ管理
+* TODO UI実装
+* TODO 開始時のパネルは「T字路に森の端」にする

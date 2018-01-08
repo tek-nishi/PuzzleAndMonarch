@@ -1,4 +1,4 @@
-﻿#pragma once
+#pragma once
 
 //
 // ゲーム本編
@@ -287,7 +287,7 @@ struct Game {
   void changePanelForced(int next) {
     hand_panel += next;
     if (hand_panel < 0) {
-      hand_panel = panels.size() - 1;
+      hand_panel = int(panels.size()) - 1;
     }
     else if (hand_panel >= panels.size()) {
       hand_panel = 0;
@@ -335,8 +335,6 @@ private:
   int hand_panel;
   u_int hand_rotation;
   bool check_all_blank;
-
-  bool can_put;
 
   Field field;
 
@@ -391,13 +389,13 @@ private:
 
   // スコア更新
   void updateScores() {
-    scores[0] = completed_path.size();
+    scores[0] = int(completed_path.size());
     scores[1] = countTotalAttribute(completed_path, field, panels);
-    scores[2] = completed_forests.size();
+    scores[2] = int(completed_forests.size());
     scores[3] = countTotalAttribute(completed_forests, field, panels);
-    scores[4] = std::count(std::begin(deep_forest), std::end(deep_forest), 1);
+    scores[4] = int(std::count(std::begin(deep_forest), std::end(deep_forest), 1));
     scores[5] = countTown(completed_path, field, panels);
-    scores[6] = completed_church.size();
+    scores[6] = int(completed_church.size());
   }
 
   // 最終スコア

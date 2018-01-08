@@ -1,4 +1,4 @@
-﻿//
+//
 // 見習い君主
 //
 
@@ -321,12 +321,12 @@ private:
       hight_offset  *= 0.8f;
       glm::vec3 pos(cursor_pos.x, cursor_pos.y + hight_offset, cursor_pos.z);
       ngs::drawPanel(game->getHandPanel(), pos, game->getHandRotation(), view, rotate_offset);
-
+      
       if (can_put) {
         float s = std::abs(std::sin(frame_counter * 0.1)) * 0.1;
         glm::vec3 scale(0.9 + s, 1, 0.9 + s);
         drawFieldSelected(field_pos, scale, view);
-
+        
         scale.x = 1.0 + s;
         scale.z = 1.0 + s;
         drawCursor(pos, scale, view);
@@ -341,13 +341,11 @@ private:
         auto around = game->enumerateAroundPanels(field_pos);
         if (!around.empty()) {
           for (auto it : around) {
-            glm::ivec2 pos = it.first;
-            pos *= int(ngs::PANEL_SIZE);
-
-            glm::vec3 p(pos.x, 0.0f, pos.y);
+            auto p = it.first * int(ngs::PANEL_SIZE);
+            glm::vec3 disp_pos(p.x, 0.0f, p.y);
 
             auto status = it.second;
-            ngs::drawPanelEdge(panels[status.number], p, status.rotation);
+            ngs::drawPanelEdge(panels[status.number], disp_pos, status.rotation);
           }
         }
       }

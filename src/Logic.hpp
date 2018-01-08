@@ -1,4 +1,4 @@
-﻿#pragma once
+#pragma once
 
 //
 // ゲームロジック
@@ -272,7 +272,7 @@ int countTown(const std::vector<std::vector<glm::ivec2>>& completed,
       }
     }
   }
-  return town_num.size();
+  return int(town_num.size());
 }
 
 
