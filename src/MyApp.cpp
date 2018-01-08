@@ -33,8 +33,14 @@ class MyApp : public App {
 public:
   // TIPS cinder 0.9.1はコンストラクタが使える
   MyApp()
-    : panels(createPanels()),
+    : params(Params::load("params.json")),
+      panels(createPanels()),
       game(std::make_unique<Game>(panels)),
+      fov(params.getValueForKey<float>("field_camera.fov")),
+      near_z(params.getValueForKey<float>("field_camera.near_z")),
+      far_z(params.getValueForKey<float>("field_camera.far_z")),
+      distance(params.getValueForKey<float>("field_camera.distance")),
+      field_camera(getWindowWidth(), getWindowHeight(), fov, near_z, far_z),
       camera_ui(&field_camera),
       view(createView()),
       font("MAIAN.TTF"),
@@ -43,10 +49,7 @@ public:
     Rand::randomize();
 
     // フィールドカメラ
-    field_camera = CameraPersp(getWindowWidth(), getWindowHeight(),
-                               fov,
-                               near_z, far_z);
-    quat q(toRadians(vec3{ 30, 45, 0 }));
+    quat q = Json::getQuat(params["field_camera.rotation"]);
     vec3 p = q * vec3{ 0, 0, -distance };
     field_camera.lookAt(p, vec3(0));
 
@@ -574,6 +577,8 @@ private:
 
 
   // FIXME 変数を後半に定義する実験
+  JsonTree params;
+
   std::vector<Panel> panels;
   std::unique_ptr<Game> game;
 
@@ -616,10 +621,10 @@ private:
   std::vector<int> game_score_effect;
 
 
-  float fov      = 25.0f;
-  float near_z   = 1.0f;
-  float far_z    = 1000.0f;
-  float distance = 160.0f;
+  float fov;
+  float near_z;
+  float far_z;
+  float distance;
 
   CameraPersp field_camera;
   CameraOrtho ui_camera;

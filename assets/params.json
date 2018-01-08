@@ -1,5 +1,13 @@
 {
     "app": {
         "size": [960, 640]
+    },
+
+    "field_camera": {
+        "fov":    25,
+        "near_z": 1,
+        "far_z":  1000,
+        "distance": 150,
+        "rotation": [ 35, 45, 0 ]
     }
 }
