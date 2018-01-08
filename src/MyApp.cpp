@@ -63,6 +63,13 @@ public:
     }
 
     shader_font = createShader("font", "font");
+
+#if defined (CINDER_COCOA_TOUCH)
+    // 縦横画面両対応
+    getSignalSupportedOrientations().connect([]() {
+        return ci::app::InterfaceOrientation::All;
+      });
+#endif
   }
 
 
@@ -282,6 +289,8 @@ private:
                             -half_size.y, half_size.y,
                             -1, 1);
     ui_camera.lookAt(vec3(0), vec3(0, 0, -1));
+
+    DOUT << "resize: " << half_size << std::endl;
   }
 
 
@@ -636,6 +645,9 @@ private:
 
 CINDER_APP(ngs::MyApp, RendererGl,
            [](App::Settings* settings) {
-             settings->setWindowSize(ivec2(1024, 720));
+             settings->setWindowSize(ivec2(960, 640));
              settings->setTitle(PREPRO_TO_STR(PRODUCT_NAME));
+             
+             settings->setPowerManagementEnabled(true);
+             settings->setHighDensityDisplayEnabled(false);
            });
