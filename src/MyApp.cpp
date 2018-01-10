@@ -13,6 +13,7 @@
 #include <cinder/CameraUi.h>
 #include <cinder/Sphere.h>
 #include <cinder/Ray.h>
+#include <cinder/Timer.h>
 #include "Params.hpp"
 #include "JsonUtil.hpp"
 #include "Game.hpp"
@@ -219,7 +220,11 @@ private:
 
 	void update() override {
     counter.update();
-    game->update();
+    auto current_time = game_timer.getSeconds();
+    double delta_time = current_time - last_time;
+    game->update(delta_time);
+
+    last_time = current_time;
 
     // カメラの中心位置変更
     auto center_pos = game->getFieldCenter() * float(ngs::PANEL_SIZE);
@@ -235,6 +240,8 @@ private:
       {
         if (!counter.check("gamestart")) {
           playing_mode = GAMEMAIN;
+          game_timer.start(0);
+          last_time = 0.0;
           DOUT << "GAMEMAIN." << std::endl;
         }
       }
@@ -244,6 +251,7 @@ private:
       if (!game->isPlaying()) {
         // 結果画面へ
         playing_mode = GAMEEND;
+        game_timer.stop();
         counter.add("gameend", 120);
       }
       break;
@@ -404,7 +412,7 @@ private:
           font.size(80);
 
           char text[100];
-          u_int remainig_time = (game->getRemainingTime() + 59) / 60;
+          u_int remainig_time = std::ceil(game->getRemainingTime());
           u_int minutes = remainig_time / 60;
           u_int seconds = remainig_time % 60;
           sprintf(text, "%d'%02d", minutes, seconds);
@@ -610,11 +618,12 @@ private:
   float rotate_offset = 0.0f;
   float hight_offset  = 0.0f;
 
-  // 残り時間表示位置(xのみ)
-  int remain_time_x;
-
   // アプリ起動から画面を更新した回数
   u_int frame_counter = 0;
+
+  // プレイ時間計測用
+  Timer game_timer;
+  double last_time = 0.0;
 
   // 表示用スコア
   std::vector<int> game_score;
@@ -635,6 +644,9 @@ private:
 
   Font font;
   Font jpn_font;
+
+  // 残り時間表示位置(xのみ)
+  int remain_time_x;
 
   ci::gl::GlslProgRef shader_font;
 

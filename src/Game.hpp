@@ -55,12 +55,12 @@ struct Game {
   }
 
   // 内部時間を進める
-  void update() {
+  void update(double delta_time) {
     if (isPlaying()
 #ifdef DEBUG
         && time_count
 #endif
-        && !--play_time) {
+        && ((play_time -= delta_time) < 0.0)) {
       // 時間切れ
       DOUT << "Time Up." << std::endl;
       endPlay();
@@ -72,7 +72,7 @@ struct Game {
   void beginPlay() {
     started = true;
     // とりあえず３分
-    play_time = 60 * 60 * 3;
+    play_time = 60 * 3;
 
     getNextPanel();
     fieldUpdate();
@@ -89,8 +89,8 @@ struct Game {
 
   
   // 残り時間
-  u_int getRemainingTime() const {
-    return play_time;
+  double getRemainingTime() const {
+    return std::max(play_time, 0.0);
   }
 
 
@@ -326,7 +326,8 @@ private:
 
   bool started    = false;
   bool finished   = false;
-  u_int play_time = 0;
+
+  double play_time = 0;
 #ifdef DEBUG
   bool time_count = true;
 #endif
