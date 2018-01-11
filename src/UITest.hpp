@@ -25,12 +25,11 @@ public:
       far_z(params.getValueForKey<float>("ui_camera.far_z")),
       camera(ci::app::getWindowWidth(), ci::app::getWindowHeight(), fov, near_z, far_z),
       font("DFKAIC001.ttf"),
-      shader(createShader("font", "font"))
+      shader(createShader("font", "font")),
+      widgets_(widgets_factory_.construct(params["ui_test.widgets"]))
   {
     camera.lookAt(Json::getVec<glm::vec3>(params["ui_camera.eye"]), Json::getVec<glm::vec3>(params["ui_camera.target"]));
     font.size(params.getValueForKey<float>("ui_test.font_size"));
-
-    widgets_ = widgets_factory_.construct(params["ui_test.widgets"]);
   }
 
 
@@ -66,8 +65,15 @@ public:
     ci::gl::disable(GL_CULL_FACE);
     ci::gl::enableAlphaBlending();
     ci::gl::setMatrices(camera);
-    ci::gl::ScopedGlslProg prog(shader);
+    // ci::gl::ScopedGlslProg prog(shader);
 
+    glm::vec3 top_left;
+    glm::vec3 top_right;
+    glm::vec3 bottom_left;
+    glm::vec3 bottom_right;
+    camera.getNearClipCoordinates(&top_left, &top_right, &bottom_left, &bottom_right);
+    ci::Rectf rect(top_left.x, top_left.y, bottom_right.x, bottom_right.y);
+    widgets_->draw(rect, glm::vec2(1, 1));
   }
 
 

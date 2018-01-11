@@ -36,15 +36,27 @@
 
       "childlen": [
         {
-          "identifier": "logo",
+          "identifier": "1",
           "rect": [ 0, 0, 0, 0 ],
           "anchor": [
             [ 0, 0 ],
-            [ 1, 1 ]
+            [ 0.5, 0.5 ]
           ],
           "scale": [ 1, 1 ],
           "pivot": [ 0.5, 0.5 ],
-          "color": [ 1, 1, 1, 1 ],
+          "color": [ 1, 0, 0, 1 ],
+          "text":  "Piyo"
+        },
+        {
+          "identifier": "2",
+          "rect": [ 0, 0, 0, 0 ],
+          "anchor": [
+            [ 0.5, 0.5 ],
+            [ 1.0, 1.0 ]
+          ],
+          "scale": [ 1, 1 ],
+          "pivot": [ 0.5, 0.5 ],
+          "color": [ 0, 0, 1, 1 ],
           "text":  "Piyo"
         }
       ]

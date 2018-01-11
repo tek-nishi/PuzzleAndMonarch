@@ -85,16 +85,31 @@ public:
   
   void addChild(const WidgetPtr& widget) noexcept
   {
-    childs_.push_back(widget);
+    children_.push_back(widget);
   }
 
-  const std::vector<WidgetPtr>& getChilds() const noexcept
+  const std::vector<WidgetPtr>& getChildren() const noexcept
   {
-    return childs_;
+    return children_;
   }
 
 
-  
+  void draw(const ci::Rectf& parent_rect, const glm::vec2& parent_scale) const noexcept
+  {
+    // とりあえず描く
+    auto rect = calcRect(parent_rect, parent_scale);
+
+    ci::gl::color(color_);
+    ci::gl::drawStrokedRect(rect);
+
+    for (const auto& child : children_)
+    {
+      auto scale = parent_scale * scale_;
+      child->draw(rect, scale);
+    }
+  }
+
+
 private:
   // 親の情報から自分の位置、サイズを計算
   ci::Rectf calcRect(const ci::Rectf& parent_rect, const glm::vec2& scale) const noexcept
@@ -138,7 +153,7 @@ private:
   std::string text_;
 
 
-  std::vector<WidgetPtr> childs_;
+  std::vector<WidgetPtr> children_;
 
 };
 
