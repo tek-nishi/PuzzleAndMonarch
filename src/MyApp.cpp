@@ -9,6 +9,7 @@
 #include <cinder/Rand.h>
 #include "Params.hpp"
 #include "JsonUtil.hpp"
+#include "UITest.hpp"
 
 
 using namespace ci;
@@ -22,6 +23,8 @@ class MyApp : public App {
 public:
   // TIPS cinder 0.9.1はコンストラクタが使える
   MyApp()
+    : params(ngs::Params::load("params.json")),
+      ui_test(params)
   {
     Rand::randomize();
 
@@ -62,12 +65,22 @@ private:
 
 
   void resize() override {
+    float aspect = getWindowAspectRatio();
+    ui_test.resize(aspect);
   }
 
 
 	void draw() override {
     gl::clear(Color(0, 0, 0));
+
+    auto window_size = getWindowSize();
+    ui_test.draw(window_size);
   }
+
+
+  // 変数定義
+  JsonTree params;
+  UITest ui_test;
 
 };
 

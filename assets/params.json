@@ -1,6 +1,6 @@
 {
   "app": {
-    "size": [960, 640]
+    "size": [ 960, 640 ]
   },
 
   "field_camera": {
@@ -9,5 +9,19 @@
     "far_z":  1000,
     "distance": 150,
     "rotation": [ 35, 45, 0 ]
+  },
+
+  "ui_camera": {
+    "fov":    25,
+    "near_z": 2000,
+    "far_z":  2100,
+    "eye":    [ 0, 0, 2000 ],
+    "target": [ 0, 0, 0 ]
+  },
+
+  "ui_test": {
+    "pos":       [ 0, 0 ],
+    "font_size": 80,
+    "text":      "西山信行"
   }
 }

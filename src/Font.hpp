@@ -5,6 +5,7 @@
 //
 
 #include <boost/noncopyable.hpp>
+#include <cassert>
 #include <cinder/gl/Texture.h>
 #include <cinder/TriMesh.h>
 
@@ -42,16 +43,16 @@ public:
 
 
   // フォントサイズ指定
-  void size(const int size);
+  void size(const int size) noexcept;
 
   // 描画した時のサイズを取得
-  ci::vec2 drawSize(const std::string& text);
+  ci::vec2 drawSize(const std::string& text) noexcept;
 
   // 描画
   // text  表示文字列
   // pos   表示位置
   // color 表示色
-  void draw(const std::string& text, const ci::vec2& pos, const ci::ColorA& color);
+  void draw(const std::string& text, const glm::vec2& pos, const ci::ColorA& color) noexcept;
 };
 
 
@@ -173,6 +174,7 @@ Font::Font(const std::string& path) noexcept
   params.userPtr = &gl_;
 
   context_ = fonsCreateInternal(&params);
+  assert(context_);
 
   fonsClearState(context_);
   int handle = fonsAddFont(context_, "font", full_path.c_str());
@@ -189,19 +191,21 @@ Font::~Font() noexcept
   fonsDeleteInternal(context_);
 }
 
-void Font::size(const int size) {
+void Font::size(const int size) noexcept
+{
   fonsSetSize(context_, size);
 }
 
-ci::vec2 Font::drawSize(const std::string& text) {
+ci::vec2 Font::drawSize(const std::string& text) noexcept
+{
   float bounds[4];
   fonsTextBounds(context_, 0, 0, text.c_str(), nullptr, bounds);
 
   return ci::vec2{ bounds[2], bounds[3] };
 }
 
-void Font::draw(const std::string& text, const ci::vec2& pos, const ci::ColorA& color) {
-  
+void Font::draw(const std::string& text, const glm::vec2& pos, const ci::ColorA& color) noexcept
+{
   unsigned char r8 = color.r * 255.0f;
   unsigned char g8 = color.g * 255.0f;
   unsigned char b8 = color.b * 255.0f;
