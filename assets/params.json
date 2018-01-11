@@ -20,8 +20,34 @@
   },
 
   "ui_test": {
-    "pos":       [ 0, 0 ],
-    "font_size": 80,
-    "text":      "西山信行"
+    "font_size": 128,
+
+    "widgets": {
+      "identifier": "root",
+      "rect": [ 0, 0, 0, 0 ],
+      "anchor": [
+        [ 0, 0 ],
+        [ 1, 1 ]
+      ],
+      "scale": [ 1, 1 ],
+      "pivot": [ 0.5, 0.5 ],
+      "color": [ 1, 1, 1, 1 ],
+      "text":  "Hoga Fuga",
+
+      "childlen": [
+        {
+          "identifier": "logo",
+          "rect": [ 0, 0, 0, 0 ],
+          "anchor": [
+            [ 0, 0 ],
+            [ 1, 1 ]
+          ],
+          "scale": [ 1, 1 ],
+          "pivot": [ 0.5, 0.5 ],
+          "color": [ 1, 1, 1, 1 ],
+          "text":  "Piyo"
+        }
+      ]
+    }
   }
 }

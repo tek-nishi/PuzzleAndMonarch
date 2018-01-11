@@ -8,6 +8,8 @@
 #include <cinder/gl/GlslProg.h>
 #include "Font.hpp"
 #include "Shader.hpp"
+#include "UIWidget.hpp"
+#include "UIWidgetsFactory.hpp"
 
 
 namespace ngs {
@@ -23,12 +25,12 @@ public:
       far_z(params.getValueForKey<float>("ui_camera.far_z")),
       camera(ci::app::getWindowWidth(), ci::app::getWindowHeight(), fov, near_z, far_z),
       font("DFKAIC001.ttf"),
-      shader(createShader("font", "font")),
-      pos_(Json::getVec<glm::vec2>(params["ui_test.pos"])),
-      text_(params.getValueForKey<std::string>("ui_test.text"))
+      shader(createShader("font", "font"))
   {
     camera.lookAt(Json::getVec<glm::vec3>(params["ui_camera.eye"]), Json::getVec<glm::vec3>(params["ui_camera.target"]));
     font.size(params.getValueForKey<float>("ui_test.font_size"));
+
+    widgets_ = widgets_factory_.construct(params["ui_test.widgets"]);
   }
 
 
@@ -66,9 +68,6 @@ public:
     ci::gl::setMatrices(camera);
     ci::gl::ScopedGlslProg prog(shader);
 
-    auto size = font.drawSize(text_);
-
-    font.draw(text_, pos_ - size * 0.5f, ci::ColorA(1, 1, 1, 1));
   }
 
 
@@ -81,8 +80,8 @@ private:
   Font font;
   ci::gl::GlslProgRef shader;
 
-  glm::vec2 pos_;
-  std::string text_;
+  UI::WidgetPtr widgets_; 
+  UI::WidgetsFactory widgets_factory_;
 };
 
 }
