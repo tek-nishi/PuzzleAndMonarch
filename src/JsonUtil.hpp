@@ -34,7 +34,7 @@ template<typename T>
 T getVec(const ci::JsonTree& json) noexcept
 {
   T v;
-  for (size_t i = 0; i < v.length(); ++i)
+  for (u_int i = 0; i < v.length(); ++i)
   {
     v[i] = json[i].getValue<double>();
   }
@@ -46,7 +46,7 @@ template<>
 ci::ColorA getVec<ci::ColorA>(const ci::JsonTree& json) noexcept
 {
   ci::ColorA v;
-  for (size_t i = 0; i < 4; ++i)
+  for (u_int i = 0; i < 4; ++i)
   {
     v[i] = json[i].getValue<double>();
   }
