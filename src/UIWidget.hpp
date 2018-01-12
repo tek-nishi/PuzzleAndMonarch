@@ -82,6 +82,15 @@ public:
     return text_;
   }
 
+  void setTextSize(const float text_size) noexcept
+  {
+    text_size_ = text_size;
+  }
+
+  void setAlignment(const glm::vec2& alignment) noexcept
+  {
+    alignment_ = alignment;
+  }
   
   void addChild(const WidgetPtr& widget) noexcept
   {
@@ -94,7 +103,8 @@ public:
   }
 
 
-  void draw(const ci::Rectf& parent_rect, const glm::vec2& parent_scale) const noexcept
+  void draw(const ci::Rectf& parent_rect, const glm::vec2& parent_scale,
+            Font& font, const ci::gl::GlslProgRef& shader) const noexcept
   {
     // とりあえず描く
     auto rect = calcRect(parent_rect, parent_scale);
@@ -102,10 +112,21 @@ public:
     ci::gl::color(color_);
     ci::gl::drawStrokedRect(rect);
 
+    if (!text_.empty())
+    {
+      ci::gl::pushModelMatrix();
+      ci::gl::ScopedGlslProg prog(shader);
+      auto size = font.drawSize(text_);
+      ci::gl::translate(rect.getCenter() - size * alignment_ * text_size_);
+      ci::gl::scale(glm::vec3(text_size_));
+      font.draw(text_, glm::vec2(0, 0), color_);
+      ci::gl::popModelMatrix();
+    }
+    
     for (const auto& child : children_)
     {
       auto scale = parent_scale * scale_;
-      child->draw(rect, scale);
+      child->draw(rect, scale, font, shader);
     }
   }
 
@@ -151,6 +172,8 @@ private:
   ci::ColorA color_ = { 1.0f, 1.0f, 1.0f, 1.0f };
 
   std::string text_;
+  float text_size_ = 1.0f;
+  glm::vec2 alignment_ = { 0.5, 0.5 };
 
 
   std::vector<WidgetPtr> children_;

@@ -97,5 +97,5 @@ CINDER_APP(ngs::MyApp, RendererGl,
              settings->setTitle(PREPRO_TO_STR(PRODUCT_NAME));
              
              settings->setPowerManagementEnabled(true);
-             settings->setHighDensityDisplayEnabled(false);
+             settings->setHighDensityDisplayEnabled(params.getValueForKey<bool>("app.retina"));
            });

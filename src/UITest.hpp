@@ -24,7 +24,7 @@ public:
       near_z(params.getValueForKey<float>("ui_camera.near_z")),
       far_z(params.getValueForKey<float>("ui_camera.far_z")),
       camera(ci::app::getWindowWidth(), ci::app::getWindowHeight(), fov, near_z, far_z),
-      font("DFKAIC001.ttf"),
+      font(params.getValueForKey<std::string>("ui_test.font")),
       shader(createShader("font", "font")),
       widgets_(widgets_factory_.construct(params["ui_test.widgets"]))
   {
@@ -73,7 +73,7 @@ public:
     glm::vec3 bottom_right;
     camera.getNearClipCoordinates(&top_left, &top_right, &bottom_left, &bottom_right);
     ci::Rectf rect(top_left.x, top_left.y, bottom_right.x, bottom_right.y);
-    widgets_->draw(rect, glm::vec2(1, 1));
+    widgets_->draw(rect, glm::vec2(1, 1), font, shader);
   }
 
 

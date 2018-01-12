@@ -1,6 +1,7 @@
 {
   "app": {
-    "size": [ 960, 640 ]
+    "size":   [ 960, 640 ],
+    "retina": false 
   },
 
   "field_camera": {
@@ -13,13 +14,14 @@
 
   "ui_camera": {
     "fov":    25,
-    "near_z": 2000,
-    "far_z":  2100,
-    "eye":    [ 0, 0, 2000 ],
+    "near_z": 500,
+    "far_z":  600,
+    "eye":    [ 0, 0, 500 ],
     "target": [ 0, 0, 0 ]
   },
 
   "ui_test": {
+    "font":      "MAIAN.TTF",
     "font_size": 128,
 
     "widgets": {
@@ -32,7 +34,6 @@
       "scale": [ 1, 1 ],
       "pivot": [ 0.5, 0.5 ],
       "color": [ 1, 1, 1, 1 ],
-      "text":  "Hoga Fuga",
 
       "childlen": [
         {
@@ -44,8 +45,7 @@
           ],
           "scale": [ 1, 1 ],
           "pivot": [ 0.5, 0.5 ],
-          "color": [ 1, 0, 0, 1 ],
-          "text":  "Piyo"
+          "color": [ 1, 0, 0, 1 ]
         },
         {
           "identifier": "2",
@@ -56,8 +56,49 @@
           ],
           "scale": [ 1, 1 ],
           "pivot": [ 0.5, 0.5 ],
-          "color": [ 0, 0, 1, 1 ],
-          "text":  "Piyo"
+          "color": [ 0, 0, 1, 1 ]
+        },
+        {
+          "identifier": "3",
+          "rect": [ 20, 0, 20, 0 ],
+          "anchor": [
+            [ 0.5, 0.2 ],
+            [ 0.5, 0.2 ]
+          ],
+          "scale": [ 1, 1 ],
+          "pivot": [ 0.5, 0.5 ],
+          "color": [ 1, 1, 1, 1 ],
+          "text":  "Apprentice",
+          "text_size": 0.25,
+          "alignment": [ 1, 0 ]
+        },
+        {
+          "identifier": "4",
+          "rect": [ 0, -35, 0, -35 ],
+          "anchor": [
+            [ 0.5, 0.2 ],
+            [ 0.5, 0.2 ]
+          ],
+          "scale": [ 1, 1 ],
+          "pivot": [ 0.5, 0.5 ],
+          "color": [ 1, 1, 1, 1 ],
+          "text":  "Monarch",
+          "text_size": 0.25,
+          "alignment": [ 0, 0 ]
+        },
+        {
+          "identifier": "5",
+          "rect": [ 0, 0, 0, 0 ],
+          "anchor": [
+            [ 0.5, 0.8 ],
+            [ 0.5, 0.8 ]
+          ],
+          "scale": [ 1, 1 ],
+          "pivot": [ 0.5, 0.5 ],
+          "color": [ 1, 1, 1, 1 ],
+          "text":  "Touch screen to start",
+          "text_size": 0.15,
+          "alignment": [ 0.5, 0.5 ]
         }
       ]
     }

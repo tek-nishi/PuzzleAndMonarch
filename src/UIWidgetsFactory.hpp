@@ -46,6 +46,15 @@ class WidgetsFactory
     {
       widget->setText(params.getValueForKey<std::string>("text"));
     }
+    if (params.hasChild("text_size"))
+    {
+      widget->setTextSize(params.getValueForKey<float>("text_size"));
+    }
+    if (params.hasChild("alignment"))
+    {
+      widget->setAlignment(Json::getVec<glm::vec2>(params["alignment"]));
+    }
+
 
     // 子供を追加
     // TIPS:再帰で実装
