@@ -1,7 +1,7 @@
 {
   "app": {
     "size":   [ 960, 640 ],
-    "retina": false 
+    "retina": false
   },
 
   "field_camera": {
@@ -21,6 +21,14 @@
   },
 
   "ui": {
+    "camera": {
+      "fov":    25,
+      "near_z": 500,
+      "far_z":  600,
+      "eye":    [ 0, 0, 500 ],
+      "target": [ 0, 0, 0 ]
+    },
+
     "font": {
       "name": "MAIAN.TTF",
       "size": 128
@@ -136,6 +144,67 @@
           "segment": 20,
           "fill": true,
           "color": [ 0, 1, 0, 1 ]
+        }
+      ]
+    }
+  },
+
+  "title": {
+    "widgets": {
+      "identifier": "root",
+      "rect": [ 0, 0, 0, 0 ],
+      "anchor": [
+        [ 0, 0 ],
+        [ 1, 1 ]
+      ],
+      "scale": [ 1, 1 ],
+      "pivot": [ 0.5, 0.5 ],
+      
+      "childlen": [
+        {
+          "identifier": "3",
+          "rect": [ 20, 0, 20, 0 ],
+          "anchor": [
+            [ 0.5, 0.2 ],
+            [ 0.5, 0.2 ]
+          ],
+          "scale": [ 1, 1 ],
+          "pivot": [ 0.5, 0.5 ],
+
+          "text":  "Apprentice",
+          "text_size": 0.25,
+          "alignment": [ 1, 0 ],
+          "color": [ 1, 1, 1, 1 ]
+        },
+        {
+          "identifier": "4",
+          "rect": [ 0, -35, 0, -35 ],
+          "anchor": [
+            [ 0.5, 0.2 ],
+            [ 0.5, 0.2 ]
+          ],
+          "scale": [ 1, 1 ],
+          "pivot": [ 0.5, 0.5 ],
+
+          "text":  "Monarch",
+          "text_size": 0.25,
+          "alignment": [ 0, 0 ],
+          "color": [ 1, 1, 1, 1 ]
+        },
+        {
+          "identifier": "5",
+          "rect": [ 0, 0, 0, 0 ],
+          "anchor": [
+            [ 0.5, 0.8 ],
+            [ 0.5, 0.8 ]
+          ],
+          "scale": [ 1, 1 ],
+          "pivot": [ 0.5, 0.5 ],
+          
+          "text":  "Touch screen to start",
+          "text_size": 0.15,
+          "alignment": [ 0.5, 0.5 ],
+          "color": [ 1, 1, 1, 1 ]
         }
       ]
     }

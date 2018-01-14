@@ -19,6 +19,7 @@
 #include "Font.hpp"
 #include "View.hpp"
 #include "Shader.hpp"
+#include "UIWidgetsFactory.hpp"
 
 
 namespace ngs {
@@ -26,9 +27,8 @@ namespace ngs {
 class MainPart {
 
 public:
-  MainPart()
-    : params(Params::load("params.json")),
-      panels(createPanels()),
+  MainPart(ci::JsonTree& params)
+    : panels(createPanels()),
       game(std::make_unique<Game>(panels)),
       fov(params.getValueForKey<float>("field_camera.fov")),
       near_z(params.getValueForKey<float>("field_camera.near_z")),
@@ -37,29 +37,20 @@ public:
       field_camera(ci::app::getWindowWidth(), ci::app::getWindowHeight(), fov, near_z, far_z),
       camera_ui(&field_camera),
       view(createView()),
-      font("MAIAN.TTF"),
-      jpn_font("DFKAIC001.ttf")
+      ui_fov(params.getValueForKey<float>("ui.camera.fov")),
+      ui_near_z(params.getValueForKey<float>("ui.camera.near_z")),
+      ui_far_z(params.getValueForKey<float>("ui.camera.far_z")),
+      ui_camera(ci::app::getWindowWidth(), ci::app::getWindowHeight(), ui_fov, ui_near_z, ui_far_z),
+      widgets_(widgets_factory_.construct(params["title.widgets"])),
+      drawer_(params)
   {
     // フィールドカメラ
     glm::quat q = Json::getQuat(params["field_camera.rotation"]);
     glm::vec3 p = q * glm::vec3{ 0, 0, -distance };
     field_camera.lookAt(p, glm::vec3(0));
 
-    // UIカメラ
-    auto half_size = ci::app::getWindowSize() / 2;
-    ui_camera = ci::CameraOrtho(-half_size.x, half_size.x,
-                                -half_size.y, half_size.y,
-                                -1, 1);
-    ui_camera.lookAt(glm::vec3(0), glm::vec3(0, 0, -1));
-    
-    {
-      // 残り時間表示のx位置はあらかじめ決めておく
-      font.size(80);
-      auto size = font.drawSize("9'99");
-      remain_time_x = -size.x / 2;
-    }
-
-    shader_font = createShader("font", "font");
+    // UI関連
+    ui_camera.lookAt(Json::getVec<glm::vec3>(params["ui.camera.eye"]), Json::getVec<glm::vec3>(params["ui.camera.target"]));
   }
 
 
@@ -260,37 +251,15 @@ public:
   }
 
 
-  void resize() {
-    float aspect = ci::app::getWindowAspectRatio();
-    field_camera.setAspectRatio(aspect);
-    if (aspect < 1.0) {
-      // 画面が縦長になったら、幅基準でfovを求める
-      // fovとnear_zから投影面の幅の半分を求める
-      float half_w = std::tan(toRadians(fov / 2)) * near_z;
+  void resize(const float aspect) {
+    setupCamera(field_camera, aspect, fov);
+    setupCamera(ui_camera, aspect, ui_fov);
 
-      // 表示画面の縦横比から、投影面の高さの半分を求める
-      float half_h = half_w / aspect;
-
-      // 投影面の高さの半分とnear_zから、fovが求まる
-      float fov_w = std::atan(half_h / near_z) * 2;
-      field_camera.setFov(ci::toDegrees(fov_w));
-    }
-    else {
-      // 横長の場合、fovは固定
-      field_camera.setFov(fov);
-    }
-
-    auto half_size = ci::app::getWindowSize() / 2;
-    ui_camera = ci::CameraOrtho(-half_size.x, half_size.x,
-                                -half_size.y, half_size.y,
-                                -1, 1);
-    ui_camera.lookAt(glm::vec3(0), glm::vec3(0, 0, -1));
-
-    DOUT << "resize: " << half_size * 2 << std::endl;
+    DOUT << "resize: " << ci::app::getWindowSize() << std::endl;
   }
 
 
-	void draw() {
+	void draw(glm::ivec2 window_size) {
     ci::gl::clear(ci::Color(0, 0, 0));
     
     // 本編
@@ -353,7 +322,19 @@ public:
     ci::gl::enableDepth(false);
     ci::gl::disable(GL_CULL_FACE);
     ci::gl::enableAlphaBlending();
+    ci::gl::setMatrices(ui_camera);
 
+    {
+      glm::vec3 top_left;
+      glm::vec3 top_right;
+      glm::vec3 bottom_left;
+      glm::vec3 bottom_right;
+      ui_camera.getNearClipCoordinates(&top_left, &top_right, &bottom_left, &bottom_right);
+      ci::Rectf rect(top_left.x, top_left.y, bottom_right.x, bottom_right.y);
+      widgets_->draw(rect, glm::vec2(1, 1), drawer_);
+    }
+
+#if 0
     ci::gl::setMatrices(ui_camera);
 
     {
@@ -448,6 +429,7 @@ public:
         break;
       }
     }
+#endif
   }
 
 
@@ -480,6 +462,7 @@ public:
     }
   }
 
+#if 0
   // プレイ情報を表示
   void drawGameInfo(int font_size, glm::vec2 pos, float next_y) {
     jpn_font.size(font_size);
@@ -563,12 +546,11 @@ public:
       font.draw(text, glm::vec2(0, -100), ci::ColorA(1, 1, 1, 1));
     }
   }
+#endif
 
 
 private:
   // FIXME 変数を後半に定義する実験
-  ci::JsonTree params;
-
   std::vector<Panel> panels;
   std::unique_ptr<Game> game;
 
@@ -618,19 +600,22 @@ private:
   float distance;
 
   ci::CameraPersp field_camera;
-  ci::CameraOrtho ui_camera;
-
   ci::CameraUi camera_ui;
-
+  
   View view;
 
-  Font font;
-  Font jpn_font;
 
-  // 残り時間表示位置(xのみ)
-  int remain_time_x;
+  // UI関連
+  float ui_fov;
+  float ui_near_z;
+  float ui_far_z;
 
-  ci::gl::GlslProgRef shader_font;
+  ci::CameraPersp ui_camera;
+
+  UI::WidgetPtr widgets_; 
+  UI::WidgetsFactory widgets_factory_;
+
+  UI::Drawer drawer_;
 
 
 #ifdef DEBUG

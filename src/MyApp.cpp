@@ -9,6 +9,7 @@
 #include <cinder/Rand.h>
 #include "Params.hpp"
 #include "JsonUtil.hpp"
+#include "MainPart.hpp"
 #include "UITest.hpp"
 
 
@@ -24,7 +25,7 @@ public:
   // TIPS cinder 0.9.1はコンストラクタが使える
   MyApp()
     : params(ngs::Params::load("params.json")),
-      ui_test(params)
+      worker(params)
   {
     Rand::randomize();
 
@@ -39,34 +40,42 @@ public:
 
 private:
   void mouseMove(MouseEvent event) override {
+    worker.mouseMove(event);
   }
 
 	void mouseDown(MouseEvent event) override {
+    worker.mouseDown(event);
   }
   
 	void mouseDrag(MouseEvent event) override {
+    worker.mouseDrag(event);
   }
   
 	void mouseUp(MouseEvent event) override {
+    worker.mouseUp(event);
   }
 
   void mouseWheel(MouseEvent event) override {
+    worker.mouseWheel(event);
   }
   
   void keyDown(KeyEvent event) override {
+    worker.keyDown(event);
   }
 
   void keyUp(KeyEvent event) override {
+    worker.keyUp(event);
   }
   
 
 	void update() override {
+    worker.update();
   }
 
 
   void resize() override {
     float aspect = getWindowAspectRatio();
-    ui_test.resize(aspect);
+    worker.resize(aspect);
   }
 
 
@@ -74,13 +83,14 @@ private:
     gl::clear(Color(0, 0, 0));
 
     auto window_size = getWindowSize();
-    ui_test.draw(window_size);
+    worker.draw(window_size);
   }
 
 
   // 変数定義
   JsonTree params;
-  UITest ui_test;
+  MainPart worker;
+  // UITest ui_test;
 
 };
 
