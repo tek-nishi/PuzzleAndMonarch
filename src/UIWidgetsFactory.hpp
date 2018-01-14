@@ -5,6 +5,9 @@
 //
 
 #include "UIWidget.hpp"
+#include "UIBrank.hpp"
+#include "UIText.hpp"
+#include "UIRoundRect.hpp"
 
 
 namespace ngs { namespace UI {
@@ -37,22 +40,20 @@ class WidgetsFactory
       widget->setPivot(Json::getVec<glm::vec2>(params["pivot"]));
     }
 
-    if (params.hasChild("color"))
-    {
-      widget->setColor(Json::getColorA<float>(params["color"]));
-    }
-    
     if (params.hasChild("text"))
     {
-      widget->setText(params.getValueForKey<std::string>("text"));
+      auto base = std::make_unique<UI::Text>(params);
+      widget->setWidgetBase(std::move(base));
     }
-    if (params.hasChild("text_size"))
+    else if (params.hasChild("corner_radius"))
     {
-      widget->setTextSize(params.getValueForKey<float>("text_size"));
+      auto base = std::make_unique<UI::RoundRect>(params);
+      widget->setWidgetBase(std::move(base));
     }
-    if (params.hasChild("alignment"))
+    else
     {
-      widget->setAlignment(Json::getVec<glm::vec2>(params["alignment"]));
+      auto base = std::make_unique<UI::Brank>();
+      widget->setWidgetBase(std::move(base));
     }
 
 

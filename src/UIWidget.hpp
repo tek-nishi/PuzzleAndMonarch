@@ -4,8 +4,7 @@
 // UI Widget
 //
 
-#include "UIText.hpp"
-#include "UIRoundRect.hpp"
+#include "UIWidgetBase.hpp"
 
 
 namespace ngs { namespace UI {
@@ -69,31 +68,6 @@ public:
   {
     return scale_;
   }
-
-  void setColor(const ci::ColorA& color) {
-    color_ = color;
-  }
-
-
-  void setText(std::string text) noexcept
-  {
-    text_ = std::move(text);
-  }
-
-  const std::string& getText() const noexcept
-  {
-    return text_;
-  }
-
-  void setTextSize(const float text_size) noexcept
-  {
-    text_size_ = text_size;
-  }
-
-  void setAlignment(const glm::vec2& alignment) noexcept
-  {
-    alignment_ = alignment;
-  }
   
   void addChild(const WidgetPtr& widget) noexcept
   {
@@ -105,6 +79,11 @@ public:
     return children_;
   }
 
+  void setWidgetBase(std::unique_ptr<UI::WidgetBase> base) noexcept
+  {
+    widget_base_ = std::move(base);
+  }
+
 
   void draw(const ci::Rectf& parent_rect, const glm::vec2& parent_scale,
             UI::Drawer& drawer) const noexcept
@@ -112,21 +91,9 @@ public:
     // とりあえず描く
     auto rect = calcRect(parent_rect, parent_scale);
 
-    ci::gl::color(color_);
-    ci::gl::drawStrokedRect(rect);
-
-    if (!text_.empty())
-    {
-      ci::gl::pushModelMatrix();
-      ci::gl::ScopedGlslProg prog(drawer.getFontShader());
-
-      auto& font = drawer.getFont();
-      auto size = font.drawSize(text_);
-      ci::gl::translate(rect.getCenter() - size * alignment_ * text_size_);
-      ci::gl::scale(glm::vec3(text_size_));
-      font.draw(text_, glm::vec2(0, 0), color_);
-      ci::gl::popModelMatrix();
-    }
+    // ci::gl::color(color_);
+    // ci::gl::drawStrokedRect(rect);
+    widget_base_->draw(rect, drawer);
     
     for (const auto& child : children_)
     {
@@ -174,12 +141,7 @@ private:
 
   glm::vec2 scale_ = { 1.0f, 1.0f };
 
-  ci::ColorA color_ = { 1.0f, 1.0f, 1.0f, 1.0f };
-
-  std::string text_;
-  float text_size_ = 1.0f;
-  glm::vec2 alignment_ = { 0.5, 0.5 };
-
+  std::unique_ptr<UI::WidgetBase> widget_base_;
 
   std::vector<WidgetPtr> children_;
 
