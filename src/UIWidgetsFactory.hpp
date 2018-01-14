@@ -8,6 +8,7 @@
 #include "UIBrank.hpp"
 #include "UIText.hpp"
 #include "UIRoundRect.hpp"
+#include "UICircle.hpp"
 
 
 namespace ngs { namespace UI {
@@ -48,6 +49,11 @@ class WidgetsFactory
     else if (params.hasChild("corner_radius"))
     {
       auto base = std::make_unique<UI::RoundRect>(params);
+      widget->setWidgetBase(std::move(base));
+    }
+    else if (params.hasChild("radius"))
+    {
+      auto base = std::make_unique<UI::Circle>(params);
       widget->setWidgetBase(std::move(base));
     }
     else

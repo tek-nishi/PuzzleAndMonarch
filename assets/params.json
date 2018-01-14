@@ -121,6 +121,21 @@
           "corner_segment": 10,
           "fill": true,
           "color": [ 1, 0, 0, 1 ]
+        },
+        {
+          "identifier": "7",
+          "rect": [ 25, -100, 125, 0 ],
+          "anchor": [
+            [ 0.0, 0.0 ],
+            [ 0.0, 0.0 ]
+          ],
+          "scale": [ 1, 1 ],
+          "pivot": [ 0.5, 0.5 ],
+
+          "radius": 50,
+          "segment": 20,
+          "fill": true,
+          "color": [ 0, 1, 0, 1 ]
         }
       ]
     }
