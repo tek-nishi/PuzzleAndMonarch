@@ -6,9 +6,6 @@
 
 #include <cinder/Camera.h>
 #include <cinder/gl/GlslProg.h>
-#include "Font.hpp"
-#include "Shader.hpp"
-#include "UIWidget.hpp"
 #include "UIWidgetsFactory.hpp"
 
 
@@ -24,12 +21,10 @@ public:
       near_z(params.getValueForKey<float>("ui_camera.near_z")),
       far_z(params.getValueForKey<float>("ui_camera.far_z")),
       camera(ci::app::getWindowWidth(), ci::app::getWindowHeight(), fov, near_z, far_z),
-      font(params.getValueForKey<std::string>("ui_test.font")),
-      shader(createShader("font", "font")),
-      widgets_(widgets_factory_.construct(params["ui_test.widgets"]))
+      widgets_(widgets_factory_.construct(params["ui_test.widgets"])),
+      drawer_(params)
   {
     camera.lookAt(Json::getVec<glm::vec3>(params["ui_camera.eye"]), Json::getVec<glm::vec3>(params["ui_camera.target"]));
-    font.size(params.getValueForKey<float>("ui_test.font_size"));
   }
 
 
@@ -73,7 +68,7 @@ public:
     glm::vec3 bottom_right;
     camera.getNearClipCoordinates(&top_left, &top_right, &bottom_left, &bottom_right);
     ci::Rectf rect(top_left.x, top_left.y, bottom_right.x, bottom_right.y);
-    widgets_->draw(rect, glm::vec2(1, 1), font, shader);
+    widgets_->draw(rect, glm::vec2(1, 1), drawer_);
   }
 
 
@@ -83,11 +78,11 @@ private:
   float far_z;
 
   ci::CameraPersp camera;
-  Font font;
-  ci::gl::GlslProgRef shader;
 
   UI::WidgetPtr widgets_; 
   UI::WidgetsFactory widgets_factory_;
+
+  UI::Drawer drawer_;
 };
 
 }

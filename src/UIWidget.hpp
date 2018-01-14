@@ -4,6 +4,9 @@
 // UI Widget
 //
 
+#include "UIText.hpp"
+#include "UIRoundRect.hpp"
+
 
 namespace ngs { namespace UI {
 
@@ -104,7 +107,7 @@ public:
 
 
   void draw(const ci::Rectf& parent_rect, const glm::vec2& parent_scale,
-            Font& font, const ci::gl::GlslProgRef& shader) const noexcept
+            UI::Drawer& drawer) const noexcept
   {
     // とりあえず描く
     auto rect = calcRect(parent_rect, parent_scale);
@@ -115,7 +118,9 @@ public:
     if (!text_.empty())
     {
       ci::gl::pushModelMatrix();
-      ci::gl::ScopedGlslProg prog(shader);
+      ci::gl::ScopedGlslProg prog(drawer.getFontShader());
+
+      auto& font = drawer.getFont();
       auto size = font.drawSize(text_);
       ci::gl::translate(rect.getCenter() - size * alignment_ * text_size_);
       ci::gl::scale(glm::vec3(text_size_));
@@ -126,7 +131,7 @@ public:
     for (const auto& child : children_)
     {
       auto scale = parent_scale * scale_;
-      child->draw(rect, scale, font, shader);
+      child->draw(rect, scale, drawer);
     }
   }
 

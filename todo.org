@@ -18,6 +18,8 @@
 * TODO PLYファイルの読み込みが長い
 * TODO ファイルを１つにまとめる
 * TODO ソフトリセット
+* TODO iPhone6とかの起動画面
+* TODO AppStore提出に必要な書類や素材
 * DONE 本編の処理を分離
 CLOSED: [2018-01-11 Thu 01:05]
 * DONE 時間計測を正確に

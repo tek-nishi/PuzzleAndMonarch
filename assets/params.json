@@ -20,10 +20,17 @@
     "target": [ 0, 0, 0 ]
   },
 
-  "ui_test": {
-    "font":      "MAIAN.TTF",
-    "font_size": 128,
+  "ui": {
+    "font": {
+      "name": "MAIAN.TTF",
+      "size": 128
+    },
+    "shader": {
+      "font": "font"
+    }
+  },
 
+  "ui_test": {
     "widgets": {
       "identifier": "root",
       "rect": [ 0, 0, 0, 0 ],
