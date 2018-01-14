@@ -58,7 +58,36 @@ private:
   void mouseWheel(MouseEvent event) override {
     worker.mouseWheel(event);
   }
+
+
+  uint32_t touch_id;
+
+  void touchesBegan(TouchEvent event) override {
+    const auto& touches = event.getTouches();
+    if (touches.size() != 1) return;
+
+    const auto& touch = touches[0];
+    touch_id = touch.getId();
+    worker.touchBegan(touch.getPos()); 
+  }
   
+  void touchesMoved(TouchEvent event) override {
+    const auto& touches = event.getTouches();
+
+    for (const auto& touch : touches)
+    {
+      if (touch_id == touch.getId())
+      {
+        worker.touchMoved(touch.getPos());
+        break;
+      }
+    }
+  }
+
+  void touchesEnded(TouchEvent event) override {
+  }
+
+
   void keyDown(KeyEvent event) override {
     worker.keyDown(event);
   }
@@ -105,6 +134,8 @@ CINDER_APP(ngs::MyApp, RendererGl,
 
              settings->setWindowSize(ngs::Json::getVec<ci::ivec2>(params["app.size"]));
              settings->setTitle(PREPRO_TO_STR(PRODUCT_NAME));
+
+             settings->setMultiTouchEnabled();
              
              settings->setPowerManagementEnabled(true);
              settings->setHighDensityDisplayEnabled(params.getValueForKey<bool>("app.retina"));

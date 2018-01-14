@@ -7,6 +7,7 @@
 #include "Defines.hpp"
 #include <glm/gtx/norm.hpp>
 #include <glm/gtx/transform.hpp>
+#include <glm/gtc/quaternion.hpp>
 #include <cinder/Rand.h>
 #include <cinder/Camera.h>
 #include <cinder/CameraUi.h>
@@ -49,8 +50,49 @@ public:
     glm::vec3 p = q * glm::vec3{ 0, 0, -distance };
     field_camera.lookAt(p, glm::vec3(0));
 
+    eye_position    = field_camera.getEyePoint();
+    target_position = glm::vec3(0);
+
+
     // UI関連
     ui_camera.lookAt(Json::getVec<glm::vec3>(params["ui.camera.eye"]), Json::getVec<glm::vec3>(params["ui.camera.target"]));
+  }
+
+
+
+  glm::vec2 touch_pos;
+
+  void touchBegan(glm::vec2 pos) noexcept
+  {
+    touch_pos = pos;
+  }
+
+  void touchMoved(glm::vec2 pos) noexcept
+  {
+    // マウスの移動ベクトルに垂直なベクトル→回転軸
+    glm::vec2 d = pos - touch_pos;
+    glm::vec3 axis(-d.y, -d.x, 0.0f);
+    float l = glm::length(d);
+
+    if (l > 0.0f)
+    {
+      glm::quat q = glm::angleAxis(l * 0.002f, axis / l);
+      auto cam_q = field_camera.getOrientation();
+      auto cam_iq = glm::inverse(cam_q);
+
+      auto v = eye_position - target_position;
+      v = cam_q * q * cam_iq * v;
+      eye_position = v + target_position;
+
+      field_camera.setEyePoint(eye_position);
+      field_camera.setOrientation(cam_q * q);
+
+      touch_pos = pos;
+    }
+  }
+
+  void touchEnded(glm::vec2 pos) noexcept
+  {
   }
 
 
@@ -66,7 +108,7 @@ public:
     left_click_pos = event.getPos();
     
 
-    camera_ui.mouseDown(event);
+    // camera_ui.mouseDown(event);
   }
   
 	void mouseDrag(ci::app::MouseEvent event) {
@@ -77,11 +119,11 @@ public:
     if (glm::distance2(left_click_pos, pos) < 9.0f) return;
 
     mouse_draged = true;
-    camera_ui.mouseDrag(event);
+    // camera_ui.mouseDrag(event);
   }
   
 	void mouseUp(ci::app::MouseEvent event) {
-    camera_ui.mouseUp(event);
+    // camera_ui.mouseUp(event);
 
     switch (playing_mode) {
     case TITLE:
@@ -598,6 +640,9 @@ private:
   float near_z;
   float far_z;
   float distance;
+
+  glm::vec3 eye_position;
+  glm::vec3 target_position;
 
   ci::CameraPersp field_camera;
   ci::CameraUi camera_ui;
