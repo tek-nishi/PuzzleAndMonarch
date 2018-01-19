@@ -211,7 +211,7 @@
   },
 
   "test": {
-    camera: {
+    "camera": {
       "fov":    35,
       "near_z": 0.1,
       "far_z":  100,
