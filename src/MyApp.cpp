@@ -9,17 +9,17 @@
 #include <cinder/Rand.h>
 #include "Params.hpp"
 #include "JsonUtil.hpp"
-#include "MainPart.hpp"
-#include "UITest.hpp"
-
-
-using namespace ci;
-using namespace ci::app;
+#include "TouchEvent.hpp"
+// #include "MainPart.hpp"
+#include "TestPart.hpp"
+// #include "UITest.hpp"
 
 
 namespace ngs {
 
-class MyApp : public App {
+class MyApp
+  : public ci::app::App
+{
 
 public:
   // TIPS cinder 0.9.1はコンストラクタが使える
@@ -27,72 +27,89 @@ public:
     : params(ngs::Params::load("params.json")),
       worker(params)
   {
-    Rand::randomize();
+    ci::Rand::randomize();
 
 #if defined (CINDER_COCOA_TOUCH)
     // 縦横画面両対応
-    getSignalSupportedOrientations().connect([]() {
-        return ci::app::InterfaceOrientation::All;
-      });
+    ci::app::getSignalSupportedOrientations().connect([]() {
+      return ci::app::InterfaceOrientation::All;
+    });
 #endif
   }
 
 
 private:
-  void mouseMove(MouseEvent event) override {
+  void mouseMove(ci::app::MouseEvent event) override
+  {
     worker.mouseMove(event);
   }
 
-	void mouseDown(MouseEvent event) override {
+	void mouseDown(ci::app::MouseEvent event) override
+  {
     worker.mouseDown(event);
   }
   
-	void mouseDrag(MouseEvent event) override {
+	void mouseDrag(ci::app::MouseEvent event) override
+  {
     worker.mouseDrag(event);
   }
   
-	void mouseUp(MouseEvent event) override {
+	void mouseUp(ci::app::MouseEvent event) override
+  {
     worker.mouseUp(event);
   }
 
-  void mouseWheel(MouseEvent event) override {
+  void mouseWheel(ci::app::MouseEvent event) override
+  {
     worker.mouseWheel(event);
   }
 
 
-  uint32_t touch_id;
+  // タッチ操作ハンドリング
+  void touchesBegan(ci::app::TouchEvent event) override
+  {
+    // const auto& touches = event.getTouches();
 
-  void touchesBegan(TouchEvent event) override {
-    const auto& touches = event.getTouches();
-    if (touches.size() != 1) return;
+    
 
-    const auto& touch = touches[0];
-    touch_id = touch.getId();
-    worker.touchBegan(touch.getPos()); 
+
+
   }
   
-  void touchesMoved(TouchEvent event) override {
-    const auto& touches = event.getTouches();
+  void touchesMoved(ci::app::TouchEvent event) override
+  {
+    // const auto& touches = event.getTouches();
 
-    for (const auto& touch : touches)
-    {
-      if (touch_id == touch.getId())
-      {
-        worker.touchMoved(touch.getPos());
-        break;
-      }
-    }
+    // for (const auto& touch : touches)
+    // {
+    //   if (touch_id == touch.getId())
+    //   {
+    //     worker.touchMoved(touch.getPos());
+    //     break;
+    //   }
+    // }
   }
 
-  void touchesEnded(TouchEvent event) override {
+  void touchesEnded(ci::app::TouchEvent event) override
+  {
+    // const auto& touches = event.getTouches();
+
+    // for (const auto& touch : touches)
+    // {
+    //   if (touch_id == touch.getId())
+    //   {
+    //     worker.touchEnded(touch.getPos());
+    //     break;
+    //   }
+    // }
   }
 
 
-  void keyDown(KeyEvent event) override {
+  void keyDown(ci::app::KeyEvent event) override {
     worker.keyDown(event);
   }
 
-  void keyUp(KeyEvent event) override {
+  void keyUp(ci::app::KeyEvent event) override {
     worker.keyUp(event);
   }
   
@@ -103,22 +120,23 @@ private:
 
 
   void resize() override {
-    float aspect = getWindowAspectRatio();
+    float aspect = ci::app::getWindowAspectRatio();
     worker.resize(aspect);
   }
 
 
 	void draw() override {
-    gl::clear(Color(0, 0, 0));
+    ci::gl::clear(ci::Color(0, 0, 0));
 
-    auto window_size = getWindowSize();
+    auto window_size = ci::app::getWindowSize();
     worker.draw(window_size);
   }
 
 
   // 変数定義
-  JsonTree params;
-  MainPart worker;
+  ci::JsonTree params;
+  // MainPart worker;
+  TestPart worker;
   // UITest ui_test;
 
 };
@@ -127,8 +145,8 @@ private:
 
 
 // アプリのラウンチコード
-CINDER_APP(ngs::MyApp, RendererGl,
-           [](App::Settings* settings) {
+CINDER_APP(ngs::MyApp, ci::app::RendererGl,
+           [](ci::app::App::Settings* settings) {
              // FIXME:ここで設定ファイルを読むなんて...
              auto params = ngs::Params::load("params.json");
 
@@ -136,7 +154,7 @@ CINDER_APP(ngs::MyApp, RendererGl,
              settings->setTitle(PREPRO_TO_STR(PRODUCT_NAME));
 
              settings->setMultiTouchEnabled();
-             
+
              settings->setPowerManagementEnabled(true);
              settings->setHighDensityDisplayEnabled(params.getValueForKey<bool>("app.retina"));
            });

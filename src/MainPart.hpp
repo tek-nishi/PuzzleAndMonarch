@@ -61,10 +61,12 @@ public:
 
 
   glm::vec2 touch_pos;
+  bool draged = false;
 
   void touchBegan(glm::vec2 pos) noexcept
   {
     touch_pos = pos;
+    draged = false;
   }
 
   void touchMoved(glm::vec2 pos) noexcept
@@ -76,6 +78,8 @@ public:
 
     if (l > 0.0f)
     {
+      draged = true;
+
       glm::quat q = glm::angleAxis(l * 0.002f, axis / l);
       auto cam_q = field_camera.getOrientation();
       auto cam_iq = glm::inverse(cam_q);
@@ -93,15 +97,21 @@ public:
 
   void touchEnded(glm::vec2 pos) noexcept
   {
+    if (!draged)
+    {
+
+    }
   }
+  
 
-
-  void mouseMove(ci::app::MouseEvent event) {
+  void mouseMove(ci::app::MouseEvent event)
+  {
     auto pos = event.getPos();
     calcFieldPos(pos);
   }
 
-	void mouseDown(ci::app::MouseEvent event) {
+	void mouseDown(ci::app::MouseEvent event)
+  {
     if (!event.isLeft()) return;
 
     mouse_draged   = false;
@@ -111,7 +121,8 @@ public:
     // camera_ui.mouseDown(event);
   }
   
-	void mouseDrag(ci::app::MouseEvent event) {
+	void mouseDrag(ci::app::MouseEvent event)
+  {
     if (!event.isLeftDown()) return;
 
     // クリック位置から3pixel程度の動きは無視
@@ -122,7 +133,8 @@ public:
     // camera_ui.mouseDrag(event);
   }
   
-	void mouseUp(ci::app::MouseEvent event) {
+	void mouseUp(ci::app::MouseEvent event)
+  {
     // camera_ui.mouseUp(event);
 
     switch (playing_mode) {
@@ -177,7 +189,8 @@ public:
     }
   }
 
-  void mouseWheel(ci::app::MouseEvent event) {
+  void mouseWheel(ci::app::MouseEvent event)
+  {
     camera_ui.mouseWheel(event);
   }
   
