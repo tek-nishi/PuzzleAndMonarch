@@ -6,14 +6,13 @@
 * TODO Windows版: イベントハンドルが微妙
 * TODO 完成した街を保存したい
 * TODO ランキング演出は「自分がどの程度か」を把握できるように
-* TODO iOSでの柔軟なUIの解像度
 * TODO 点光源
 * TODO 本格的な画面設計
 * TODO 本格的に見た目を決める
 * TODO サウンド周りの再設計
-* TODO イベントシステム導入
 * TODO タスク導入
 * TODO UI実装
+* TODO テキストのレイアウト(右寄せとか上寄せとか)
 * TODO UIのタッチ判定
 * TODO 開始時のパネルは「T字路に森の端」にする
 * TODO PLYファイルの読み込みが長い
@@ -21,6 +20,10 @@
 * TODO ソフトリセット
 * TODO iPhone6とかの起動画面
 * TODO AppStore提出に必要な書類や素材
+* DONE イベントシステム導入
+CLOSED: [2018-01-20 土 22:55]
+* DONE iOSでの柔軟なUIの解像度
+CLOSED: [2018-01-20 土 22:55]
 * DONE 本編の処理を分離
 CLOSED: [2018-01-11 Thu 01:05]
 * DONE 時間計測を正確に

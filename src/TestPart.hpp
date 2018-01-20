@@ -5,6 +5,8 @@
 //
 
 #include "ConnectionHolder.hpp"
+#include <glm/gtx/norm.hpp>
+#include <glm/gtc/quaternion.hpp>
 
 
 namespace ngs {
@@ -32,6 +34,16 @@ public:
     holder_ += event_.connect("single_touch_moved",
                               [this](const Connection&, const Arguments& arg) noexcept
                               {
+                                const auto& touch = boost::any_cast<const Touch&>(arg.at("touch"));
+                                // タッチ位置の移動から回転軸と量を決める
+                                auto d = touch.pos - touch.prev_pos;
+                                float l = glm::length(d);
+                                if (l > 0.0f)
+                                {
+                                  glm::vec3 axis(d.y, d.x, 0.0f);
+                                  glm::quat q = glm::angleAxis(l * 0.01f, axis / l);
+                                  rot_ = q * rot_;
+                                }
                               });
 
     holder_ += event_.connect("multi_touch_moved",
@@ -102,6 +114,8 @@ public:
     ci::gl::enableAlphaBlending();
     ci::gl::setMatrices(camera);
 
+    ci::gl::rotate(rot_);
+
     ci::gl::drawColorCube(glm::vec3(0), glm::vec3(1));
   }
 
@@ -115,6 +129,8 @@ private:
   float far_z;
 
   ci::CameraPersp camera;
+  glm::quat rot_;
+  
 
 };
 
