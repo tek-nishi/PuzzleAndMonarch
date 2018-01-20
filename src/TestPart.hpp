@@ -76,6 +76,7 @@ public:
     ci::gl::enableAlphaBlending();
     ci::gl::setMatrices(camera);
 
+    ci::gl::drawColorCube(glm::vec3(0), glm::vec3(1));
   }
 
 

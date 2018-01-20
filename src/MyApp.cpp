@@ -68,40 +68,17 @@ private:
   // タッチ操作ハンドリング
   void touchesBegan(ci::app::TouchEvent event) override
   {
-    // const auto& touches = event.getTouches();
-
-    
-
-
-
+    touch_event_.touchesBegan(event);
   }
   
   void touchesMoved(ci::app::TouchEvent event) override
   {
-    // const auto& touches = event.getTouches();
-
-    // for (const auto& touch : touches)
-    // {
-    //   if (touch_id == touch.getId())
-    //   {
-    //     worker.touchMoved(touch.getPos());
-    //     break;
-    //   }
-    // }
+    touch_event_.touchesMoved(event);
   }
 
   void touchesEnded(ci::app::TouchEvent event) override
   {
-    // const auto& touches = event.getTouches();
-
-    // for (const auto& touch : touches)
-    // {
-    //   if (touch_id == touch.getId())
-    //   {
-    //     worker.touchEnded(touch.getPos());
-    //     break;
-    //   }
-    // }
+    touch_event_.touchesEnded(event);
   }
 
 
@@ -133,11 +110,14 @@ private:
   }
 
 
-  // 変数定義
+  // 変数定義(実験的にクラス定義の最後でまとめている)
   ci::JsonTree params;
+
+  TouchEvent touch_event_;
+
+
   // MainPart worker;
   TestPart worker;
-  // UITest ui_test;
 
 };
 
