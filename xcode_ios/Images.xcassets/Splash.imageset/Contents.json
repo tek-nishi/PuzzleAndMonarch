@@ -1,6 +1,9 @@
 {
   "images" : [
-
+    {
+      "idiom" : "universal",
+      "filename" : "ngs-logo.png"
+    }
   ],
   "info" : {
     "version" : 1,
