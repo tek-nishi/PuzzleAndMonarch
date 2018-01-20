@@ -1,7 +1,8 @@
 {
   "app": {
     "size":   [ 960, 640 ],
-    "retina": false
+    "retina": false,
+    "power_management": true
   },
 
   "field_camera": {

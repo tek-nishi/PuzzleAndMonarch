@@ -31,11 +31,18 @@ public:
 
 #if defined (CINDER_COCOA_TOUCH)
     // 縦横画面両対応
-    ci::app::getSignalSupportedOrientations().connect([]() {
+    signal_connection = getSignalSupportedOrientations().connect([]() {
       return ci::app::InterfaceOrientation::All;
     });
 #endif
   }
+
+#if defined (CINDER_COCOA_TOUCH)
+  ~MyApp()
+  {
+    signal_connection.disconnect();
+  }
+#endif
 
 
 private:
@@ -113,6 +120,10 @@ private:
   // 変数定義(実験的にクラス定義の最後でまとめている)
   ci::JsonTree params;
 
+#if defined (CINDER_COCOA_TOUCH)
+  ci::signals::Connection signal_connection;
+#endif
+
   TouchEvent touch_event_;
 
 
@@ -135,6 +146,6 @@ CINDER_APP(ngs::MyApp, ci::app::RendererGl,
 
              settings->setMultiTouchEnabled();
 
-             settings->setPowerManagementEnabled(true);
+             settings->setPowerManagementEnabled(params.getValueForKey<bool>("app.power_management"));
              settings->setHighDensityDisplayEnabled(params.getValueForKey<bool>("app.retina"));
            });
