@@ -4,6 +4,9 @@
 // 動作確認用
 //
 
+#include "ConnectionHolder.hpp"
+
+
 namespace ngs {
 
 class TestPart
@@ -11,13 +14,36 @@ class TestPart
 
 
 public:
-  TestPart(const ci::JsonTree& params) noexcept
-    : fov(params.getValueForKey<float>("test.camera.fov")),
+  TestPart(const ci::JsonTree& params, Event<Arguments>& event) noexcept
+    : event_(event),
+      fov(params.getValueForKey<float>("test.camera.fov")),
       near_z(params.getValueForKey<float>("test.camera.near_z")),
       far_z(params.getValueForKey<float>("test.camera.far_z")),
       camera(ci::app::getWindowWidth(), ci::app::getWindowHeight(), fov, near_z, far_z)
   {
     camera.lookAt(Json::getVec<glm::vec3>(params["test.camera.eye"]), Json::getVec<glm::vec3>(params["test.camera.target"]));
+
+    // せっせとイベントを登録
+    holder_ += event_.connect("single_touch_began",
+                              [this](const Connection&, const Arguments& arg) noexcept
+                              {
+                              });
+
+    holder_ += event_.connect("single_touch_moved",
+                              [this](const Connection&, const Arguments& arg) noexcept
+                              {
+                              });
+
+    holder_ += event_.connect("multi_touch_moved",
+                              [this](const Connection&, const Arguments& arg) noexcept
+                              {
+                              });
+    
+    holder_ += event_.connect("single_touch_ended",
+                              [this](const Connection&, const Arguments& arg) noexcept
+                              {
+                              });
+
   }
 
 
@@ -81,6 +107,9 @@ public:
 
 
 private:
+  Event<Arguments>& event_;
+  ConnectionHolder holder_;
+
   float fov;
   float near_z;
   float far_z;

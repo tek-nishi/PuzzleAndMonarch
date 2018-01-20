@@ -6,12 +6,20 @@
 
 #include <cinder/app/TouchEvent.h>
 #include "Touch.hpp"
+#include "Event.hpp"
+#include "Arguments.hpp"
 
 
 namespace ngs {
 
 struct TouchEvent
 {
+  TouchEvent(Event<Arguments>& event)
+    : event_(event)
+  {
+  }
+
+
   // タッチされていない状況からの指一本タッチを「タッチ操作」と扱う
   void touchesBegan(const ci::app::TouchEvent& event)
   {
@@ -27,14 +35,18 @@ struct TouchEvent
 
     if (first_touch)
     {
+      // イベント送信
       const auto& t = touches[0];
       Touch touch = {
         t.getId(),
         t.getPos(),
         t.getPrevPos()
       };
-      // シングルタッチ開始
-      
+      Arguments arg = {
+        { "touch", touch }
+      };
+      event_.signal("single_touch_began", arg);
+
       first_touch_    = first_touch;
       first_touch_id_ = t.getId();
     }
@@ -50,6 +62,7 @@ struct TouchEvent
     const auto& touches = event.getTouches();
     if (touches.size() > 1)
     {
+      // イベント送信
       std::vector<Touch> touches_event;
       for (const auto& t : touches)
       {
@@ -60,22 +73,29 @@ struct TouchEvent
         };
         touches_event.push_back(touch);
       }
-      // マルチタッチイベント
 
+      Arguments arg = {
+        { "touchs", touches_event }
+      };
+      event_.signal("multi_touch_moved", arg);
     }
     else if (first_touch_)
     {
       for (const auto& t : touches)
       {
         auto id = t.getId();
-        if (touch_id_.count(id))
+        if (id == first_touch_id_)
         {
           Touch touch = {
             id,
             t.getPos(),
             t.getPrevPos()
           };
-          // シングルタッチが移動
+
+          Arguments arg = {
+            { "touch", touch }
+          };
+          event_.signal("single_touch_moved", arg);
 
           break;
         }
@@ -96,12 +116,16 @@ struct TouchEvent
       {
         if (t.getId() == first_touch_id_)
         {
-          // シングルタッチのEnded操作
+          // イベント送信
           Touch touch = {
             t.getId(),
             t.getPos(),
             t.getPrevPos()
           };
+          Arguments arg = {
+            { "touch", touch }
+          };
+          event_.signal("single_touch_ended", arg);
 
           first_touch_ = false;
           break;
@@ -129,6 +153,7 @@ private:
   bool first_touch_ = false;
   uint32_t first_touch_id_;
 
+  Event<Arguments>& event_;
 };
 
 }

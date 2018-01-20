@@ -7,6 +7,8 @@
 #include <cinder/app/RendererGl.h>
 #include <cinder/gl/gl.h>
 #include <cinder/Rand.h>
+#include "Event.hpp"
+#include "Arguments.hpp"
 #include "Params.hpp"
 #include "JsonUtil.hpp"
 #include "TouchEvent.hpp"
@@ -25,7 +27,8 @@ public:
   // TIPS cinder 0.9.1はコンストラクタが使える
   MyApp()
     : params(ngs::Params::load("params.json")),
-      worker(params)
+      touch_event_(event_),
+      worker(params, event_)
   {
     ci::Rand::randomize();
 
@@ -123,6 +126,8 @@ private:
 #if defined (CINDER_COCOA_TOUCH)
   ci::signals::Connection signal_connection;
 #endif
+
+  Event<Arguments> event_;
 
   TouchEvent touch_event_;
 
