@@ -21,9 +21,12 @@ public:
       fov(params.getValueForKey<float>("test.camera.fov")),
       near_z(params.getValueForKey<float>("test.camera.near_z")),
       far_z(params.getValueForKey<float>("test.camera.far_z")),
+      distance_(params.getValueForKey<float>("test.camera.distance")),
+      target_(Json::getVec<glm::vec3>(params["test.camera.target"])),
       camera(ci::app::getWindowWidth(), ci::app::getWindowHeight(), fov, near_z, far_z)
   {
-    camera.lookAt(Json::getVec<glm::vec3>(params["test.camera.eye"]), Json::getVec<glm::vec3>(params["test.camera.target"]));
+    glm::vec3 eye = target_ + glm::vec3(0, 0, distance_);
+    camera.lookAt(eye, target_);
 
     // せっせとイベントを登録
     holder_ += event_.connect("single_touch_began",
@@ -49,6 +52,17 @@ public:
     holder_ += event_.connect("multi_touch_moved",
                               [this](const Connection&, const Arguments& arg) noexcept
                               {
+                                const auto& touches = boost::any_cast<const std::vector<Touch>&>(arg.at("touches"));
+
+                                float l      = glm::distance(touches[0].pos, touches[1].pos);
+                                float prev_l = glm::distance(touches[0].prev_pos, touches[1].prev_pos);
+                                float dl = l - prev_l;
+                                if (std::abs(dl) > 1.0f)
+                                {
+                                  distance_ = std::max(distance_ - dl * 0.25f, camera.getNearClip() + 1.0f);
+                                  glm::vec3 eye = target_ + glm::vec3(0, 0, distance_);
+                                  camera.lookAt(eye, target_);
+                                }
                               });
     
     holder_ += event_.connect("single_touch_ended",
@@ -127,6 +141,9 @@ private:
   float fov;
   float near_z;
   float far_z;
+
+  float distance_;
+  glm::vec3 target_;
 
   ci::CameraPersp camera;
   glm::quat rot_;

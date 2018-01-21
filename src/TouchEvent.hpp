@@ -75,7 +75,7 @@ struct TouchEvent
       }
 
       Arguments arg = {
-        { "touchs", touches_event }
+        { "touches", touches_event }
       };
       event_.signal("multi_touch_moved", arg);
     }

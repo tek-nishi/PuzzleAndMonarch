@@ -18,8 +18,9 @@
 * TODO PLYファイルの読み込みが長い
 * TODO ファイルを１つにまとめる
 * TODO ソフトリセット
-* TODO iPhone6とかの起動画面
 * TODO AppStore提出に必要な書類や素材
+* DONE iPhone6とかの起動画面
+CLOSED: [2018-01-21 日 00:54]
 * DONE イベントシステム導入
 CLOSED: [2018-01-20 土 22:55]
 * DONE iOSでの柔軟なUIの解像度
