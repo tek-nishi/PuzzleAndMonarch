@@ -25,9 +25,6 @@
 #define PREPRO_TO_STR(value) PREPRO_STR(value)
 #define PREPRO_STR(value)    #value
 
-// TIPS glmのイカした機能を利用
-#define GLM_SWIZZLE
-
 
 #if defined(CINDER_COCOA_TOUCH)
 

@@ -90,6 +90,14 @@ public:
     holder_ += event_.connect("single_touch_began",
                               std::bind(&TestPart::touchBegan,
                                         this, std::placeholders::_1, std::placeholders::_2));
+    
+    holder_ += event_.connect("single_touch_moved",
+                              std::bind(&TestPart::touchMoved,
+                                        this, std::placeholders::_1, std::placeholders::_2));
+
+    holder_ += event_.connect("single_touch_ended",
+                              std::bind(&TestPart::touchEnded,
+                                        this, std::placeholders::_1, std::placeholders::_2));
   }
 
   ~TestPart() = default;
@@ -185,26 +193,12 @@ private:
     }
   }
 
-  
+
   // UI event
   void touchBegan(const Connection&, const Arguments& arg) noexcept
   {
     const auto& touch = boost::any_cast<const Touch&>(arg.at("touch"));
-    const auto& camera = ui_camera_.body();
-
-    // float u = touch.pos.x / ci::app::getWindowWidth();
-    // float v = 1.0f - touch.pos.y / ci::app::getWindowHeight();
-    // auto ray = camera.generateRay(u, v, camera.getAspectRatio());
-    auto ray = camera.generateRay(touch.pos, ci::app::getWindowSize());
-
-    float t;
-    ray.calcPlaneIntersection(glm::vec3(0), glm::vec3(0, 0, -1), &t);
-    auto touch_pos = ray.calcPosition(t);
-    // FIXME 暗黙の変換(vec3→vec2)
-    glm::vec2 pos = touch_pos;
-
-    DOUT << pos << std::endl;
-
+    auto pos = calcUIPosition(touch.pos);
 
     // 列挙したWidgetをクリックしたか計算
     for (const auto& w : enumerated_widgets_)
@@ -213,16 +207,84 @@ private:
 
       if (w->contains(pos))
       {
-        DOUT << "contain: " << w->getIdentifier() << std::endl;
+        DOUT << "widget touch began: " << w->getIdentifier() << std::endl;
+        touching_widget_ = w;
+        touching_in_ = true;
         break;
       }
     }
+  }
+  
+  void touchMoved(const Connection&, const Arguments& arg) noexcept
+  {
+    if (touching_widget_.expired()) return;
 
+    const auto& touch = boost::any_cast<const Touch&>(arg.at("touch"));
+    auto pos = calcUIPosition(touch.pos);
 
+    auto widget = touching_widget_.lock();
+    bool contains = widget->contains(pos);
+    if (contains)
+    {
+      if (touching_in_)
+      {
+        DOUT << "widget touch moved in-in: " << widget->getIdentifier() << std::endl;
+      }
+      else
+      {
+        DOUT << "widget touch moved out-in: " << widget->getIdentifier() << std::endl;
+      }
+    }
+    else
+    {
+      if (touching_in_)
+      {
+        DOUT << "widget touch moved in-out: " << widget->getIdentifier() << std::endl;
+      }
+      else
+      {
+        DOUT << "widget touch moved out-out: " << widget->getIdentifier() << std::endl;
+      }
+    }
+    touching_in_ = contains;
   }
 
 
+  void touchEnded(const Connection&, const Arguments& arg) noexcept
+  {
+    if (touching_widget_.expired()) return;
 
+    const auto& touch = boost::any_cast<const Touch&>(arg.at("touch"));
+    auto pos = calcUIPosition(touch.pos);
+
+    auto widget = touching_widget_.lock();
+    if (widget->contains(pos))
+    {
+      DOUT << "widget touch ended in: " << widget->getIdentifier() << std::endl;
+    }
+    else
+    {
+      DOUT << "widget touch ended out: " << widget->getIdentifier() << std::endl;
+    }
+  }
+
+  std::weak_ptr<UI::Widget> touching_widget_;
+  bool touching_in_ = false;
+
+
+  glm::vec2 calcUIPosition(const glm::vec2& pos) noexcept
+  {
+    const auto& camera = ui_camera_.body();
+    auto ray = camera.generateRay(pos, ci::app::getWindowSize());
+
+    float t;
+    ray.calcPlaneIntersection(glm::vec3(0), glm::vec3(0, 0, -1), &t);
+    auto touch_pos = ray.calcPosition(t);
+    // FIXME 暗黙の変換(vec3→vec2)
+    glm::vec2 ui_pos = touch_pos;
+
+    return ui_pos;
+  }
 
 
 

@@ -101,21 +101,25 @@ private:
   }
 
 
-  void keyDown(ci::app::KeyEvent event) override {
+  void keyDown(ci::app::KeyEvent event) override
+  {
     worker.keyDown(event);
   }
 
-  void keyUp(ci::app::KeyEvent event) override {
+  void keyUp(ci::app::KeyEvent event) override
+  {
     worker.keyUp(event);
   }
   
 
-	void update() override {
+	void update() override
+  {
     worker.update();
   }
 
 
-  void resize() override {
+  void resize() override
+  {
     worker.resize();
   }
 

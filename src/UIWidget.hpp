@@ -112,13 +112,7 @@ public:
   // FIXME 直前の描画結果から判定している
   bool contains(const glm::vec2& point) const noexcept
   {
-    bool contains = disp_rect_.contains(point);
-    if (contains)
-    {
-      DOUT << "pos: " << point << '\n'
-           << "rect:" << disp_rect_ << std::endl;
-    }
-    return contains;
+    return disp_rect_.contains(point);
   }
 
 
