@@ -46,28 +46,4 @@ T toDegrees(const T& v)
 }
 
 
-void setupCamera(ci::CameraPersp& camera, const float aspect, const float fov)
-{
-  camera.setAspectRatio(aspect);
-  float near_z = camera.getNearClip();
-
-  if (aspect < 1.0)
-  {
-    // 画面が縦長になったら、幅基準でfovを求める
-    // fovとnear_zから投影面の幅の半分を求める
-    float half_w = std::tan(ci::toRadians(fov / 2)) * near_z;
-
-    // 表示画面の縦横比から、投影面の高さの半分を求める
-    float half_h = half_w / aspect;
-
-    // 投影面の高さの半分とnear_zから、fovが求まる
-    float fov_w = std::atan(half_h / near_z) * 2;
-    camera.setFov(ci::toDegrees(fov_w));
-  }
-  else {
-    // 横長の場合、fovは固定
-    camera.setFov(fov);
-  }
-}
-
 }

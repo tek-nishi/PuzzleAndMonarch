@@ -8,7 +8,7 @@
 #include <glm/gtc/quaternion.hpp>
 #include "Camera.hpp"
 #include "ConnectionHolder.hpp"
-#include "UIWidgetsFactory.hpp"
+#include "UICanvas.hpp"
 
 
 namespace ngs {
@@ -23,28 +23,8 @@ public:
       world_camera_(params["test.camera"]),
       distance_(params.getValueForKey<float>("test.camera.distance")),
       target_(Json::getVec<glm::vec3>(params["test.camera.target"])),
-      ui_camera_(params["ui.camera"]),
-      widgets_(widgets_factory_.construct(params["ui_test.widgets"])),
-      drawer_(params["ui"])
+      canvas_(event, params["ui.camera"], params["ui"], params["ui_test.widgets"])
   {
-    // UI
-    ui_camera_.body().lookAt(Json::getVec<glm::vec3>(params["ui.camera.eye"]),
-                             Json::getVec<glm::vec3>(params["ui.camera.target"]));
-
-    // クエリ用情報生成
-    makeQueryWidgets(widgets_);
-    holder_ += event_.connect("single_touch_began",
-                              std::bind(&TestPart::touchBegan,
-                                        this, std::placeholders::_1, std::placeholders::_2));
-    
-    holder_ += event_.connect("single_touch_moved",
-                              std::bind(&TestPart::touchMoved,
-                                        this, std::placeholders::_1, std::placeholders::_2));
-
-    holder_ += event_.connect("single_touch_ended",
-                              std::bind(&TestPart::touchEnded,
-                                        this, std::placeholders::_1, std::placeholders::_2));
-
     // World
     glm::vec3 eye = target_ + glm::vec3(0, 0, distance_);
     world_camera_.body().lookAt(eye, target_);
@@ -139,7 +119,7 @@ public:
   void resize() noexcept
   {
     world_camera_.resize();
-    ui_camera_.resize();
+    canvas_.resize();
   }
 
 
@@ -167,142 +147,12 @@ public:
       ci::gl::disable(GL_CULL_FACE);
       ci::gl::enableAlphaBlending();
 
-      auto& camera = ui_camera_.body();
-      ci::gl::setMatrices(camera);
-
-      glm::vec3 top_left;
-      glm::vec3 top_right;
-      glm::vec3 bottom_left;
-      glm::vec3 bottom_right;
-      camera.getNearClipCoordinates(&top_left, &top_right, &bottom_left, &bottom_right);
-      ci::Rectf rect(top_left.x, top_left.y, bottom_right.x, bottom_right.y);
-      
-      widgets_->draw(rect, glm::vec2(1, 1), drawer_);
+      canvas_.draw();
     }
   }
 
 
 private:
-  void makeQueryWidgets(const UI::WidgetPtr& widget) noexcept
-  {
-    query_widgets_.insert({ widget->getIdentifier(), widget });
-    enumerated_widgets_.push_back(widget);
-
-    const auto& children = widget->getChildren();
-    if (children.empty()) return;
-
-    for (const auto& child : children)
-    {
-      makeQueryWidgets(child);
-    }
-  }
-
-
-  // UI event
-  void touchBegan(const Connection&, Arguments& arg) noexcept
-  {
-    auto& touch = boost::any_cast<Touch&>(arg.at("touch"));
-    auto pos = calcUIPosition(touch.pos);
-
-    // 列挙したWidgetをクリックしたか計算
-    for (const auto& w : enumerated_widgets_)
-    {
-      if (!w->hasEvent()) continue;
-
-      if (w->contains(pos))
-      {
-        // DOUT << "widget touch began: " << w->getIdentifier() << std::endl;
-        // std::string event = w->getEvent() + ":touch_began";
-        // event_.signal(event, Arguments());
-        touching_widget_ = w;
-        touching_in_ = true;
-        touch.handled = true;
-        break;
-      }
-    }
-  }
-  
-  void touchMoved(const Connection&, Arguments& arg) noexcept
-  {
-    if (touching_widget_.expired()) return;
-
-    auto& touch = boost::any_cast<Touch&>(arg.at("touch"));
-    auto pos = calcUIPosition(touch.pos);
-    touch.handled = true;
-
-    auto widget = touching_widget_.lock();
-    bool contains = widget->contains(pos);
-#if 0
-    // TODO 詳細な実装は後回し
-    if (contains)
-    {
-      if (touching_in_)
-      {
-        DOUT << "widget touch moved in-in: " << widget->getIdentifier() << std::endl;
-      }
-      else
-      {
-        DOUT << "widget touch moved out-in: " << widget->getIdentifier() << std::endl;
-      }
-    }
-    else
-    {
-      if (touching_in_)
-      {
-        DOUT << "widget touch moved in-out: " << widget->getIdentifier() << std::endl;
-      }
-      else
-      {
-        DOUT << "widget touch moved out-out: " << widget->getIdentifier() << std::endl;
-      }
-    }
-#endif
-    touching_in_ = contains;
-  }
-
-
-  void touchEnded(const Connection&, Arguments& arg) noexcept
-  {
-    if (touching_widget_.expired()) return;
-
-    auto& touch = boost::any_cast<Touch&>(arg.at("touch"));
-    auto pos = calcUIPosition(touch.pos);
-    touch.handled = true;
-
-    auto widget = touching_widget_.lock();
-    if (widget->contains(pos))
-    {
-      // DOUT << "widget touch ended in: " << widget->getIdentifier() << std::endl;
-      // イベント送信
-      std::string event = widget->getEvent() + ":touch_ended";
-      event_.signal(event, Arguments());
-    }
-    else
-    {
-      // DOUT << "widget touch ended out: " << widget->getIdentifier() << std::endl;
-    }
-
-    touching_widget_.reset();
-  }
-
-  std::weak_ptr<UI::Widget> touching_widget_;
-  bool touching_in_ = false;
-
-
-  glm::vec2 calcUIPosition(const glm::vec2& pos) noexcept
-  {
-    const auto& camera = ui_camera_.body();
-    auto ray = camera.generateRay(pos, ci::app::getWindowSize());
-
-    float t;
-    ray.calcPlaneIntersection(glm::vec3(0), glm::vec3(0, 0, -1), &t);
-    auto touch_pos = ray.calcPosition(t);
-    // FIXME 暗黙の変換(vec3→vec2)
-    glm::vec2 ui_pos = touch_pos;
-
-    return ui_pos;
-  }
-
 
 
   // メンバ変数を最後尾で定義する実験
@@ -318,16 +168,7 @@ private:
   
 
   // UI
-  Camera ui_camera_;
-
-  UI::WidgetPtr widgets_; 
-  UI::WidgetsFactory widgets_factory_;
-
-  // クエリ用
-  std::map<std::string, UI::WidgetPtr> query_widgets_;
-  std::vector<UI::WidgetPtr> enumerated_widgets_;
-
-  UI::Drawer drawer_;
+  UI::Canvas canvas_;
 };
 
 }
