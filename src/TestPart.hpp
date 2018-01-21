@@ -24,7 +24,8 @@ public:
       world_camera_(params["test.camera"]),
       distance_(params.getValueForKey<float>("test.camera.distance")),
       target_(Json::getVec<glm::vec3>(params["test.camera.target"])),
-      canvas_(event, params["ui.camera"], params["ui"], Params::load(params.getValueForKey<std::string>("ui_test.path")))
+      canvas_(event, params["ui_test.canvas.camera"], params["ui"],
+              Params::load(params.getValueForKey<std::string>("ui_test.canvas.widgets")))
   {
     // World
     glm::vec3 eye = target_ + glm::vec3(0, 0, distance_);

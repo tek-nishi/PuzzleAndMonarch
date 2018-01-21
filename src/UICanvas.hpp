@@ -26,8 +26,7 @@ public:
       drawer_(drawer_params),
       widgets_(widgets_factory_.construct(widgets_params))
   {
-    camera_.body().lookAt(Json::getVec<glm::vec3>(camera_params["eye"]),
-                          Json::getVec<glm::vec3>(camera_params["target"]));
+    camera_.body().lookAt(glm::vec3(0, 0, camera_.getNearClip()), glm::vec3(0));
 
     makeQueryWidgets(widgets_);
 

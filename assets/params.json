@@ -13,23 +13,7 @@
     "rotation": [ 35, 45, 0 ]
   },
 
-  "ui_camera": {
-    "fov":    25,
-    "near_z": 500,
-    "far_z":  600,
-    "eye":    [ 0, 0, 500 ],
-    "target": [ 0, 0, 0 ]
-  },
-
   "ui": {
-    "camera": {
-      "fov":    25,
-      "near_z": 500,
-      "far_z":  600,
-      "eye":    [ 0, 0, 500 ],
-      "target": [ 0, 0, 0 ]
-    },
-
     "font": {
       "name": "MAIAN.TTF",
       "size": 128
@@ -40,67 +24,26 @@
   },
 
   "ui_test": {
-    "path": "ui_test.json"
+    "canvas": {
+      "camera": {
+        "fov":    25,
+        "near_z": 500,
+        "far_z":  600
+      },
+
+      "widgets": "ui_test.json"
+    }
   },
 
   "title": {
-    "widgets": {
-      "identifier": "root",
-      "rect": [ 0, 0, 0, 0 ],
-      "anchor": [
-        [ 0, 0 ],
-        [ 1, 1 ]
-      ],
-      "scale": [ 1, 1 ],
-      "pivot": [ 0.5, 0.5 ],
-      
-      "childlen": [
-        {
-          "identifier": "3",
-          "rect": [ 20, 0, 20, 0 ],
-          "anchor": [
-            [ 0.5, 0.2 ],
-            [ 0.5, 0.2 ]
-          ],
-          "scale": [ 1, 1 ],
-          "pivot": [ 0.5, 0.5 ],
+    "canvas": {
+      "camera": {
+        "fov":    25,
+        "near_z": 500,
+        "far_z":  600
+      },
 
-          "text":  "Apprentice",
-          "text_size": 0.25,
-          "alignment": [ 1, 0 ],
-          "color": [ 1, 1, 1, 1 ]
-        },
-        {
-          "identifier": "4",
-          "rect": [ 0, -35, 0, -35 ],
-          "anchor": [
-            [ 0.5, 0.2 ],
-            [ 0.5, 0.2 ]
-          ],
-          "scale": [ 1, 1 ],
-          "pivot": [ 0.5, 0.5 ],
-
-          "text":  "Monarch",
-          "text_size": 0.25,
-          "alignment": [ 0, 0 ],
-          "color": [ 1, 1, 1, 1 ]
-        },
-        {
-          "identifier": "5",
-          "rect": [ 0, 0, 0, 0 ],
-          "anchor": [
-            [ 0.5, 0.8 ],
-            [ 0.5, 0.8 ]
-          ],
-          "scale": [ 1, 1 ],
-          "pivot": [ 0.5, 0.5 ],
-          
-          "text":  "Touch screen to start",
-          "text_size": 0.15,
-          "alignment": [ 0.5, 0.5 ],
-          "color": [ 1, 1, 1, 1 ]
-        }
-      ]
+      "widgets": "ui_title.json"
     }
   },
 
