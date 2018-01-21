@@ -28,7 +28,7 @@ public:
   MyApp()
     : params(ngs::Params::load("params.json")),
       touch_event_(event_),
-      worker(params, event_)
+      worker(std::make_unique<TestPart>(params, event_))
   {
     ci::Rand::randomize();
 
@@ -43,6 +43,7 @@ public:
 #if defined (CINDER_COCOA_TOUCH)
   ~MyApp()
   {
+    // FIXME デストラクタ呼ばれないっぽい
     signal_connection.disconnect();
   }
 #endif
@@ -51,7 +52,7 @@ public:
 private:
   void mouseMove(ci::app::MouseEvent event) override
   {
-    worker.mouseMove(event);
+    worker->mouseMove(event);
   }
 
 	void mouseDown(ci::app::MouseEvent event) override
@@ -80,7 +81,7 @@ private:
 
   void mouseWheel(ci::app::MouseEvent event) override
   {
-    worker.mouseWheel(event);
+    worker->mouseWheel(event);
   }
 
 
@@ -103,24 +104,38 @@ private:
 
   void keyDown(ci::app::KeyEvent event) override
   {
-    worker.keyDown(event);
+#if defined (DEBUG)
+    auto code = event.getCode();
+    switch (code)
+    {
+    case ci::app::KeyEvent::KEY_r:
+      {
+        // Soft Reset
+        worker.reset();
+        worker = std::make_unique<TestPart>(params, event_);
+      }
+      break;
+    }
+#endif
+
+    worker->keyDown(event);
   }
 
   void keyUp(ci::app::KeyEvent event) override
   {
-    worker.keyUp(event);
+    worker->keyUp(event);
   }
   
 
 	void update() override
   {
-    worker.update();
+    worker->update();
   }
 
 
   void resize() override
   {
-    worker.resize();
+    worker->resize();
   }
 
 
@@ -128,7 +143,7 @@ private:
     ci::gl::clear(ci::Color(0, 0, 0));
 
     auto window_size = ci::app::getWindowSize();
-    worker.draw(window_size);
+    worker->draw(window_size);
   }
 
 
@@ -145,7 +160,7 @@ private:
 
 
   // MainPart worker;
-  TestPart worker;
+  std::unique_ptr<TestPart> worker;
 
 };
 

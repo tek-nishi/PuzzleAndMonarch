@@ -9,6 +9,7 @@
 #include "Camera.hpp"
 #include "ConnectionHolder.hpp"
 #include "UICanvas.hpp"
+#include "Params.hpp"
 
 
 namespace ngs {
@@ -23,7 +24,7 @@ public:
       world_camera_(params["test.camera"]),
       distance_(params.getValueForKey<float>("test.camera.distance")),
       target_(Json::getVec<glm::vec3>(params["test.camera.target"])),
-      canvas_(event, params["ui.camera"], params["ui"], params["ui_test.widgets"])
+      canvas_(event, params["ui.camera"], params["ui"], Params::load(params.getValueForKey<std::string>("ui_test.path")))
   {
     // World
     glm::vec3 eye = target_ + glm::vec3(0, 0, distance_);
@@ -134,6 +135,7 @@ public:
       ci::gl::enableDepth();
       ci::gl::enable(GL_CULL_FACE);
       ci::gl::enableAlphaBlending();
+
       ci::gl::setMatrices(world_camera_.body());
 
       ci::gl::rotate(rot_);

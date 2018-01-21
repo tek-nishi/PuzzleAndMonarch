@@ -15,9 +15,10 @@
 * TODO 開始時のパネルは「T字路に森の端」にする
 * TODO PLYファイルの読み込みが長い
 * TODO ファイルを１つにまとめる
-* TODO ソフトリセット
 * TODO AppStore提出に必要な書類や素材
 * TODO iPhone 5sでの動作確認
+* DONE ソフトリセット
+CLOSED: [2018-01-21 日 23:27]
 * DONE UIのタッチ判定
 CLOSED: [2018-01-21 日 21:02]
 * DONE タッチ操作
