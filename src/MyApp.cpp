@@ -107,8 +107,7 @@ private:
 
 
   void resize() override {
-    float aspect = ci::app::getWindowAspectRatio();
-    worker.resize(aspect);
+    worker.resize();
   }
 
 

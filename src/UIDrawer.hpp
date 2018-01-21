@@ -15,12 +15,12 @@ namespace ngs { namespace UI {
 struct Drawer
 {
   Drawer(const ci::JsonTree& params)
-    : font_(params.getValueForKey<std::string>("ui.font.name"))
+    : font_(params.getValueForKey<std::string>("font.name"))
   {
-    font_.size(params.getValueForKey<float>("ui.font.size"));
+    font_.size(params.getValueForKey<float>("font.size"));
     
     {
-      auto name = params.getValueForKey<std::string>("ui.shader.font");
+      auto name = params.getValueForKey<std::string>("shader.font");
       font_shader_ = createShader(name, name);
     }
     {

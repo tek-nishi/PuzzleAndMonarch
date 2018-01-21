@@ -4,9 +4,11 @@
 // 動作確認用
 //
 
-#include "ConnectionHolder.hpp"
 #include <glm/gtx/norm.hpp>
 #include <glm/gtc/quaternion.hpp>
+#include "Camera.hpp"
+#include "ConnectionHolder.hpp"
+#include "UIWidgetsFactory.hpp"
 
 
 namespace ngs {
@@ -18,15 +20,15 @@ class TestPart
 public:
   TestPart(const ci::JsonTree& params, Event<Arguments>& event) noexcept
     : event_(event),
-      fov(params.getValueForKey<float>("test.camera.fov")),
-      near_z(params.getValueForKey<float>("test.camera.near_z")),
-      far_z(params.getValueForKey<float>("test.camera.far_z")),
+      world_camera_(params["test.camera"]),
       distance_(params.getValueForKey<float>("test.camera.distance")),
       target_(Json::getVec<glm::vec3>(params["test.camera.target"])),
-      camera(ci::app::getWindowWidth(), ci::app::getWindowHeight(), fov, near_z, far_z)
+      ui_camera_(params["ui.camera"]),
+      widgets_(widgets_factory_.construct(params["ui_test.widgets"])),
+      drawer_(params["ui"])
   {
     glm::vec3 eye = target_ + glm::vec3(0, 0, distance_);
-    camera.lookAt(eye, target_);
+    world_camera_.body().lookAt(eye, target_);
 
     // せっせとイベントを登録
     holder_ += event_.connect("single_touch_began",
@@ -53,6 +55,7 @@ public:
                               [this](const Connection&, const Arguments& arg) noexcept
                               {
                                 const auto& touches = boost::any_cast<const std::vector<Touch>&>(arg.at("touches"));
+                                auto& camera = world_camera_.body();
 
                                 float l      = glm::distance(touches[0].pos, touches[1].pos);
                                 float prev_l = glm::distance(touches[0].prev_pos, touches[1].prev_pos);
@@ -78,7 +81,12 @@ public:
                               {
                               });
 
+    // UI
+    ui_camera_.body().lookAt(Json::getVec<glm::vec3>(params["ui.camera.eye"]),
+                             Json::getVec<glm::vec3>(params["ui.camera.target"]));
   }
+
+  ~TestPart() = default;
 
 
   void mouseMove(ci::app::MouseEvent event)
@@ -110,18 +118,10 @@ public:
   }
 
 
-  void resize(float aspect) noexcept
+  void resize() noexcept
   {
-    camera.setAspectRatio(aspect);
-    if (aspect < 1.0) {
-      float half_w = std::tan(ci::toRadians(fov / 2)) * near_z;
-      float half_h = half_w / aspect;
-      float fov_w = std::atan(half_h / near_z) * 2;
-      camera.setFov(ci::toDegrees(fov_w));
-    }
-    else {
-      camera.setFov(fov);
-    }
+    world_camera_.resize();
+    ui_camera_.resize();
   }
 
 
@@ -131,14 +131,36 @@ public:
 
   void draw(glm::ivec2 window_size) noexcept
   {
-    ci::gl::enableDepth();
-    ci::gl::enable(GL_CULL_FACE);
-    ci::gl::enableAlphaBlending();
-    ci::gl::setMatrices(camera);
+    // World
+    {
+      ci::gl::enableDepth();
+      ci::gl::enable(GL_CULL_FACE);
+      ci::gl::enableAlphaBlending();
+      ci::gl::setMatrices(world_camera_.body());
 
-    ci::gl::rotate(rot_);
+      ci::gl::rotate(rot_);
 
-    ci::gl::drawColorCube(glm::vec3(0), glm::vec3(1));
+      ci::gl::drawColorCube(glm::vec3(0), glm::vec3(1));
+    }
+
+    // UI
+    {
+      ci::gl::enableDepth(false);
+      ci::gl::disable(GL_CULL_FACE);
+      ci::gl::enableAlphaBlending();
+
+      auto& camera = ui_camera_.body();
+      ci::gl::setMatrices(camera);
+
+      glm::vec3 top_left;
+      glm::vec3 top_right;
+      glm::vec3 bottom_left;
+      glm::vec3 bottom_right;
+      camera.getNearClipCoordinates(&top_left, &top_right, &bottom_left, &bottom_right);
+      ci::Rectf rect(top_left.x, top_left.y, bottom_right.x, bottom_right.y);
+      
+      widgets_->draw(rect, glm::vec2(1, 1), drawer_);
+    }
   }
 
 
@@ -146,17 +168,19 @@ private:
   Event<Arguments>& event_;
   ConnectionHolder holder_;
 
-  float fov;
-  float near_z;
-  float far_z;
+  Camera world_camera_;
 
   float distance_;
   glm::vec3 target_;
-
-  ci::CameraPersp camera;
   glm::quat rot_;
   
+  // UI
+  Camera ui_camera_;
 
+  UI::WidgetPtr widgets_; 
+  UI::WidgetsFactory widgets_factory_;
+
+  UI::Drawer drawer_;
 };
 
 }

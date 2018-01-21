@@ -19,6 +19,7 @@
 * TODO ファイルを１つにまとめる
 * TODO ソフトリセット
 * TODO AppStore提出に必要な書類や素材
+* TODO iPhone 5sでの動作確認
 * DONE iPhone6とかの起動画面
 CLOSED: [2018-01-21 日 00:54]
 * DONE イベントシステム導入

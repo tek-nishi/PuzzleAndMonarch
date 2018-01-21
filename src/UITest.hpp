@@ -24,7 +24,8 @@ public:
       widgets_(widgets_factory_.construct(params["ui_test.widgets"])),
       drawer_(params)
   {
-    camera.lookAt(Json::getVec<glm::vec3>(params["ui_camera.eye"]), Json::getVec<glm::vec3>(params["ui_camera.target"]));
+    camera.lookAt(Json::getVec<glm::vec3>(params["ui_camera.eye"]),
+                  Json::getVec<glm::vec3>(params["ui_camera.target"]));
   }
 
 
