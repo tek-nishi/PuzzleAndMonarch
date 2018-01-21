@@ -24,7 +24,9 @@ public:
       world_camera_(params["test.camera"]),
       distance_(params.getValueForKey<float>("test.camera.distance")),
       target_(Json::getVec<glm::vec3>(params["test.camera.target"])),
-      canvas_(event, params["ui_test.canvas.camera"], params["ui"],
+      drawer_(params["ui"]),
+      canvas_(event, drawer_,
+              params["ui_test.canvas.camera"],
               Params::load(params.getValueForKey<std::string>("ui_test.canvas.widgets")))
   {
     // World
@@ -171,6 +173,7 @@ private:
   
 
   // UI
+  UI::Drawer drawer_;
   UI::Canvas canvas_;
 };
 

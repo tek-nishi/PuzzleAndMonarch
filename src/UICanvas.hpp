@@ -18,12 +18,12 @@ class Canvas
 
 public:
   Canvas(Event<Arguments>& event,
+         UI::Drawer& drawer,
          const ci::JsonTree& camera_params,
-         const ci::JsonTree& drawer_params,
          const ci::JsonTree& widgets_params) noexcept
     : event_(event),
+      drawer_(drawer),
       camera_(camera_params),
-      drawer_(drawer_params),
       widgets_(widgets_factory_.construct(widgets_params))
   {
     camera_.body().lookAt(glm::vec3(0, 0, camera_.getNearClip()), glm::vec3(0));
@@ -200,7 +200,7 @@ private:
   std::weak_ptr<UI::Widget> touching_widget_;
   bool touching_in_ = false;
 
-  UI::Drawer drawer_;
+  UI::Drawer& drawer_;
 };
 
 } }
