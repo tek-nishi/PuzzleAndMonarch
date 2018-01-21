@@ -27,6 +27,25 @@ public:
       widgets_(widgets_factory_.construct(params["ui_test.widgets"])),
       drawer_(params["ui"])
   {
+    // UI
+    ui_camera_.body().lookAt(Json::getVec<glm::vec3>(params["ui.camera.eye"]),
+                             Json::getVec<glm::vec3>(params["ui.camera.target"]));
+
+    // クエリ用情報生成
+    makeQueryWidgets(widgets_);
+    holder_ += event_.connect("single_touch_began",
+                              std::bind(&TestPart::touchBegan,
+                                        this, std::placeholders::_1, std::placeholders::_2));
+    
+    holder_ += event_.connect("single_touch_moved",
+                              std::bind(&TestPart::touchMoved,
+                                        this, std::placeholders::_1, std::placeholders::_2));
+
+    holder_ += event_.connect("single_touch_ended",
+                              std::bind(&TestPart::touchEnded,
+                                        this, std::placeholders::_1, std::placeholders::_2));
+
+    // World
     glm::vec3 eye = target_ + glm::vec3(0, 0, distance_);
     world_camera_.body().lookAt(eye, target_);
 
@@ -37,9 +56,11 @@ public:
     //                           });
 
     holder_ += event_.connect("single_touch_moved",
-                              [this](const Connection&, const Arguments& arg) noexcept
+                              [this](const Connection&, Arguments& arg) noexcept
                               {
-                                const auto& touch = boost::any_cast<const Touch&>(arg.at("touch"));
+                                auto& touch = boost::any_cast<Touch&>(arg.at("touch"));
+                                if (touch.handled) return;
+
                                 // タッチ位置の移動から回転軸と量を決める
                                 auto d = touch.pos - touch.prev_pos;
                                 float l = glm::length(d);
@@ -76,28 +97,11 @@ public:
                                 }
                               });
     
-    holder_ += event_.connect("single_touch_ended",
-                              [this](const Connection&, const Arguments& arg) noexcept
-                              {
-                              });
+    // holder_ += event_.connect("single_touch_ended",
+    //                           [this](const Connection&, const Arguments& arg) noexcept
+    //                           {
+    //                           });
 
-    // UI
-    ui_camera_.body().lookAt(Json::getVec<glm::vec3>(params["ui.camera.eye"]),
-                             Json::getVec<glm::vec3>(params["ui.camera.target"]));
-
-    // クエリ用情報生成
-    makeQueryWidgets(widgets_);
-    holder_ += event_.connect("single_touch_began",
-                              std::bind(&TestPart::touchBegan,
-                                        this, std::placeholders::_1, std::placeholders::_2));
-    
-    holder_ += event_.connect("single_touch_moved",
-                              std::bind(&TestPart::touchMoved,
-                                        this, std::placeholders::_1, std::placeholders::_2));
-
-    holder_ += event_.connect("single_touch_ended",
-                              std::bind(&TestPart::touchEnded,
-                                        this, std::placeholders::_1, std::placeholders::_2));
   }
 
   ~TestPart() = default;
@@ -195,9 +199,9 @@ private:
 
 
   // UI event
-  void touchBegan(const Connection&, const Arguments& arg) noexcept
+  void touchBegan(const Connection&, Arguments& arg) noexcept
   {
-    const auto& touch = boost::any_cast<const Touch&>(arg.at("touch"));
+    auto& touch = boost::any_cast<Touch&>(arg.at("touch"));
     auto pos = calcUIPosition(touch.pos);
 
     // 列挙したWidgetをクリックしたか計算
@@ -207,23 +211,29 @@ private:
 
       if (w->contains(pos))
       {
-        DOUT << "widget touch began: " << w->getIdentifier() << std::endl;
+        // DOUT << "widget touch began: " << w->getIdentifier() << std::endl;
+        // std::string event = w->getEvent() + ":touch_began";
+        // event_.signal(event, Arguments());
         touching_widget_ = w;
         touching_in_ = true;
+        touch.handled = true;
         break;
       }
     }
   }
   
-  void touchMoved(const Connection&, const Arguments& arg) noexcept
+  void touchMoved(const Connection&, Arguments& arg) noexcept
   {
     if (touching_widget_.expired()) return;
 
-    const auto& touch = boost::any_cast<const Touch&>(arg.at("touch"));
+    auto& touch = boost::any_cast<Touch&>(arg.at("touch"));
     auto pos = calcUIPosition(touch.pos);
+    touch.handled = true;
 
     auto widget = touching_widget_.lock();
     bool contains = widget->contains(pos);
+#if 0
+    // TODO 詳細な実装は後回し
     if (contains)
     {
       if (touching_in_)
@@ -246,26 +256,33 @@ private:
         DOUT << "widget touch moved out-out: " << widget->getIdentifier() << std::endl;
       }
     }
+#endif
     touching_in_ = contains;
   }
 
 
-  void touchEnded(const Connection&, const Arguments& arg) noexcept
+  void touchEnded(const Connection&, Arguments& arg) noexcept
   {
     if (touching_widget_.expired()) return;
 
-    const auto& touch = boost::any_cast<const Touch&>(arg.at("touch"));
+    auto& touch = boost::any_cast<Touch&>(arg.at("touch"));
     auto pos = calcUIPosition(touch.pos);
+    touch.handled = true;
 
     auto widget = touching_widget_.lock();
     if (widget->contains(pos))
     {
-      DOUT << "widget touch ended in: " << widget->getIdentifier() << std::endl;
+      // DOUT << "widget touch ended in: " << widget->getIdentifier() << std::endl;
+      // イベント送信
+      std::string event = widget->getEvent() + ":touch_ended";
+      event_.signal(event, Arguments());
     }
     else
     {
-      DOUT << "widget touch ended out: " << widget->getIdentifier() << std::endl;
+      // DOUT << "widget touch ended out: " << widget->getIdentifier() << std::endl;
     }
+
+    touching_widget_.reset();
   }
 
   std::weak_ptr<UI::Widget> touching_widget_;

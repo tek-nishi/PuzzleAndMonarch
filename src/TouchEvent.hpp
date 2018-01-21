@@ -26,6 +26,7 @@ struct TouchEvent
     const auto& pos = event.getPos();
     Touch touch = {
       MOUSE_ID,
+      false,
       pos,
       pos
     };
@@ -42,6 +43,7 @@ struct TouchEvent
     const auto& pos = event.getPos();
     Touch touch = {
       MOUSE_ID,
+      false,
       pos,
       m_prev_pos_
     };
@@ -59,6 +61,7 @@ struct TouchEvent
     const auto& pos = event.getPos();
     Touch touch = {
       MOUSE_ID,
+      false,
       pos,
       m_prev_pos_
     };
@@ -89,6 +92,7 @@ struct TouchEvent
       const auto& t = touches[0];
       Touch touch = {
         t.getId(),
+        false,
         t.getPos(),
         t.getPrevPos()
       };
@@ -118,6 +122,7 @@ struct TouchEvent
       {
         Touch touch = {
           t.getId(),
+          false,
           t.getPos(),
           t.getPrevPos()
         };
@@ -138,6 +143,7 @@ struct TouchEvent
         {
           Touch touch = {
             id,
+            false,
             t.getPos(),
             t.getPrevPos()
           };
@@ -169,6 +175,7 @@ struct TouchEvent
           // イベント送信
           Touch touch = {
             t.getId(),
+            false,
             t.getPos(),
             t.getPrevPos()
           };
