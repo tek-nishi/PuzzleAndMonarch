@@ -20,42 +20,36 @@
 #include "Font.hpp"
 #include "View.hpp"
 #include "Shader.hpp"
-#include "UIWidgetsFactory.hpp"
+#include "Camera.hpp"
+#include "ConnectionHolder.hpp"
+#include "UICanvas.hpp"
 
 
 namespace ngs {
 
-class MainPart {
+class MainPart
+{
 
 public:
-  MainPart(ci::JsonTree& params)
-    : panels(createPanels()),
+  MainPart(const ci::JsonTree& params, Event<Arguments>& event) noexcept
+    : event_(event),
+      panels(createPanels()),
       game(std::make_unique<Game>(panels)),
-      fov(params.getValueForKey<float>("field_camera.fov")),
-      near_z(params.getValueForKey<float>("field_camera.near_z")),
-      far_z(params.getValueForKey<float>("field_camera.far_z")),
       distance(params.getValueForKey<float>("field_camera.distance")),
-      field_camera(ci::app::getWindowWidth(), ci::app::getWindowHeight(), fov, near_z, far_z),
-      camera_ui(&field_camera),
+      field_camera(params["field_camera"]),
       view(createView()),
-      ui_fov(params.getValueForKey<float>("ui.camera.fov")),
-      ui_near_z(params.getValueForKey<float>("ui.camera.near_z")),
-      ui_far_z(params.getValueForKey<float>("ui.camera.far_z")),
-      ui_camera(ci::app::getWindowWidth(), ci::app::getWindowHeight(), ui_fov, ui_near_z, ui_far_z),
-      widgets_(widgets_factory_.construct(params["title.widgets"])),
-      drawer_(params)
+      drawer_(params["ui"]),
+      canvas_(event, drawer_, params["title.canvas.camera"],
+              Params::load(params.getValueForKey<std::string>("title.canvas.widgets")))
   {
     // フィールドカメラ
+    auto& camera = field_camera.body();
     glm::quat q = Json::getQuat(params["field_camera.rotation"]);
     glm::vec3 p = q * glm::vec3{ 0, 0, -distance };
-    field_camera.lookAt(p, glm::vec3(0));
+    camera.lookAt(p, glm::vec3(0));
 
-    eye_position    = field_camera.getEyePoint();
+    eye_position    = camera.getEyePoint();
     target_position = glm::vec3(0);
-
-
-    // UI関連
-    ui_camera.lookAt(Json::getVec<glm::vec3>(params["ui.camera.eye"]), Json::getVec<glm::vec3>(params["ui.camera.target"]));
   }
 
 
@@ -80,16 +74,18 @@ public:
     {
       draged = true;
 
+      auto& camera = field_camera.body();
+
       glm::quat q = glm::angleAxis(l * 0.002f, axis / l);
-      auto cam_q = field_camera.getOrientation();
+      auto cam_q = camera.getOrientation();
       auto cam_iq = glm::inverse(cam_q);
 
       auto v = eye_position - target_position;
       v = cam_q * q * cam_iq * v;
       eye_position = v + target_position;
 
-      field_camera.setEyePoint(eye_position);
-      field_camera.setOrientation(cam_q * q);
+      camera.setEyePoint(eye_position);
+      camera.setOrientation(cam_q * q);
 
       touch_pos = pos;
     }
@@ -194,16 +190,17 @@ public:
     camera_ui.mouseWheel(event);
   }
   
-  void keyDown(ci::app::KeyEvent event) {
+  void keyDown(ci::app::KeyEvent event)
+  {
     int code = event.getCode();
     pressing_key.insert(code);
 
 #ifdef DEBUG
-    if (code == ci::app::KeyEvent::KEY_r) {
-      // 強制リセット
-      game = std::make_unique<ngs::Game>(panels);
-      playing_mode = TITLE;
-    }
+    // if (code == ci::app::KeyEvent::KEY_r) {
+    //   // 強制リセット
+    //   game = std::make_unique<ngs::Game>(panels);
+    //   playing_mode = TITLE;
+    // }
     if (code == ci::app::KeyEvent::KEY_t) {
       // 時間停止
       game->pauseTimeCount();
@@ -241,13 +238,15 @@ public:
     }
   }
 
-  void keyUp(ci::app::KeyEvent event) {
+  void keyUp(ci::app::KeyEvent event)
+  {
     int code = event.getCode();
     pressing_key.erase(code);
   }
   
 
-	void update() {
+	void update()
+  {
     counter.update();
     auto current_time = game_timer.getSeconds();
     double delta_time = current_time - last_time;
@@ -306,22 +305,24 @@ public:
   }
 
 
-  void resize(const float aspect) {
-    setupCamera(field_camera, aspect, fov);
-    setupCamera(ui_camera, aspect, ui_fov);
+  void resize() noexcept
+  {
+    field_camera.resize();
+    canvas_.resize();
 
     DOUT << "resize: " << ci::app::getWindowSize() << std::endl;
   }
 
 
-	void draw(glm::ivec2 window_size) {
+	void draw(glm::ivec2 window_size) noexcept
+  {
     ci::gl::clear(ci::Color(0, 0, 0));
     
     // 本編
     ci::gl::disableAlphaBlending();
 
     // プレイ画面
-    ci::gl::setMatrices(field_camera);
+    ci::gl::setMatrices(field_camera.body());
     ci::gl::translate(-camera_center.x, -5.0, -camera_center.y);
 
     ci::gl::enableDepth();
@@ -374,19 +375,12 @@ public:
     drawFieldBg(view);
 
     // UI
-    ci::gl::enableDepth(false);
-    ci::gl::disable(GL_CULL_FACE);
-    ci::gl::enableAlphaBlending();
-    ci::gl::setMatrices(ui_camera);
-
     {
-      glm::vec3 top_left;
-      glm::vec3 top_right;
-      glm::vec3 bottom_left;
-      glm::vec3 bottom_right;
-      ui_camera.getNearClipCoordinates(&top_left, &top_right, &bottom_left, &bottom_right);
-      ci::Rectf rect(top_left.x, top_left.y, bottom_right.x, bottom_right.y);
-      widgets_->draw(rect, glm::vec2(1, 1), drawer_);
+      ci::gl::enableDepth(false);
+      ci::gl::disable(GL_CULL_FACE);
+      ci::gl::enableAlphaBlending();
+
+      canvas_.draw();
     }
 
 #if 0
@@ -489,12 +483,8 @@ public:
 
 
   void calcFieldPos(glm::vec2 pos) {
-    float x = pos.x / float(ci::app::getWindowWidth());
-    float y = 1.0f - pos.y / float(ci::app::getWindowHeight());
-
     // 画面奥に伸びるRayを生成
-    ci::Ray ray = field_camera.generateRay(x, y,
-                                           field_camera.getAspectRatio());
+    ci::Ray ray = field_camera.body().generateRay(pos, ci::app::getWindowSize());
 
     auto m = glm::translate(glm::vec3{ camera_center.x, 5, camera_center.y });
     auto origin = m * glm::vec4(ray.getOrigin(), 1);
@@ -606,6 +596,8 @@ public:
 
 private:
   // FIXME 変数を後半に定義する実験
+  Event<Arguments>& event_;
+
   std::vector<Panel> panels;
   std::unique_ptr<Game> game;
 
@@ -649,31 +641,20 @@ private:
   std::vector<int> game_score_effect;
 
 
-  float fov;
-  float near_z;
-  float far_z;
   float distance;
 
   glm::vec3 eye_position;
   glm::vec3 target_position;
 
-  ci::CameraPersp field_camera;
+  Camera field_camera;
   ci::CameraUi camera_ui;
   
   View view;
 
 
   // UI関連
-  float ui_fov;
-  float ui_near_z;
-  float ui_far_z;
-
-  ci::CameraPersp ui_camera;
-
-  UI::WidgetPtr widgets_; 
-  UI::WidgetsFactory widgets_factory_;
-
   UI::Drawer drawer_;
+  UI::Canvas canvas_;
 
 
 #ifdef DEBUG

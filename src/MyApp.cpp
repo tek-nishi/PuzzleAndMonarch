@@ -12,7 +12,7 @@
 #include "Params.hpp"
 #include "JsonUtil.hpp"
 #include "TouchEvent.hpp"
-// #include "MainPart.hpp"
+#include "MainPart.hpp"
 #include "TestPart.hpp"
 // #include "UITest.hpp"
 
@@ -23,12 +23,15 @@ class MyApp
   : public ci::app::App
 {
 
+  using Worker = MainPart;
+
+
 public:
   // TIPS cinder 0.9.1はコンストラクタが使える
   MyApp()
     : params(ngs::Params::load("params.json")),
       touch_event_(event_),
-      worker(std::make_unique<TestPart>(params, event_))
+      worker(std::make_unique<Worker>(params, event_))
   {
     ci::Rand::randomize();
 
@@ -112,7 +115,7 @@ private:
       {
         // Soft Reset
         worker.reset();
-        worker = std::make_unique<TestPart>(params, event_);
+        worker = std::make_unique<Worker>(params, event_);
       }
       break;
     }
@@ -160,7 +163,7 @@ private:
 
 
   // MainPart worker;
-  std::unique_ptr<TestPart> worker;
+  std::unique_ptr<Worker> worker;
 
 };
 
