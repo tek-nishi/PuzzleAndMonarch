@@ -31,10 +31,10 @@ public:
     world_camera_.body().lookAt(eye, target_);
 
     // せっせとイベントを登録
-    holder_ += event_.connect("single_touch_began",
-                              [this](const Connection&, const Arguments& arg) noexcept
-                              {
-                              });
+    // holder_ += event_.connect("single_touch_began",
+    //                           [this](const Connection&, const Arguments& arg) noexcept
+    //                           {
+    //                           });
 
     holder_ += event_.connect("single_touch_moved",
                               [this](const Connection&, const Arguments& arg) noexcept
@@ -84,6 +84,12 @@ public:
     // UI
     ui_camera_.body().lookAt(Json::getVec<glm::vec3>(params["ui.camera.eye"]),
                              Json::getVec<glm::vec3>(params["ui.camera.target"]));
+
+    // クエリ用情報生成
+    makeQueryWidgets(widgets_);
+    holder_ += event_.connect("single_touch_began",
+                              std::bind(&TestPart::touchBegan,
+                                        this, std::placeholders::_1, std::placeholders::_2));
   }
 
   ~TestPart() = default;
@@ -165,20 +171,82 @@ public:
 
 
 private:
+  void makeQueryWidgets(const UI::WidgetPtr& widget) noexcept
+  {
+    query_widgets_.insert({ widget->getIdentifier(), widget });
+    enumerated_widgets_.push_back(widget);
+
+    const auto& children = widget->getChildren();
+    if (children.empty()) return;
+
+    for (const auto& child : children)
+    {
+      makeQueryWidgets(child);
+    }
+  }
+
+  
+  // UI event
+  void touchBegan(const Connection&, const Arguments& arg) noexcept
+  {
+    const auto& touch = boost::any_cast<const Touch&>(arg.at("touch"));
+    const auto& camera = ui_camera_.body();
+
+    // float u = touch.pos.x / ci::app::getWindowWidth();
+    // float v = 1.0f - touch.pos.y / ci::app::getWindowHeight();
+    // auto ray = camera.generateRay(u, v, camera.getAspectRatio());
+    auto ray = camera.generateRay(touch.pos, ci::app::getWindowSize());
+
+    float t;
+    ray.calcPlaneIntersection(glm::vec3(0), glm::vec3(0, 0, -1), &t);
+    auto touch_pos = ray.calcPosition(t);
+    // FIXME 暗黙の変換(vec3→vec2)
+    glm::vec2 pos = touch_pos;
+
+    DOUT << pos << std::endl;
+
+
+    // 列挙したWidgetをクリックしたか計算
+    for (const auto& w : enumerated_widgets_)
+    {
+      if (!w->hasEvent()) continue;
+
+      if (w->contains(pos))
+      {
+        DOUT << "contain: " << w->getIdentifier() << std::endl;
+        break;
+      }
+    }
+
+
+  }
+
+
+
+
+
+
+  // メンバ変数を最後尾で定義する実験
   Event<Arguments>& event_;
   ConnectionHolder holder_;
 
+  // World
   Camera world_camera_;
 
   float distance_;
   glm::vec3 target_;
   glm::quat rot_;
   
+
   // UI
   Camera ui_camera_;
 
   UI::WidgetPtr widgets_; 
   UI::WidgetsFactory widgets_factory_;
+
+  // クエリ用
+  std::map<std::string, UI::WidgetPtr> query_widgets_;
+  std::vector<UI::WidgetPtr> enumerated_widgets_;
 
   UI::Drawer drawer_;
 };

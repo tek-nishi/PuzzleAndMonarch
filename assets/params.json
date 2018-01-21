@@ -118,7 +118,7 @@
         },
         {
           "identifier": "6",
-          "rect": [ -125, 0, -25, 50 ],
+          "rect": [ -100, 0, -25, 25 ],
           "anchor": [
             [ 1.0, 1.0 ],
             [ 1.0, 1.0 ]
@@ -129,7 +129,9 @@
           "corner_radius": 5,
           "corner_segment": 10,
           "fill": true,
-          "color": [ 1, 0, 0, 1 ]
+          "color": [ 1, 0, 0, 1 ],
+
+          "event": "6"
         },
         {
           "identifier": "7",
@@ -141,10 +143,12 @@
           "scale": [ 1, 1 ],
           "pivot": [ 0.5, 0.5 ],
 
-          "radius": 50,
+          "radius": 25,
           "segment": 20,
           "fill": true,
-          "color": [ 0, 1, 0, 1 ]
+          "color": [ 0, 1, 0, 1 ],
+
+          "event": "7"
         }
       ]
     }

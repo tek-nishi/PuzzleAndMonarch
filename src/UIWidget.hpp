@@ -24,6 +24,13 @@ public:
   {
   }
 
+
+  const std::string& getIdentifier() const noexcept
+  {
+    return identifier_;
+  }
+
+
   ci::Rectf& getRect() noexcept
   {
     return rect_;
@@ -68,7 +75,19 @@ public:
   {
     return scale_;
   }
-  
+
+  void setEvent(std::string name) noexcept
+  {
+    event_ = std::move(name);
+    has_event_ = true;
+  }
+
+  const std::string& getEvent() const noexcept
+  {
+    return event_;
+  }
+
+
   void addChild(const WidgetPtr& widget) noexcept
   {
     children_.push_back(widget);
@@ -85,20 +104,39 @@ public:
   }
 
 
+  bool hasEvent() const noexcept
+  {
+    return has_event_;
+  }
+
+  // FIXME 直前の描画結果から判定している
+  bool contains(const glm::vec2& point) const noexcept
+  {
+    bool contains = disp_rect_.contains(point);
+    if (contains)
+    {
+      DOUT << "pos: " << point << '\n'
+           << "rect:" << disp_rect_ << std::endl;
+    }
+    return contains;
+  }
+
+
+
   void draw(const ci::Rectf& parent_rect, const glm::vec2& parent_scale,
-            UI::Drawer& drawer) const noexcept
+            UI::Drawer& drawer) noexcept
   {
     // とりあえず描く
-    auto rect = calcRect(parent_rect, parent_scale);
+    disp_rect_ = calcRect(parent_rect, parent_scale);
 
     // ci::gl::color(color_);
     // ci::gl::drawStrokedRect(rect);
-    widget_base_->draw(rect, drawer);
+    widget_base_->draw(disp_rect_, drawer);
     
     for (const auto& child : children_)
     {
       auto scale = parent_scale * scale_;
-      child->draw(rect, scale, drawer);
+      child->draw(disp_rect_, scale, drawer);
     }
   }
 
@@ -143,7 +181,13 @@ private:
 
   std::unique_ptr<UI::WidgetBase> widget_base_;
 
+  bool has_event_ = false;
+  std::string event_;
+
   std::vector<WidgetPtr> children_;
+
+  // 画面上のサイズ
+  ci::Rectf disp_rect_;
 
 };
 

@@ -20,8 +20,58 @@ struct TouchEvent
   }
 
 
+  // マウスでのタッチ操作代用
+  void touchBegan(const ci::app::MouseEvent& event) noexcept
+  {
+    const auto& pos = event.getPos();
+    Touch touch = {
+      MOUSE_ID,
+      pos,
+      pos
+    };
+    Arguments arg = {
+      { "touch", touch }
+    };
+    event_.signal("single_touch_began", arg);
+
+    m_prev_pos_ = pos;
+  }
+
+  void touchMoved(const ci::app::MouseEvent& event) noexcept
+  {
+    const auto& pos = event.getPos();
+    Touch touch = {
+      MOUSE_ID,
+      pos,
+      m_prev_pos_
+    };
+
+    Arguments arg = {
+      { "touch", touch }
+    };
+    event_.signal("single_touch_moved", arg);
+
+    m_prev_pos_ = pos;
+  }
+
+  void touchEnded(const ci::app::MouseEvent& event) noexcept
+  {
+    const auto& pos = event.getPos();
+    Touch touch = {
+      MOUSE_ID,
+      pos,
+      m_prev_pos_
+    };
+
+    Arguments arg = {
+      { "touch", touch }
+    };
+    event_.signal("single_touch_ended", arg);
+  }
+
+
   // タッチされていない状況からの指一本タッチを「タッチ操作」と扱う
-  void touchesBegan(const ci::app::TouchEvent& event)
+  void touchesBegan(const ci::app::TouchEvent& event) noexcept
   {
     bool first_touch = touch_id_.empty();
 
@@ -57,7 +107,7 @@ struct TouchEvent
     }
   }
   
-  void touchesMoved(const ci::app::TouchEvent& event)
+  void touchesMoved(const ci::app::TouchEvent& event) noexcept
   {
     const auto& touches = event.getTouches();
     if (touches.size() > 1)
@@ -103,7 +153,7 @@ struct TouchEvent
     }
   }
   
-  void touchesEnded(const ci::app::TouchEvent& event)
+  void touchesEnded(const ci::app::TouchEvent& event) noexcept
   {
     if (touch_id_.empty()) return;
 
@@ -148,6 +198,9 @@ struct TouchEvent
 
 
 private:
+  enum { MOUSE_ID = 1 };
+  glm::vec2 m_prev_pos_;
+
   std::set<uint32_t> touch_id_;
 
   bool first_touch_ = false;

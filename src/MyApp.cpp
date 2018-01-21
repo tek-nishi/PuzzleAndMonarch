@@ -56,17 +56,26 @@ private:
 
 	void mouseDown(ci::app::MouseEvent event) override
   {
-    worker.mouseDown(event);
+    if (event.isLeft())
+    {
+      touch_event_.touchBegan(event);
+    }
   }
   
 	void mouseDrag(ci::app::MouseEvent event) override
   {
-    worker.mouseDrag(event);
+    if (event.isLeftDown())
+    {
+      touch_event_.touchMoved(event);
+    }
   }
   
 	void mouseUp(ci::app::MouseEvent event) override
   {
-    worker.mouseUp(event);
+    if (event.isLeft())
+    {
+      touch_event_.touchEnded(event);
+    }
   }
 
   void mouseWheel(ci::app::MouseEvent event) override
@@ -148,7 +157,9 @@ CINDER_APP(ngs::MyApp, ci::app::RendererGl,
              settings->setWindowSize(ngs::Json::getVec<ci::ivec2>(params["app.size"]));
              settings->setTitle(PREPRO_TO_STR(PRODUCT_NAME));
 
+#if !defined (CINDER_MAC)
              settings->setMultiTouchEnabled();
+#endif
 
              settings->setPowerManagementEnabled(params.getValueForKey<bool>("app.power_management"));
              settings->setHighDensityDisplayEnabled(params.getValueForKey<bool>("app.retina"));

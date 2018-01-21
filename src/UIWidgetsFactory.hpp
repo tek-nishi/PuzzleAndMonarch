@@ -41,6 +41,13 @@ class WidgetsFactory
       widget->setPivot(Json::getVec<glm::vec2>(params["pivot"]));
     }
 
+    if (params.hasChild("event"))
+    {
+      widget->setEvent(Json::getVec<std::string>(params["event"]));
+    }
+
+
+    // タイプ別
     if (params.hasChild("text"))
     {
       auto base = std::make_unique<UI::Text>(params);
