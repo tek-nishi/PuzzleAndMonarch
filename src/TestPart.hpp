@@ -63,6 +63,14 @@ public:
                                   glm::vec3 eye = target_ + glm::vec3(0, 0, distance_);
                                   camera.lookAt(eye, target_);
                                 }
+                                else
+                                {
+                                  auto v = touches[0].pos - touches[0].prev_pos;
+                                  target_ += glm::vec3(-v.x, v.y, 0.0f) * 0.05f;
+
+                                  glm::vec3 eye = target_ + glm::vec3(0, 0, distance_);
+                                  camera.lookAt(eye, target_);
+                                }
                               });
     
     holder_ += event_.connect("single_touch_ended",
