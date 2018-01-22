@@ -33,14 +33,14 @@ class MainPart
 public:
   MainPart(const ci::JsonTree& params, Event<Arguments>& event) noexcept
     : event_(event),
+      params_(params),
       panels(createPanels()),
       game(std::make_unique<Game>(panels)),
       distance(params.getValueForKey<float>("field_camera.distance")),
       field_camera(params["field_camera"]),
       view(createView()),
       drawer_(params["ui"]),
-      canvas_(event, drawer_, params["title.canvas.camera"],
-              Params::load(params.getValueForKey<std::string>("title.canvas.widgets")))
+      canvas_(createCanvas("ui.camera", "title.canvas.widgets"))
   {
     // フィールドカメラ
     auto& camera = field_camera.body();
@@ -50,10 +50,31 @@ public:
 
     eye_position    = camera.getEyePoint();
     target_position = glm::vec3(0);
+
+    // 各種イベント
+    holder_ += event.connect("start:touch_ended",
+                             [this](const Connection& connection, Arguments& arg) noexcept
+                             {
+                               // ゲーム開始
+                               game->beginPlay();
+                               playing_mode = GAMESTART;
+                               hight_offset = 500.0f;
+
+                               game_score = game->getScores();
+                               game_score_effect.resize(game_score.size());
+                               std::fill(std::begin(game_score_effect), std::end(game_score_effect), 0);
+
+                               counter.add("gamestart", 90);
+
+                               connection.disconnect();
+                               
+                               // canvas_.reset();
+                               // canvas_ = createCanvas("ui.camera", "gamemain.canvas.widgets");
+                             });
   }
 
 
-
+#if 0
   glm::vec2 touch_pos;
   bool draged = false;
 
@@ -98,7 +119,8 @@ public:
 
     }
   }
-  
+#endif
+
 
   void mouseMove(ci::app::MouseEvent event)
   {
@@ -131,8 +153,7 @@ public:
   
 	void mouseUp(ci::app::MouseEvent event)
   {
-    // camera_ui.mouseUp(event);
-
+#if 0
     switch (playing_mode) {
     case TITLE:
       if (event.isLeft() && !mouse_draged) {
@@ -183,11 +204,12 @@ public:
       }
       break;
     }
+#endif
   }
 
   void mouseWheel(ci::app::MouseEvent event)
   {
-    camera_ui.mouseWheel(event);
+    // camera_ui.mouseWheel(event);
   }
   
   void keyDown(ci::app::KeyEvent event)
@@ -308,7 +330,7 @@ public:
   void resize() noexcept
   {
     field_camera.resize();
-    canvas_.resize();
+    canvas_->resize();
 
     DOUT << "resize: " << ci::app::getWindowSize() << std::endl;
   }
@@ -380,7 +402,7 @@ public:
       ci::gl::disable(GL_CULL_FACE);
       ci::gl::enableAlphaBlending();
 
-      canvas_.draw();
+      canvas_->draw();
     }
 
 #if 0
@@ -595,8 +617,19 @@ public:
 
 
 private:
+  std::unique_ptr<UI::Canvas> createCanvas(const std::string& camera, const std::string& widgets) noexcept
+  {
+    return std::make_unique<UI::Canvas>(event_, drawer_,
+                                        params_[camera],
+                                        Params::load(params_.getValueForKey<std::string>(widgets)));
+  }
+
+
   // FIXME 変数を後半に定義する実験
   Event<Arguments>& event_;
+  ConnectionHolder holder_;
+
+  const ci::JsonTree& params_;
 
   std::vector<Panel> panels;
   std::unique_ptr<Game> game;
@@ -654,7 +687,7 @@ private:
 
   // UI関連
   UI::Drawer drawer_;
-  UI::Canvas canvas_;
+  std::unique_ptr<UI::Canvas> canvas_;
 
 
 #ifdef DEBUG

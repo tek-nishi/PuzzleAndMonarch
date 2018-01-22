@@ -1,0 +1,29 @@
+{
+  "identifier": "root",
+  "rect": [ 0, 0, 0, 0 ],
+  "anchor": [
+    [ 0, 0 ],
+    [ 1, 1 ]
+  ],
+  "scale": [ 1, 1 ],
+  "pivot": [ 0.5, 0.5 ],
+  "event": "start",
+  
+  "childlen": [
+    {
+      "identifier": "3",
+      "rect": [ 0, 0, 0, 0 ],
+      "anchor": [
+        [ 0.5, 0.8 ],
+        [ 0.5, 0.8 ]
+      ],
+      "scale": [ 1, 1 ],
+      "pivot": [ 0.5, 0.5 ],
+
+      "text":  "9:99",
+      "text_size": 0.20,
+      "alignment": [ 0.5, 0.5 ],
+      "color": [ 1, 1, 1, 1 ]
+    }
+  ]
+}

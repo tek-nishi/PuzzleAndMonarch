@@ -43,7 +43,7 @@ class WidgetsFactory
 
     if (params.hasChild("event"))
     {
-      widget->setEvent(Json::getVec<std::string>(params["event"]));
+      widget->setEvent(params.getValueForKey<std::string>("event"));
     }
 
 

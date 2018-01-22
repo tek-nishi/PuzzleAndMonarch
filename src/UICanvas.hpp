@@ -59,8 +59,8 @@ public:
     glm::vec3 bottom_left;
     glm::vec3 bottom_right;
     camera.getNearClipCoordinates(&top_left, &top_right, &bottom_left, &bottom_right);
-    ci::Rectf rect(top_left.x, top_left.y, bottom_right.x, bottom_right.y);
-      
+    ci::Rectf rect(top_left.x, bottom_right.y, bottom_right.x, top_left.y);
+
     widgets_->draw(rect, glm::vec2(1, 1), drawer_);
   }
 
@@ -158,6 +158,7 @@ private:
       // DOUT << "widget touch ended in: " << widget->getIdentifier() << std::endl;
       // イベント送信
       std::string event = widget->getEvent() + ":touch_ended";
+      // DOUT << "event: " << event << std::endl;
       event_.signal(event, Arguments());
     }
     else

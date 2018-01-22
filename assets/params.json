@@ -14,6 +14,12 @@
   },
 
   "ui": {
+    "camera": {
+      "fov":    25,
+      "near_z": 500,
+      "far_z":  600
+    },
+
     "font": {
       "name": "MAIAN.TTF",
       "size": 128
@@ -25,25 +31,19 @@
 
   "ui_test": {
     "canvas": {
-      "camera": {
-        "fov":    25,
-        "near_z": 500,
-        "far_z":  600
-      },
-
       "widgets": "ui_test.json"
     }
   },
 
   "title": {
     "canvas": {
-      "camera": {
-        "fov":    25,
-        "near_z": 500,
-        "far_z":  600
-      },
-
       "widgets": "ui_title.json"
+    }
+  },
+  
+  "gamemain": {
+    "canvas": {
+      "widgets": "ui_gamemain.json"
     }
   },
 

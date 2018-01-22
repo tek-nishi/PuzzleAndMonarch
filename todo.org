@@ -10,13 +10,15 @@
 * TODO サウンド周りの再設計
 * TODO タスク導入
 * TODO UIのActive/inactiveを実装
+* TODO 基本的な操作を固める
 * TODO UIとRayの交差判定(矩形や丸)の実装
 * TODO テキストのレイアウト(右寄せとか上寄せとか)
 * TODO 開始時のパネルは「T字路に森の端」にする
-* TODO PLYファイルの読み込みが長い
 * TODO ファイルを１つにまとめる
 * TODO AppStore提出に必要な書類や素材
 * TODO iPhone 5sでの動作確認
+* DONE PLYファイルの読み込みが長い
+CLOSED: [2018-01-22 月 12:44]
 * DONE ソフトリセット
 CLOSED: [2018-01-21 日 23:27]
 * DONE UIのタッチ判定

@@ -32,6 +32,11 @@ struct LessVec
   }
 };
 
+// 配列の要素数を取得
+template <typename T>
+std::size_t elemsof(const T& value) {
+  return std::end(value) - std::begin(value);
+}
 
 template<typename T>
 T toRadians(const T& v)
