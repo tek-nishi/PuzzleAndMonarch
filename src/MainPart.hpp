@@ -67,10 +67,6 @@ public:
                                counter.add("gamestart", 90);
 
                                connection.disconnect();
-                               
-                               canvas_.reset();
-                               canvas_ = createCanvas("ui.camera", "gamemain.canvas.widgets");
-                               // FIXME resizeでメモリリークエラーになる
                              });
   }
 
@@ -299,6 +295,9 @@ public:
           playing_mode = GAMEMAIN;
           game_timer.start(0);
           last_time = 0.0;
+                               
+          canvas_.reset();
+          canvas_ = createCanvas("ui.camera", "gamemain.canvas.widgets");
           DOUT << "GAMEMAIN." << std::endl;
         }
       }
