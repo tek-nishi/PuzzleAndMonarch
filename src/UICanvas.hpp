@@ -43,6 +43,8 @@ public:
                                         this, std::placeholders::_1, std::placeholders::_2));
   }
 
+  ~Canvas() = default;
+
 
   void resize() noexcept
   {

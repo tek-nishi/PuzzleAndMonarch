@@ -68,8 +68,9 @@ public:
 
                                connection.disconnect();
                                
-                               // canvas_.reset();
-                               // canvas_ = createCanvas("ui.camera", "gamemain.canvas.widgets");
+                               canvas_.reset();
+                               canvas_ = createCanvas("ui.camera", "gamemain.canvas.widgets");
+                               // FIXME resizeでメモリリークエラーになる
                              });
   }
 
@@ -124,12 +125,15 @@ public:
 
   void mouseMove(ci::app::MouseEvent event)
   {
+#if 0
     auto pos = event.getPos();
     calcFieldPos(pos);
+#endif
   }
 
 	void mouseDown(ci::app::MouseEvent event)
   {
+#if 0
     if (!event.isLeft()) return;
 
     mouse_draged   = false;
@@ -137,10 +141,12 @@ public:
     
 
     // camera_ui.mouseDown(event);
+#endif
   }
   
 	void mouseDrag(ci::app::MouseEvent event)
   {
+#if 0
     if (!event.isLeftDown()) return;
 
     // クリック位置から3pixel程度の動きは無視
@@ -149,6 +155,7 @@ public:
 
     mouse_draged = true;
     // camera_ui.mouseDrag(event);
+#endif
   }
   
 	void mouseUp(ci::app::MouseEvent event)
