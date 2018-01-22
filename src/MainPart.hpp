@@ -10,7 +10,6 @@
 #include <glm/gtc/quaternion.hpp>
 #include <cinder/Rand.h>
 #include <cinder/Camera.h>
-#include <cinder/CameraUi.h>
 #include <cinder/Ray.h>
 #include <cinder/Timer.h>
 #include "Params.hpp"
@@ -36,6 +35,7 @@ public:
       params_(params),
       panels(createPanels()),
       game(std::make_unique<Game>(panels)),
+      rotation(toRadians(Json::getVec<glm::vec2>(params["field_camera.rotation"]))),
       distance(params.getValueForKey<float>("field_camera.distance")),
       field_camera(params["field_camera"]),
       view(createView()),
@@ -44,7 +44,7 @@ public:
   {
     // フィールドカメラ
     auto& camera = field_camera.body();
-    glm::quat q = Json::getQuat(params["field_camera.rotation"]);
+    glm::quat q(glm::vec3(rotation.x, rotation.y, 0));
     glm::vec3 p = q * glm::vec3{ 0, 0, -distance };
     camera.lookAt(p, glm::vec3(0));
 
@@ -68,6 +68,39 @@ public:
 
                                connection.disconnect();
                              });
+
+
+    holder_ += event_.connect("multi_touch_moved",
+                              [this](const Connection&, const Arguments& arg) noexcept
+                              {
+                                const auto& touches = boost::any_cast<const std::vector<Touch>&>(arg.at("touches"));
+                                auto& camera = field_camera.body();
+
+                                float l      = glm::distance(touches[0].pos, touches[1].pos);
+                                float prev_l = glm::distance(touches[0].prev_pos, touches[1].prev_pos);
+                                float dl = l - prev_l;
+                                if (std::abs(dl) > 1.0f)
+                                {
+                                  // ピンチング
+                                  distance = std::max(distance - dl * 0.25f, camera.getNearClip() + 1.0f);
+
+                                  glm::quat q(glm::vec3(rotation.x, rotation.y, 0));
+                                  glm::vec3 p = q * glm::vec3{ 0, 0, -distance };
+                                  camera.lookAt(p + target_position, target_position);
+                                  eye_position = camera.getEyePoint();
+                                }
+                                else
+                                {
+                                  // 平行移動
+                                  auto v = touches[0].pos - touches[0].prev_pos;
+
+                                  glm::quat q(glm::vec3(0, rotation.y, 0));
+                                  glm::vec3 p = q * glm::vec3(v.x, 0, v.y);
+                                  target_position += p;
+                                  eye_position += p;
+                                  camera.setEyePoint(eye_position);
+                                }
+                              });
   }
 
 
@@ -678,18 +711,19 @@ private:
   // 表示用スコア
   std::vector<int> game_score;
   std::vector<int> game_score_effect;
+  
 
-
+  // カメラ関連
+  glm::vec2 rotation;
   float distance;
 
   glm::vec3 eye_position;
   glm::vec3 target_position;
 
   Camera field_camera;
-  ci::CameraUi camera_ui;
-  
-  View view;
 
+  // 表示
+  View view;
 
   // UI関連
   UI::Drawer drawer_;
