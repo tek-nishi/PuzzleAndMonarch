@@ -123,6 +123,13 @@ struct Game {
     return can_put;
   }
 
+  // そこにblankがあるか？
+  bool isBlank(const glm::ivec2& field_pos) noexcept
+  {
+    return std::find(std::begin(blank), std::end(blank), field_pos) != std::end(blank);
+  }
+
+
   // 操作
   void putHandPanel(glm::ivec2 field_pos) {
     // プレイ中でなければ置けない
