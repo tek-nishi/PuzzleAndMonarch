@@ -23,10 +23,10 @@ struct Game {
       waiting_panels.push_back(i);
     }
 
-    // お城のパネルを探す
+    // 開始パネルを探す
     std::vector<int> start_panels;
     for (int i = 0; i < panels.size(); ++i) {
-      if (panels[i].getAttribute() & Panel::CASTLE) {
+      if (panels[i].getAttribute() & Panel::START) {
         start_panels.push_back(i);
       }
     }

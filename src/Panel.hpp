@@ -23,6 +23,7 @@ struct Panel {
     CHURCH      = 1 << 1,         // 教会
     CASTLE      = 1 << 2,         // お城(開始位置)
     DEEP_FOREST = 1 << 3,         // 深い森
+    START       = 1 << 4,         // 開始用
   };
 
   Panel(u_int attribute, u_int edge_up, u_int edge_right, u_int edge_bottom, u_int edge_left)
@@ -116,7 +117,7 @@ std::vector<Panel> createPanels() {
     { 0, Panel::GRASS,  Panel::FOREST, Panel::GRASS,  Panel::FOREST },
     
     { Panel::CHURCH, Panel::GRASS,  Panel::GRASS,  Panel::GRASS, Panel::GRASS },
-    { 0, Panel::PATH,   Panel::FOREST | Panel::EDGE, Panel::PATH,  Panel::GRASS },
+    { Panel::START, Panel::PATH, Panel::FOREST | Panel::EDGE, Panel::PATH,  Panel::GRASS },
     { 0, Panel::FOREST, Panel::GRASS,  Panel::GRASS, Panel::FOREST },
     { Panel::CHURCH, Panel::GRASS,  Panel::GRASS,  Panel::GRASS, Panel::GRASS },
    
@@ -132,7 +133,7 @@ std::vector<Panel> createPanels() {
     { 0, Panel::GRASS,  Panel::FOREST, Panel::GRASS,  Panel::FOREST },
     
     { Panel::CHURCH, Panel::GRASS,  Panel::GRASS,  Panel::GRASS, Panel::GRASS },
-    { 0, Panel::PATH,   Panel::FOREST | Panel::EDGE, Panel::PATH,  Panel::GRASS },
+    { Panel::START, Panel::PATH, Panel::FOREST | Panel::EDGE, Panel::PATH,  Panel::GRASS },
     { 0, Panel::FOREST, Panel::GRASS,  Panel::GRASS, Panel::FOREST },
     { Panel::CHURCH, Panel::GRASS,  Panel::GRASS,  Panel::GRASS, Panel::GRASS },
 
@@ -145,7 +146,7 @@ std::vector<Panel> createPanels() {
     { 0, Panel::PATH,   Panel::FOREST, Panel::FOREST, Panel::PATH },
     { Panel::DEEP_FOREST, Panel::FOREST, Panel::GRASS,  Panel::FOREST, Panel::FOREST },
     { 0, Panel::GRASS,  Panel::GRASS,  Panel::FOREST | Panel::EDGE, Panel::GRASS },
-    { 0, Panel::PATH,   Panel::FOREST | Panel::EDGE, Panel::PATH,   Panel::GRASS },
+    { Panel::START, Panel::PATH, Panel::FOREST | Panel::EDGE, Panel::PATH,   Panel::GRASS },
     
     { 0, Panel::FOREST, Panel::FOREST, Panel::PATH,   Panel::PATH },
     { Panel::DEEP_FOREST, Panel::FOREST, Panel::FOREST, Panel::FOREST, Panel::FOREST },
@@ -155,7 +156,7 @@ std::vector<Panel> createPanels() {
     { 0, Panel::PATH, Panel::GRASS, Panel::PATH, Panel::GRASS },
     { 0, Panel::FOREST, Panel::GRASS, Panel::FOREST, Panel::GRASS },
     { 0, Panel::FOREST | Panel::EDGE, Panel::GRASS, Panel::GRASS, Panel::GRASS },
-    { 0, Panel::PATH, Panel::FOREST | Panel::EDGE, Panel::PATH, Panel::GRASS },
+    { Panel::START, Panel::PATH, Panel::FOREST | Panel::EDGE, Panel::PATH, Panel::GRASS },
   };
 
   return panels;
