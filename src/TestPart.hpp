@@ -26,7 +26,7 @@ public:
       target_(Json::getVec<glm::vec3>(params["test.camera.target"])),
       drawer_(params["ui"]),
       canvas_(event, drawer_,
-              params["ui_test.canvas.camera"],
+              params["ui.camera"],
               Params::load(params.getValueForKey<std::string>("ui_test.canvas.widgets")))
   {
     // World

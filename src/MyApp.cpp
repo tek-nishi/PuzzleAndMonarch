@@ -13,7 +13,7 @@
 #include "JsonUtil.hpp"
 #include "TouchEvent.hpp"
 #include "MainPart.hpp"
-#include "TestPart.hpp"
+// #include "TestPart.hpp"
 // #include "UITest.hpp"
 
 
