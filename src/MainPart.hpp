@@ -74,14 +74,14 @@ public:
                               [this](const Connection&, Arguments& arg) noexcept
                               {
                                 const auto& touch = boost::any_cast<const Touch&>(arg.at("touch"));
-                                bool can_put_orig         = can_put;
                                 glm::vec3 cursor_pos_orig = cursor_pos;
 
                                 // パネルを置ける場所をtouch→そこにパネルが移動
-                                calcFieldPos(touch.pos);
+                                if (!calcFieldPos(touch.pos)) return;
 
-                                // 元々置ける状態で、位置の変化無し→touchを離した時に置く
-                                touch_put_ = can_put_orig && (cursor_pos_orig == cursor_pos);
+                                // 位置の変化無し→touchを離した時に置く
+                                touch_put_ = (cursor_pos_orig == cursor_pos);
+                                touch_timestamp_ = ci::app::getElapsedSeconds();
                               });
 
     
@@ -99,6 +99,7 @@ public:
                                   touch_put_ = (cursor_pos_orig == cursor_pos);
                                 }
                               });
+
     holder_ += event_.connect("single_touch_ended",
                               [this](const Connection&, Arguments& arg) noexcept
                               {
@@ -109,15 +110,12 @@ public:
                                 calcFieldPos(touch.pos);
                                 if (touch_put_ && (cursor_pos_orig == cursor_pos))
                                 {
-                                  // パネル設置
-                                  if (can_put) {
-                                    game->putHandPanel(field_pos);
-                                    rotate_offset = 0.0f;
-                                    hight_offset  = 500.0f;
-                                    can_put       = false;
-                                  }
+                                  // パネルを回転
+                                  game->rotationHandPanel();
+                                  rotate_offset = 90.0f;
+                                  can_put = game->canPutToBlank(field_pos);
+                                  touch_put_ = false;
                                 }
-
                               });
 
     holder_ += event_.connect("multi_touch_moved",
@@ -393,6 +391,26 @@ public:
         game_timer.stop();
         counter.add("gameend", 120);
       }
+      else
+      {
+        if (touch_put_)
+        {
+          // タッチしたまま１秒経過
+          auto timestamp = ci::app::getElapsedSeconds();
+          if ((timestamp - touch_timestamp_) > 1.0f)
+          {
+            // パネル設置
+            if (can_put) {
+              game->putHandPanel(field_pos);
+              rotate_offset = 0.0f;
+              hight_offset  = 500.0f;
+              can_put       = false;
+
+              touch_put_ = false;
+            }
+          }
+        }
+      }
       break;
 
     case GAMEEND:
@@ -593,7 +611,7 @@ public:
   }
 
 
-  void calcFieldPos(const glm::vec2& pos) noexcept
+  bool calcFieldPos(const glm::vec2& pos) noexcept
   {
     // 画面奥に伸びるRayを生成
     ci::Ray ray = field_camera.body().generateRay(pos, ci::app::getWindowSize());
@@ -618,8 +636,10 @@ public:
         can_put = game->canPutToBlank(field_pos);
         // 少し宙に浮いた状態
         cursor_pos = glm::vec3(field_pos.x * PANEL_SIZE, 10, field_pos.y * PANEL_SIZE);
+        return true;
       }
     }
+    return false;
   }
 
 #if 0
@@ -778,6 +798,7 @@ private:
 
   // パネル操作
   bool touch_put_;
+  double touch_timestamp_;
 
   // 表示
   View view;
