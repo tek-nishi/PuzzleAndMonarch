@@ -69,6 +69,22 @@ public:
                                connection.disconnect();
                              });
 
+    // 操作
+    holder_ += event_.connect("single_touch_began",
+                              [this](const Connection&, Arguments& arg) noexcept
+                              {
+                                const auto& touch = boost::any_cast<const Touch&>(arg.at("touch"));
+                                // パネルを置ける場所をtouch→そこにパネルが移動
+                                calcFieldPos(touch.pos);
+                              });
+    
+    holder_ += event_.connect("single_touch_moved",
+                              [this](const Connection&, Arguments& arg) noexcept
+                              {
+                                const auto& touch = boost::any_cast<const Touch&>(arg.at("touch"));
+                                // パネルを置ける場所をtouch→そこにパネルが移動
+                                calcFieldPos(touch.pos);
+                              });
 
     holder_ += event_.connect("multi_touch_moved",
                               [this](const Connection&, const Arguments& arg) noexcept

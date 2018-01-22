@@ -1,7 +1,7 @@
 {
   "app": {
     "size":   [ 960, 640 ],
-    "retina": false,
+    "retina": true,
     "power_management": true
   },
 

@@ -1,4 +1,5 @@
 * TODO 時限式カウンター＋関数ポインタ
+* TODO Canvasの遅延読み込み
 * TODO 無限に置けるモードが欲しい
 * TODO Win・macOS:フルスクリーンモード
 * TODO Windows版: イベントハンドルが微妙
@@ -17,6 +18,8 @@
 * TODO ファイルを１つにまとめる
 * TODO AppStore提出に必要な書類や素材
 * TODO iPhone 5sでの動作確認
+* DONE Canvasを縦画面で読み込むとfovの初期化が正しく行われない
+CLOSED: [2018-01-22 月 19:53]
 * DONE PLYファイルの読み込みが長い
 CLOSED: [2018-01-22 月 12:44]
 * DONE ソフトリセット

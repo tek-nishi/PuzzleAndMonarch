@@ -17,6 +17,8 @@ struct Camera
       far_z_(params.getValueForKey<float>("far_z")),
       camera_(ci::app::getWindowWidth(), ci::app::getWindowHeight(), fov_, near_z_, far_z_)
   {
+    // 縦画面の時は画角が違う
+    resize();
   }
 
   ~Camera() = default;
@@ -27,10 +29,8 @@ struct Camera
     float aspect = ci::app::getWindowAspectRatio();
     camera_.setAspectRatio(aspect);
     if (aspect < 1.0f) {
-      float half_w = std::tan(ci::toRadians(fov_ / 2)) * near_z_;
-      float half_h = half_w / aspect;
-      float fov_w  = std::atan(half_h / near_z_) * 2;
-      camera_.setFov(ci::toDegrees(fov_w));
+      // TIPS cinder0.9.1には便利なAPIがあった!!
+      camera_.setFovHorizontal(fov_);
     }
     else {
       camera_.setFov(fov_);

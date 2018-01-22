@@ -179,9 +179,9 @@ CINDER_APP(ngs::MyApp, ci::app::RendererGl,
              settings->setWindowSize(ngs::Json::getVec<ci::ivec2>(params["app.size"]));
              settings->setTitle(PREPRO_TO_STR(PRODUCT_NAME));
 
-// #if !defined (CINDER_MAC)
+#if !defined (CINDER_MAC)
              settings->setMultiTouchEnabled();
-// #endif
+#endif
 
              settings->setPowerManagementEnabled(params.getValueForKey<bool>("app.power_management"));
              settings->setHighDensityDisplayEnabled(params.getValueForKey<bool>("app.retina"));
