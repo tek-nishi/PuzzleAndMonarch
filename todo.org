@@ -3,7 +3,6 @@
 * TODO UI::Widgetを書き換える演出
 * TODO いい感じに画面全体に街が映るように
 * TODO Canvasの遅延読み込み
-* TODO macOS: ReleaseビルドでCanvas内容が表示されない
 * TODO 無限に置けるモードが欲しい
 * TODO Win・macOS:フルスクリーンモード
 * TODO Windows版: イベントハンドルが微妙
@@ -21,6 +20,8 @@
 * TODO ファイルを１つにまとめる
 * TODO AppStore提出に必要な書類や素材
 * TODO iPhone 5sでの動作確認
+* DONE macOS: ReleaseビルドでCanvas内容が表示されない
+CLOSED: [2018-01-23 火 21:15]
 * DONE 開始時のパネルは「T字路に森の端」にする
 CLOSED: [2018-01-23 火 00:10]
 * DONE Canvasを縦画面で読み込むとfovの初期化が正しく行われない

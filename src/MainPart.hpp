@@ -40,6 +40,7 @@ public:
       distance(params.getValueForKey<float>("field.camera.distance")),
       field_camera(params["field.camera"]),
       pivot_point(Json::getVec<glm::vec3>(params["field.pivot_point"])),
+      field_center_(pivot_point),
       panel_height_(params.getValueForKey<float>("field.panel_height")),
       putdown_time_(params.getValueForKey<double>("field.putdown_time")),
       view(createView()),
@@ -51,9 +52,7 @@ public:
     glm::quat q(glm::vec3(rotation.x, rotation.y, 0));
     glm::vec3 p = q * glm::vec3{ 0, 0, -distance };
     camera.lookAt(p, glm::vec3(0));
-
-    eye_position    = camera.getEyePoint();
-    target_position = glm::vec3(0);
+    eye_position = camera.getEyePoint();
 
     // 各種イベント
     holder_ += event.connect("start:touch_ended",
@@ -109,7 +108,7 @@ public:
                                   rotateField(touch);
 
                                   auto& camera = field_camera.body();
-                                  glm::quat q(glm::vec3(rotation.x, rotation.y, 0));
+                                  glm::quat q(glm::vec3{ rotation.x, rotation.y, 0 });
                                   glm::vec3 p = q * glm::vec3{ 0, 0, -distance };
                                   camera.lookAt(p, glm::vec3(0));
                                   eye_position = camera.getEyePoint();
@@ -160,7 +159,7 @@ public:
 
                                   glm::quat q(glm::vec3(rotation.x, rotation.y, 0));
                                   glm::vec3 p = q * glm::vec3{ 0, 0, -distance };
-                                  camera.lookAt(p + target_position, target_position);
+                                  camera.lookAt(p, glm::vec3(0));
                                   eye_position = camera.getEyePoint();
                                 }
                                 else
@@ -170,7 +169,6 @@ public:
 
                                   glm::quat q(glm::vec3(0, rotation.y, 0));
                                   glm::vec3 p = q * glm::vec3(v.x, 0, v.y);
-                                  target_position += p;
                                   eye_position += p;
                                   camera.setEyePoint(eye_position);
                                 }
@@ -207,7 +205,7 @@ public:
 
       auto v = eye_position - target_position;
       v = cam_q * q * cam_iq * v;
-      eye_position = v + target_position;
+      eye_position = v;
 
       camera.setEyePoint(eye_position);
       camera.setOrientation(cam_q * q);
@@ -388,8 +386,8 @@ public:
     last_time = current_time;
 
     // カメラの中心位置変更
-    // auto center_pos = game->getFieldCenter() * float(ngs::PANEL_SIZE);
-    camera_center += (field_center_ - camera_center) * 0.05f;
+    pivot_point += (field_center_ - pivot_point) * 0.05f;
+    pivot_distance += (field_distance_ - pivot_distance) * 0.05f;
 
     switch (playing_mode) {
     case TITLE:
@@ -484,8 +482,13 @@ public:
 
     // プレイ画面
     ci::gl::setMatrices(field_camera.body());
-    // pivot_point.x = camera_center.x;
-    // pivot_point.z = camera_center.y;
+
+    {
+      glm::quat q(glm::vec3(rotation.x, rotation.y, 0));
+      glm::vec3 p = q * glm::vec3{ 0, 0, pivot_distance };
+      ci::gl::translate(p);
+    }
+
     ci::gl::translate(-pivot_point);
 
     ci::gl::enableDepth();
@@ -664,9 +667,14 @@ private:
   {
     // 画面奥に伸びるRayを生成
     ci::Ray ray = field_camera.body().generateRay(pos, ci::app::getWindowSize());
+    
+    glm::quat q(glm::vec3(rotation.x, rotation.y, 0));
+    glm::vec3 p = q * glm::vec3{ 0, 0, pivot_distance };
+    auto m = glm::translate(p);
+    m = glm::translate(m, -pivot_point);
+    auto tpm = glm::inverse(m);
 
-    auto m = glm::translate(pivot_point);
-    auto origin = m * glm::vec4(ray.getOrigin(), 1);
+    auto origin = tpm * glm::vec4(ray.getOrigin(), 1);
     ray.setOrigin(origin);
 
     // 地面との交差を調べ、正確な位置を計算
@@ -789,6 +797,7 @@ private:
   ci::Sphere calcBoundingSphere() noexcept
   {
     std::vector<glm::vec3> points;
+#if 0
     {
       const auto& panels = game->getFieldPanels();
       for (const auto& p : panels) {
@@ -800,6 +809,7 @@ private:
         points.push_back({ pos.x + PANEL_SIZE / 2, 0, pos.y + PANEL_SIZE / 2 });
       }
     }
+#endif
 
     {
       const auto& positions = game->getBlankPositions();
@@ -825,12 +835,16 @@ private:
 #endif
     auto center = sphere.getCenter();
     field_center_.x = center.x;
-    field_center_.y = center.z;
+    field_center_.z = center.z;
 
-    field_camera.body().setPivotDistance(distance);
-    auto camera = field_camera.body().calcFraming(sphere);
-
-    field_camera.body() = camera;
+    // Sphereがちょうどすっぽり収まる距離を計算
+    float radius = sphere.getRadius();
+    const auto& camera = field_camera.body();
+    float fov_v = camera.getFov();
+    float fov_h = camera.getFovHorizontal();
+    float fov = (fov_v < fov_h) ? fov_v : fov_h;
+    field_distance_ = (radius * 0.3f) / std::tan(ci::toRadians(fov * 0.5f));
+    DOUT << "field distance: " << field_distance_ << std::endl;
   }
 
 
@@ -840,9 +854,9 @@ private:
     const auto& camera = field_camera.body();
     ci::Ray ray = camera.generateRay(touch_pos, ci::app::getWindowSize());
 
-    auto m = glm::translate(pivot_point);
-    auto origin = m * glm::vec4(ray.getOrigin(), 1);
-    ray.setOrigin(origin);
+    // auto m = glm::translate(pivot_point);
+    // auto origin = m * glm::vec4(ray.getOrigin(), 1);
+    // ray.setOrigin(origin);
 
     // 地面との交差を調べ、正確な位置を計算
     float z;
@@ -860,8 +874,8 @@ private:
     auto pos      = calcTouchPos(touch.pos);
     auto prev_pos = calcTouchPos(touch.prev_pos);
 
-    pos      -= pivot_point;
-    prev_pos -= pivot_point;
+    // pos      -= pivot_point;
+    // prev_pos -= pivot_point;
 
     // 正規化
     pos.y      = 0;
@@ -875,14 +889,14 @@ private:
   }
 
   // 次のパネルの出現位置を決める
-  glm::ivec2 calcNextPanelPosition() noexcept
+  void calcNextPanelPosition() noexcept
   {
     const auto& positions = game->getBlankPositions();
-    // とりあえず無作為に決める
-    const auto& pos = positions[ci::randInt(positions.size())];
-    cursor_pos = glm::vec3(pos.x * PANEL_SIZE, panel_height_, pos.y * PANEL_SIZE);
+    // FIXME とりあえず無作為に決める
+    field_pos  = positions[ci::randInt(positions.size())];
+    cursor_pos = glm::vec3(field_pos.x * PANEL_SIZE, panel_height_, field_pos.y * PANEL_SIZE);
 
-	return cursor_pos;
+    can_put = game->canPutToBlank(field_pos);
   }
 
 
@@ -896,8 +910,6 @@ private:
 
   std::vector<Panel> panels_;
   std::unique_ptr<Game> game;
-
-  glm::vec2 camera_center; 
 
   glm::vec2 left_click_pos;
   bool mouse_draged = false;
@@ -940,12 +952,14 @@ private:
   // カメラ関連
   glm::vec2 rotation;
   float distance;
-
   glm::vec3 eye_position;
-  glm::vec3 target_position;
 
-  glm::vec2 field_center_;
   glm::vec3 pivot_point;
+  float pivot_distance = 0.0f;
+
+  // Fieldの中心座標
+  glm::vec3 field_center_;
+  float field_distance_ = 0.0f;
 
   Camera field_camera;
 
