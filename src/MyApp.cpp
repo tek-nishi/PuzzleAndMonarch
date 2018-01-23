@@ -28,7 +28,7 @@ class MyApp
 
 public:
   // TIPS cinder 0.9.1はコンストラクタが使える
-  MyApp()
+  MyApp() noexcept
     : params(ngs::Params::load("params.json")),
       touch_event_(event_),
       worker(std::make_unique<Worker>(params, event_))
@@ -37,7 +37,7 @@ public:
 
 #if defined (CINDER_COCOA_TOUCH)
     // 縦横画面両対応
-    signal_connection = getSignalSupportedOrientations().connect([]() {
+    signal_connection = getSignalSupportedOrientations().connect([]() noexcept {
       return ci::app::InterfaceOrientation::All;
     });
 #endif
@@ -53,12 +53,12 @@ public:
 
 
 private:
-  void mouseMove(ci::app::MouseEvent event) override
+  void mouseMove(ci::app::MouseEvent event) noexcept override
   {
     worker->mouseMove(event);
   }
 
-	void mouseDown(ci::app::MouseEvent event) override
+	void mouseDown(ci::app::MouseEvent event) noexcept override
   {
     if (event.isLeft())
     {
@@ -66,7 +66,7 @@ private:
     }
   }
   
-	void mouseDrag(ci::app::MouseEvent event) override
+	void mouseDrag(ci::app::MouseEvent event) noexcept override
   {
     if (event.isLeftDown())
     {
@@ -74,7 +74,7 @@ private:
     }
   }
   
-	void mouseUp(ci::app::MouseEvent event) override
+	void mouseUp(ci::app::MouseEvent event) noexcept override
   {
     if (event.isLeft())
     {
@@ -82,30 +82,30 @@ private:
     }
   }
 
-  void mouseWheel(ci::app::MouseEvent event) override
+  void mouseWheel(ci::app::MouseEvent event) noexcept override
   {
     worker->mouseWheel(event);
   }
 
 
   // タッチ操作ハンドリング
-  void touchesBegan(ci::app::TouchEvent event) override
+  void touchesBegan(ci::app::TouchEvent event) noexcept override
   {
     touch_event_.touchesBegan(event);
   }
   
-  void touchesMoved(ci::app::TouchEvent event) override
+  void touchesMoved(ci::app::TouchEvent event) noexcept override
   {
     touch_event_.touchesMoved(event);
   }
 
-  void touchesEnded(ci::app::TouchEvent event) override
+  void touchesEnded(ci::app::TouchEvent event) noexcept override
   {
     touch_event_.touchesEnded(event);
   }
 
 
-  void keyDown(ci::app::KeyEvent event) override
+  void keyDown(ci::app::KeyEvent event) noexcept override
   {
 #if defined (DEBUG)
     auto code = event.getCode();
@@ -124,25 +124,26 @@ private:
     worker->keyDown(event);
   }
 
-  void keyUp(ci::app::KeyEvent event) override
+  void keyUp(ci::app::KeyEvent event) noexcept override
   {
     worker->keyUp(event);
   }
   
 
-	void update() override
+	void update() noexcept override
   {
     worker->update();
   }
 
 
-  void resize() override
+  void resize() noexcept override
   {
     worker->resize();
   }
 
 
-	void draw() override {
+	void draw() noexcept override
+  {
     ci::gl::clear(ci::Color(0, 0, 0));
 
     auto window_size = ci::app::getWindowSize();
@@ -172,7 +173,8 @@ private:
 
 // アプリのラウンチコード
 CINDER_APP(ngs::MyApp, ci::app::RendererGl,
-           [](ci::app::App::Settings* settings) {
+           [](ci::app::App::Settings* settings) noexcept
+           {
              // FIXME:ここで設定ファイルを読むなんて...
              auto params = ngs::Params::load("params.json");
 

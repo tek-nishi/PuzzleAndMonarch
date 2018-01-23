@@ -10,7 +10,8 @@
 
 namespace ngs { namespace Params {
 
-ci::JsonTree load(const std::string& path) {
+ci::JsonTree load(const std::string& path) noexcept
+{
   return ci::JsonTree(Asset::load(path));
 }
 

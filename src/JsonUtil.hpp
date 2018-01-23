@@ -60,7 +60,7 @@ ci::Rectf getRect(const ci::JsonTree& json) noexcept
                    json[2].getValue<double>(), json[3].getValue<double>());  
 }
 
-ci::quat getQuat(const ci::JsonTree& json)
+ci::quat getQuat(const ci::JsonTree& json) noexcept
 {
   glm::vec3 v = getVec<glm::vec3>(json) * float(M_PI) / 180.0f;
   return ci::quat(v);
@@ -68,7 +68,7 @@ ci::quat getQuat(const ci::JsonTree& json)
 
 
 template<typename T>
-ci::JsonTree createFromVec(const T& vec)
+ci::JsonTree createFromVec(const T& vec) noexcept
 {
   ci::JsonTree json;
   for (size_t i = 0; i < vec.size(); ++i)
@@ -79,7 +79,7 @@ ci::JsonTree createFromVec(const T& vec)
 }
 
 template<typename T>
-ci::JsonTree createFromVec(const std::string& key, const T& vec)
+ci::JsonTree createFromVec(const std::string& key, const T& vec) noexcept
 {
   auto json = ci::JsonTree::makeObject(key);
   for (size_t i = 0; i < vec.size(); ++i)
@@ -89,7 +89,7 @@ ci::JsonTree createFromVec(const std::string& key, const T& vec)
   return json;
 }
 
-ci::JsonTree createFromColor(const std::string& key, const ci::Color& color)
+ci::JsonTree createFromColor(const std::string& key, const ci::Color& color) noexcept
 {
   auto json = ci::JsonTree::makeObject(key);
   json.pushBack(ci::JsonTree("", color.r));
@@ -99,7 +99,7 @@ ci::JsonTree createFromColor(const std::string& key, const ci::Color& color)
   return json;
 }
 
-ci::JsonTree createFromColorA(const std::string& key, const ci::ColorA& color)
+ci::JsonTree createFromColorA(const std::string& key, const ci::ColorA& color) noexcept
 {
   auto json = ci::JsonTree::makeObject(key);
   json.pushBack(ci::JsonTree("", color.r));

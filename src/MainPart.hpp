@@ -35,9 +35,12 @@ public:
       params_(params),
       panels(createPanels()),
       game(std::make_unique<Game>(panels)),
-      rotation(toRadians(Json::getVec<glm::vec2>(params["field_camera.rotation"]))),
-      distance(params.getValueForKey<float>("field_camera.distance")),
-      field_camera(params["field_camera"]),
+      rotation(toRadians(Json::getVec<glm::vec2>(params["field.camera.rotation"]))),
+      distance(params.getValueForKey<float>("field.camera.distance")),
+      field_camera(params["field.camera"]),
+      pivot_point(Json::getVec<glm::vec3>(params["field.pivot_point"])),
+      panel_height_(params.getValueForKey<float>("field.panel_height")),
+      putdown_time_(params.getValueForKey<double>("field.putdown_time")),
       view(createView()),
       drawer_(params["ui"]),
       canvas_(createCanvas("ui.camera", "title.canvas.widgets"))
@@ -351,7 +354,7 @@ public:
   }
   
 
-	void update()
+	void update() noexcept
   {
     counter.update();
     auto current_time = game_timer.getSeconds();
@@ -393,11 +396,12 @@ public:
       }
       else
       {
+        // パネル設置操作
         if (touch_put_)
         {
-          // タッチしたまま１秒経過
+          // タッチしたまま時間経過
           auto timestamp = ci::app::getElapsedSeconds();
-          if ((timestamp - touch_timestamp_) > 1.0f)
+          if ((timestamp - touch_timestamp_) > putdown_time_)
           {
             // パネル設置
             if (can_put) {
@@ -452,7 +456,9 @@ public:
 
     // プレイ画面
     ci::gl::setMatrices(field_camera.body());
-    ci::gl::translate(-camera_center.x, -5.0, -camera_center.y);
+    pivot_point.x = camera_center.x;
+    pivot_point.z = camera_center.y;
+    ci::gl::translate(-pivot_point);
 
     ci::gl::enableDepth();
     ci::gl::enable(GL_CULL_FACE);
@@ -616,7 +622,7 @@ public:
     // 画面奥に伸びるRayを生成
     ci::Ray ray = field_camera.body().generateRay(pos, ci::app::getWindowSize());
 
-    auto m = glm::translate(glm::vec3{ camera_center.x, 5, camera_center.y });
+    auto m = glm::translate(pivot_point);
     auto origin = m * glm::vec4(ray.getOrigin(), 1);
     ray.setOrigin(origin);
 
@@ -635,7 +641,7 @@ public:
       {
         can_put = game->canPutToBlank(field_pos);
         // 少し宙に浮いた状態
-        cursor_pos = glm::vec3(field_pos.x * PANEL_SIZE, 10, field_pos.y * PANEL_SIZE);
+        cursor_pos = glm::vec3(field_pos.x * PANEL_SIZE, panel_height_, field_pos.y * PANEL_SIZE);
         return true;
       }
     }
@@ -794,11 +800,17 @@ private:
   glm::vec3 eye_position;
   glm::vec3 target_position;
 
+  glm::vec3 pivot_point;
+
   Camera field_camera;
 
   // パネル操作
   bool touch_put_;
   double touch_timestamp_;
+
+  float panel_height_;
+  double putdown_time_;
+
 
   // 表示
   View view;

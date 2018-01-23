@@ -5,13 +5,19 @@
     "power_management": true
   },
 
-  "field_camera": {
-    "fov":    25,
-    "near_z": 1,
-    "far_z":  1000,
+  "field": {
+    "camera": {
+      "fov":    25,
+      "near_z": 1,
+      "far_z":  1000,
 
-    "rotation": [ 45, 45 ],
-    "distance": 150
+      "rotation": [ 35, 45 ],
+      "distance": 150
+    },
+
+    "pivot_point": [ 0, 5, 0 ],
+    "panel_height": 10,
+    "putdown_time": 1
   },
 
   "ui": {
