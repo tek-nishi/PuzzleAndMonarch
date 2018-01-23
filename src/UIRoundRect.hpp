@@ -45,6 +45,7 @@ private:
   {
     ci::gl::ScopedGlslProg prog(drawer.getColorShader());
     ci::gl::color(color_);
+
     if (fill_)
     {
       ci::gl::drawSolidRoundedRect(rect, corner_radius_, corner_segment_);

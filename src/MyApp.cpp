@@ -24,6 +24,7 @@ class MyApp
 {
 
   using Worker = MainPart;
+  // using Worker = TestPart;
 
 
 public:

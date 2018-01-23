@@ -137,10 +137,9 @@ public:
     {
       ci::gl::enableDepth();
       ci::gl::enable(GL_CULL_FACE);
-      ci::gl::enableAlphaBlending();
+      ci::gl::disableAlphaBlending();
 
       ci::gl::setMatrices(world_camera_.body());
-
       ci::gl::rotate(rot_);
 
       ci::gl::drawColorCube(glm::vec3(0), glm::vec3(1));

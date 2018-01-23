@@ -3,6 +3,7 @@
 * TODO UI::Widgetを書き換える演出
 * TODO いい感じに画面全体に街が映るように
 * TODO Canvasの遅延読み込み
+* TODO macOS: ReleaseビルドでCanvas内容が表示されない
 * TODO 無限に置けるモードが欲しい
 * TODO Win・macOS:フルスクリーンモード
 * TODO Windows版: イベントハンドルが微妙

@@ -55,6 +55,10 @@ public:
   {
     auto& camera = camera_.body();
     ci::gl::setMatrices(camera);
+#if !defined (CINDER_COCOA_TOUCH)
+    // TIPS z値でカリングせずにclampする
+    ci::gl::enable(GL_DEPTH_CLAMP);
+#endif
 
     glm::vec3 top_left;
     glm::vec3 top_right;
@@ -63,7 +67,11 @@ public:
     camera.getNearClipCoordinates(&top_left, &top_right, &bottom_left, &bottom_right);
     ci::Rectf rect(top_left.x, bottom_right.y, bottom_right.x, top_left.y);
 
-    widgets_->draw(rect, glm::vec2(1, 1), drawer_);
+    widgets_->draw(rect, glm::vec2(1), drawer_);
+    
+#if !defined (CINDER_COCOA_TOUCH)
+    ci::gl::disable(GL_DEPTH_CLAMP);
+#endif
   }
 
 

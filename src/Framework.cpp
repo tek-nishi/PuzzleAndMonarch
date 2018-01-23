@@ -2,6 +2,8 @@
 // 各種ソース
 //
 
+#include "Defines.hpp"
+
 #define NGS_PATH_IMPLEMENTATION
 #include "Path.hpp"
 
