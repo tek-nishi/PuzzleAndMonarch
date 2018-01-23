@@ -63,6 +63,7 @@ public:
                                game->beginPlay();
                                playing_mode = GAMESTART;
                                hight_offset = 500.0f;
+                               calcNextPanelPosition();
 
                                game_score = game->getScores();
                                game_score_effect.resize(game_score.size());
@@ -379,6 +380,7 @@ public:
 	void update() noexcept
   {
     counter.update();
+
     auto current_time = game_timer.getSeconds();
     double delta_time = current_time - last_time;
     game->update(delta_time);
@@ -436,6 +438,7 @@ public:
 
               // Fieldの中心を再計算
               calcFieldCenter();
+              calcNextPanelPosition();
             }
           }
         }
@@ -870,7 +873,15 @@ private:
     float cross = prev_pos.x * pos.z - prev_pos.z * pos.x;
     rotation.y += cross * 0.001;
   }
-   
+
+  // 次のパネルの出現位置を決める
+  glm::ivec2 calcNextPanelPosition() noexcept
+  {
+    const auto& positions = game->getBlankPositions();
+    // とりあえず無作為に決める
+    const auto& pos = positions[ci::randInt(positions.size())];
+    cursor_pos = glm::vec3(pos.x * PANEL_SIZE, panel_height_, pos.y * PANEL_SIZE);
+  }
 
 
 
