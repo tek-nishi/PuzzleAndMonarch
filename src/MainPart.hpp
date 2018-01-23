@@ -12,6 +12,7 @@
 #include <cinder/Camera.h>
 #include <cinder/Ray.h>
 #include <cinder/Timer.h>
+#include <cinder/Sphere.h>
 #include "Params.hpp"
 #include "JsonUtil.hpp"
 #include "Game.hpp"
@@ -33,8 +34,8 @@ public:
   MainPart(const ci::JsonTree& params, Event<Arguments>& event) noexcept
     : event_(event),
       params_(params),
-      panels(createPanels()),
-      game(std::make_unique<Game>(panels)),
+      panels_(createPanels()),
+      game(std::make_unique<Game>(panels_)),
       rotation(toRadians(Json::getVec<glm::vec2>(params["field.camera.rotation"]))),
       distance(params.getValueForKey<float>("field.camera.distance")),
       field_camera(params["field.camera"]),
@@ -286,7 +287,7 @@ public:
     case RESULT:
       if (event.isLeft() && !mouse_draged) {
         // 再ゲーム
-        game = std::make_unique<Game>(panels);
+        game = std::make_unique<Game>(panels_);
         playing_mode = TITLE;
       }
       break;
@@ -307,7 +308,7 @@ public:
 #ifdef DEBUG
     // if (code == ci::app::KeyEvent::KEY_r) {
     //   // 強制リセット
-    //   game = std::make_unique<ngs::Game>(panels);
+    //   game = std::make_unique<ngs::Game>(panels_);
     //   playing_mode = TITLE;
     // }
     if (code == ci::app::KeyEvent::KEY_t) {
@@ -364,8 +365,8 @@ public:
     last_time = current_time;
 
     // カメラの中心位置変更
-    auto center_pos = game->getFieldCenter() * float(ngs::PANEL_SIZE);
-    camera_center += (center_pos - camera_center) * 0.05f;
+    // auto center_pos = game->getFieldCenter() * float(ngs::PANEL_SIZE);
+    camera_center += (field_center_ - camera_center) * 0.05f;
 
     switch (playing_mode) {
     case TITLE:
@@ -411,6 +412,9 @@ public:
               can_put       = false;
 
               touch_put_ = false;
+
+              // Fieldの中心を再計算
+              calcFieldCenter();
             }
           }
         }
@@ -456,8 +460,8 @@ public:
 
     // プレイ画面
     ci::gl::setMatrices(field_camera.body());
-    pivot_point.x = camera_center.x;
-    pivot_point.z = camera_center.y;
+    // pivot_point.x = camera_center.x;
+    // pivot_point.z = camera_center.y;
     ci::gl::translate(-pivot_point);
 
     ci::gl::enableDepth();
@@ -491,7 +495,7 @@ public:
 #ifdef DEBUG
       if (disp_debug_info) {
         // 手元のパネル
-        ngs::drawPanelEdge(panels[game->getHandPanel()], pos, game->getHandRotation());
+        ngs::drawPanelEdge(panels_[game->getHandPanel()], pos, game->getHandRotation());
 
         // 置こうとしている場所の周囲
         auto around = game->enumerateAroundPanels(field_pos);
@@ -501,13 +505,27 @@ public:
             glm::vec3 disp_pos(p.x, 0.0f, p.y);
 
             auto status = it.second;
-            ngs::drawPanelEdge(panels[status.number], disp_pos, status.rotation);
+            ngs::drawPanelEdge(panels_[status.number], disp_pos, status.rotation);
           }
         }
       }
 #endif
     }
     drawFieldBg(view);
+
+
+#if 0
+#if defined(DEBUG)
+    // 外接球の表示
+    ci::gl::enableDepth(false);
+    ci::gl::enableAlphaBlending();
+
+    ci::gl::pushModelView();
+    ci::gl::color(0, 0.8, 0, 0.2);
+    ci::gl::drawSphere(framing_sphere_);
+    ci::gl::popModelView();
+#endif
+#endif
 
     // UI
     {
@@ -617,6 +635,7 @@ public:
   }
 
 
+private:
   bool calcFieldPos(const glm::vec2& pos) noexcept
   {
     // 画面奥に伸びるRayを生成
@@ -735,12 +754,59 @@ public:
 #endif
 
 
-private:
   std::unique_ptr<UI::Canvas> createCanvas(const std::string& camera, const std::string& widgets) noexcept
   {
     return std::make_unique<UI::Canvas>(event_, drawer_,
                                         params_[camera],
                                         Params::load(params_.getValueForKey<std::string>(widgets)));
+  }
+
+  // Fieldの外接球を計算
+  ci::Sphere calcBoundingSphere() noexcept
+  {
+    std::vector<glm::vec3> points;
+    {
+      const auto& panels = game->getFieldPanels();
+      for (const auto& p : panels) {
+        // Panelの４隅の座標を加える
+        auto pos = p.position * int(PANEL_SIZE);
+        points.push_back({ pos.x - PANEL_SIZE / 2, 0, pos.y - PANEL_SIZE / 2 });
+        points.push_back({ pos.x + PANEL_SIZE / 2, 0, pos.y - PANEL_SIZE / 2 });
+        points.push_back({ pos.x - PANEL_SIZE / 2, 0, pos.y + PANEL_SIZE / 2 });
+        points.push_back({ pos.x + PANEL_SIZE / 2, 0, pos.y + PANEL_SIZE / 2 });
+      }
+    }
+
+    {
+      const auto& positions = game->getBlankPositions();
+      for (const auto& p : positions) {
+        // Panelの４隅の座標を加える
+        auto pos = p * int(PANEL_SIZE);
+        points.push_back({ pos.x - PANEL_SIZE / 2, 0, pos.y - PANEL_SIZE / 2 });
+        points.push_back({ pos.x + PANEL_SIZE / 2, 0, pos.y - PANEL_SIZE / 2 });
+        points.push_back({ pos.x - PANEL_SIZE / 2, 0, pos.y + PANEL_SIZE / 2 });
+        points.push_back({ pos.x + PANEL_SIZE / 2, 0, pos.y + PANEL_SIZE / 2 });
+      }
+    }
+
+    auto sphere = ci::Sphere::calculateBoundingSphere(points);
+    return sphere;
+  }
+
+  void calcFieldCenter() noexcept
+  {
+    auto sphere = calcBoundingSphere();
+#if defined (DEBUG)
+    framing_sphere_ = sphere;
+#endif
+    auto center = sphere.getCenter();
+    field_center_.x = center.x;
+    field_center_.y = center.z;
+
+    field_camera.body().setPivotDistance(distance);
+    auto camera = field_camera.body().calcFraming(sphere);
+
+    field_camera.body() = camera;
   }
 
 
@@ -750,7 +816,7 @@ private:
 
   const ci::JsonTree& params_;
 
-  std::vector<Panel> panels;
+  std::vector<Panel> panels_;
   std::unique_ptr<Game> game;
 
   glm::vec2 camera_center; 
@@ -800,6 +866,7 @@ private:
   glm::vec3 eye_position;
   glm::vec3 target_position;
 
+  glm::vec2 field_center_;
   glm::vec3 pivot_point;
 
   Camera field_camera;
@@ -822,6 +889,9 @@ private:
 
 #ifdef DEBUG
   bool disp_debug_info = false;
+
+  // Fieldの外接球
+  ci::Sphere framing_sphere_;
 #endif
 };
 
