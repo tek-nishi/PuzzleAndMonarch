@@ -79,13 +79,20 @@ public:
                               {
                                 const auto& touch = boost::any_cast<const Touch&>(arg.at("touch"));
                                 glm::vec3 cursor_pos_orig = cursor_pos;
+                                field_rotate_ = false;
 
                                 // パネルを置ける場所をtouch→そこにパネルが移動
-                                if (!calcFieldPos(touch.pos)) return;
-
-                                // 位置の変化無し→touchを離した時に置く
-                                touch_put_ = (cursor_pos_orig == cursor_pos);
-                                touch_timestamp_ = ci::app::getElapsedSeconds();
+                                if (calcFieldPos(touch.pos))
+                                {
+                                  // 位置の変化無し→touchを離した時に置く
+                                  touch_put_ = (cursor_pos_orig == cursor_pos);
+                                  touch_timestamp_ = ci::app::getElapsedSeconds();
+                                }
+                                else
+                                {
+                                  // パネルがない場合は画面の回転操作
+                                  field_rotate_ = true;
+                                }
                               });
 
     
@@ -95,12 +102,26 @@ public:
                                 const auto& touch = boost::any_cast<const Touch&>(arg.at("touch"));
                                 glm::vec3 cursor_pos_orig = cursor_pos;
 
-                                // パネルを置ける場所をtouch→そこにパネルが移動
-                                calcFieldPos(touch.pos);
-
-                                if (touch_put_)
+                                if (field_rotate_)
                                 {
-                                  touch_put_ = (cursor_pos_orig == cursor_pos);
+                                  // Field回転操作
+                                  rotateField(touch);
+
+                                  auto& camera = field_camera.body();
+                                  glm::quat q(glm::vec3(rotation.x, rotation.y, 0));
+                                  glm::vec3 p = q * glm::vec3{ 0, 0, -distance };
+                                  camera.lookAt(p, glm::vec3(0));
+                                  eye_position = camera.getEyePoint();
+                                }
+                                else
+                                {
+                                  // パネルを置ける場所をtouch→そこにパネルが移動
+                                  calcFieldPos(touch.pos);
+
+                                  if (touch_put_)
+                                  {
+                                    touch_put_ = (cursor_pos_orig == cursor_pos);
+                                  }
                                 }
                               });
 
@@ -810,6 +831,50 @@ private:
   }
 
 
+  // Touch座標→Field上の座標
+  glm::vec3 calcTouchPos(const glm::vec2& touch_pos) noexcept
+  {
+    const auto& camera = field_camera.body();
+    ci::Ray ray = camera.generateRay(touch_pos, ci::app::getWindowSize());
+
+    auto m = glm::translate(pivot_point);
+    auto origin = m * glm::vec4(ray.getOrigin(), 1);
+    ray.setOrigin(origin);
+
+    // 地面との交差を調べ、正確な位置を計算
+    float z;
+    if (!ray.calcPlaneIntersection(glm::vec3(0), glm::vec3(0, 1, 0), &z))
+    {
+      // FIXME FieldとRayが交差しなかったら原点を返す
+      return glm::vec3(0);
+    }
+    return ray.calcPosition(z);
+  }
+
+  // Touch座標からFieldの回転を計算
+  void rotateField(const Touch& touch) noexcept
+  {
+    auto pos      = calcTouchPos(touch.pos);
+    auto prev_pos = calcTouchPos(touch.prev_pos);
+
+    pos      -= pivot_point;
+    prev_pos -= pivot_point;
+
+    // 正規化
+    pos.y      = 0;
+    prev_pos.y = 0;
+    glm::normalize(pos);
+    glm::normalize(prev_pos);
+
+    // 外積から回転量が決まる
+    float cross = prev_pos.x * pos.z - prev_pos.z * pos.x;
+    rotation.y += cross * 0.001;
+  }
+   
+
+
+
+
   // FIXME 変数を後半に定義する実験
   Event<Arguments>& event_;
   ConnectionHolder holder_;
@@ -877,6 +942,8 @@ private:
 
   float panel_height_;
   double putdown_time_;
+
+  bool field_rotate_;
 
 
   // 表示
