@@ -17,12 +17,15 @@
     <ClCompile Include="..\src\ApprenticeMonarchApp.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\src\ApprenticeMonarchApp.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClInclude Include="..\include\Resources.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClCompile Include="..\src\Framework.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\MyApp.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\include\Resources.h">

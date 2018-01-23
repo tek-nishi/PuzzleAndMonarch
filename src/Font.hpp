@@ -6,6 +6,7 @@
 
 #include <boost/noncopyable.hpp>
 #include <cassert>
+#include <cinder/gl/gl.h>
 #include <cinder/gl/Texture.h>
 #include <cinder/TriMesh.h>
 

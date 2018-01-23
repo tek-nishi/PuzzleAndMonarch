@@ -881,6 +881,8 @@ private:
     // とりあえず無作為に決める
     const auto& pos = positions[ci::randInt(positions.size())];
     cursor_pos = glm::vec3(pos.x * PANEL_SIZE, panel_height_, pos.y * PANEL_SIZE);
+
+	return cursor_pos;
   }
 
 

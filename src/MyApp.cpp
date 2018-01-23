@@ -1,4 +1,4 @@
-//
+﻿//
 // 見習い君主
 //
 
@@ -168,23 +168,26 @@ private:
 
 };
 
+
+// TIPS MSVCは #ifdef 〜 #endif が使えないので関数化
+void setupApp(ci::app::App::Settings* settings) noexcept
+{
+  // FIXME:ここで設定ファイルを読むなんて...
+  auto params = ngs::Params::load("params.json");
+
+  settings->setWindowSize(ngs::Json::getVec<ci::ivec2>(params["app.size"]));
+  settings->setTitle(PREPRO_TO_STR(PRODUCT_NAME));
+
+#if !defined (CINDER_MAC)
+  settings->setMultiTouchEnabled();
+#endif
+
+  settings->setPowerManagementEnabled(params.getValueForKey<bool>("app.power_management"));
+  settings->setHighDensityDisplayEnabled(params.getValueForKey<bool>("app.retina"));
+}
+
 }
 
 
 // アプリのラウンチコード
-CINDER_APP(ngs::MyApp, ci::app::RendererGl,
-           [](ci::app::App::Settings* settings) noexcept
-           {
-             // FIXME:ここで設定ファイルを読むなんて...
-             auto params = ngs::Params::load("params.json");
-
-             settings->setWindowSize(ngs::Json::getVec<ci::ivec2>(params["app.size"]));
-             settings->setTitle(PREPRO_TO_STR(PRODUCT_NAME));
-
-#if !defined (CINDER_MAC)
-             settings->setMultiTouchEnabled();
-#endif
-
-             settings->setPowerManagementEnabled(params.getValueForKey<bool>("app.power_management"));
-             settings->setHighDensityDisplayEnabled(params.getValueForKey<bool>("app.retina"));
-           });
+CINDER_APP(ngs::MyApp, ci::app::RendererGl, ngs::setupApp);

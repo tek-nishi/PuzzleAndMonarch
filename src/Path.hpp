@@ -7,6 +7,7 @@
 #include "Defines.hpp"
 #include <string>
 #include <cinder/Utilities.h>
+#include <cinder/app/App.h>
 
 
 namespace ngs {

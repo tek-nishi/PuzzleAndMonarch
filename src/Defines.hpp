@@ -47,3 +47,8 @@ using u_int   = unsigned int;
 using u_long  = unsigned long;
 
 }
+
+#if defined (_MSC_VER)
+#define WIN32_LEAN_AND_MEAN
+#include <windows.h>
+#endif

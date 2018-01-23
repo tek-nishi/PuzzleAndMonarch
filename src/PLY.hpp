@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 
 //
 // PLY読み込み

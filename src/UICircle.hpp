@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 
 //
 // UI円描画
