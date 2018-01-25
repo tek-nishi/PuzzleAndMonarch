@@ -23,6 +23,11 @@ class WidgetsFactory
     auto rect = Json::getRect(params["rect"]);
     auto widget = std::make_shared<UI::Widget>(identifier, rect);
 
+    if (params.hasChild("enable"))
+    {
+      widget->enable(params.getValueForKey<bool>("enable"));
+    }
+
     // アンカー
     if (params.hasChild("anchor"))
     {

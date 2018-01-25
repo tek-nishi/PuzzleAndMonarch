@@ -9,12 +9,13 @@
 
 namespace ngs { namespace UI {
 
-// TIPS:自分自身を引数に取る関数があるので先行宣言が必要
+// TIPS 自分自身を引数に取る関数があるので先行宣言が必要
 class Widget;
 using WidgetPtr = std::shared_ptr<Widget>;
 
 
-class Widget {
+class Widget
+{
 
   
 public:
@@ -109,7 +110,6 @@ public:
     widget_base_ = std::move(base);
   }
 
-
   bool hasEvent() const noexcept
   {
     return has_event_;
@@ -119,6 +119,18 @@ public:
   bool contains(const glm::vec2& point) const noexcept
   {
     return disp_rect_.contains(point);
+  }
+
+  // 画面に表示するかどうかの制御
+  //   全ての子供にも影響
+  void enable(const bool enable = true) noexcept
+  {
+    enable_ = enable;
+  }
+
+  bool isEnable() const noexcept
+  {
+    return enable_;
   }
 
 
@@ -161,24 +173,22 @@ public:
   void draw(const ci::Rectf& parent_rect, const glm::vec2& parent_scale,
             UI::Drawer& drawer) noexcept
   {
-    // とりあえず描く
-    disp_rect_ = calcRect(parent_rect, parent_scale);
+    if (!enable_) return;
 
-    // ci::gl::color(color_);
-    // ci::gl::drawStrokedRect(rect);
+    disp_rect_ = calcRect(parent_rect, parent_scale);
     widget_base_->draw(disp_rect_, drawer);
-    
-    for (const auto& child : children_)
-    {
-      auto scale = parent_scale * scale_;
-      child->draw(disp_rect_, scale, drawer);
-    }
 
 #if defined (DEBUG)
     // デバッグ用にRectを描画
     ci::gl::color(disp_color_);
     ci::gl::drawStrokedRect(disp_rect_);
 #endif
+    
+    for (const auto& child : children_)
+    {
+      auto scale = parent_scale * scale_;
+      child->draw(disp_rect_, scale, drawer);
+    }
   }
 
 
@@ -208,6 +218,7 @@ private:
 
   // メンバ変数
   std::string identifier_;
+  bool enable_ = true;
 
   ci::Rectf rect_;
 
@@ -220,10 +231,11 @@ private:
 
   glm::vec2 scale_ = { 1.0f, 1.0f };
 
-  std::unique_ptr<UI::WidgetBase> widget_base_;
-
   bool has_event_ = false;
   std::string event_;
+
+  // 描画用クラス
+  std::unique_ptr<UI::WidgetBase> widget_base_;
 
   std::vector<WidgetPtr> children_;
 
