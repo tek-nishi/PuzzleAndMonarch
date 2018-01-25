@@ -20,6 +20,8 @@
 * TODO ファイルを１つにまとめる
 * TODO AppStore提出に必要な書類や素材
 * TODO iPhone 5sでの動作確認
+* DONE iOS: iPhoneXは上の切り欠きがあるので時間表示を下げる
+CLOSED: [2018-01-25 木 14:50]
 * DONE macOS: ReleaseビルドでCanvas内容が表示されない
 CLOSED: [2018-01-23 火 21:15]
 * DONE 開始時のパネルは「T字路に森の端」にする
