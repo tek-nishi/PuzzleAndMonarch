@@ -13,6 +13,8 @@ class Text
   : public WidgetBase
 {
   std::string text_;
+
+  std::string font_name_;
   float text_size_ = 1.0f;
   glm::vec2 alignment_ = { 0.5, 0.5 };
   ci::ColorA color_ = { 1.0f, 1.0f, 1.0f, 1.0f };
@@ -20,7 +22,8 @@ class Text
 
 public:
   Text(const ci::JsonTree& params)
-    : text_(params.getValueForKey<std::string>("text"))
+    : text_(params.getValueForKey<std::string>("text")),
+      font_name_(params.getValueForKey<std::string>("font"))
   {
     if (params.hasChild("text_size"))
     {
@@ -45,7 +48,7 @@ private:
     ci::gl::pushModelMatrix();
     ci::gl::ScopedGlslProg prog(drawer.getFontShader());
 
-    auto& font = drawer.getFont();
+    auto& font = drawer.getFont(font_name_);
     auto size = font.drawSize(text_);
     ci::gl::translate(rect.getCenter() - size * alignment_ * text_size_);
     ci::gl::scale(glm::vec3(text_size_));

@@ -1,5 +1,4 @@
 * TODO 時限式カウンター＋関数ポインタ
-* TODO UIでFontを複数使いたい
 * TODO UI::Widgetを書き換える演出
 * TODO いい感じに画面全体に街が映るように
 * TODO Canvasの遅延読み込み
@@ -20,6 +19,8 @@
 * TODO ファイルを１つにまとめる
 * TODO AppStore提出に必要な書類や素材
 * TODO iPhone 5sでの動作確認
+* DONE UIでFontを複数使いたい
+CLOSED: [2018-01-25 木 22:28]
 * DONE iOS: iPhoneXは上の切り欠きがあるので時間表示を下げる
 CLOSED: [2018-01-25 木 14:50]
 * DONE macOS: ReleaseビルドでCanvas内容が表示されない

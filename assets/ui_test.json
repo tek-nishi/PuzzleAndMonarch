@@ -41,6 +41,7 @@
 
       "text":  "Apprentice",
       "text_size": 0.25,
+      "font": "en",
       "alignment": [ 1, 0 ],
       "color": [ 1, 1, 1, 1 ]
     },
@@ -56,6 +57,7 @@
 
       "text":  "Monarch",
       "text_size": 0.25,
+      "font": "en",
       "alignment": [ 0, 0 ],
       "color": [ 1, 1, 1, 1 ]
     },
@@ -69,8 +71,9 @@
       "scale": [ 1, 1 ],
       "pivot": [ 0.5, 0.5 ],
       
-      "text":  "Touch screen to start",
+      "text":  "強くて ニューゲーム",
       "text_size": 0.15,
+      "font": "jp",
       "alignment": [ 0.5, 0.5 ],
       "color": [ 1, 1, 1, 1 ]
     },

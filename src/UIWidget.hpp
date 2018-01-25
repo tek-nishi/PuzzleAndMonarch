@@ -23,6 +23,7 @@ public:
       rect_(rect)
   {
 #if defined (DEBUG)
+    // 枠線のために適当に色を決める
     disp_color_ = ci::Color8u(ci::randInt(256),
                               ci::randInt(256),
                               ci::randInt(256));

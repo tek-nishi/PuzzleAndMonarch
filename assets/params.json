@@ -27,10 +27,18 @@
       "far_z":  600
     },
 
-    "font": {
-      "name": "MAIAN.TTF",
-      "size": 128
-    },
+    "font": [
+      {
+        "name": "en",
+        "path": "MAIAN.TTF",
+        "size": 128
+      },
+      {
+        "name": "jp",
+        "path": "DFKAIC001.ttf",
+        "size": 128
+      }
+    ],
     "shader": {
       "font": "font"
     }

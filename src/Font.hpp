@@ -39,7 +39,7 @@ class Font
 
 
 public:
-  Font(const std::string& path) noexcept;
+  Font(const std::string& path, const int size = 16) noexcept;
   ~Font() noexcept;
 
 
@@ -155,7 +155,7 @@ void Font::draw(void* userPtr, const float* verts, const float* tcoords, const u
 }
 
 
-Font::Font(const std::string& path) noexcept
+Font::Font(const std::string& path, const int size) noexcept
 {
   auto full_path = getAssetPath(path).string();
 
@@ -183,6 +183,7 @@ Font::Font(const std::string& path) noexcept
   // fonsSetSize(context_, DEFAULT_SIZE);
   // TIPS:下揃えにしておくと、下にはみ出す部分も正しく扱える
   fonsSetAlign(context_, FONS_ALIGN_BOTTOM);
+  fonsSetSize(context_, size);
 
   DOUT << "Font(" << path << ") handle: " << handle << std::endl;
 }
