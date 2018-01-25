@@ -22,6 +22,11 @@ public:
     : identifier_(std::move(identifier)),
       rect_(rect)
   {
+#if defined (DEBUG)
+    disp_color_ = ci::Color8u(ci::randInt(256),
+                              ci::randInt(256),
+                              ci::randInt(256));
+#endif
   }
 
 
@@ -132,6 +137,12 @@ public:
       auto scale = parent_scale * scale_;
       child->draw(disp_rect_, scale, drawer);
     }
+
+#if defined (DEBUG)
+    // デバッグ用にRectを描画
+    ci::gl::color(disp_color_);
+    ci::gl::drawStrokedRect(disp_rect_);
+#endif
   }
 
 
@@ -182,6 +193,10 @@ private:
 
   // 画面上のサイズ
   ci::Rectf disp_rect_;
+
+#if defined (DEBUG)
+  ci::Color8u disp_color_;
+#endif
 
 };
 

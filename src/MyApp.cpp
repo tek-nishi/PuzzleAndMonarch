@@ -12,9 +12,8 @@
 #include "Params.hpp"
 #include "JsonUtil.hpp"
 #include "TouchEvent.hpp"
-#include "MainPart.hpp"
-// #include "TestPart.hpp"
-// #include "UITest.hpp"
+// #include "MainPart.hpp"
+#include "TestPart.hpp"
 
 
 namespace ngs {
@@ -23,8 +22,8 @@ class MyApp
   : public ci::app::App
 {
 
-  using Worker = MainPart;
-  // using Worker = TestPart;
+  // using Worker = MainPart;
+  using Worker = TestPart;
 
 
 public:

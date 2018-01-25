@@ -91,31 +91,31 @@ public:
   ~TestPart() = default;
 
 
-  void mouseMove(ci::app::MouseEvent event)
+  void mouseMove(const ci::app::MouseEvent& event) noexcept
   {
   }
 
-	void mouseDown(ci::app::MouseEvent event)
+	void mouseDown(const ci::app::MouseEvent& event) noexcept
   {
   }
 
-	void mouseDrag(ci::app::MouseEvent event)
+	void mouseDrag(const ci::app::MouseEvent& event) noexcept
   {
   }
 
-	void mouseUp(ci::app::MouseEvent event)
+	void mouseUp(const ci::app::MouseEvent& event) noexcept
   {
   }
 
-  void mouseWheel(ci::app::MouseEvent event)
+  void mouseWheel(const ci::app::MouseEvent& event) noexcept
   {
   }
 
-  void keyDown(ci::app::KeyEvent event)
+  void keyDown(const ci::app::KeyEvent& event) noexcept
   {
   }
 
-  void keyUp(ci::app::KeyEvent event)
+  void keyUp(const ci::app::KeyEvent& event) noexcept
   {
   }
 
@@ -131,7 +131,7 @@ public:
   {
   }
 
-  void draw(glm::ivec2 window_size) noexcept
+  void draw(const glm::ivec2& window_size) noexcept
   {
     // World
     {
