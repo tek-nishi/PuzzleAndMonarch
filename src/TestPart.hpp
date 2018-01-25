@@ -127,8 +127,18 @@ public:
   }
 
 
+  float frame_count = 0;
+
   void update() noexcept
   {
+    frame_count += 1.0f;
+
+    const auto& widget = canvas_.at("5");
+
+    float alpha = std::abs(std::sin(frame_count * 0.04));
+    ci::ColorA color(1, 1, 1, alpha);
+
+    widget->setParam("color", color);
   }
 
   void draw(const glm::ivec2& window_size) noexcept

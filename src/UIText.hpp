@@ -21,7 +21,7 @@ class Text
 
 
 public:
-  Text(const ci::JsonTree& params)
+  Text(const ci::JsonTree& params) noexcept
     : text_(params.getValueForKey<std::string>("text")),
       font_name_(params.getValueForKey<std::string>("font"))
   {
@@ -54,6 +54,28 @@ private:
     ci::gl::scale(glm::vec3(text_size_));
     font.draw(text_, glm::vec2(0, 0), color_);
     ci::gl::popModelMatrix();
+  }
+
+
+  void setParam(const std::string& name, const boost::any& value) noexcept override
+  {
+    // UI::Widget内
+    std::map<std::string, std::function<void (const boost::any& v)>> tbl = {
+      { "text", [this](const boost::any& v) noexcept
+                {
+                  text_ = boost::any_cast<const std::string&>(v);
+                } },
+      { "size", [this](const boost::any& v) noexcept
+                 {
+                   text_size_ = boost::any_cast<const float>(v);
+                 } },
+      { "color", [this](const boost::any& v) noexcept
+                 {
+                   color_ = boost::any_cast<const ci::ColorA&>(v);
+                 } }
+    };
+
+    tbl.at(name)(value);
   }
 
 };

@@ -17,6 +17,10 @@ class Brank
   {
   }
 
+  void setParam(const std::string& name, const boost::any& value) noexcept override
+  {
+  }
+
 
 public:
   Brank()  = default;

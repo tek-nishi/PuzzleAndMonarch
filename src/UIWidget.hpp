@@ -122,6 +122,41 @@ public:
   }
 
 
+  // パラメーター設定
+  void setParam(const std::string& name, const boost::any& value) noexcept
+  {
+    // UI::Widget内
+    std::map<std::string, std::function<void (const boost::any& v)>> tbl = {
+      { "rect", [this](const boost::any& v) noexcept
+                {
+                  rect_ = boost::any_cast<const ci::Rectf&>(v);
+                } },
+      { "pivot", [this](const boost::any& v) noexcept
+                 {
+                   pivot_ = boost::any_cast<const glm::vec2&>(v);
+                 } },
+      { "anchor_min", [this](const boost::any& v) noexcept
+                      {
+                        anchor_min_ = boost::any_cast<const glm::vec2&>(v);
+                      } },
+      { "anchor_max", [this](const boost::any& v) noexcept
+                      {
+                        anchor_max_ = boost::any_cast<const glm::vec2&>(v);
+                      } },
+    };
+
+    if (tbl.count(name))
+    {
+      // TIPS コンテナを関数ポインタとして利用
+      tbl.at(name)(value);
+    }
+    else
+    {
+      //
+      widget_base_->setParam(name, value);
+    }
+  }
+
 
   void draw(const ci::Rectf& parent_rect, const glm::vec2& parent_scale,
             UI::Drawer& drawer) noexcept

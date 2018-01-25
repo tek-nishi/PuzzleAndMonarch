@@ -64,6 +64,28 @@ private:
     }
   }
 
+
+  void setParam(const std::string& name, const boost::any& value) noexcept override
+  {
+    // UI::Widget内
+    std::map<std::string, std::function<void (const boost::any& v)>> tbl = {
+      { "radius", [this](const boost::any& v) noexcept
+                  {
+                    radius_ = boost::any_cast<const float>(v);
+                  } },
+      { "fill", [this](const boost::any& v) noexcept
+                {
+                  fill_ = boost::any_cast<const bool>(v);
+                } },
+      { "color", [this](const boost::any& v) noexcept
+                 {
+                   color_ = boost::any_cast<const ci::ColorA&>(v);
+                 } }
+    };
+
+    tbl.at(name)(value);
+  }
+
 };
 
 } }

@@ -75,6 +75,14 @@ public:
   }
 
 
+  const UI::WidgetPtr at(const std::string& name) const noexcept
+  {
+    return query_widgets_.at(name);
+  }
+
+
+
+
 private:
   void makeQueryWidgets(const UI::WidgetPtr& widget) noexcept
   {
