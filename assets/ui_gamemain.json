@@ -10,7 +10,7 @@
   
   "childlen": [
     {
-      "identifier": "3",
+      "identifier": "time_remain",
       "rect": [ 0, 0, 0, 0 ],
       "anchor": [
         [ 0.5, 0.915 ],
