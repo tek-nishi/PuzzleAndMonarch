@@ -51,12 +51,13 @@ private:
     auto& font = drawer.getFont(font_name_);
     // FontのサイズとWidgetのサイズからスケーリングを計算
     auto font_scale = text_size_ / font.getSize();
-    auto size  = font.drawSize(text_) * font_scale; 
-
+    auto size = font.drawSize(text_) * font_scale; 
+    // レイアウトを計算
     glm::vec2 pos = rect.getUpperLeft() * (glm::vec2(1.0) - layout_) + (rect.getLowerRight() - size) * layout_; 
+    
     ci::gl::translate(pos);
     ci::gl::scale(glm::vec3(font_scale));
-    font.draw(text_, glm::vec2(0, 0), color_);
+    font.draw(text_, glm::vec2(0), color_);
     ci::gl::popModelMatrix();
   }
 

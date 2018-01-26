@@ -11,7 +11,7 @@
 * TODO 本格的に見た目を決める
 * TODO サウンド周りの再設計
 * TODO タスク導入
-* TODO UIのActive/inactiveを実装
+* TODO UIのActie/inactiveを実装
 * TODO 基本的な操作を固める
 * TODO UIとRayの交差判定(矩形や丸)の実装
 * TODO ファイルを１つにまとめる
