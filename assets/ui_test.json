@@ -58,7 +58,6 @@
       "text":  "Monarch",
       "text_size": 0.25,
       "font": "en",
-      "alignment": [ 0, 0 ],
       "color": [ 1, 1, 1, 1 ]
     },
     {
@@ -74,7 +73,6 @@
       "text":  "強くて ニューゲーム",
       "text_size": 0.15,
       "font": "jp",
-      "alignment": [ 0.5, 0.5 ],
       "color": [ 1, 1, 1, 1 ]
     },
     {
@@ -92,7 +90,26 @@
       "fill": true,
       "color": [ 1, 0, 0, 1 ],
 
-      "event": "6"
+      "event": "6",
+
+      "childlen": [
+        {
+          "identifier": "ok",
+          "rect": [ 0, 0, 0, 0 ],
+          "anchor": [
+            [ 0.0, 0.0 ],
+            [ 1.0, 1.0 ]
+          ],
+          "scale": [ 1, 1 ],
+          "pivot": [ 0.5, 0.5 ],
+          
+          "text":  "  ",
+          "text_size": 0.15,
+          "font": "icon",
+          "layout": "center middle",
+          "color": [ 1, 1, 1, 1 ]
+        }
+      ]
     },
     {
       "identifier": "7",

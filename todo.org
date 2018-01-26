@@ -14,10 +14,11 @@
 * TODO UIのActive/inactiveを実装
 * TODO 基本的な操作を固める
 * TODO UIとRayの交差判定(矩形や丸)の実装
-* TODO テキストのレイアウト(右寄せとか上寄せとか)
 * TODO ファイルを１つにまとめる
 * TODO AppStore提出に必要な書類や素材
 * TODO iPhone 5sでの動作確認
+* DONE テキストのレイアウト(右寄せとか上寄せとか)
+CLOSED: [2018-01-26 金 00:42]
 * DONE UI::Widgetを書き換える演出
 CLOSED: [2018-01-25 木 23:47]
 * DONE UIでFontを複数使いたい

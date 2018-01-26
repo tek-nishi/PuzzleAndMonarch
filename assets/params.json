@@ -1,7 +1,7 @@
 {
   "app": {
     "size":   [ 960, 640 ],
-    "retina": false,
+    "retina": true,
     "power_management": true
   },
 
@@ -36,6 +36,11 @@
       {
         "name": "jp",
         "path": "DFKAIC001.ttf",
+        "size": 128
+      },
+      {
+        "name": "icon",
+        "path": "fontawesome-webfont.ttf",
         "size": 128
       }
     ],
