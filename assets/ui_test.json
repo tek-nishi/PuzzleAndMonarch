@@ -71,7 +71,7 @@
       "pivot": [ 0.5, 0.5 ],
       
       "text":  "強くて ニューゲーム",
-      "text_size": 20,
+      "text_size": 16,
       "font": "jp",
       "color": [ 1, 1, 1, 1 ]
     },

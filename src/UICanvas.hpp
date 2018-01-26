@@ -26,9 +26,13 @@ public:
       camera_(camera_params),
       widgets_(widgets_factory_.construct(widgets_params))
   {
-    camera_.body().lookAt(glm::vec3(0, 0, camera_.getNearClip()), glm::vec3(0));
+    // FIXME near_zピッタリの位置だとmacOSのReleaseビルドで絵が出ない
+    camera_.body().lookAt(glm::vec3(0, 0, camera_.getNearClip() + 0.001f), glm::vec3(0));
 
     makeQueryWidgets(widgets_);
+    
+    holder_ += event_.connect("resize", std::bind(&Canvas::resize, this,
+                                                  std::placeholders::_1, std::placeholders::_2));
 
     holder_ += event_.connect("single_touch_began",
                               std::bind(&Canvas::touchBegan,
@@ -46,7 +50,7 @@ public:
   ~Canvas() = default;
 
 
-  void resize() noexcept
+  void resize(const Connection&, const Arguments&) noexcept
   {
     camera_.resize();
   }
@@ -55,10 +59,6 @@ public:
   {
     auto& camera = camera_.body();
     ci::gl::setMatrices(camera);
-#if !defined (CINDER_COCOA_TOUCH)
-    // TIPS z値でカリングせずにclampする
-    ci::gl::enable(GL_DEPTH_CLAMP);
-#endif
 
     glm::vec3 top_left;
     glm::vec3 top_right;
@@ -68,10 +68,6 @@ public:
     ci::Rectf rect(top_left.x, bottom_right.y, bottom_right.x, top_left.y);
 
     widgets_->draw(rect, glm::vec2(1), drawer_);
-    
-#if !defined (CINDER_COCOA_TOUCH)
-    ci::gl::disable(GL_DEPTH_CLAMP);
-#endif
   }
 
 
@@ -79,8 +75,6 @@ public:
   {
     return query_widgets_.at(name);
   }
-
-
 
 
 private:

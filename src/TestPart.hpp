@@ -34,6 +34,9 @@ public:
     world_camera_.body().lookAt(eye, target_);
 
     // せっせとイベントを登録
+    holder_ += event_.connect("resize", std::bind(&TestPart::resize, this,
+                                                  std::placeholders::_1, std::placeholders::_2));
+
     // holder_ += event_.connect("single_touch_began",
     //                           [this](const Connection&, const Arguments& arg) noexcept
     //                           {
@@ -120,10 +123,9 @@ public:
   }
 
 
-  void resize() noexcept
+  void resize(const Connection&, const Arguments&) noexcept
   {
     world_camera_.resize();
-    canvas_.resize();
   }
 
 

@@ -138,7 +138,7 @@ private:
 
   void resize() noexcept override
   {
-    worker->resize();
+    event_.signal("resize", Arguments());
   }
 
 
