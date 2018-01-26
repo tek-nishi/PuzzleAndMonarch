@@ -9,7 +9,6 @@
 * TODO 点光源
 * TODO 本格的な画面設計
 * TODO 本格的に見た目を決める
-* TODO Fontサイズの指定をピクセルで
 * TODO サウンド周りの再設計
 * TODO タスク導入
 * TODO UIのActive/inactiveを実装
@@ -18,6 +17,8 @@
 * TODO ファイルを１つにまとめる
 * TODO AppStore提出に必要な書類や素材
 * TODO iPhone 5sでの動作確認
+* DONE Fontサイズの指定をピクセルで
+CLOSED: [2018-01-26 金 21:13]
 * DONE テキストのレイアウト(右寄せとか上寄せとか)
 CLOSED: [2018-01-26 金 00:42]
 * DONE UI::Widgetを書き換える演出

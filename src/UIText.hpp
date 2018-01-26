@@ -12,23 +12,11 @@ namespace ngs { namespace UI {
 class Text
   : public WidgetBase
 {
-  // レイアウト
-  enum
-  {
-    LEFT   = 1 << 0,
-    CENTER = 1 << 1,
-    RIGHT  = 1 << 2,
-
-    TOP    = 1 << 3,
-    MIDDLE = 1 << 4,
-    BOTTOM = 1 << 5,
-  };
-  
   std::string text_;
 
   std::string font_name_;
   float text_size_ = 1.0f;
-  int layout_ = CENTER | MIDDLE;
+  glm::vec2 layout_ = { 0.5, 0.5 };
   ci::ColorA color_ = { 1.0f, 1.0f, 1.0f, 1.0f };
 
 
@@ -43,18 +31,7 @@ public:
     }
     if (params.hasChild("layout"))
     {
-      std::map<std::string, int> tbl = {
-        { "left top",      LEFT | TOP },    
-        { "left middle",   LEFT | MIDDLE },    
-        { "left bottom",   LEFT | BOTTOM },    
-        { "center top",    CENTER | TOP },    
-        { "center middle", CENTER | MIDDLE },    
-        { "center bottom", CENTER | BOTTOM },    
-        { "right top",     RIGHT | TOP },    
-        { "right middle",  RIGHT | MIDDLE },    
-        { "right bottom",  RIGHT | BOTTOM },    
-      };
-      layout_ = tbl.at(params.getValueForKey<std::string>("layout"));
+      layout_ = Json::getVec<glm::vec2>(params["layout"]);
     }
     if (params.hasChild("color"))
     {
@@ -76,32 +53,8 @@ private:
     auto font_scale = text_size_ / font.getSize();
     auto size  = font.drawSize(text_) * font_scale; 
 
-    float x = rect.getX1();
-    float y = rect.getY1();
-    if (layout_ & LEFT)
-    {
-    }
-    else if (layout_ & CENTER)
-    {
-      x = (rect.getX1() + rect.getX2() - size.x) * 0.5;
-    }
-    else if (layout_ & RIGHT)
-    {
-      x = rect.getX2() - size.x;
-    }
-    if (layout_ & TOP)
-    {
-      y = rect.getY2() - size.y;
-    }
-    else if (layout_ & MIDDLE)
-    {
-      y = (rect.getY1() + rect.getY2() - size.y) * 0.5;
-    }
-    else if (layout_ & BOTTOM)
-    {
-    }
-
-    ci::gl::translate(x, y);
+    glm::vec2 pos = rect.getUpperLeft() * (glm::vec2(1.0) - layout_) + (rect.getLowerRight() - size) * layout_; 
+    ci::gl::translate(pos);
     ci::gl::scale(glm::vec3(font_scale));
     font.draw(text_, glm::vec2(0, 0), color_);
     ci::gl::popModelMatrix();

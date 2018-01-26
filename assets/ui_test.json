@@ -42,7 +42,7 @@
       "text": "Apprentice",
       "text_size": 32,
       "font": "en",
-      "layout": "center middle",
+      "layout": [ 0.5, 0 ],
       "color": [ 1, 1, 1, 1 ]
     },
     {
@@ -106,7 +106,6 @@
           "text":  "  ",
           "text_size": 18,
           "font": "icon",
-          "layout": "center middle",
           "color": [ 1, 1, 1, 1 ]
         }
       ]
