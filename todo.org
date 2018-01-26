@@ -10,13 +10,14 @@
 * TODO 本格的な画面設計
 * TODO 本格的に見た目を決める
 * TODO サウンド周りの再設計
-* TODO タスク導入
 * TODO UIのActie/inactiveを実装
 * TODO 基本的な操作を固める
 * TODO UIとRayの交差判定(矩形や丸)の実装
 * TODO ファイルを１つにまとめる
 * TODO AppStore提出に必要な書類や素材
 * TODO iPhone 5sでの動作確認
+* DONE タスク導入
+CLOSED: [2018-01-27 Sat 00:02]
 * DONE Fontサイズの指定をピクセルで
 CLOSED: [2018-01-26 金 21:13]
 * DONE テキストのレイアウト(右寄せとか上寄せとか)

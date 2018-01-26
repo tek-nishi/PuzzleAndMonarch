@@ -58,9 +58,7 @@
   },
 
   "title": {
-    "canvas": {
-      "widgets": "ui_title.json"
-    }
+    "canvas": "ui_title.json"
   },
   
   "gamemain": {

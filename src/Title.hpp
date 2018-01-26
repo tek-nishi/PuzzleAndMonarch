@@ -26,7 +26,7 @@ public:
     : event_(event),
       canvas_(event, drawer,
               params["ui.camera"],
-              Params::load(params.getValueForKey<std::string>("ui_test.canvas.widgets")))
+              Params::load(params.getValueForKey<std::string>("title.canvas")))
   {
   }
 
@@ -43,8 +43,6 @@ public:
     ci::ColorA color(1, 1, 1, alpha);
 
     widget->setParam("color", color);
-
-    if (frame_count > 120.0f) return false;
 
     return true;
   }

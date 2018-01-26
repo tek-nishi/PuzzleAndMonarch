@@ -20,9 +20,10 @@
       "scale": [ 1, 1 ],
       "pivot": [ 0.5, 0.5 ],
 
-      "text":  "Apprentice",
-      "text_size": 0.25,
-      "alignment": [ 1, 0 ],
+      "font": "en",
+      "text": "Apprentice",
+      "text_size": 32,
+      "layout": [ 1, 0 ],
       "color": [ 1, 1, 1, 1 ]
     },
     {
@@ -35,9 +36,10 @@
       "scale": [ 1, 1 ],
       "pivot": [ 0.5, 0.5 ],
 
-      "text":  "Monarch",
-      "text_size": 0.25,
-      "alignment": [ 0, 0 ],
+      "font": "en",
+      "text": "Monarch",
+      "text_size": 32,
+      "layout": [ 0, 0 ],
       "color": [ 1, 1, 1, 1 ]
     },
     {
@@ -50,9 +52,10 @@
       "scale": [ 1, 1 ],
       "pivot": [ 0.5, 0.5 ],
       
-      "text":  "Touch screen to start",
-      "text_size": 0.15,
-      "alignment": [ 0.5, 0.5 ],
+      "font": "icon",
+      "text": "",
+      "text_size": 20,
+      "layout": [ 0.5, 0.5 ],
       "color": [ 1, 1, 1, 1 ]
     }
   ]
