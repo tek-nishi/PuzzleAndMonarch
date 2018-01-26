@@ -30,6 +30,8 @@ class Font
   Context gl_;
   FONScontext* context_;
 
+  float font_size_;
+
 
   // 以下、fontstashからのコールバック関数
   static int create(void* userPtr, int width, int height) noexcept;
@@ -39,12 +41,15 @@ class Font
 
 
 public:
-  Font(const std::string& path, const int size = 16) noexcept;
-  ~Font() noexcept;
+  Font(const std::string& path,
+       const int texture_width = 1024, const int texture_height = 1024, const float initial_size = 16) noexcept;
+
+  ~Font();
 
 
   // フォントサイズ指定
-  void size(const int size) noexcept;
+  void size(const float size) noexcept;
+  float getSize() const noexcept;
 
   // 描画した時のサイズを取得
   ci::vec2 drawSize(const std::string& text) noexcept;
@@ -155,15 +160,16 @@ void Font::draw(void* userPtr, const float* verts, const float* tcoords, const u
 }
 
 
-Font::Font(const std::string& path, const int size) noexcept
+Font::Font(const std::string& path,
+           const int texture_width, const int texture_height, const float initial_size) noexcept
 {
   auto full_path = getAssetPath(path).string();
 
   FONSparams params;
 
   memset(&params, 0, sizeof(params));
-  params.width  = 1024;
-  params.height = 1024;
+  params.width  = texture_width;
+  params.height = texture_height;
   params.flags  = (unsigned char)FONS_ZERO_BOTTOMLEFT;
 
   params.renderCreate = Font::create;
@@ -180,22 +186,29 @@ Font::Font(const std::string& path, const int size) noexcept
   fonsClearState(context_);
   int handle = fonsAddFont(context_, "font", full_path.c_str());
   fonsSetFont(context_, handle);
-  // fonsSetSize(context_, DEFAULT_SIZE);
   // TIPS:下揃えにしておくと、下にはみ出す部分も正しく扱える
   fonsSetAlign(context_, FONS_ALIGN_BOTTOM);
-  fonsSetSize(context_, size);
+  fonsSetSize(context_, initial_size);
+
+  font_size_ = initial_size;
 
   DOUT << "Font(" << path << ") handle: " << handle << std::endl;
 }
 
-Font::~Font() noexcept
+Font::~Font()
 {
   fonsDeleteInternal(context_);
 }
 
-void Font::size(const int size) noexcept
+void Font::size(const float size) noexcept
 {
   fonsSetSize(context_, size);
+  font_size_ = size;
+}
+
+float Font::getSize() const noexcept
+{
+  return font_size_;
 }
 
 ci::vec2 Font::drawSize(const std::string& text) noexcept

@@ -72,7 +72,9 @@ private:
     ci::gl::ScopedGlslProg prog(drawer.getFontShader());
 
     auto& font = drawer.getFont(font_name_);
-    auto size  = font.drawSize(text_) * text_size_;
+    // FontのサイズとWidgetのサイズからスケーリングを計算
+    auto font_scale = text_size_ / font.getSize();
+    auto size  = font.drawSize(text_) * font_scale; 
 
     float x = rect.getX1();
     float y = rect.getY1();
@@ -100,7 +102,7 @@ private:
     }
 
     ci::gl::translate(x, y);
-    ci::gl::scale(glm::vec3(text_size_));
+    ci::gl::scale(glm::vec3(font_scale));
     font.draw(text_, glm::vec2(0, 0), color_);
     ci::gl::popModelMatrix();
   }

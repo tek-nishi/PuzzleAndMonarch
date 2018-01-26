@@ -9,6 +9,7 @@
 * TODO 点光源
 * TODO 本格的な画面設計
 * TODO 本格的に見た目を決める
+* TODO Fontサイズの指定をピクセルで
 * TODO サウンド周りの再設計
 * TODO タスク導入
 * TODO UIのActive/inactiveを実装

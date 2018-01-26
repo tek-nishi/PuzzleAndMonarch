@@ -17,19 +17,19 @@ struct Drawer
 {
   Drawer(const ci::JsonTree& params) noexcept
   {
+    int texture_size = params.getValueForKey<int>("font_texture"); 
     const auto& json = params["font"];
-
     for (size_t i = 0; i < json.getNumChildren(); ++i)
     {
       const auto& p = json[i];
 
       const auto& name = p.getValueForKey<std::string>("name");
       const auto& path = p.getValueForKey<std::string>("path");
-      const int size   = p.getValueForKey<int>("size");
+      int initial_size = p.getValueForKey<int>("size");
 
       fonts_.emplace(std::piecewise_construct,
                      std::forward_as_tuple(name),
-                     std::forward_as_tuple(path, size));
+                     std::forward_as_tuple(path, texture_size, texture_size, initial_size));
     }
 
     {
