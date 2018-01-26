@@ -10,6 +10,8 @@
 #include "ConnectionHolder.hpp"
 #include "UICanvas.hpp"
 #include "Params.hpp"
+#include "TaskContainer.hpp"
+#include "Title.hpp"
 
 
 namespace ngs {
@@ -17,18 +19,16 @@ namespace ngs {
 class TestPart
 {
 
-
 public:
   TestPart(const ci::JsonTree& params, Event<Arguments>& event) noexcept
     : event_(event),
       world_camera_(params["test.camera"]),
       distance_(params.getValueForKey<float>("test.camera.distance")),
       target_(Json::getVec<glm::vec3>(params["test.camera.target"])),
-      drawer_(params["ui"]),
-      canvas_(event, drawer_,
-              params["ui.camera"],
-              Params::load(params.getValueForKey<std::string>("ui_test.canvas.widgets")))
+      drawer_(params["ui"])
   {
+    tasks_.pushFront<Title>(params, event_, drawer_);
+
     // World
     glm::vec3 eye = target_ + glm::vec3(0, 0, distance_);
     world_camera_.body().lookAt(eye, target_);
@@ -129,18 +129,10 @@ public:
   }
 
 
-  float frame_count = 0;
-
   void update() noexcept
   {
-    frame_count += 1.0f;
 
-    const auto& widget = canvas_.at("5");
-
-    float alpha = std::abs(std::sin(frame_count * 0.04));
-    ci::ColorA color(1, 1, 1, alpha);
-
-    widget->setParam("color", color);
+    tasks_.update();
   }
 
   void draw(const glm::ivec2& window_size) noexcept
@@ -158,13 +150,7 @@ public:
     }
 
     // UI
-    {
-      ci::gl::enableDepth(false);
-      ci::gl::disable(GL_CULL_FACE);
-      ci::gl::enableAlphaBlending();
-
-      canvas_.draw();
-    }
+    tasks_.draw(window_size);
   }
 
 
@@ -181,11 +167,12 @@ private:
   float distance_;
   glm::vec3 target_;
   glm::quat rot_;
-  
 
   // UI
   UI::Drawer drawer_;
-  UI::Canvas canvas_;
+
+
+  TaskContainer tasks_;
 };
 
 }
