@@ -18,7 +18,7 @@ class TaskContainer
 
 
 public:
-  TaskContainer() noexcept = default;
+  TaskContainer()  = default;
   ~TaskContainer() = default;
 
 
