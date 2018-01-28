@@ -10,18 +10,63 @@
   
   "childlen": [
     {
-      "identifier": "time_remain",
+      "identifier": "main",
       "rect": [ 0, 0, 0, 0 ],
       "anchor": [
-        [ 0.5, 0.915 ],
-        [ 0.5, 0.915 ]
+        [ 0, 0 ],
+        [ 1, 1 ]
       ],
       "scale": [ 1, 1 ],
       "pivot": [ 0.5, 0.5 ],
+      "enable": false,
 
-      "text":  "9:99",
-      "text_size": 0.20,
-      "alignment": [ 0.5, 0.5 ],
+      "childlen": [
+        {
+          "identifier": "time_remain",
+          "rect": [ -25, 0, 25, 0 ],
+          "anchor": [
+            [ 0.5, 0.915 ],
+            [ 0.5, 0.915 ]
+          ],
+          "scale": [ 1, 1 ],
+          "pivot": [ 0.5, 0.5 ],
+          
+          "font": "en",
+          "text": "9:99",
+          "text_size": 25,
+          "color": [ 1, 1, 1, 1 ]
+        }
+      ]
+    },
+    {
+      "identifier": "begin",
+      "rect": [ -100, -10, 100, 10 ],
+      "anchor": [
+        [ 0.5, 0.5 ],
+        [ 0.5, 0.5 ]
+      ],
+      "scale": [ 1, 1 ],
+      "pivot": [ 0.5, 0.5 ],
+      
+      "font": "en",
+      "text": "Secure the territory!",
+      "text_size": 28,
+      "color": [ 1, 1, 1, 1 ]
+    },
+    {
+      "identifier": "end",
+      "rect": [ 0, 0, 0, 0 ],
+      "anchor": [
+        [ 0.5, 0.5 ],
+        [ 0.5, 0.5 ]
+      ],
+      "scale": [ 1, 1 ],
+      "pivot": [ 0.5, 0.5 ],
+      "enable": false,
+      
+      "font": "en",
+      "text": "Well done!",
+      "text_size":28, 
       "color": [ 1, 1, 1, 1 ]
     }
   ]

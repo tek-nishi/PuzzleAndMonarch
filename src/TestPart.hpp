@@ -24,7 +24,8 @@ class TestPart
 
 public:
   TestPart(const ci::JsonTree& params, Event<Arguments>& event) noexcept
-    : event_(event),
+    : params_(params),
+      event_(event),
       world_camera_(params["test.camera"]),
       distance_(params.getValueForKey<float>("test.camera.distance")),
       target_(Json::getVec<glm::vec3>(params["test.camera.target"])),
@@ -92,6 +93,13 @@ public:
     //                           {
     //                           });
 
+
+    holder_ += event_.connect("Title:finished",
+                              [this](const Connection&, const Arguments& arg) noexcept
+                              {
+                                // GameMain起動
+                                tasks_.pushFront<GameMain>(params_, event_, drawer_);
+                              });
   }
 
   ~TestPart() = default;
@@ -161,6 +169,8 @@ private:
 
 
   // メンバ変数を最後尾で定義する実験
+  const ci::JsonTree& params_;
+
   Event<Arguments>& event_;
   ConnectionHolder holder_;
 

@@ -29,6 +29,18 @@ public:
     : event_(event),
       canvas_(event, drawer, params["ui.camera"], Params::load(params.getValueForKey<std::string>("gamemain.canvas")))
   {
+    count_exec_.add(2.0, [this]() {
+                           {
+                             const auto& widget = canvas_.at("begin");
+                             widget->enable(false);
+                           }
+                           {
+                             const auto& widget = canvas_.at("main");
+                             widget->enable();
+                           }
+                         });
+
+
   }
 
   ~GameMain() = default;

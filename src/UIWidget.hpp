@@ -26,9 +26,7 @@ public:
   {
 #if defined (DEBUG)
     // 枠線のために適当に色を決める
-    disp_color_ = ci::Color8u(ci::randInt(256),
-                              ci::randInt(256),
-                              ci::randInt(256));
+    disp_color_ = ci::hsvToRgb(glm::vec3(ci::randFloat(), 1.0f, 1.0f));
 #endif
   }
 
@@ -244,7 +242,7 @@ private:
   ci::Rectf disp_rect_;
 
 #if defined (DEBUG)
-  ci::Color8u disp_color_;
+  ci::Color disp_color_;
 #endif
 
 };

@@ -62,9 +62,7 @@
   },
   
   "gamemain": {
-    "canvas": {
-      "widgets": "ui_gamemain.json"
-    }
+    "canvas": "ui_gamemain.json"
   },
 
   "test": {
