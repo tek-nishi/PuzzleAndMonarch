@@ -10,6 +10,7 @@
 #include "ConnectionHolder.hpp"
 #include "UICanvas.hpp"
 #include "Params.hpp"
+#include "CountExec.hpp"
 #include "TaskContainer.hpp"
 #include "Title.hpp"
 
@@ -17,6 +18,7 @@
 namespace ngs {
 
 class TestPart
+  : private boost::noncopyable
 {
 
 public:
@@ -129,10 +131,9 @@ public:
   }
 
 
-  void update() noexcept
+  void update(const double current_time, const double delta_time) noexcept
   {
-
-    tasks_.update();
+    tasks_.update(current_time, delta_time);
   }
 
   void draw(const glm::ivec2& window_size) noexcept

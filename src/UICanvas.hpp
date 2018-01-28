@@ -6,6 +6,7 @@
 
 #include <map>
 #include <string>
+#include <boost/noncopyable.hpp>
 #include "UIWidgetsFactory.hpp"
 #include "UIDrawer.hpp"
 #include "Camera.hpp"
@@ -14,6 +15,7 @@
 namespace ngs { namespace UI {
 
 class Canvas
+  : private boost::noncopyable
 {
 
 public:
@@ -76,6 +78,15 @@ public:
     return query_widgets_.at(name);
   }
 
+  void active(const bool active = true) noexcept
+  {
+    active_ = active;
+    
+    touching_in_ = false;
+    // FIXME 何度も実行して良いのか??
+    touching_widget_.reset();
+  }
+
 
 private:
   void makeQueryWidgets(const UI::WidgetPtr& widget) noexcept
@@ -96,6 +107,8 @@ private:
   // UI event
   void touchBegan(const Connection&, Arguments& arg) noexcept
   {
+    if (!active_) return;
+
     auto& touch = boost::any_cast<Touch&>(arg.at("touch"));
     auto pos = calcUIPosition(touch.pos);
 
@@ -119,6 +132,7 @@ private:
   
   void touchMoved(const Connection&, Arguments& arg) noexcept
   {
+    if (!active_) return;
     if (touching_widget_.expired()) return;
 
     auto& touch = boost::any_cast<Touch&>(arg.at("touch"));
@@ -158,6 +172,7 @@ private:
 
   void touchEnded(const Connection&, Arguments& arg) noexcept
   {
+    if (!active_) return;
     if (touching_widget_.expired()) return;
 
     auto& touch = boost::any_cast<Touch&>(arg.at("touch"));
@@ -214,6 +229,8 @@ private:
   bool touching_in_ = false;
 
   UI::Drawer& drawer_;
+
+  bool active_ = true;
 };
 
 } }

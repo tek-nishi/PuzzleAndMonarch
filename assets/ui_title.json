@@ -57,6 +57,22 @@
       "text_size": 20,
       "layout": [ 0.5, 0.5 ],
       "color": [ 1, 1, 1, 1 ]
+    },
+    {
+      "identifier": "6",
+      "rect": [ 0, 3, 0, 20 ],
+      "anchor": [
+        [ 0.5, 0.0 ],
+        [ 0.5, 0.0 ]
+      ],
+      "scale": [ 1, 1 ],
+      "pivot": [ 0.5, 1 ],
+
+      "font": "en",
+      "text": "2018 new game style",
+      "text_size": 15,
+      "layout": [ 0.5, 0.5 ],
+      "color": [ 1, 1, 1, 1 ]
     }
   ]
 }

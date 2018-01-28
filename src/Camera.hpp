@@ -5,11 +5,13 @@
 //
 
 #include <cinder/Camera.h>
+#include <boost/noncopyable.hpp>
 
 
 namespace ngs {
 
 struct Camera
+  : private boost::noncopyable
 {
   Camera(const ci::JsonTree& params) noexcept
     : fov_(params.getValueForKey<float>("fov")),

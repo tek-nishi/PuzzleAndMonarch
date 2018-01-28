@@ -15,6 +15,7 @@ using WidgetPtr = std::shared_ptr<Widget>;
 
 
 class Widget
+  : private boost::noncopyable
 {
 
   

@@ -13,11 +13,11 @@
 namespace ngs {
 
 struct TouchEvent
+  : private boost::noncopyable
 {
-  TouchEvent(Event<Arguments>& event)
+  TouchEvent(Event<Arguments>& event) noexcept
     : event_(event)
-  {
-  }
+  {}
 
 
   // マウスでのタッチ操作代用

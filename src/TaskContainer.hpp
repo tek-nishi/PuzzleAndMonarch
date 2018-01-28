@@ -22,11 +22,11 @@ public:
   ~TaskContainer() = default;
 
 
-  void update() noexcept
+  void update(const double current_time, const double delta_time) noexcept
   {
     auto result = std::remove_if(std::begin(tasks_), std::end(tasks_),
-                                 [](std::unique_ptr<Task>& task) {
-                                   return !task->update();
+                                 [current_time, delta_time](std::unique_ptr<Task>& task) {
+                                   return !task->update(current_time, delta_time);
                                  });
 
     tasks_.erase(result, std::end(tasks_));

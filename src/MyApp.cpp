@@ -11,6 +11,7 @@
 #include "Arguments.hpp"
 #include "Params.hpp"
 #include "JsonUtil.hpp"
+#include "CountExec.hpp"
 #include "TouchEvent.hpp"
 // #include "MainPart.hpp"
 #include "TestPart.hpp"
@@ -19,7 +20,8 @@
 namespace ngs {
 
 class MyApp
-  : public ci::app::App
+  : public ci::app::App,
+    private boost::noncopyable
 {
 
   // using Worker = MainPart;
@@ -34,6 +36,7 @@ public:
       worker(std::make_unique<Worker>(params, event_))
   {
     ci::Rand::randomize();
+    prev_time_ = getElapsedSeconds();
 
 #if defined (CINDER_COCOA_TOUCH)
     // 縦横画面両対応
@@ -132,7 +135,13 @@ private:
 
 	void update() noexcept override
   {
-    worker->update();
+
+    auto current_time = getElapsedSeconds();
+    auto delta_time = current_time - prev_time_;
+    worker->update(current_time, delta_time);
+    count_exec_.update(delta_time);
+
+    prev_time_ = current_time;
   }
 
 
@@ -159,9 +168,11 @@ private:
 #endif
 
   Event<Arguments> event_;
+  CountExec count_exec_;
 
   TouchEvent touch_event_;
 
+  double prev_time_;
 
   // MainPart worker;
   std::unique_ptr<Worker> worker;

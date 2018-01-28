@@ -10,6 +10,7 @@
 namespace ngs { namespace UI {
 
 struct WidgetBase
+  : private boost::noncopyable
 {
   virtual ~WidgetBase() {}
 

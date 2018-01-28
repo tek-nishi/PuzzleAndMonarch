@@ -17,8 +17,8 @@ class Title
   ConnectionHolder holder_;
   
   UI::Canvas canvas_;
-  
-  float frame_count = 0;
+
+  int mode_ = 0;
 
 
 public:
@@ -28,21 +28,39 @@ public:
               params["ui.camera"],
               Params::load(params.getValueForKey<std::string>("title.canvas")))
   {
+    holder_ += event_.connect("start:touch_ended",
+                              [this](const Connection&, const Arguments& arg) noexcept
+                              {
+                                canvas_.active(false);
+                                mode_ += 1;
+                                DOUT << "Game Start!" << std::endl;
+                              });
   }
 
   ~Title() = default;
   
 
-  bool update() noexcept override
+  bool update(const double current_time, const double delta_time) noexcept override
   {
-    frame_count += 1.0f;
-
     const auto& widget = canvas_.at("5");
+    switch (mode_)
+    {
+    case 0:
+      {
+        float alpha = std::abs(std::sin(M_PI * current_time));
+        ci::ColorA color(1, 1, 1, alpha);
+        widget->setParam("color", color);
+      }
+      break;
 
-    float alpha = std::abs(std::sin(frame_count * 0.04));
-    ci::ColorA color(1, 1, 1, alpha);
-
-    widget->setParam("color", color);
+    case 1:
+      {
+        float alpha = std::abs(std::sin(M_PI * 4.0 * current_time));
+        ci::ColorA color(1, 1, 1, alpha);
+        widget->setParam("color", color);
+      }
+      break;
+    }
 
     return true;
   }

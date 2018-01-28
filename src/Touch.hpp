@@ -4,7 +4,6 @@
 // タッチ
 //
 
-
 namespace ngs {
 
 struct Touch

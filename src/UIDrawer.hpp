@@ -14,6 +14,7 @@
 namespace ngs { namespace UI {
 
 struct Drawer
+  : private boost::noncopyable
 {
   Drawer(const ci::JsonTree& params) noexcept
   {
