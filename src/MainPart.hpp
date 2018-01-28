@@ -847,7 +847,7 @@ private:
   {
     const auto& positions = game->getBlankPositions();
     // FIXME とりあえず無作為に決める
-    field_pos  = positions[ci::randInt(positions.size())];
+    field_pos  = positions[ci::randInt(int(positions.size()))];
     cursor_pos = glm::vec3(field_pos.x * PANEL_SIZE, panel_height_, field_pos.y * PANEL_SIZE);
 
     can_put = game->canPutToBlank(field_pos);

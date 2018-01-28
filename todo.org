@@ -24,6 +24,7 @@
 * TODO AppStore提出に必要な書類や素材
 * TODO iPhone 5sでの動作確認
 * TODO カルカソンヌ公式に許可を取る
+* TODO アプリアイコン
 * TODO GameCenter対応
 * TODO 実績を実装
 * TODO ゲームの途中段階をセーブしたい
