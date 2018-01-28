@@ -21,7 +21,8 @@ class Result
 
   UI::Canvas canvas_;
 
-  int mode_ = 0;
+
+  u_int frame_count = 0; 
 
 
 public:
@@ -37,6 +38,56 @@ public:
   bool update(const double current_time, const double delta_time) noexcept override
   {
     count_exec_.update(delta_time);
+
+    frame_count += 1;
+
+    if (!(frame_count % 8))
+    {
+      // 適当に値を設定
+      const char* ids[] = {
+        "score:1",
+        "score:2",
+        "score:3",
+        "score:4",
+        "score:5",
+        "score:6",
+        "score:7",
+      };
+
+      for (const auto& id : ids)
+      {
+        const auto& widget = canvas_.at(id);
+        widget->setParam("text", std::to_string(ci::randInt(1000)));
+      }
+
+      {
+        const auto& widget = canvas_.at("score:10");
+        widget->setParam("text", std::to_string(ci::randInt(100000)));
+      }
+
+      {
+        const char* ranking_text[] = {
+          "Emperor",
+          "King",
+          "Viceroy",
+          "Grand Duke",
+          "Prince",
+          "Landgrave",
+          "Duke",
+          "Marquess",
+          "Margrave",
+          "Count",  
+          "Viscount",
+          "Baron", 
+          "Baronet",
+        };
+
+        const auto& widget = canvas_.at("score:11");
+        widget->setParam("text", std::string(ranking_text[ci::randInt(12)]));
+      }
+    }
+
+
 
     return true;
   }
