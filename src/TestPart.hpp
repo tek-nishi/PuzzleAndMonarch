@@ -14,6 +14,7 @@
 #include "TaskContainer.hpp"
 #include "Title.hpp"
 #include "GameMain.hpp"
+#include "Result.hpp"
 
 
 namespace ngs {
@@ -31,7 +32,7 @@ public:
       target_(Json::getVec<glm::vec3>(params["test.camera.target"])),
       drawer_(params["ui"])
   {
-    tasks_.pushFront<Title>(params, event_, drawer_);
+    tasks_.pushFront<Result>(params, event_, drawer_);
 
     // World
     glm::vec3 eye = target_ + glm::vec3(0, 0, distance_);

@@ -64,6 +64,10 @@
   "gamemain": {
     "canvas": "ui_gamemain.json"
   },
+  
+  "result": {
+    "canvas": "ui_result.json"
+  },
 
   "test": {
     "camera": {

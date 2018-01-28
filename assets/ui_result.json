@@ -1,0 +1,28 @@
+{
+  "identifier": "root",
+  "rect": [ 0, 0, 0, 0 ],
+  "anchor": [
+    [ 0, 0 ],
+    [ 1, 1 ]
+  ],
+  "scale": [ 1, 1 ],
+  "pivot": [ 0.5, 0.5 ],
+
+  "childlen": [
+    {
+      "identifier": "1",
+      "rect": [ -20, 0, 20, 0 ],
+      "anchor": [
+        [ 0.5, 0.91 ],
+        [ 0.5, 0.91 ]
+      ],
+      "scale": [ 1, 1 ],
+      "pivot": [ 0.5, 0.5 ],
+
+      "font": "en",
+      "text": "Result",
+      "text_size": 28,
+      "color": [ 1, 1, 1, 1 ]
+    }
+  ]
+}
