@@ -13,7 +13,8 @@
 #include "JsonUtil.hpp"
 #include "TouchEvent.hpp"
 // #include "MainPart.hpp"
-#include "TestPart.hpp"
+// #include "TestPart.hpp"
+#include "Core.hpp"
 
 
 namespace ngs {
@@ -23,8 +24,8 @@ class MyApp
     private boost::noncopyable
 {
 
-  // using Worker = MainPart;
-  using Worker = TestPart;
+  using Worker = Core;
+  // using Worker = TestPart;
 
 
 public:

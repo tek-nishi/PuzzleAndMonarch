@@ -1,4 +1,11 @@
 * TODO いい感じに画面全体に街が映るように
+* TODO 本編にUI結合
+* TODO fontの選定
+* TODO コマ送り
+* TODO 強制PAUSE
+* TODO タイトル決め
+* TODO UIのアニメーション
+* TODO iOS:share機能
 * TODO 無限に置けるモードが欲しい
 * TODO Win・macOS:フルスクリーンモード
 * TODO Windows版: イベントハンドルが微妙
@@ -9,7 +16,6 @@
 * TODO 本格的に見た目を決める
 * TODO サウンド周りの再設計
 * TODO 基本的な操作を固める
-* TODO UIとRayの交差判定(矩形や丸)の実装
 * TODO ファイルを１つにまとめる
 * TODO AppStore提出に必要な書類や素材
 * TODO iPhone 5sでの動作確認
@@ -59,5 +65,7 @@ CLOSED: [2018-01-10 Wed 23:56]
 CLOSED: [2018-01-09 火 16:27]
 * DONE ファイル読み込みパスの統一
 CLOSED: [2018-01-09 Tue 00:32]
+* ABORT UIとRayの交差判定(矩形や丸)の実装
+CLOSED: [2018-01-28 日 20:09]
 * ABORT Canvasの遅延読み込み
 CLOSED: [2018-01-27 Sat 17:45]
