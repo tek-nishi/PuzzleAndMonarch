@@ -344,16 +344,18 @@
 
     {
       "identifier": "touch",
-      "rect": [ -10, 8, 10, 8 ],
+      "rect": [ -10, 8, 10, 28 ],
       "anchor": [
         [ 0.5, 0 ],
         [ 0.5, 0 ]
       ],
       "scale": [ 1, 1 ],
       "pivot": [ 0.5, 0.5 ],
+      "enable": false,
+      "event": "agree",
       
       "font": "icon",
-      "text": "",
+      "text": "",
       "text_size": 20,
       "layout": [ 0.5, 0 ],
       "color": [ 1, 1, 1, 1 ]

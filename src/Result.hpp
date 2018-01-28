@@ -21,6 +21,7 @@ class Result
 
   UI::Canvas canvas_;
 
+  int mode_ = 0;
 
   u_int frame_count = 0; 
 
@@ -30,6 +31,19 @@ public:
     : event_(event),
       canvas_(event, drawer, params["ui.camera"], Params::load(params.getValueForKey<std::string>("result.canvas")))
   {
+    count_exec_.add(2.0,
+                    [this]() {
+                      const auto& widget = canvas_.at("touch");
+                      widget->enable();
+                    });
+
+    holder_ += event_.connect("agree:touch_ended",
+                              [this](const Connection&, const Arguments&) noexcept
+                              {
+                                canvas_.active(false);
+                                count_exec_.add(1.0, [this](){ mode_ += 1; });
+                                DOUT << "Agree." << std::endl;
+                              });
   }
 
   ~Result() = default;
@@ -38,6 +52,21 @@ public:
   bool update(const double current_time, const double delta_time) noexcept override
   {
     count_exec_.update(delta_time);
+
+    switch (mode_)
+    {
+    case 0:
+      {
+      }
+      break;
+
+    case 1:
+      {
+        DOUT << "Result ended." << std::endl;
+        return false;
+      }
+      break;
+    }
 
     frame_count += 1;
 
