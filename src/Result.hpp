@@ -33,16 +33,27 @@ public:
   {
     count_exec_.add(2.0,
                     [this]() {
-                      const auto& widget = canvas_.at("touch");
-                      widget->enable();
+                      {
+                        const auto& widget = canvas_.at("share");
+                        widget->enable();
+                      }
+                      {
+                        const auto& widget = canvas_.at("touch");
+                        widget->enable();
+                      }
                     });
 
     holder_ += event_.connect("agree:touch_ended",
                               [this](const Connection&, const Arguments&) noexcept
                               {
                                 canvas_.active(false);
-                                count_exec_.add(1.0, [this](){ mode_ += 1; });
+                                count_exec_.add(0.5, [this](){ mode_ += 1; });
                                 DOUT << "Agree." << std::endl;
+                              });
+    holder_ += event_.connect("share:touch_ended",
+                              [this](const Connection&, const Arguments&) noexcept
+                              {
+                                DOUT << "Share." << std::endl;
                               });
   }
 

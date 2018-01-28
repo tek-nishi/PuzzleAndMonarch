@@ -1,4 +1,3 @@
-* TODO 時限式カウンター＋関数ポインタ
 * TODO いい感じに画面全体に街が映るように
 * TODO 無限に置けるモードが欲しい
 * TODO Win・macOS:フルスクリーンモード
@@ -14,6 +13,8 @@
 * TODO ファイルを１つにまとめる
 * TODO AppStore提出に必要な書類や素材
 * TODO iPhone 5sでの動作確認
+* DONE 時限式カウンター＋関数ポインタ
+CLOSED: [2018-01-28 日 20:00]
 * DONE UIのActie/inactiveを実装
 CLOSED: [2018-01-28 日 11:28]
 * DONE タスク導入

@@ -338,6 +338,24 @@
           "text_size": 18,
           "layout": [ 1, 0 ],
           "color": [ 1, 1, 1, 1 ]
+        },
+        {
+          "identifier": "share",
+          "rect": [ -2, -90, 18, -70 ],
+          "anchor": [
+            [ 0, 1 ],
+            [ 0, 1 ]
+          ],
+          "scale": [ 1, 1 ],
+          "pivot": [ 0.5, 0.5 ],
+          "enable": false,
+          "event": "share",
+
+          "font": "icon",
+          "text": "",
+          "text_size": 18,
+          "layout": [ 1, 0 ],
+          "color": [ 1, 1, 1, 1 ]
         }
       ]
     },
