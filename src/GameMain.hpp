@@ -40,7 +40,41 @@ public:
                            }
                          });
 
-
+    holder_ += event_.connect("pause:touch_ended",
+                              [this](const Connection&, const Arguments& arg) noexcept
+                              {
+                                {
+                                  const auto& widget = canvas_.at("main");
+                                  widget->enable(false);
+                                }
+                                {
+                                  const auto& widget = canvas_.at("pause_menu");
+                                  widget->enable();
+                                }
+                                event_.signal("GameMain:pause", Arguments());
+                              });
+    
+    holder_ += event_.connect("resume:touch_ended",
+                              [this](const Connection&, const Arguments& arg) noexcept
+                              {
+                                {
+                                  const auto& widget = canvas_.at("pause_menu");
+                                  widget->enable(false);
+                                }
+                                {
+                                  const auto& widget = canvas_.at("main");
+                                  widget->enable();
+                                }
+                                event_.signal("GameMain:resume", Arguments());
+                              });
+    
+    holder_ += event_.connect("abort:touch_ended",
+                              [this](const Connection&, const Arguments& arg) noexcept
+                              {
+                                // ゲーム終了
+                                event_.signal("GameMain:aborted", Arguments());
+                                DOUT << "GameMain finished." << std::endl;
+                              });
   }
 
   ~GameMain() = default;

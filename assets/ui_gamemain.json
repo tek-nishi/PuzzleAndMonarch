@@ -35,9 +35,26 @@
           "text": "9:99",
           "text_size": 25,
           "color": [ 1, 1, 1, 1 ]
+        },
+        {
+          "identifier": "pause",
+          "rect": [ -30, -30, -15, -15 ],
+          "anchor": [
+            [ 1, 1 ],
+            [ 1, 1 ]
+          ],
+          "scale": [ 1, 1 ],
+          "pivot": [ 0.5, 0.5 ],
+          "event": "pause",
+          
+          "font": "icon",
+          "text": "",
+          "text_size": 15,
+          "color": [ 1, 1, 1, 1 ]
         }
       ]
     },
+
     {
       "identifier": "begin",
       "rect": [ -100, -10, 100, 10 ],
@@ -53,6 +70,7 @@
       "text_size": 28,
       "color": [ 1, 1, 1, 1 ]
     },
+
     {
       "identifier": "end",
       "rect": [ 0, 0, 0, 0 ],
@@ -68,6 +86,68 @@
       "text": "Well done!",
       "text_size":28, 
       "color": [ 1, 1, 1, 1 ]
+    },
+
+    {
+      "identifier": "pause_menu",
+      "rect": [ 0, 0, 0, 0 ],
+      "anchor": [
+        [ 0, 0 ],
+        [ 1, 1 ]
+      ],
+      "scale": [ 1, 1 ],
+      "pivot": [ 0.5, 0.5 ],
+      "enable": false,
+
+      "childlen" : [
+        {
+          "identifier": "pause_title",
+          "rect": [ -25, 0, 25, 0 ],
+          "anchor": [
+            [ 0.5, 0.8 ],
+            [ 0.5, 0.8 ]
+          ],
+          "scale": [ 1, 1 ],
+          "pivot": [ 0.5, 0.5 ],
+          
+          "font": "en",
+          "text": "Pause",
+          "text_size": 25,
+          "color": [ 1, 1, 1, 1 ]
+        },
+        {
+          "identifier": "resume",
+          "rect": [ -50, -15, -25, 15 ],
+          "anchor": [
+            [ 0.5, 0.5 ],
+            [ 0.5, 0.5 ]
+          ],
+          "scale": [ 1, 1 ],
+          "pivot": [ 0.5, 0.5 ],
+          "event": "resume",
+          
+          "font": "icon",
+          "text": "",
+          "text_size": 30,
+          "color": [ 1, 1, 1, 1 ]
+        },
+        {
+          "identifier": "abort",
+          "rect": [ 25, -15, 50, 15 ],
+          "anchor": [
+            [ 0.5, 0.5 ],
+            [ 0.5, 0.5 ]
+          ],
+          "scale": [ 1, 1 ],
+          "pivot": [ 0.5, 0.5 ],
+          "event": "abort",
+          
+          "font": "icon",
+          "text": "",
+          "text_size": 30,
+          "color": [ 1, 1, 1, 1 ]
+        }
+      ]
     }
   ]
 }
