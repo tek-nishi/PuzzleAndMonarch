@@ -13,6 +13,7 @@
 #include "CountExec.hpp"
 #include "TaskContainer.hpp"
 #include "Title.hpp"
+#include "GameMain.hpp"
 
 
 namespace ngs {
@@ -134,6 +135,7 @@ public:
   void update(const double current_time, const double delta_time) noexcept
   {
     tasks_.update(current_time, delta_time);
+    count_exec_.update(delta_time);
   }
 
   void draw(const glm::ivec2& window_size) noexcept
@@ -161,6 +163,9 @@ private:
   // メンバ変数を最後尾で定義する実験
   Event<Arguments>& event_;
   ConnectionHolder holder_;
+
+  CountExec count_exec_;
+
 
   // World
   Camera world_camera_;

@@ -59,6 +59,10 @@ public:
 
   void draw() noexcept
   {
+    ci::gl::enableDepth(false);
+    ci::gl::disable(GL_CULL_FACE);
+    ci::gl::enableAlphaBlending();
+
     auto& camera = camera_.body();
     ci::gl::setMatrices(camera);
 
@@ -232,6 +236,7 @@ private:
 
   bool active_ = true;
 };
+
 
 } }
 

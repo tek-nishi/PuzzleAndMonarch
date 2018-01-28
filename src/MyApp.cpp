@@ -11,7 +11,6 @@
 #include "Arguments.hpp"
 #include "Params.hpp"
 #include "JsonUtil.hpp"
-#include "CountExec.hpp"
 #include "TouchEvent.hpp"
 // #include "MainPart.hpp"
 #include "TestPart.hpp"
@@ -31,9 +30,9 @@ class MyApp
 public:
   // TIPS cinder 0.9.1はコンストラクタが使える
   MyApp() noexcept
-    : params(ngs::Params::load("params.json")),
-      touch_event_(event_),
-      worker(std::make_unique<Worker>(params, event_))
+  : params(ngs::Params::load("params.json")),
+    touch_event_(event_),
+    worker(std::make_unique<Worker>(params, event_))
   {
     ci::Rand::randomize();
     prev_time_ = getElapsedSeconds();
@@ -139,7 +138,6 @@ private:
     auto current_time = getElapsedSeconds();
     auto delta_time = current_time - prev_time_;
     worker->update(current_time, delta_time);
-    count_exec_.update(delta_time);
 
     prev_time_ = current_time;
   }
@@ -168,7 +166,6 @@ private:
 #endif
 
   Event<Arguments> event_;
-  CountExec count_exec_;
 
   TouchEvent touch_event_;
 

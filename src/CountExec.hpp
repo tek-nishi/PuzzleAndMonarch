@@ -2,6 +2,9 @@
 
 //
 // 指定時間経過後に関数実行
+// FIXME 関数ポインタ元のクラスが破棄されると未定義
+// TODO 登録した関数ポインタを無効にする仕組み
+// TODO 登録した関数ポインタを一気に実行する仕組み
 //
 
 #include <boost/noncopyable.hpp>
@@ -51,7 +54,7 @@ public:
   }
 
 
-  void add(const double time_remain, std::function<void ()>& func) noexcept
+  void add(const double time_remain, const std::function<void ()>& func) noexcept
   {
     callbacks_.emplace_back(time_remain, func);
   }
