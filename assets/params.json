@@ -2,7 +2,8 @@
   "app": {
     "size":   [ 960, 640 ],
     "retina": true,
-    "power_management": true
+    "power_management": true,
+    "full_screen": false 
   },
 
   "field": {

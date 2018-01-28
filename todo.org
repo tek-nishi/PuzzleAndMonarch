@@ -10,13 +10,11 @@
 * TODO UIのアニメーション
 * TODO iOS:share機能
 * TODO 無限に置けるモードが欲しい
-* TODO Win・macOS:フルスクリーンモード
 * TODO Windows版: イベントハンドルが微妙
 * TODO 完成した街を保存したい
 * TODO ランキング演出は「自分がどの程度か」を把握できるように
 * TODO 点光源
 * TODO 本格的な画面設計
-* TODO Counterをリアル時間へ変更する
 * TODO 本格的に見た目を決める
 * TODO サウンド周りの再設計
 * TODO 基本的な操作を固める
@@ -29,6 +27,10 @@
 * TODO 実績を実装
 * TODO ゲームの途中段階をセーブしたい
 * TODO 他のアプリで再生中のBGMがそのまま再生されるように
+* DONE Win・macOS:フルスクリーンモード
+CLOSED: [2018-01-29 月 01:01]
+* DONE Counterをリアル時間へ変更する
+CLOSED: [2018-01-29 月 00:55]
 * DONE 時限式カウンター＋関数ポインタ
 CLOSED: [2018-01-28 日 20:00]
 * DONE UIのActie/inactiveを実装

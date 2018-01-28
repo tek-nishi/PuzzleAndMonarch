@@ -189,6 +189,13 @@ void setupApp(ci::app::App::Settings* settings) noexcept
   settings->setMultiTouchEnabled();
 #endif
 
+#if !defined (CINDER_COCOA_TOUCH)
+  if (params.getValueForKey<bool>("app.full_screen"))
+  {
+    settings->setFullScreen();
+  }
+#endif
+
   settings->setPowerManagementEnabled(params.getValueForKey<bool>("app.power_management"));
   settings->setHighDensityDisplayEnabled(params.getValueForKey<bool>("app.retina"));
 }
