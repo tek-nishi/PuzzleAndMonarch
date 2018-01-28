@@ -137,7 +137,7 @@ private:
   {
 
     auto current_time = getElapsedSeconds();
-    auto delta_time = current_time - prev_time_;
+    auto delta_time   = current_time - prev_time_;
     worker->update(current_time, delta_time);
 
     prev_time_ = current_time;

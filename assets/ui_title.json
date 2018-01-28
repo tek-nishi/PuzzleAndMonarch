@@ -7,7 +7,6 @@
   ],
   "scale": [ 1, 1 ],
   "pivot": [ 0.5, 0.5 ],
-  "event": "start",
   
   "childlen": [
     {
@@ -44,18 +43,18 @@
     },
     {
       "identifier": "5",
-      "rect": [ 0, 0, 0, 0 ],
+      "rect": [ -15, -15, 15, 15 ],
       "anchor": [
-        [ 0.5, 0.2 ],
-        [ 0.5, 0.2 ]
+        [ 0.5, 0.3 ],
+        [ 0.5, 0.3 ]
       ],
       "scale": [ 1, 1 ],
       "pivot": [ 0.5, 0.5 ],
+      "event": "play",
       
       "font": "icon",
-      "text": "",
-      "text_size": 20,
-      "layout": [ 0.5, 0.5 ],
+      "text": "",
+      "text_size": 30,
       "color": [ 1, 1, 1, 1 ]
     },
     {
@@ -71,7 +70,54 @@
       "font": "en",
       "text": "2018 new game style",
       "text_size": 15,
-      "layout": [ 0.5, 0.5 ],
+      "color": [ 1, 1, 1, 1 ]
+    },
+    {
+      "identifier": "7",
+      "rect": [ -30, 80, -10, 60 ],
+      "anchor": [
+        [ 1, 0.1 ],
+        [ 1, 0.1 ]
+      ],
+      "scale": [ 1, 1 ],
+      "pivot": [ 0.5, 0.5 ],
+      "event": "game_center",
+      
+      "font": "icon",
+      "text": "",
+      "text_size": 20,
+      "color": [ 1, 1, 1, 1 ]
+    },
+    {
+      "identifier": "8",
+      "rect": [ -30, 50, -10, 30 ],
+      "anchor": [
+        [ 1, 0.1 ],
+        [ 1, 0.1 ]
+      ],
+      "scale": [ 1, 1 ],
+      "pivot": [ 0.5, 0.5 ],
+      "event": "settings",
+      
+      "font": "icon",
+      "text": "",
+      "text_size": 20,
+      "color": [ 1, 1, 1, 1 ]
+    },
+    {
+      "identifier": "9",
+      "rect": [ -30, 20, -10, 0 ],
+      "anchor": [
+        [ 1, 0.1 ],
+        [ 1, 0.1 ]
+      ],
+      "scale": [ 1, 1 ],
+      "pivot": [ 0.5, 0.5 ],
+      "event": "info",
+      
+      "font": "icon",
+      "text": "",
+      "text_size": 20,
       "color": [ 1, 1, 1, 1 ]
     }
   ]

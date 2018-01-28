@@ -10,6 +10,7 @@
 #include "CountExec.hpp"
 #include "UIDrawer.hpp"
 #include "TaskContainer.hpp"
+#include "Title.hpp"
 
 
 namespace ngs {
@@ -25,6 +26,8 @@ public:
       event_(event),
       drawer_(params["ui"])
   {
+    tasks_.pushFront<Title>(params, event_, drawer_);
+
   }
 
   ~Core() = default;
@@ -69,6 +72,7 @@ public:
   // 描画
   void draw(const glm::ivec2& window_size) noexcept
   {
+    tasks_.draw(window_size);
   }
 
 

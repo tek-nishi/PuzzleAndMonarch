@@ -3,7 +3,10 @@
 * TODO fontの選定
 * TODO コマ送り
 * TODO 強制PAUSE
-* TODO タイトル決め
+* TODO credit画面
+* TODO 設定画面
+* TODO ngs-0012
+* TODO 正式決め
 * TODO UIのアニメーション
 * TODO iOS:share機能
 * TODO 無限に置けるモードが欲しい
@@ -19,6 +22,11 @@
 * TODO ファイルを１つにまとめる
 * TODO AppStore提出に必要な書類や素材
 * TODO iPhone 5sでの動作確認
+* TODO カルカソンヌ公式に許可を取る
+* TODO GameCenter対応
+* TODO 実績を実装
+* TODO ゲームの途中段階をセーブしたい
+* TODO 他のアプリで再生中のBGMがそのまま再生されるように
 * DONE 時限式カウンター＋関数ポインタ
 CLOSED: [2018-01-28 日 20:00]
 * DONE UIのActie/inactiveを実装
