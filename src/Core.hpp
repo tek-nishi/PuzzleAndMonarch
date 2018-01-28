@@ -11,6 +11,7 @@
 #include "UIDrawer.hpp"
 #include "TaskContainer.hpp"
 #include "Title.hpp"
+#include "MainPart.hpp"
 
 
 namespace ngs {
@@ -26,8 +27,8 @@ public:
       event_(event),
       drawer_(params["ui"])
   {
-    tasks_.pushFront<Title>(params, event_, drawer_);
-
+    tasks_.pushBack<MainPart>(params, event_);
+    tasks_.pushBack<Title>(params, event_, drawer_);
   }
 
   ~Core() = default;

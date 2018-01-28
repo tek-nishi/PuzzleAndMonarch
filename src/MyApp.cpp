@@ -12,8 +12,6 @@
 #include "Params.hpp"
 #include "JsonUtil.hpp"
 #include "TouchEvent.hpp"
-// #include "MainPart.hpp"
-// #include "TestPart.hpp"
 #include "Core.hpp"
 
 

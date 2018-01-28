@@ -11,67 +11,50 @@
 #include <cinder/Rand.h>
 #include <cinder/Camera.h>
 #include <cinder/Ray.h>
-#include <cinder/Timer.h>
 #include <cinder/Sphere.h>
 #include "Params.hpp"
 #include "JsonUtil.hpp"
 #include "Game.hpp"
 #include "Counter.hpp"
-#include "Font.hpp"
 #include "View.hpp"
 #include "Shader.hpp"
 #include "Camera.hpp"
 #include "ConnectionHolder.hpp"
-#include "UICanvas.hpp"
+#include "Task.hpp"
+#include "CountExec.hpp"
 
 
 namespace ngs {
 
 class MainPart
+  : public Task
 {
 
 public:
   MainPart(const ci::JsonTree& params, Event<Arguments>& event) noexcept
-    : event_(event),
-      params_(params),
+    : params_(params),
+      event_(event),
       panels_(createPanels()),
       game(std::make_unique<Game>(panels_)),
       rotation(toRadians(Json::getVec<glm::vec2>(params["field.camera.rotation"]))),
       distance(params.getValueForKey<float>("field.camera.distance")),
-      field_camera(params["field.camera"]),
+      camera_(params["field.camera"]),
       pivot_point(Json::getVec<glm::vec3>(params["field.pivot_point"])),
       field_center_(pivot_point),
       panel_height_(params.getValueForKey<float>("field.panel_height")),
       putdown_time_(params.getValueForKey<double>("field.putdown_time")),
-      view(createView()),
-      drawer_(params["ui"]),
-      canvas_(createCanvas("ui.camera", "title.canvas.widgets"))
+      view(createView())
   {
     // フィールドカメラ
-    auto& camera = field_camera.body();
+    auto& camera = camera_.body();
     glm::quat q(glm::vec3(rotation.x, rotation.y, 0));
     glm::vec3 p = q * glm::vec3{ 0, 0, -distance };
     camera.lookAt(p, glm::vec3(0));
     eye_position = camera.getEyePoint();
 
-    // 各種イベント
-    holder_ += event.connect("start:touch_ended",
-                             [this](const Connection& connection, Arguments& arg) noexcept
-                             {
-                               // ゲーム開始
-                               game->beginPlay();
-                               playing_mode = GAMESTART;
-                               hight_offset = 500.0f;
-                               calcNextPanelPosition();
-
-                               game_score = game->getScores();
-                               game_score_effect.resize(game_score.size());
-                               std::fill(std::begin(game_score_effect), std::end(game_score_effect), 0);
-
-                               counter.add("gamestart", 90);
-
-                               connection.disconnect();
-                             });
+    // リサイズ
+    holder_ += event_.connect("resize", std::bind(&MainPart::resize, this,
+                                                  std::placeholders::_1, std::placeholders::_2));
 
     // 操作
     holder_ += event_.connect("single_touch_began",
@@ -107,7 +90,7 @@ public:
                                   // Field回転操作
                                   rotateField(touch);
 
-                                  auto& camera = field_camera.body();
+                                  auto& camera = camera_.body();
                                   glm::quat q(glm::vec3{ rotation.x, rotation.y, 0 });
                                   glm::vec3 p = q * glm::vec3{ 0, 0, -distance };
                                   camera.lookAt(p, glm::vec3(0));
@@ -147,7 +130,7 @@ public:
                               [this](const Connection&, const Arguments& arg) noexcept
                               {
                                 const auto& touches = boost::any_cast<const std::vector<Touch>&>(arg.at("touches"));
-                                auto& camera = field_camera.body();
+                                auto& camera = camera_.body();
 
                                 float l      = glm::distance(touches[0].pos, touches[1].pos);
                                 float prev_l = glm::distance(touches[0].prev_pos, touches[1].prev_pos);
@@ -197,7 +180,7 @@ public:
     {
       draged = true;
 
-      auto& camera = field_camera.body();
+      auto& camera = camera_.body();
 
       glm::quat q = glm::angleAxis(l * 0.002f, axis / l);
       auto cam_q = camera.getOrientation();
@@ -319,7 +302,8 @@ public:
   {
     // camera_ui.mouseWheel(event);
   }
-  
+
+#if 0
   void keyDown(ci::app::KeyEvent event)
   {
     int code = event.getCode();
@@ -373,17 +357,19 @@ public:
     int code = event.getCode();
     pressing_key.erase(code);
   }
-  
+#endif
 
-	void update() noexcept
+
+  void resize(const Connection&, const Arguments&) noexcept
+  {
+    camera_.resize();
+  }
+
+	bool update(const double current_time, const double delta_time) noexcept override
   {
     counter.update();
 
-    auto current_time = game_timer.getSeconds();
-    double delta_time = current_time - last_time;
     game->update(delta_time);
-
-    last_time = current_time;
 
     // カメラの中心位置変更
     pivot_point += (field_center_ - pivot_point) * 0.05f;
@@ -399,11 +385,6 @@ public:
       {
         if (!counter.check("gamestart")) {
           playing_mode = GAMEMAIN;
-          game_timer.start(0);
-          last_time = 0.0;
-                               
-          canvas_.reset();
-          canvas_ = createCanvas("ui.camera", "gamemain.canvas.widgets");
           DOUT << "GAMEMAIN." << std::endl;
         }
       }
@@ -413,7 +394,6 @@ public:
       if (!game->isPlaying()) {
         // 結果画面へ
         playing_mode = GAMEEND;
-        game_timer.stop();
         counter.add("gameend", 120);
       }
       else
@@ -461,19 +441,11 @@ public:
     }
 
     frame_counter += 1;
+
+    return true;
   }
 
-
-  void resize() noexcept
-  {
-    field_camera.resize();
-    canvas_->resize();
-
-    DOUT << "resize: " << ci::app::getWindowSize() << std::endl;
-  }
-
-
-	void draw(glm::ivec2 window_size) noexcept
+	void draw(const glm::ivec2& window_size) noexcept override
   {
     ci::gl::clear(ci::Color(0, 0, 0));
     
@@ -481,7 +453,7 @@ public:
     ci::gl::disableAlphaBlending();
 
     // プレイ画面
-    ci::gl::setMatrices(field_camera.body());
+    ci::gl::setMatrices(camera_.body());
 
     {
       glm::quat q(glm::vec3(rotation.x, rotation.y, 0));
@@ -553,15 +525,6 @@ public:
     ci::gl::popModelView();
 #endif
 #endif
-
-    // UI
-    {
-      ci::gl::enableDepth(false);
-      ci::gl::disable(GL_CULL_FACE);
-      ci::gl::enableAlphaBlending();
-
-      canvas_->draw();
-    }
 
 #if 0
     ci::gl::setMatrices(ui_camera);
@@ -666,7 +629,7 @@ private:
   bool calcFieldPos(const glm::vec2& pos) noexcept
   {
     // 画面奥に伸びるRayを生成
-    ci::Ray ray = field_camera.body().generateRay(pos, ci::app::getWindowSize());
+    ci::Ray ray = camera_.body().generateRay(pos, ci::app::getWindowSize());
     
     glm::quat q(glm::vec3(rotation.x, rotation.y, 0));
     glm::vec3 p = q * glm::vec3{ 0, 0, pivot_distance };
@@ -785,14 +748,6 @@ private:
   }
 #endif
 
-
-  std::unique_ptr<UI::Canvas> createCanvas(const std::string& camera, const std::string& widgets) noexcept
-  {
-    return std::make_unique<UI::Canvas>(event_, drawer_,
-                                        params_[camera],
-                                        Params::load(params_.getValueForKey<std::string>(widgets)));
-  }
-
   // Fieldの外接球を計算
   ci::Sphere calcBoundingSphere() noexcept
   {
@@ -839,7 +794,7 @@ private:
 
     // Sphereがちょうどすっぽり収まる距離を計算
     float radius = sphere.getRadius();
-    const auto& camera = field_camera.body();
+    const auto& camera = camera_.body();
     float fov_v = camera.getFov();
     float fov_h = camera.getFovHorizontal();
     float fov = (fov_v < fov_h) ? fov_v : fov_h;
@@ -851,7 +806,7 @@ private:
   // Touch座標→Field上の座標
   glm::vec3 calcTouchPos(const glm::vec2& touch_pos) noexcept
   {
-    const auto& camera = field_camera.body();
+    const auto& camera = camera_.body();
     ci::Ray ray = camera.generateRay(touch_pos, ci::app::getWindowSize());
 
     // auto m = glm::translate(pivot_point);
@@ -900,13 +855,14 @@ private:
   }
 
 
-
-
   // FIXME 変数を後半に定義する実験
+  const ci::JsonTree& params_;
+
   Event<Arguments>& event_;
   ConnectionHolder holder_;
 
-  const ci::JsonTree& params_;
+  CountExec count_exec_;
+  Counter counter;
 
   std::vector<Panel> panels_;
   std::unique_ptr<Game> game;
@@ -914,9 +870,6 @@ private:
   glm::vec2 left_click_pos;
   bool mouse_draged = false;
 
-  // TIPS:キー入力の判定に集合を利用
-  std::set<int> pressing_key;
-  
   enum {
     TITLE,
     GAMESTART,        // 開始演出
@@ -925,9 +878,6 @@ private:
     RESULT,
   };
   int playing_mode = TITLE;
-
-  // 汎用カウンタ
-  Counter counter;
 
   glm::vec3 cursor_pos; 
   glm::ivec2 field_pos;
@@ -939,10 +889,6 @@ private:
 
   // アプリ起動から画面を更新した回数
   u_int frame_counter = 0;
-
-  // プレイ時間計測用
-  ci::Timer game_timer;
-  double last_time = 0.0;
 
   // 表示用スコア
   std::vector<int> game_score;
@@ -961,7 +907,7 @@ private:
   glm::vec3 field_center_;
   float field_distance_ = 0.0f;
 
-  Camera field_camera;
+  Camera camera_;
 
   // パネル操作
   bool touch_put_;
@@ -972,14 +918,8 @@ private:
 
   bool field_rotate_;
 
-
   // 表示
   View view;
-
-  // UI関連
-  UI::Drawer drawer_;
-  std::unique_ptr<UI::Canvas> canvas_;
-
 
 #ifdef DEBUG
   bool disp_debug_info = false;
