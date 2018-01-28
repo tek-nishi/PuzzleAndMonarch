@@ -66,6 +66,7 @@ public:
     auto& camera = camera_.body();
     ci::gl::setMatrices(camera);
 
+    // TIPS CameraのNearClipでの四隅の座標を取得→描画領域
     glm::vec3 top_left;
     glm::vec3 top_right;
     glm::vec3 bottom_left;

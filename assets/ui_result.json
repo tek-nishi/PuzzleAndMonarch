@@ -23,6 +23,340 @@
       "text": "Result",
       "text_size": 28,
       "color": [ 1, 1, 1, 1 ]
+    },
+
+    {
+      "identifier": "scores",
+      "rect": [ -30, -50, -30, 35 ],
+      "anchor": [
+        [ 0.45, 0.5 ],
+        [ 0.45, 0.5 ]
+      ],
+      "scale": [ 1, 1 ],
+      "pivot": [ 0.5, 0.5 ],
+
+      "childlen": [
+        {
+          "identifier": "2",
+          "rect": [ -50, 0, 0, 0 ],
+          "anchor": [
+            [ 0, 1 ],
+            [ 0, 1 ]
+          ],
+          "scale": [ 1, 1 ],
+          "pivot": [ 0.5, 0.5 ],
+
+          "font": "jp",
+          "text": "道の数:",
+          "text_size": 10,
+          "layout": [ 1, 0 ],
+          "color": [ 1, 1, 1, 1 ]
+        },
+        {
+          "identifier": "3",
+          "rect": [ -50, -15, 0, -15 ],
+          "anchor": [
+            [ 0, 1 ],
+            [ 0, 1 ]
+          ],
+          "scale": [ 1, 1 ],
+          "pivot": [ 0.5, 0.5 ],
+
+          "font": "jp",
+          "text": "道の長さ:",
+          "text_size": 10,
+          "layout": [ 1, 0 ],
+          "color": [ 1, 1, 1, 1 ]
+        },
+        {
+          "identifier": "4",
+          "rect": [ -50, -30, 0, -30 ],
+          "anchor": [
+            [ 0, 1 ],
+            [ 0, 1 ]
+          ],
+          "scale": [ 1, 1 ],
+          "pivot": [ 0.5, 0.5 ],
+
+          "font": "jp",
+          "text": "森の数:",
+          "text_size": 10,
+          "layout": [ 1, 0 ],
+          "color": [ 1, 1, 1, 1 ]
+        },
+        {
+          "identifier": "5",
+          "rect": [ -50, -45, 0, -45 ],
+          "anchor": [
+            [ 0, 1 ],
+            [ 0, 1 ]
+          ],
+          "scale": [ 1, 1 ],
+          "pivot": [ 0.5, 0.5 ],
+
+          "font": "jp",
+          "text": "森の広さ:",
+          "text_size": 10,
+          "layout": [ 1, 0 ],
+          "color": [ 1, 1, 1, 1 ]
+        },
+        {
+          "identifier": "6",
+          "rect": [ -50, -60, 0, -60 ],
+          "anchor": [
+            [ 0, 1 ],
+            [ 0, 1 ]
+          ],
+          "scale": [ 1, 1 ],
+          "pivot": [ 0.5, 0.5 ],
+
+          "font": "jp",
+          "text": "深い森:",
+          "text_size": 10,
+          "layout": [ 1, 0 ],
+          "color": [ 1, 1, 1, 1 ]
+        },
+        {
+          "identifier": "7",
+          "rect": [ -50, -75, 0, -75 ],
+          "anchor": [
+            [ 0, 1 ],
+            [ 0, 1 ]
+          ],
+          "scale": [ 1, 1 ],
+          "pivot": [ 0.5, 0.5 ],
+
+          "font": "jp",
+          "text": "街の数:",
+          "text_size": 10,
+          "layout": [ 1, 0 ],
+          "color": [ 1, 1, 1, 1 ]
+        },
+        {
+          "identifier": "8",
+          "rect": [ -50, -90, 0, -90 ],
+          "anchor": [
+            [ 0, 1 ],
+            [ 0, 1 ]
+          ],
+          "scale": [ 1, 1 ],
+          "pivot": [ 0.5, 0.5 ],
+
+          "font": "jp",
+          "text": "教会の数:",
+          "text_size": 10,
+          "layout": [ 1, 0 ],
+          "color": [ 1, 1, 1, 1 ]
+        },
+
+        {
+          "identifier": "score:1",
+          "rect": [ 5, 0, 25, 0 ],
+          "anchor": [
+            [ 0, 1 ],
+            [ 0, 1 ]
+          ],
+          "scale": [ 1, 1 ],
+          "pivot": [ 0.5, 0.5 ],
+
+          "font": "jp",
+          "text": "000",
+          "text_size": 10,
+          "layout": [ 0, 0 ],
+          "color": [ 1, 1, 1, 1 ]
+        },
+        {
+          "identifier": "score:2",
+          "rect": [ 5, -15, 25, -15 ],
+          "anchor": [
+            [ 0, 1 ],
+            [ 0, 1 ]
+          ],
+          "scale": [ 1, 1 ],
+          "pivot": [ 0.5, 0.5 ],
+
+          "font": "jp",
+          "text": "000",
+          "text_size": 10,
+          "layout": [ 0, 0 ],
+          "color": [ 1, 1, 1, 1 ]
+        },
+        {
+          "identifier": "score:3",
+          "rect": [ 5, -30, 25, -30 ],
+          "anchor": [
+            [ 0, 1 ],
+            [ 0, 1 ]
+          ],
+          "scale": [ 1, 1 ],
+          "pivot": [ 0.5, 0.5 ],
+
+          "font": "jp",
+          "text": "000",
+          "text_size": 10,
+          "layout": [ 0, 0 ],
+          "color": [ 1, 1, 1, 1 ]
+        },
+        {
+          "identifier": "score:4",
+          "rect": [ 5, -45, 25, -45 ],
+          "anchor": [
+            [ 0, 1 ],
+            [ 0, 1 ]
+          ],
+          "scale": [ 1, 1 ],
+          "pivot": [ 0.5, 0.5 ],
+
+          "font": "jp",
+          "text": "000",
+          "text_size": 10,
+          "layout": [ 0, 0 ],
+          "color": [ 1, 1, 1, 1 ]
+        },
+        {
+          "identifier": "score:5",
+          "rect": [ 5, -60, 25, -60 ],
+          "anchor": [
+            [ 0, 1 ],
+            [ 0, 1 ]
+          ],
+          "scale": [ 1, 1 ],
+          "pivot": [ 0.5, 0.5 ],
+
+          "font": "jp",
+          "text": "000",
+          "text_size": 10,
+          "layout": [ 0, 0 ],
+          "color": [ 1, 1, 1, 1 ]
+        },
+        {
+          "identifier": "score:6",
+          "rect": [ 5, -75, 25, -75 ],
+          "anchor": [
+            [ 0, 1 ],
+            [ 0, 1 ]
+          ],
+          "scale": [ 1, 1 ],
+          "pivot": [ 0.5, 0.5 ],
+
+          "font": "jp",
+          "text": "000",
+          "text_size": 10,
+          "layout": [ 0, 0 ],
+          "color": [ 1, 1, 1, 1 ]
+        },
+        {
+          "identifier": "score:7",
+          "rect": [ 5, -90, 25, -90 ],
+          "anchor": [
+            [ 0, 1 ],
+            [ 0, 1 ]
+          ],
+          "scale": [ 1, 1 ],
+          "pivot": [ 0.5, 0.5 ],
+
+          "font": "jp",
+          "text": "000",
+          "text_size": 10,
+          "layout": [ 0, 0 ],
+          "color": [ 1, 1, 1, 1 ]
+        }
+      ]
+    },
+    
+    {
+      "identifier": "total_score",
+      "rect": [ 45, -25, 45, 20 ],
+      "anchor": [
+        [ 0.65, 0.5 ],
+        [ 0.65, 0.5 ]
+      ],
+      "scale": [ 1, 1 ],
+      "pivot": [ 0.5, 0.5 ],
+
+      "childlen": [
+        {
+          "identifier": "10",
+          "rect": [ -50, 0, 0, 0 ],
+          "anchor": [
+            [ 0, 1 ],
+            [ 0, 1 ]
+          ],
+          "scale": [ 1, 1 ],
+          "pivot": [ 0.5, 0.5 ],
+
+          "font": "en",
+          "text": "Your Score",
+          "text_size": 18,
+          "layout": [ 1, 0 ],
+          "color": [ 1, 1, 1, 1 ]
+        },
+        {
+          "identifier": "score:10",
+          "rect": [ -50, -20, 18, -20 ],
+          "anchor": [
+            [ 0, 1 ],
+            [ 0, 1 ]
+          ],
+          "scale": [ 1, 1 ],
+          "pivot": [ 0.5, 0.5 ],
+
+          "font": "en",
+          "text": "99999",
+          "text_size": 18,
+          "layout": [ 1, 0 ],
+          "color": [ 1, 1, 1, 1 ]
+        },
+        {
+          "identifier": "11",
+          "rect": [ -50, -45, 0, -45 ],
+          "anchor": [
+            [ 0, 1 ],
+            [ 0, 1 ]
+          ],
+          "scale": [ 1, 1 ],
+          "pivot": [ 0.5, 0.5 ],
+
+          "font": "en",
+          "text": "Your Rank",
+          "text_size": 18,
+          "layout": [ 1, 0 ],
+          "color": [ 1, 1, 1, 1 ]
+        },
+        {
+          "identifier": "score:11",
+          "rect": [ -50, -65, 18, -65 ],
+          "anchor": [
+            [ 0, 1 ],
+            [ 0, 1 ]
+          ],
+          "scale": [ 1, 1 ],
+          "pivot": [ 0.5, 0.5 ],
+
+          "font": "en",
+          "text": "Grand Duke",
+          "text_size": 18,
+          "layout": [ 1, 0 ],
+          "color": [ 1, 1, 1, 1 ]
+        }
+      ]
+    },
+
+    {
+      "identifier": "touch",
+      "rect": [ -10, 8, 10, 8 ],
+      "anchor": [
+        [ 0.5, 0 ],
+        [ 0.5, 0 ]
+      ],
+      "scale": [ 1, 1 ],
+      "pivot": [ 0.5, 0.5 ],
+      
+      "font": "icon",
+      "text": "",
+      "text_size": 20,
+      "layout": [ 0.5, 0 ],
+      "color": [ 1, 1, 1, 1 ]
     }
   ]
 }
