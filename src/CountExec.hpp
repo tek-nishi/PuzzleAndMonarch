@@ -45,11 +45,9 @@ public:
         it->func();
         // TIPS eraseは次のイテレーターを返す
         it = callbacks_.erase(it);
+        continue;
       }
-      else
-      {
-        ++it;
-      }
+      ++it;
     }
   }
 

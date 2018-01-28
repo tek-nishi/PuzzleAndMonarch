@@ -30,7 +30,7 @@ public:
       canvas_(event, drawer, params["ui.camera"], Params::load(params.getValueForKey<std::string>("title.canvas")))
   {
     holder_ += event_.connect("play:touch_ended",
-                              [this](const Connection&, const Arguments& arg) noexcept
+                              [this](const Connection&, const Arguments&) noexcept
                               {
                                 canvas_.active(false);
                                 count_exec_.add(1.0, [this](){ mode_ += 1; });

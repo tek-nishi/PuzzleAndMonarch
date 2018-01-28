@@ -7,44 +7,57 @@
 
 #include <map>
 #include <string>
+#include <boost/noncopyable.hpp>
 
 
 namespace ngs {
 
-struct Counter {
+struct Counter
+  : private boost::noncopyable
+{
+  Counter()  = default;
+  ~Counter() = default;
 
-  void add(const std::string& name, u_int count) {
+
+  void add(const std::string& name, const double count) noexcept
+  {
     values.insert({ name, count });
   }
 
-  bool check(const std::string& name) const {
+  bool check(const std::string& name) const noexcept
+  {
     return values.count(name);
   }
 
-  u_int get(const std::string& name) const {
-    if (!check(name)) return 0;
+  double get(const std::string& name) const noexcept
+  {
+    if (!check(name)) return 0.0;
     return values.at(name);
   }
 
 
-  void update() {
+  void update(const double delta_time) noexcept
+  {
     if (values.empty()) return;
 
-    for (auto it = std::begin(values); it != std::end(values); ) {
-      if (!it->second) {
+    for (auto it = std::begin(values); it != std::end(values); )
+    {
+      it->second -= delta_time;
+
+      if (it->second < 0.0)
+      {
         // 値を削除
         it = values.erase(it);
         continue;
       }
 
-      --it->second;
       ++it;
     }
   }
 
 
 private:
-  std::map<std::string, u_int> values;
+  std::map<std::string, double> values;
 
 };
 

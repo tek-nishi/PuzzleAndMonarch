@@ -257,7 +257,7 @@ public:
         game_score_effect.resize(game_score.size());
         std::fill(std::begin(game_score_effect), std::end(game_score_effect), 0);
 
-        counter.add("gamestart", 90);
+        counter.add("gamestart", 1.5);
       }
       break;
 
@@ -367,9 +367,8 @@ public:
 
 	bool update(const double current_time, const double delta_time) noexcept override
   {
-    counter.update();
-
     game->update(delta_time);
+    counter.update(delta_time);
 
     // カメラの中心位置変更
     pivot_point += (field_center_ - pivot_point) * 0.05f;
@@ -394,7 +393,7 @@ public:
       if (!game->isPlaying()) {
         // 結果画面へ
         playing_mode = GAMEEND;
-        counter.add("gameend", 120);
+        counter.add("gameend", 2.0);
       }
       else
       {

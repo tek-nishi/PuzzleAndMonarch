@@ -10,8 +10,9 @@
 #include "CountExec.hpp"
 #include "UIDrawer.hpp"
 #include "TaskContainer.hpp"
-#include "Title.hpp"
 #include "MainPart.hpp"
+#include "Title.hpp"
+#include "GameMain.hpp"
 
 
 namespace ngs {
@@ -29,6 +30,13 @@ public:
   {
     tasks_.pushBack<MainPart>(params, event_);
     tasks_.pushBack<Title>(params, event_, drawer_);
+
+    // 各種イベント登録
+    holder_ += event_.connect("Title:finished",
+                              [this](const Connection&, const Arguments&) noexcept
+                              {
+                                tasks_.pushBack<GameMain>(params_, event_, drawer_);
+                              });
   }
 
   ~Core() = default;
