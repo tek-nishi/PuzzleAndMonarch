@@ -65,6 +65,10 @@
   "title": {
     "canvas": "ui_title.json"
   },
+
+  "credits": {
+    "canvas": "ui_credits.json"
+  },
   
   "gamemain": {
     "canvas": "ui_gamemain.json"

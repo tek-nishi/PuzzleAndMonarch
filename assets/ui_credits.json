@@ -1,0 +1,211 @@
+{
+  "identifier": "root",
+  "rect": [ 0, 0, 0, 0 ],
+  "anchor": [
+    [ 0, 0 ],
+    [ 1, 1 ]
+  ],
+  "scale": [ 1, 1 ],
+  "pivot": [ 0.5, 0.5 ],
+  
+  "childlen": [
+    {
+      "identifier": "0",
+      "rect": [ -20, 0, 20, 0 ],
+      "anchor": [
+        [ 0.5, 0.91 ],
+        [ 0.5, 0.91 ]
+      ],
+      "scale": [ 1, 1 ],
+      "pivot": [ 0.5, 0.5 ],
+
+      "font": "en",
+      "text": "Credits",
+      "text_size": 28,
+      "color": [ 1, 1, 1, 1 ]
+    },
+    
+    {
+      "identifier": "1",
+      "rect": [ 0, -50, 0, 50 ],
+      "anchor": [
+        [ 0.5, 0.5 ],
+        [ 0.5, 0.5 ]
+      ],
+      "scale": [ 1, 1 ],
+      "pivot": [ 0.5, 0.5 ],
+      
+      "childlen": [
+        {
+          "identifier": "2",
+          "rect": [ 0, 0, 0, 0 ],
+          "anchor": [
+            [ 0.0, 1 ],
+            [ 1.0, 1 ]
+          ],
+          "scale": [ 1, 1 ],
+          "pivot": [ 0.5, 0.5 ],
+
+          "font": "en",
+          "text": "Created by",
+          "text_size": 8,
+          "color": [ 1, 1, 1, 1 ]
+        },
+        {
+          "identifier": "3",
+          "rect": [ 0, -10, 0, -10 ],
+          "anchor": [
+            [ 0.0, 1 ],
+            [ 1.0, 1 ]
+          ],
+          "scale": [ 1, 1 ],
+          "pivot": [ 0.5, 0.5 ],
+
+          "font": "en",
+          "text": "Nishiyama Nobuyuki",
+          "text_size": 10,
+          "color": [ 1, 1, 1, 1 ]
+        },
+        {
+          "identifier": "4",
+          "rect": [ 0, -25, 0, -25 ],
+          "anchor": [
+            [ 0.0, 1 ],
+            [ 1.0, 1 ]
+          ],
+          "scale": [ 1, 1 ],
+          "pivot": [ 0.5, 0.5 ],
+
+          "font": "en",
+          "text": "Powered by",
+          "text_size": 8,
+          "color": [ 1, 1, 1, 1 ]
+        },
+        {
+          "identifier": "5",
+          "rect": [ 0, -35, 0, -35 ],
+          "anchor": [
+            [ 0.0, 1 ],
+            [ 1.0, 1 ]
+          ],
+          "scale": [ 1, 1 ],
+          "pivot": [ 0.5, 0.5 ],
+
+          "font": "en",
+          "text": "Cinder 0.9.1  Boost 1.66.0  glm 0.9.8.5",
+          "text_size": 10,
+          "color": [ 1, 1, 1, 1 ]
+        },
+        {
+          "identifier": "6",
+          "rect": [ 0, -45, 0, -45 ],
+          "anchor": [
+            [ 0.0, 1 ],
+            [ 1.0, 1 ]
+          ],
+          "scale": [ 1, 1 ],
+          "pivot": [ 0.5, 0.5 ],
+
+          "font": "en",
+          "text": "stb_truetype.h 1.17  fontstash  Font Awesome 4.7.0",
+          "text_size": 10,
+          "color": [ 1, 1, 1, 1 ]
+        },
+        {
+          "identifier": "7",
+          "rect": [ 0, -60, 0, -60 ],
+          "anchor": [
+            [ 0.0, 1 ],
+            [ 1.0, 1 ]
+          ],
+          "scale": [ 1, 1 ],
+          "pivot": [ 0.5, 0.5 ],
+
+          "font": "en",
+          "text": "Thanks to",
+          "text_size": 8,
+          "color": [ 1, 1, 1, 1 ]
+        },
+        {
+          "identifier": "8",
+          "rect": [ 0, -70, 0, -70 ],
+          "anchor": [
+            [ 0.0, 1 ],
+            [ 1.0, 1 ]
+          ],
+          "scale": [ 1, 1 ],
+          "pivot": [ 0.5, 0.5 ],
+
+          "font": "en",
+          "text": "Japan Electronics College  Vantan Game Academy",
+          "text_size": 10,
+          "color": [ 1, 1, 1, 1 ]
+        },
+        {
+          "identifier": "9",
+          "rect": [ 0, -80, 0, -80 ],
+          "anchor": [
+            [ 0.0, 1 ],
+            [ 1.0, 1 ]
+          ],
+          "scale": [ 1, 1 ],
+          "pivot": [ 0.5, 0.5 ],
+
+          "font": "en",
+          "text": "Software Society Akihabara",
+          "text_size": 10,
+          "color": [ 1, 1, 1, 1 ]
+        },
+        {
+          "identifier": "10",
+          "rect": [ 0, -90, 0, -90 ],
+          "anchor": [
+            [ 0.0, 1 ],
+            [ 1.0, 1 ]
+          ],
+          "scale": [ 1, 1 ],
+          "pivot": [ 0.5, 0.5 ],
+
+          "font": "en",
+          "text": "Coworking space Kayabacho, Co-Edo",
+          "text_size": 10,
+          "color": [ 1, 1, 1, 1 ]
+        },
+        {
+          "identifier": "10",
+          "rect": [ 0, -100, 0, -100 ],
+          "anchor": [
+            [ 0.0, 1 ],
+            [ 1.0, 1 ]
+          ],
+          "scale": [ 1, 1 ],
+          "pivot": [ 0.5, 0.5 ],
+
+          "font": "en",
+          "text": "Kantou Game Producing unit  Haino Yuka",
+          "text_size": 10,
+          "color": [ 1, 1, 1, 1 ]
+        }
+      ]
+    },
+
+    {
+      "identifier": "touch",
+      "rect": [ -10, 8, 10, 28 ],
+      "anchor": [
+        [ 0.5, 0 ],
+        [ 0.5, 0 ]
+      ],
+      "scale": [ 1, 1 ],
+      "pivot": [ 0.5, 0.5 ],
+      "enable": false,
+      "event": "agree",
+      
+      "font": "icon",
+      "text": "",
+      "text_size": 20,
+      "layout": [ 0.5, 0 ],
+      "color": [ 1, 1, 1, 1 ]
+    }
+  ]
+}

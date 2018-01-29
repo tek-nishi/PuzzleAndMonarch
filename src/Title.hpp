@@ -33,8 +33,16 @@ public:
                               [this](const Connection&, const Arguments&) noexcept
                               {
                                 canvas_.active(false);
-                                count_exec_.add(1.0, [this](){ mode_ += 1; });
+                                count_exec_.add(1.0, [this](){ mode_ = 1; });
                                 DOUT << "Game Start!" << std::endl;
+                              });
+    
+    holder_ += event_.connect("credits:touch_ended",
+                              [this](const Connection&, const Arguments&) noexcept
+                              {
+                                canvas_.active(false);
+                                count_exec_.add(1.0, [this](){ mode_ = 2; });
+                                DOUT << "Credits." << std::endl;
                               });
   }
 
@@ -56,6 +64,15 @@ public:
       {
         // 終了
         event_.signal("Title:finished", Arguments());
+        DOUT << "Title finished." << std::endl;
+        return false;
+      }
+      break;
+
+    case 2:
+      {
+        // Credits画面 
+        event_.signal("Credits:begin", Arguments());
         DOUT << "Title finished." << std::endl;
         return false;
       }

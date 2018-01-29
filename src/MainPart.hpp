@@ -9,7 +9,6 @@
 #include <glm/gtx/transform.hpp>
 #include <glm/gtc/quaternion.hpp>
 #include <cinder/Rand.h>
-#include <cinder/Camera.h>
 #include <cinder/Ray.h>
 #include <cinder/Sphere.h>
 #include "Params.hpp"
@@ -52,7 +51,7 @@ public:
     camera.lookAt(p, glm::vec3(0));
     eye_position = camera.getEyePoint();
 
-    // リサイズ
+    // 画面リサイズ
     holder_ += event_.connect("resize", std::bind(&MainPart::resize, this,
                                                   std::placeholders::_1, std::placeholders::_2));
 
@@ -554,103 +553,6 @@ public:
     ci::gl::popModelView();
 #endif
 #endif
-
-#if 0
-    ci::gl::setMatrices(ui_camera);
-
-    {
-      ci::gl::ScopedGlslProg prog(shader_font);
-
-      switch (playing_mode) {
-      case TITLE:
-        {
-          {
-            font.size(100);
-            std::string text("Apprentice Monarch");
-            auto size = font.drawSize(text);
-            font.draw(text, glm::vec2(-size.x / 2, 150), ci::ColorA(1, 1, 1, 1));
-          }
-          {
-            font.size(60);
-            std::string text("Left click to start");
-            auto size = font.drawSize(text);
-
-            float r = frame_counter * 0.05f;
-            font.draw(text, glm::vec2(-size.x / 2, -300), ci::ColorA(1, 1, 1, (std::sin(r) + 1.0f) * 0.5f));
-          }
-        }
-        break;
-
-      case GAMESTART:
-        {
-          font.size(90);
-          const char* text = "Secure the territory!";
-
-          auto size = font.drawSize(text);
-          font.draw(text, glm::vec2(-size.x / 2.0f, -size.y / 2.0f), ci::ColorA(1, 1, 1, 1));
-        }
-        break;
-
-      case GAMEMAIN:
-        {
-          // 残り時間
-          font.size(80);
-
-          char text[100];
-          u_int remainig_time = std::ceil(game->getRemainingTime());
-          u_int minutes = remainig_time / 60;
-          u_int seconds = remainig_time % 60;
-          sprintf(text, "%d'%02d", minutes, seconds);
-
-          // 時間が10秒切ったら色を変える
-          ci::ColorA color(1, 1, 1, 1);
-          if (remainig_time <= 10) {
-            color = ci::ColorA(1, 0, 0, 1);
-          }
-
-          int hh = ci::app::getWindowHeight() / 2;
-
-          font.draw(text, glm::vec2(remain_time_x, hh - 100), color);
-        }
-        {
-          int hw = ci::app::getWindowWidth() / 2;
-          drawGameInfo(25, glm::vec2(-hw + 50, 0), -40);
-        }
-        break;
-
-      case GAMEEND:
-        {
-          font.size(90);
-          const char* text = "Well done!";
-
-          auto size = font.drawSize(text);
-          font.draw(text, glm::vec2(-size.x / 2.0f, -size.y / 2.0f), ci::ColorA(1, 1, 1, 1));
-        }
-        break;
-
-      case RESULT:
-        {
-          {
-            font.size(80);
-            std::string text("Result");
-            auto size = font.drawSize(text);
-            font.draw(text, glm::vec2(-size.x / 2, 250), ci::ColorA(1, 1, 1, 1));
-          }
-          {
-            font.size(40);
-            std::string text("Left click to title");
-            auto size = font.drawSize(text);
-
-            int hh = ci::app::getWindowHeight() / 2;
-            float r = frame_counter * 0.05f;
-            font.draw(text, glm::vec2(-size.x / 2, -hh + 50), ci::ColorA(1, 1, 1, (std::sin(r) + 1.0f) * 0.5f));
-          }
-          drawResult();
-        }
-        break;
-      }
-    }
-#endif
   }
 
 
@@ -692,53 +594,6 @@ private:
   }
 
 #if 0
-  // プレイ情報を表示
-  void drawGameInfo(int font_size, glm::vec2 pos, float next_y) {
-    jpn_font.size(font_size);
-
-    const auto& scores = game->getScores();
-    // 変動した箇所の色を変える演出用
-    bool changed = false;
-    for (size_t i = 0; i < scores.size(); ++i) {
-      if (game_score[i] != scores[i]) {
-        game_score_effect[i] = 60;
-        changed = true;
-      }
-      game_score[i] = scores[i];
-    }
-    if (changed) {
-      // 点が入った
-    }
-
-    for (auto& i : game_score_effect) {
-      i = std::max(i - 1, 0);
-    }
-
-    const char* text[] = {
-      u8"道の数:   %d",
-      u8"道の長さ: %d",
-      u8"森の数:   %d",
-      u8"森の広さ: %d",
-      u8"深い森:   %d",
-      u8"街の数:   %d",
-      u8"教会の数: %d",
-      // u8"城の数:   %d",
-    };
-
-    u_int i = 0;
-    for (const auto t : text) {
-      ci::ColorA col = game_score_effect[i] ? ci::ColorA(1, 0, 0, 1)
-                                            : ci::ColorA(1, 1, 1, 1);
-
-      char buffer[100];
-      sprintf(buffer, t, game_score[i]);
-      jpn_font.draw(buffer, pos,col);
-
-      pos.y += next_y;
-      i += 1;
-    }
-  }
-
   // 結果を表示
   void drawResult() {
     drawGameInfo(30, glm::vec2(-300, 150), -50);

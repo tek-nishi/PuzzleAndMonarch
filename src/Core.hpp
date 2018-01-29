@@ -14,6 +14,7 @@
 #include "Title.hpp"
 #include "GameMain.hpp"
 #include "Result.hpp"
+#include "Credits.hpp"
 
 
 namespace ngs {
@@ -44,6 +45,11 @@ public:
                               [this](const Connection&, const Arguments&) noexcept
                               {
                                 tasks_.pushBack<GameMain>(params_, event_, drawer_);
+                              });
+    holder_ += event_.connect("Credits:begin",
+                              [this](const Connection&, const Arguments&) noexcept
+                              {
+                                tasks_.pushBack<Credits>(params_, event_, drawer_);
                               });
     
     holder_ += event_.connect("abort:touch_ended",

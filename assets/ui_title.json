@@ -106,14 +106,14 @@
     },
     {
       "identifier": "9",
-      "rect": [ -30, 20, -10, 0 ],
+      "rect": [ -30, 0, -10, 20 ],
       "anchor": [
         [ 1, 0.1 ],
         [ 1, 0.1 ]
       ],
       "scale": [ 1, 1 ],
       "pivot": [ 0.5, 0.5 ],
-      "event": "info",
+      "event": "credits",
       
       "font": "icon",
       "text": "",
