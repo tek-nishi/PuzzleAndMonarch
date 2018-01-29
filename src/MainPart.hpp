@@ -447,7 +447,8 @@ public:
 
     case GAMEEND:
       {
-        if (!counter.check("gameend")) {
+        if (!counter.check("gameend"))
+        {
           game_score = game->getScores();
           std::fill(std::begin(game_score_effect), std::end(game_score_effect), 0);
           playing_mode = RESULT;

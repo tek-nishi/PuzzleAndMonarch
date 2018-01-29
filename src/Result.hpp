@@ -22,6 +22,7 @@ class Result
   UI::Canvas canvas_;
 
   int mode_ = 0;
+  bool active_ = true;
 
   u_int frame_count = 0; 
 
@@ -47,7 +48,7 @@ public:
                               [this](const Connection&, const Arguments&) noexcept
                               {
                                 canvas_.active(false);
-                                count_exec_.add(0.5, [this](){ mode_ += 1; });
+                                count_exec_.add(0.5, [this](){ active_ = false; });
                                 DOUT << "Agree." << std::endl;
                               });
     holder_ += event_.connect("share:touch_ended",
@@ -68,13 +69,6 @@ public:
     {
     case 0:
       {
-      }
-      break;
-
-    case 1:
-      {
-        DOUT << "Result ended." << std::endl;
-        return false;
       }
       break;
     }
@@ -129,7 +123,7 @@ public:
 
 
 
-    return true;
+    return active_;
   }
 
   void draw(const glm::ivec2& window_size) noexcept override

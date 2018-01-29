@@ -22,6 +22,14 @@ class Core
   : private boost::noncopyable
 {
 
+  void setupTask() noexcept
+  {
+    tasks_.clear();
+
+    tasks_.pushBack<MainPart>(params_, event_);
+    tasks_.pushBack<Title>(params_, event_, drawer_);
+  }
+
 
 public:
   Core(const ci::JsonTree& params, Event<Arguments>& event) noexcept
@@ -29,8 +37,7 @@ public:
       event_(event),
       drawer_(params["ui"])
   {
-    tasks_.pushBack<MainPart>(params, event_);
-    tasks_.pushBack<Title>(params, event_, drawer_);
+    setupTask();
 
     // 各種イベント登録
     holder_ += event_.connect("Title:finished",
@@ -42,14 +49,7 @@ public:
     holder_ += event_.connect("abort:touch_ended",
                               [this](const Connection&, const Arguments&) noexcept
                               {
-                                count_exec_.add(0.5,
-                                                [this]() noexcept
-                                                {
-                                                  tasks_.clear();
-                                
-                                                  tasks_.pushBack<MainPart>(params_, event_);
-                                                  tasks_.pushBack<Title>(params_, event_, drawer_);
-                                                });
+                                count_exec_.add(0.5, std::bind(&Core::setupTask, this));
                               });
     
     holder_ += event_.connect("Game:Finish",
@@ -59,6 +59,12 @@ public:
                                                 [this]() {
                                                   tasks_.pushBack<Result>(params_, event_, drawer_);
                                                 });
+                              });
+
+    holder_ += event_.connect("agree:touch_ended",
+                              [this](const Connection&, const Arguments&) noexcept
+                              {
+                                count_exec_.add(0.5, std::bind(&Core::setupTask, this));
                               });
   }
 
