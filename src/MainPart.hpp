@@ -174,6 +174,18 @@ public:
                                 game->beginPlay();
                                 playing_mode = GAMEMAIN;
                               });
+
+    holder_ += event_.connect("pause:touch_ended",
+                              [this](const Connection&, const Arguments&) noexcept
+                              {
+                                paused_ = true;
+                              });
+    
+    holder_ += event_.connect("resume:touch_ended",
+                              [this](const Connection&, const Arguments&) noexcept
+                              {
+                                paused_ = false;
+                              });
   }
 
 
@@ -385,16 +397,23 @@ public:
 
 	bool update(const double current_time, const double delta_time) noexcept override
   {
+    if (paused_)
+    {
+      return true;
+    }
+
     game->update(delta_time);
     counter.update(delta_time);
 
     // カメラの中心位置変更
-    pivot_point += (field_center_ - pivot_point) * 0.05f;
+    pivot_point    += (field_center_ - pivot_point) * 0.05f;
     pivot_distance += (field_distance_ - pivot_distance) * 0.05f;
 
-    switch (playing_mode) {
+    switch (playing_mode)
+    {
     case GAMEMAIN:
-      if (!game->isPlaying()) {
+      if (!game->isPlaying())
+      {
         // 結果画面へ
         playing_mode = GAMEEND;
         counter.add("gameend", 2.0);
@@ -409,7 +428,8 @@ public:
           if ((timestamp - touch_timestamp_) > putdown_time_)
           {
             // パネル設置
-            if (can_put) {
+            if (can_put)
+            {
               game->putHandPanel(field_pos);
               rotate_offset = 0.0f;
               hight_offset  = 500.0f;
@@ -457,13 +477,12 @@ public:
       };
       event_.signal("Game:UI", arg);
     }
-
-    ci::gl::clear(ci::Color(0, 0, 0));
     
     // 本編
+    ci::gl::enableDepth();
+    ci::gl::enable(GL_CULL_FACE);
     ci::gl::disableAlphaBlending();
-
-    // プレイ画面
+    
     ci::gl::setMatrices(camera_.body());
 
     {
@@ -474,14 +493,12 @@ public:
 
     ci::gl::translate(-pivot_point);
 
-    ci::gl::enableDepth();
-    ci::gl::enable(GL_CULL_FACE);
-
     // フィールド
     const auto& field_panels = game->getFieldPanels();
     ngs::drawFieldPanels(field_panels, view);
 
-    if (game->isPlaying()) {
+    if (game->isPlaying())
+    {
       // 置ける場所
       const auto& blank = game->getBlankPositions();
       ngs::drawFieldBlank(blank, view);
@@ -492,7 +509,8 @@ public:
       glm::vec3 pos(cursor_pos.x, cursor_pos.y + hight_offset, cursor_pos.z);
       ngs::drawPanel(game->getHandPanel(), pos, game->getHandRotation(), view, rotate_offset);
       
-      if (can_put) {
+      if (can_put)
+      {
         float s = std::abs(std::sin(frame_counter * 0.1)) * 0.1;
         glm::vec3 scale(0.9 + s, 1, 0.9 + s);
         drawFieldSelected(field_pos, scale, view);
@@ -874,6 +892,8 @@ private:
 
   CountExec count_exec_;
   Counter counter;
+
+  bool paused_ = false;
 
   std::vector<Panel> panels_;
   std::unique_ptr<Game> game;

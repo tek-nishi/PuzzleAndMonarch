@@ -1,5 +1,6 @@
 * TODO いい感じに画面全体に街が映るように
 * TODO 本編にUI結合
+* TODO ゲーム中断
 * TODO fontの選定
 * TODO コマ送り
 * TODO 強制PAUSE

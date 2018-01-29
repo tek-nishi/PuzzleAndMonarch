@@ -42,7 +42,7 @@ public:
                          });
 
     holder_ += event_.connect("pause:touch_ended",
-                              [this](const Connection&, const Arguments& arg) noexcept
+                              [this](const Connection&, const Arguments&) noexcept
                               {
                                 {
                                   const auto& widget = canvas_.at("main");
@@ -56,7 +56,7 @@ public:
                               });
     
     holder_ += event_.connect("resume:touch_ended",
-                              [this](const Connection&, const Arguments& arg) noexcept
+                              [this](const Connection&, const Arguments&) noexcept
                               {
                                 {
                                   const auto& widget = canvas_.at("pause_menu");
@@ -70,7 +70,7 @@ public:
                               });
     
     holder_ += event_.connect("abort:touch_ended",
-                              [this](const Connection&, const Arguments& arg) noexcept
+                              [this](const Connection&, const Arguments&) noexcept
                               {
                                 // ゲーム終了
                                 event_.signal("GameMain:aborted", Arguments());
