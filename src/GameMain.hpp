@@ -21,7 +21,7 @@ class GameMain
 
   UI::Canvas canvas_;
 
-  int mode_ = 0;
+  bool active_ = true;
 
 
 public:
@@ -29,6 +29,7 @@ public:
     : event_(event),
       canvas_(event, drawer, params["ui.camera"], Params::load(params.getValueForKey<std::string>("gamemain.canvas")))
   {
+    // ゲーム開始
     count_exec_.add(2.0, [this]() {
                            event_.signal("Game:Start", Arguments());
                            {
@@ -97,6 +98,25 @@ public:
                                 }
                                 widget->setParam("color", color);
                               });
+
+    // ゲーム完了
+    holder_ += event_.connect("Game:Finish",
+                              [this](const Connection&, const Arguments&) noexcept
+                              {
+                                {
+                                  const auto& widget = canvas_.at("main");
+                                  widget->enable(false);
+                                }
+                                {
+                                  const auto& widget = canvas_.at("end");
+                                  widget->enable();
+                                }
+                                count_exec_.add(1.5,
+                                                [this]() noexcept
+                                                {
+                                                  active_ = false;
+                                                });
+                              });
   }
 
   ~GameMain() = default;
@@ -106,7 +126,7 @@ public:
   {
     count_exec_.update(delta_time);
 
-    return true;
+    return active_;
   }
 
   void draw(const glm::ivec2& window_size) noexcept override

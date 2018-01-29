@@ -13,6 +13,7 @@
 #include "MainPart.hpp"
 #include "Title.hpp"
 #include "GameMain.hpp"
+#include "Result.hpp"
 
 
 namespace ngs {
@@ -48,6 +49,15 @@ public:
                                 
                                                   tasks_.pushBack<MainPart>(params_, event_);
                                                   tasks_.pushBack<Title>(params_, event_, drawer_);
+                                                });
+                              });
+    
+    holder_ += event_.connect("Game:Finish",
+                              [this](const Connection&, const Arguments&) noexcept
+                              {
+                                count_exec_.add(2.0,
+                                                [this]() {
+                                                  tasks_.pushBack<Result>(params_, event_, drawer_);
                                                 });
                               });
   }

@@ -3,10 +3,11 @@
 * TODO fontの選定
 * TODO credit画面
 * TODO 設定画面
-* TODO UI::Textのレイアウトを更新しない指定
 * TODO ngs-0012
 * TODO 正式名称決め
 * TODO UIのアニメーション
+* TODO 得点計算をparamsで定義
+* TODO ランキングの値をparamsで定義
 * TODO iOS:share機能
 * TODO 無限に置けるモードが欲しい
 * TODO Windows版: イベントハンドルが微妙
@@ -26,6 +27,8 @@
 * TODO iOS:実績を実装
 * TODO ゲームの途中段階をセーブしたい
 * TODO iOS:他のアプリで再生中のBGMがそのまま再生されるように
+* DONE UI::Textのレイアウトを更新しない指定
+CLOSED: [2018-01-29 月 18:49]
 * DONE コマ送り
 CLOSED: [2018-01-29 月 18:08]
 * DONE 強制PAUSE

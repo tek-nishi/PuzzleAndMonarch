@@ -35,7 +35,7 @@ public:
     : params_(params),
       event_(event),
       panels_(createPanels()),
-      game(std::make_unique<Game>(panels_)),
+      game(std::make_unique<Game>(params["game"], panels_)),
       rotation(toRadians(Json::getVec<glm::vec2>(params["field.camera.rotation"]))),
       distance(params.getValueForKey<float>("field.camera.distance")),
       camera_(params["field.camera"]),
@@ -414,9 +414,8 @@ public:
     case GAMEMAIN:
       if (!game->isPlaying())
       {
-        // 結果画面へ
-        playing_mode = GAMEEND;
-        counter.add("gameend", 2.0);
+        event_.signal("Game:Finish", Arguments());
+        playing_mode += 1;
       }
       else
       {

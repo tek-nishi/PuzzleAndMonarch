@@ -6,6 +6,10 @@
     "full_screen": false 
   },
 
+  "game": {
+    "play_time": 5
+  },
+
   "field": {
     "camera": {
       "fov":    25,

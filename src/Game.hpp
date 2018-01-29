@@ -12,21 +12,25 @@
 namespace ngs {
 
 struct Game {
-  Game(const std::vector<Panel>& panels_)
-    : panels(panels_),
+  Game(const ci::JsonTree& params, const std::vector<Panel>& panels_) noexcept
+    : params_(params),
+      panels(panels_),
       scores(8, 0)
   {
     DOUT << "Panel: " << panels.size() << std::endl;
 
     // パネルを通し番号で用意
-    for (int i = 0; i < panels.size(); ++i) {
+    for (int i = 0; i < panels.size(); ++i)
+    {
       waiting_panels.push_back(i);
     }
 
     // 開始パネルを探す
     std::vector<int> start_panels;
-    for (int i = 0; i < panels.size(); ++i) {
-      if (panels[i].getAttribute() & Panel::START) {
+    for (int i = 0; i < panels.size(); ++i)
+    {
+      if (panels[i].getAttribute() & Panel::START)
+      {
         start_panels.push_back(i);
       }
     }
@@ -36,7 +40,8 @@ struct Game {
     std::random_device seed_gen;
     std::mt19937 engine(seed_gen());
 
-    if (start_panels.size() > 1) {
+    if (start_panels.size() > 1)
+    {
       // お城が何枚かある時はシャッフル
       std::shuffle(std::begin(start_panels), std::end(start_panels), engine);
     }
@@ -55,7 +60,8 @@ struct Game {
   }
 
   // 内部時間を進める
-  void update(double delta_time) {
+  void update(double delta_time) noexcept
+  {
     if (isPlaying()
 #ifdef DEBUG
         && time_count
@@ -69,10 +75,11 @@ struct Game {
 
 
   // 本編開始
-  void beginPlay() {
+  void beginPlay() noexcept
+  {
     started = true;
     // とりあえず３分
-    play_time = 60 * 3;
+    play_time = params_.getValueForKey<double>("play_time");
 
     getNextPanel();
     fieldUpdate();
@@ -81,7 +88,8 @@ struct Game {
   }
 
   // 本編終了
-  void endPlay() {
+  void endPlay() noexcept
+  {
     finished = true;
     calcTotalScore();
     DOUT << "Game ended." << std::endl;
@@ -89,30 +97,35 @@ struct Game {
 
   
   // 残り時間
-  double getRemainingTime() const {
+  double getRemainingTime() const noexcept
+  {
     return std::max(play_time, 0.0);
   }
 
 
   // プレイ中？
   // 始まったらtrueになり、終了しても変化しない
-  bool isBeganPlay() const {
+  bool isBeganPlay() const noexcept
+  {
     return started;
   }
 
   // 始まって、結果発表直前まで
-  bool isPlaying() const {
+  bool isPlaying() const noexcept
+  {
     return started && !finished;
   }
 
   // 結果発表以降
-  bool isEndedPlay() const {
+  bool isEndedPlay() const noexcept
+  {
     return finished;
   }
 
 
   // パネルが置けるか調べる
-  bool canPutToBlank(glm::ivec2 field_pos) {
+  bool canPutToBlank(glm::ivec2 field_pos) noexcept
+  {
     bool can_put = false;
     
     if (std::find(std::begin(blank), std::end(blank), field_pos) != std::end(blank)) {
@@ -329,6 +342,7 @@ struct Game {
 
 private:
   // FIXME 参照で持つのいくない
+  const ci::JsonTree& params_;
   const std::vector<Panel>& panels;
 
   bool started    = false;
