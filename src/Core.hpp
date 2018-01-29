@@ -42,7 +42,8 @@ public:
                               [this](const Connection&, const Arguments&) noexcept
                               {
                                 count_exec_.add(0.5,
-                                                [this]() {
+                                                [this]() noexcept
+                                                {
                                                   tasks_.clear();
                                 
                                                   tasks_.pushBack<MainPart>(params_, event_);

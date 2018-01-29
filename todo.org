@@ -1,13 +1,10 @@
 * TODO いい感じに画面全体に街が映るように
 * TODO 本編にUI結合
-* TODO ゲーム中断
 * TODO fontの選定
-* TODO コマ送り
-* TODO 強制PAUSE
 * TODO credit画面
 * TODO 設定画面
 * TODO ngs-0012
-* TODO 正式決め
+* TODO 正式名称決め
 * TODO UIのアニメーション
 * TODO iOS:share機能
 * TODO 無限に置けるモードが欲しい
@@ -24,10 +21,16 @@
 * TODO iPhone 5sでの動作確認
 * TODO カルカソンヌ公式に許可を取る
 * TODO アプリアイコン
-* TODO GameCenter対応
-* TODO 実績を実装
+* TODO iOS:GameCenter対応
+* TODO iOS:実績を実装
 * TODO ゲームの途中段階をセーブしたい
-* TODO 他のアプリで再生中のBGMがそのまま再生されるように
+* TODO iOS:他のアプリで再生中のBGMがそのまま再生されるように
+* DONE コマ送り
+CLOSED: [2018-01-29 月 18:08]
+* DONE 強制PAUSE
+CLOSED: [2018-01-29 月 18:08]
+* DONE ゲーム中断
+CLOSED: [2018-01-29 月 17:33]
 * DONE Win・macOS:フルスクリーンモード
 CLOSED: [2018-01-29 月 01:01]
 * DONE Counterをリアル時間へ変更する

@@ -119,6 +119,23 @@ private:
         worker = std::make_unique<Worker>(params, event_);
       }
       break;
+
+    case ci::app::KeyEvent::KEY_ESCAPE:
+      {
+        // Forced pause.
+        paused_      = !paused_;
+        step_update_ = false;
+        DOUT << "pause: " << paused_ << std::endl;
+      }
+      break;
+
+    case ci::app::KeyEvent::KEY_SPACE:
+      {
+        // １コマ更新
+        paused_      = false;
+        step_update_ = true;
+      }
+      break;
     }
 #endif
 
@@ -133,10 +150,27 @@ private:
 
 	void update() noexcept override
   {
-
     auto current_time = getElapsedSeconds();
     auto delta_time   = current_time - prev_time_;
-    worker->update(current_time, delta_time);
+#if defined (DEBUG)
+    if (step_update_)
+    {
+      delta_time = 1.0 / 60.0;
+    }
+
+    if (!paused_)
+#endif
+    {
+      worker->update(current_time, delta_time);
+    }
+
+#if defined (DEBUG)
+    if (step_update_)
+    {
+      step_update_ = false;
+      paused_      = true;
+    }
+#endif
 
     prev_time_ = current_time;
   }
@@ -172,6 +206,11 @@ private:
 
   // MainPart worker;
   std::unique_ptr<Worker> worker;
+
+#if defined (DEBUG)
+  bool paused_      = false;
+  bool step_update_ = false;
+#endif
 
 };
 
