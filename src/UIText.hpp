@@ -18,12 +18,17 @@ class Text
   float text_size_ = 1.0f;
   glm::vec2 layout_ = { 0.5, 0.5 };
   ci::ColorA color_ = { 1.0f, 1.0f, 1.0f, 1.0f };
+  bool dynamic_layout_ = true;
+
+  // 初期テキスト(動的レイアウトを使わない場合に必要)
+  std::string initial_text_;
 
 
 public:
   Text(const ci::JsonTree& params) noexcept
     : text_(params.getValueForKey<std::string>("text")),
-      font_name_(params.getValueForKey<std::string>("font"))
+      font_name_(params.getValueForKey<std::string>("font")),
+      initial_text_(text_)
   {
     if (params.hasChild("text_size"))
     {
@@ -36,6 +41,10 @@ public:
     if (params.hasChild("color"))
     {
       color_ = Json::getColorA<float>(params["color"]);
+    }
+    if (params.hasChild("dynamic_layout"))
+    {
+      dynamic_layout_ = params.getValueForKey<bool>("dynamic_layout");
     }
   }
 
@@ -51,7 +60,9 @@ private:
     auto& font = drawer.getFont(font_name_);
     // FontのサイズとWidgetのサイズからスケーリングを計算
     auto font_scale = text_size_ / font.getSize();
-    auto size = font.drawSize(text_) * font_scale; 
+    const auto& t = dynamic_layout_ ? text_
+                                    : initial_text_;
+    auto size = font.drawSize(t) * font_scale; 
     // レイアウトを計算
     glm::vec2 pos = rect.getUpperLeft() * (glm::vec2(1.0) - layout_) + (rect.getLowerRight() - size) * layout_; 
     

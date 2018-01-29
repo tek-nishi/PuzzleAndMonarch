@@ -34,6 +34,7 @@
           "font": "en",
           "text": "9:99",
           "text_size": 25,
+          "dynamic_layout": false,
           "color": [ 1, 1, 1, 1 ]
         },
         {
