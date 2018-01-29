@@ -37,6 +37,18 @@ public:
                               {
                                 tasks_.pushBack<GameMain>(params_, event_, drawer_);
                               });
+    
+    holder_ += event_.connect("abort:touch_ended",
+                              [this](const Connection&, const Arguments&) noexcept
+                              {
+                                count_exec_.add(0.5,
+                                                [this]() {
+                                                  tasks_.clear();
+                                
+                                                  tasks_.pushBack<MainPart>(params_, event_);
+                                                  tasks_.pushBack<Title>(params_, event_, drawer_);
+                                                });
+                              });
   }
 
   ~Core() = default;
@@ -75,6 +87,7 @@ public:
   // 更新
   void update(const double current_time, const double delta_time) noexcept
   {
+    count_exec_.update(delta_time);
     tasks_.update(current_time, delta_time);
   }
 
@@ -97,7 +110,6 @@ private:
 
   // UI
   UI::Drawer drawer_;
-
 };
 
 }

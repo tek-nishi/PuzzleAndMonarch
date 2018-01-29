@@ -169,7 +169,7 @@ public:
                               });
 
     holder_ += event_.connect("Game:Start",
-                              [this](const Connection&, const Arguments& arg) noexcept
+                              [this](const Connection&, const Arguments&) noexcept
                               {
                                 game->beginPlay();
                                 playing_mode = GAMEMAIN;

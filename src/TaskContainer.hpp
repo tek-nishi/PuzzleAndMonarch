@@ -41,6 +41,11 @@ public:
     }
   }
 
+  void clear() noexcept
+  {
+    tasks_.clear();
+  }
+
 
   // 最前へ追加
   template <typename T, typename... Args>
