@@ -156,6 +156,24 @@ public:
                                   camera.setEyePoint(eye_position);
                                 }
                               });
+
+    // 各種イベント
+    holder_ += event_.connect("Title:finished",
+                              [this](const Connection&, const Arguments&) noexcept
+                              {
+                                hight_offset = 500.0f;
+                                
+                                game_score = game->getScores();
+                                game_score_effect.resize(game_score.size());
+                                std::fill(std::begin(game_score_effect), std::end(game_score_effect), 0);
+                              });
+
+    holder_ += event_.connect("Game:Start",
+                              [this](const Connection&, const Arguments& arg) noexcept
+                              {
+                                game->beginPlay();
+                                playing_mode = GAMEMAIN;
+                              });
   }
 
 
@@ -375,20 +393,6 @@ public:
     pivot_distance += (field_distance_ - pivot_distance) * 0.05f;
 
     switch (playing_mode) {
-    case TITLE:
-      {
-      }
-      break;
-
-    case GAMESTART:
-      {
-        if (!counter.check("gamestart")) {
-          playing_mode = GAMEMAIN;
-          DOUT << "GAMEMAIN." << std::endl;
-        }
-      }
-      break;
-
     case GAMEMAIN:
       if (!game->isPlaying()) {
         // 結果画面へ
@@ -446,6 +450,14 @@ public:
 
 	void draw(const glm::ivec2& window_size) noexcept override
   {
+    {
+      // UI更新
+      Arguments arg = {
+        { "remaining_time", game->getRemainingTime() }
+      };
+      event_.signal("Game:UI", arg);
+    }
+
     ci::gl::clear(ci::Color(0, 0, 0));
     
     // 本編
