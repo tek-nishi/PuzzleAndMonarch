@@ -19,10 +19,14 @@ class WidgetsFactory
   // JSONから生成(階層構造も含む)
   WidgetPtr create(const ci::JsonTree& params) noexcept
   {
-    auto identifier = params.getValueForKey<std::string>("identifier");
     auto rect = Json::getRect(params["rect"]);
-    auto widget = std::make_shared<UI::Widget>(identifier, rect);
+    auto widget = std::make_shared<UI::Widget>(rect);
 
+    if (params.hasChild("identifier"))
+    {
+      auto id = params.getValueForKey<std::string>("identifier");
+      widget->setIdentifier(id);
+    }
     if (params.hasChild("enable"))
     {
       widget->enable(params.getValueForKey<bool>("enable"));

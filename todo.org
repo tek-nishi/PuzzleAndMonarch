@@ -1,10 +1,11 @@
 * TODO いい感じに画面全体に街が映るように
+* TODO ゲーム開始時にプレイ時間を決めたい
+* TODO Settings画面での設定をファイルに書き出す
 * TODO 被写界深度の浅い表現
 * TODO DEBUG用早送り
 * TODO enableでないWidgetがEventをsignalする
 * TODO UI::Widget idのないWidgetを許容する
 * TODO fontの選定
-* TODO credit画面
 * TODO 設定画面
 * TODO ngs-0012
 * TODO 正式名称決め
@@ -30,6 +31,8 @@
 * TODO iOS:実績を実装
 * TODO ゲームの途中段階をセーブしたい
 * TODO iOS:他のアプリで再生中のBGMがそのまま再生されるように
+* DONE credit画面
+CLOSED: [2018-01-30 火 15:51]
 * DONE 本編にUI結合
 CLOSED: [2018-01-29 月 19:49]
 * DONE UI::Textのレイアウトを更新しない指定

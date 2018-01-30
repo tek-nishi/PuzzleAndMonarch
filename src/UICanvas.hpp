@@ -96,8 +96,11 @@ public:
 private:
   void makeQueryWidgets(const UI::WidgetPtr& widget) noexcept
   {
-    query_widgets_.insert({ widget->getIdentifier(), widget });
-    enumerated_widgets_.push_back(widget);
+    if (widget->hasIdentifier())
+    {
+      query_widgets_.insert({ widget->getIdentifier(), widget });
+      enumerated_widgets_.push_back(widget);
+    }
 
     const auto& children = widget->getChildren();
     if (children.empty()) return;

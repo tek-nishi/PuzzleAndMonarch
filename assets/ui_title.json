@@ -10,7 +10,6 @@
   
   "childlen": [
     {
-      "identifier": "3",
       "rect": [ 20, 0, 20, 0 ],
       "anchor": [
         [ 0.5, 0.8 ],
@@ -26,7 +25,6 @@
       "color": [ 1, 1, 1, 1 ]
     },
     {
-      "identifier": "4",
       "rect": [ 0, -35, 0, -35 ],
       "anchor": [
         [ 0.5, 0.8 ],
@@ -42,7 +40,7 @@
       "color": [ 1, 1, 1, 1 ]
     },
     {
-      "identifier": "5",
+      "identifier": "play",
       "rect": [ -15, -15, 15, 15 ],
       "anchor": [
         [ 0.5, 0.3 ],
@@ -58,7 +56,6 @@
       "color": [ 1, 1, 1, 1 ]
     },
     {
-      "identifier": "6",
       "rect": [ 0, 3, 0, 20 ],
       "anchor": [
         [ 0.5, 0.0 ],
@@ -73,7 +70,7 @@
       "color": [ 1, 1, 1, 1 ]
     },
     {
-      "identifier": "7",
+      "identifier": "GameCenter",
       "rect": [ -30, 80, -10, 60 ],
       "anchor": [
         [ 1, 0.1 ],
@@ -89,7 +86,7 @@
       "color": [ 1, 1, 1, 1 ]
     },
     {
-      "identifier": "8",
+      "identifier": "Settings",
       "rect": [ -30, 30, -10, 50 ],
       "anchor": [
         [ 1, 0.1 ],
@@ -105,7 +102,7 @@
       "color": [ 1, 1, 1, 1 ]
     },
     {
-      "identifier": "9",
+      "identifier": "Credits",
       "rect": [ -30, 0, -10, 20 ],
       "anchor": [
         [ 1, 0.1 ],

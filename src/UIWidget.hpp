@@ -20,9 +20,8 @@ class Widget
 
   
 public:
-  Widget(std::string identifier, const ci::Rectf& rect) noexcept
-    : identifier_(std::move(identifier)),
-      rect_(rect)
+  Widget(const ci::Rectf& rect) noexcept
+    : rect_(rect)
   {
 #if defined (DEBUG)
     // 枠線のために適当に色を決める
@@ -31,9 +30,19 @@ public:
   }
 
 
+  void setIdentifier(std::string id) noexcept
+  {
+    identifier_ = std::move(id);
+  }
+
   const std::string& getIdentifier() const noexcept
   {
     return identifier_;
+  }
+
+  bool hasIdentifier() const noexcept
+  {
+    return !identifier_.empty();
   }
 
 
