@@ -1,0 +1,112 @@
+{
+  "identifier": "root",
+  "rect": [ 0, 0, 0, 0 ],
+  "anchor": [
+    [ 0, 0 ],
+    [ 1, 1 ]
+  ],
+  "scale": [ 1, 1 ],
+  "pivot": [ 0.5, 0.5 ],
+  
+  "childlen": [
+    {
+      "identifier": "0",
+      "rect": [ -20, 0, 20, 0 ],
+      "anchor": [
+        [ 0.5, 0.91 ],
+        [ 0.5, 0.91 ]
+      ],
+      "scale": [ 1, 1 ],
+      "pivot": [ 0.5, 0.5 ],
+
+      "font": "en",
+      "text": "Settings",
+      "text_size": 28,
+      "color": [ 1, 1, 1, 1 ]
+    },
+
+    {
+      "identifier": "1",
+      "rect": [ -40, 40, -40, 50 ],
+      "anchor": [
+        [ 0.5, 0.5 ],
+        [ 0.5, 0.5 ]
+      ],
+      "scale": [ 1, 1 ],
+      "pivot": [ 0.5, 0.5 ],
+
+      "font": "en",
+      "text": "BGM",
+      "text_size": 18,
+      "color": [ 1, 1, 1, 1 ]
+    },
+    {
+      "identifier": "BGM",
+      "rect": [ -50, 15, -30, 35 ],
+      "anchor": [
+        [ 0.5, 0.5 ],
+        [ 0.5, 0.5 ]
+      ],
+      "scale": [ 1, 1 ],
+      "pivot": [ 0.5, 0.5 ],
+      "event": "BGM",
+
+      "font": "icon",
+      "text": "",
+      "text_size": 20,
+      "dynamic_layout": false,
+      "color": [ 1, 1, 1, 1 ]
+    },
+    {
+      "identifier": "1",
+      "rect": [ 40, 40, 40, 50 ],
+      "anchor": [
+        [ 0.5, 0.5 ],
+        [ 0.5, 0.5 ]
+      ],
+      "scale": [ 1, 1 ],
+      "pivot": [ 0.5, 0.5 ],
+
+      "font": "en",
+      "text": "SE",
+      "text_size": 18,
+      "color": [ 1, 1, 1, 1 ]
+    },
+    {
+      "identifier": "SE",
+      "rect": [ 30, 15, 50, 35 ],
+      "anchor": [
+        [ 0.5, 0.5 ],
+        [ 0.5, 0.5 ]
+      ],
+      "scale": [ 1, 1 ],
+      "pivot": [ 0.5, 0.5 ],
+      "event": "SE",
+
+      "font": "icon",
+      "text": "",
+      "text_size": 20,
+      "dynamic_layout": false,
+      "color": [ 1, 1, 1, 1 ]
+    },
+
+    {
+      "identifier": "touch",
+      "rect": [ -10, 8, 10, 28 ],
+      "anchor": [
+        [ 0.5, 0 ],
+        [ 0.5, 0 ]
+      ],
+      "scale": [ 1, 1 ],
+      "pivot": [ 0.5, 0.5 ],
+      "enable": false,
+      "event": "agree",
+      
+      "font": "icon",
+      "text": "",
+      "text_size": 20,
+      "layout": [ 0.5, 0 ],
+      "color": [ 1, 1, 1, 1 ]
+    }
+  ]
+}
