@@ -60,6 +60,18 @@ public:
                               {
                                 tasks_.pushBack<Title>(params_, event_, drawer_);
                               });
+    // Title→Settings
+    holder_ += event_.connect("Settings:begin",
+                              [this](const Connection&, const Arguments&) noexcept
+                              {
+                                tasks_.pushBack<Settings>(params_, event_, drawer_);
+                              });
+    // Settings→Title
+    holder_ += event_.connect("Settings:Finished",
+                              [this](const Connection&, const Arguments&) noexcept
+                              {
+                                tasks_.pushBack<Title>(params_, event_, drawer_);
+                              });
     // ゲーム中断
     holder_ += event_.connect("Game:Aborted",
                               [this](const Connection&, const Arguments&) noexcept
