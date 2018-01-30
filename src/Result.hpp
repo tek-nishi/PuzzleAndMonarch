@@ -47,9 +47,13 @@ public:
     holder_ += event_.connect("agree:touch_ended",
                               [this](const Connection&, const Arguments&) noexcept
                               {
-                                canvas_.active(false);
-                                count_exec_.add(0.5, [this](){ active_ = false; });
                                 DOUT << "Agree." << std::endl;
+                                canvas_.active(false);
+                                count_exec_.add(0.5, [this]() noexcept
+                                                     {
+                                                       event_.signal("Result:Finished", Arguments());
+                                                       active_ = false;
+                                                     });
                               });
     holder_ += event_.connect("share:touch_ended",
                               [this](const Connection&, const Arguments&) noexcept

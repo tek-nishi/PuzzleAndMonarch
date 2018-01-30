@@ -1,4 +1,7 @@
 * TODO いい感じに画面全体に街が映るように
+* TODO 被写界深度の浅い表現
+* TODO DEBUG用早送り
+* TODO enableでないWidgetがEventをsignalする
 * TODO fontの選定
 * TODO credit画面
 * TODO 設定画面

@@ -69,6 +69,10 @@
   "credits": {
     "canvas": "ui_credits.json"
   },
+
+  "settings": {
+    "canvas": "ui_settings.json"
+  },
   
   "gamemain": {
     "canvas": "ui_gamemain.json"

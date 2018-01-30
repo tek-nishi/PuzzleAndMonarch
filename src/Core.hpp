@@ -15,6 +15,7 @@
 #include "GameMain.hpp"
 #include "Result.hpp"
 #include "Credits.hpp"
+#include "Settings.hpp"
 
 
 namespace ngs {
@@ -41,23 +42,31 @@ public:
     setupTask();
 
     // 各種イベント登録
+    // Title→GameMain
     holder_ += event_.connect("Title:finished",
                               [this](const Connection&, const Arguments&) noexcept
                               {
                                 tasks_.pushBack<GameMain>(params_, event_, drawer_);
                               });
+    // Title→Credits
     holder_ += event_.connect("Credits:begin",
                               [this](const Connection&, const Arguments&) noexcept
                               {
                                 tasks_.pushBack<Credits>(params_, event_, drawer_);
                               });
-    
-    holder_ += event_.connect("abort:touch_ended",
+    // Credits→Title
+    holder_ += event_.connect("Credits:Finished",
+                              [this](const Connection&, const Arguments&) noexcept
+                              {
+                                tasks_.pushBack<Title>(params_, event_, drawer_);
+                              });
+    // ゲーム中断
+    holder_ += event_.connect("Game:Aborted",
                               [this](const Connection&, const Arguments&) noexcept
                               {
                                 count_exec_.add(0.5, std::bind(&Core::setupTask, this));
                               });
-    
+    // GameMain→Result
     holder_ += event_.connect("Game:Finish",
                               [this](const Connection&, const Arguments&) noexcept
                               {
@@ -66,8 +75,8 @@ public:
                                                   tasks_.pushBack<Result>(params_, event_, drawer_);
                                                 });
                               });
-
-    holder_ += event_.connect("agree:touch_ended",
+    // Result→Title
+    holder_ += event_.connect("Result:Finished",
                               [this](const Connection&, const Arguments&) noexcept
                               {
                                 count_exec_.add(0.5, std::bind(&Core::setupTask, this));

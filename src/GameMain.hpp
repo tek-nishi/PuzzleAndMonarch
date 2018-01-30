@@ -30,7 +30,8 @@ public:
       canvas_(event, drawer, params["ui.camera"], Params::load(params.getValueForKey<std::string>("gamemain.canvas")))
   {
     // ゲーム開始
-    count_exec_.add(2.0, [this]() {
+    count_exec_.add(2.0, [this]() noexcept
+                         {
                            event_.signal("Game:Start", Arguments());
                            {
                              const auto& widget = canvas_.at("begin");
@@ -74,7 +75,7 @@ public:
                               [this](const Connection&, const Arguments&) noexcept
                               {
                                 // ゲーム終了
-                                event_.signal("GameMain:aborted", Arguments());
+                                event_.signal("Game:Aborted", Arguments());
                                 DOUT << "GameMain finished." << std::endl;
                               });
 

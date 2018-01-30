@@ -24,12 +24,15 @@ public:
 
   void update(const double current_time, const double delta_time) noexcept
   {
-    auto result = std::remove_if(std::begin(tasks_), std::end(tasks_),
-                                 [current_time, delta_time](std::unique_ptr<Task>& task) {
-                                   return !task->update(current_time, delta_time);
-                                 });
-
-    tasks_.erase(result, std::end(tasks_));
+    for (auto it = std::begin(tasks_); it != std::end(tasks_); )
+    {
+      if (!(*it)->update(current_time, delta_time))
+      {
+        it = tasks_.erase(it);
+        continue;
+      }
+      ++it;
+    }
   }
 
 
