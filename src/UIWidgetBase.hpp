@@ -4,6 +4,7 @@
 // Widget描画基本クラス
 //
 
+#include <boost/any.hpp>
 #include "UIDrawer.hpp"
 
 
@@ -17,6 +18,7 @@ struct WidgetBase
   virtual void draw(const ci::Rectf& rect, UI::Drawer& drawer) noexcept = 0;
 
   virtual void setParam(const std::string& name, const boost::any& values) noexcept = 0; 
+  virtual boost::any getParam(const std::string& name) noexcept = 0; 
 
 };
 

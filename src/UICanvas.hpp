@@ -7,9 +7,11 @@
 #include <map>
 #include <string>
 #include <boost/noncopyable.hpp>
+#include <cinder/Timeline.h>
 #include "UIWidgetsFactory.hpp"
 #include "UIDrawer.hpp"
 #include "Camera.hpp"
+#include "Tween.hpp"
 
 
 namespace ngs { namespace UI {
@@ -26,7 +28,8 @@ public:
     : event_(event),
       drawer_(drawer),
       camera_(camera_params),
-      widgets_(widgets_factory_.construct(widgets_params))
+      widgets_(widgets_factory_.construct(widgets_params)),
+      timeline_(ci::Timeline::create())
   {
     // FIXME near_zピッタリの位置だとmacOSのReleaseビルドで絵が出ない
     camera_.body().lookAt(glm::vec3(0, 0, camera_.getNearClip() + 0.001f), glm::vec3(0));
@@ -57,6 +60,12 @@ public:
     camera_.resize();
   }
 
+
+  void update(const double delta_time) noexcept
+  {
+    timeline_->step(delta_time);
+  }
+
   void draw() noexcept
   {
     ci::gl::enableDepth(false);
@@ -78,7 +87,7 @@ public:
   }
 
 
-  const UI::WidgetPtr at(const std::string& name) const noexcept
+  const UI::WidgetPtr& at(const std::string& name) const noexcept
   {
     return query_widgets_.at(name);
   }
@@ -91,6 +100,24 @@ public:
     // FIXME 何度も実行して良いのか??
     touching_widget_.reset();
   }
+
+
+  // 暫定処理
+  void loadTween(const std::string& path) noexcept
+  {
+    auto params = Params::load(path);
+    tween_ = Tween(params["start"][0]["tween"]);
+  }
+  
+
+  void setTween(const std::string& id) noexcept
+  {
+    const auto& widget = this->at(id); 
+    tween_.set(timeline_, widget);
+  }
+
+
+
 
 
 private:
@@ -239,6 +266,9 @@ private:
   UI::Drawer& drawer_;
 
   bool active_ = true;
+
+  ci::TimelineRef timeline_;
+  Tween tween_;
 };
 
 

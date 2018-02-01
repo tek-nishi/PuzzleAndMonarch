@@ -1,0 +1,37 @@
+{
+  "start": [
+    {
+      "identifier": "play",
+      "tween": [
+        {
+          "param": "color",
+          "type": "color",
+          "body": [
+            {
+              "duration": 0.8,
+              "loop": true,
+              "delay": 0,
+              "pingpong": true,
+              "start": [ 1, 1, 1, 1 ],
+              "end":   [ 1, 1, 1, 0 ]
+            }
+          ]
+        },
+        {
+          "param": "size",
+          "type": "float",
+          "body": [
+            {
+              "duration": 1,
+              "loop": true,
+              "delay": 0,
+              "pingpong": true,
+              "start": 30,
+              "end":   20
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

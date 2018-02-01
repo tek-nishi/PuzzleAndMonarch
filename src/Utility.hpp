@@ -38,13 +38,13 @@ std::size_t elemsof(const T& value) {
   return std::end(value) - std::begin(value);
 }
 
-template<typename T>
+template <typename T>
 T toRadians(const T& v)
 {
   return v * float(M_PI) / 180.0f;
 }
 
-template<typename T>
+template <typename T>
 T toDegrees(const T& v)
 {
   return v * 180.0f / float(M_PI);

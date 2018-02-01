@@ -27,7 +27,7 @@ public:
   ~Event() = default;
 
 
-  template<typename F>
+  template <typename F>
   Connection connect(const std::string& msg, F callback) noexcept
   {
     return signals_[msg].connect_extended(callback);

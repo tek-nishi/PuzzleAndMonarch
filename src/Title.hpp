@@ -30,6 +30,9 @@ public:
     : event_(event),
       canvas_(event, drawer, params["ui.camera"], Params::load(params.getValueForKey<std::string>("title.canvas")))
   {
+    canvas_.loadTween("tw_title.json");
+    canvas_.setTween("play");
+
     holder_ += event_.connect("play:touch_ended",
                               [this](const Connection&, const Arguments&) noexcept
                               {
@@ -65,6 +68,8 @@ public:
                                                      });
                                 DOUT << "Settings." << std::endl;
                               });
+
+    canvas_.setTween("play");
   }
 
   ~Title() = default;
@@ -73,6 +78,7 @@ public:
   bool update(const double current_time, const double delta_time) noexcept override
   {
     count_exec_.update(delta_time);
+    canvas_.update(delta_time);
 
     return active_;
   }

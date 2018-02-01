@@ -21,6 +21,12 @@ class Brank
   {
   }
 
+  boost::any getParam(const std::string& name) noexcept override
+  {
+    assert(0);
+    return nullptr;
+  }
+
 
 public:
   Brank()  = default;

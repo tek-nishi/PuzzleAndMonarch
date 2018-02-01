@@ -150,19 +150,23 @@ public:
       { "rect", [this](const boost::any& v) noexcept
                 {
                   rect_ = boost::any_cast<const ci::Rectf&>(v);
-                } },
+                }
+      },
       { "pivot", [this](const boost::any& v) noexcept
                  {
                    pivot_ = boost::any_cast<const glm::vec2&>(v);
-                 } },
+                 }
+      },
       { "anchor_min", [this](const boost::any& v) noexcept
                       {
                         anchor_min_ = boost::any_cast<const glm::vec2&>(v);
-                      } },
+                      }
+      },
       { "anchor_max", [this](const boost::any& v) noexcept
                       {
                         anchor_max_ = boost::any_cast<const glm::vec2&>(v);
-                      } },
+                      }
+      },
     };
 
     if (tbl.count(name))
@@ -174,6 +178,44 @@ public:
     {
       //
       widget_base_->setParam(name, value);
+    }
+  }
+
+  // パラメータ取得(Pointerで返却する)
+  boost::any getParam(const std::string& name) noexcept
+  {
+    // UI::Widget内
+    std::map<std::string, std::function<boost::any ()>> tbl = {
+      { "rect", [this]() noexcept
+                {
+                  return &rect_;
+                }
+      },
+      { "pivot", [this]() noexcept
+                 {
+                   return &pivot_;
+                 }
+      },
+      { "anchor_min", [this]() noexcept
+                      {
+                        return &anchor_min_;
+                      }
+      },
+      { "anchor_max", [this]() noexcept
+                      {
+                        return &anchor_max_;
+                      }
+      },
+    };
+
+    if (tbl.count(name))
+    {
+      // TIPS コンテナを関数ポインタとして利用
+      return tbl.at(name)();
+    }
+    else
+    {
+      return widget_base_->getParam(name);
     }
   }
 

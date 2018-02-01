@@ -12,7 +12,7 @@
 
 namespace ngs { namespace Json {
 
-template<typename T>
+template <typename T>
 std::vector<T> getArray(const ci::JsonTree& json) noexcept
 {
   size_t num = json.getNumChildren();
@@ -30,7 +30,7 @@ std::vector<T> getArray(const ci::JsonTree& json) noexcept
 
 
 // FIXME:JSONからdoubleで取ってくるのが微妙
-template<typename T>
+template <typename T>
 T getVec(const ci::JsonTree& json) noexcept
 {
   T v;
@@ -42,7 +42,7 @@ T getVec(const ci::JsonTree& json) noexcept
   return v;
 }
 
-template<>
+template <>
 ci::ColorA getVec<ci::ColorA>(const ci::JsonTree& json) noexcept
 {
   ci::ColorA v;
@@ -67,7 +67,7 @@ ci::quat getQuat(const ci::JsonTree& json) noexcept
 }
 
 
-template<typename T>
+template <typename T>
 ci::JsonTree createFromVec(const T& vec) noexcept
 {
   ci::JsonTree json;
@@ -78,7 +78,7 @@ ci::JsonTree createFromVec(const T& vec) noexcept
   return json;
 }
 
-template<typename T>
+template <typename T>
 ci::JsonTree createFromVec(const std::string& key, const T& vec) noexcept
 {
   auto json = ci::JsonTree::makeObject(key);
@@ -111,7 +111,7 @@ ci::JsonTree createFromColorA(const std::string& key, const ci::ColorA& color) n
 }
 
 
-template<typename T>
+template <typename T>
 ci::ColorT<T> getColor(const ci::JsonTree& json) noexcept
 {
   return ci::ColorT<T>(json[0].getValue<T>(), json[1].getValue<T>(), json[2].getValue<T>());
@@ -122,22 +122,28 @@ glm::vec3 getHsvColor(const ci::JsonTree& json) noexcept
   return glm::vec3(json[0].getValue<float>() / 360.0f, json[1].getValue<float>(), json[2].getValue<float>());
 }
 
-template<typename T>
+template <typename T>
 ci::ColorAT<T> getColorA(const ci::JsonTree& json) noexcept
 {
   return ci::ColorAT<T>(json[0].getValue<T>(), json[1].getValue<T>(), json[2].getValue<T>(), json[3].getValue<T>());
 }
 
-template<typename T>
+template <typename T>
 ci::ColorAT<T> getColorA8(const ci::JsonTree& json) noexcept
 {
   glm::vec4 value = getVec<glm::vec4>(json);
   return ci::ColorAT<T>(value / 255.0f);
 }
 
+template <typename T>
+ci::RectT<T> getRect(const ci::JsonTree& json) noexcept
+{
+  return ci::RectT<T>(json[0].getValue<T>(), json[1].getValue<T>(), json[2].getValue<T>(), json[3].getValue<T>());
+}
+
 
 // 初期値付き値読み込み
-template<typename T>
+template <typename T>
 T getValue(const ci::JsonTree& json, const std::string& name, const T& default_value) noexcept
 {
   return (json.hasChild(name)) ? json[name].getValue<T>()
@@ -145,7 +151,7 @@ T getValue(const ci::JsonTree& json, const std::string& name, const T& default_v
 }
 
 // 初期値付きベクトル読み込み
-template<typename T>
+template <typename T>
 T getVec(const ci::JsonTree& json, const std::string& name, const T& default_value) noexcept
 {
   return (json.hasChild(name)) ? getVec<T>(json[name])
