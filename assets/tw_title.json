@@ -28,11 +28,135 @@
           "type": "vec2",
           "body": [
             {
-              "duration": 0.8,
+              "duration": 0.5,
               "delay": 1.5,
-              "ease_func": "OutCubic",
+              "copy_start": true,
+              "ease_func": "OutBack",
               "start": [ 30, 0 ],
               "end":   [  0, 0 ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "identifier": "Settings",
+      "tween": [
+        {
+          "param": "offset",
+          "type": "vec2",
+          "body": [
+            {
+              "duration": 0.5,
+              "delay": 1.6,
+              "copy_start": true,
+              "ease_func": "OutBack",
+              "start": [ 30, 0 ],
+              "end":   [  0, 0 ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "identifier": "Credits",
+      "tween": [
+        {
+          "param": "offset",
+          "type": "vec2",
+          "body": [
+            {
+              "duration": 0.5,
+              "delay": 1.7,
+              "copy_start": true,
+              "ease_func": "OutBack",
+              "start": [ 30, 0 ],
+              "end":   [  0, 0 ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "identifier": "title_1",
+      "tween": [
+        {
+          "param": "size",
+          "type": "float",
+          "body": [
+            {
+              "duration": 0.5,
+              "delay": 0.2,
+              "copy_start": true,
+              "ease_func": "OutCubic",
+              "start": 80,
+              "end":   32
+            }
+          ]
+        },
+        {
+          "param": "color",
+          "type": "color",
+          "body": [
+            {
+              "duration": 0.5,
+              "delay": 0.2,
+              "copy_start": true,
+              "ease_func": "OutCubic",
+              "start": [ 1, 1, 1, 0 ],
+              "end":   [ 1, 1, 1, 1 ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "identifier": "title_2",
+      "tween": [
+        {
+          "param": "size",
+          "type": "float",
+          "body": [
+            {
+              "duration": 0.5,
+              "delay": 0.3,
+              "copy_start": true,
+              "ease_func": "OutCubic",
+              "start": 80,
+              "end":   32
+            }
+          ]
+        },
+        {
+          "param": "color",
+          "type": "color",
+          "body": [
+            {
+              "duration": 0.5,
+              "delay": 0.2,
+              "copy_start": true,
+              "ease_func": "OutCubic",
+              "start": [ 1, 1, 1, 0 ],
+              "end":   [ 1, 1, 1, 1 ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "identifier": "copyright",
+      "tween": [
+        {
+          "param": "offset",
+          "type": "vec2",
+          "body": [
+            {
+              "duration": 0.5,
+              "delay": 1.4,
+              "copy_start": true,
+              "ease_func": "OutBack",
+              "start": [ 0, -30 ],
+              "end":   [ 0,   0 ]
             }
           ]
         }

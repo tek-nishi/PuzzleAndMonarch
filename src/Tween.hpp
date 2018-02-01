@@ -34,6 +34,7 @@ class Tween
     ci::EaseFn ease_func;
 
     bool has_start;
+    bool copy_start;
     
     boost::any start;
     boost::any end;
@@ -69,10 +70,11 @@ public:
         const auto& b = body[j];
         float duration = b.getValueForKey<float>("duration");
 
-        bool loop     = Json::getValue(b, "loop", false);
-        bool pingpong = Json::getValue(b, "pingpong", false);
-        float delay   = Json::getValue(b, "delay", 0.0f);
-        auto ease_func = Json::getValue(b, "ease_func", std::string("None"));
+        bool loop       = Json::getValue(b, "loop", false);
+        bool pingpong   = Json::getValue(b, "pingpong", false);
+        float delay     = Json::getValue(b, "delay", 0.0f);
+        auto ease_func  = Json::getValue(b, "ease_func", std::string("None"));
+        bool copy_start = Json::getValue(b, "copy_start", false);
 
         bool has_start = false;
         boost::any start;
@@ -84,7 +86,7 @@ public:
         }
         end = getValueForType(b["end"], type);
 
-        bodies.push_back({ duration, loop, pingpong, delay, getEaseFunc(ease_func), has_start, start, end });
+        bodies.push_back({ duration, loop, pingpong, delay, getEaseFunc(ease_func), has_start, copy_start, start, end });
       }
 
       // TODO 構造体のコピーを無くす
@@ -106,6 +108,10 @@ public:
       {
         const auto& b = c.bodies[0];
         applyTween(type, timeline, widget->getParam(param_name), b);
+        if (b.copy_start)
+        {
+          widget->setParam(param_name, b.start);
+        }
       }
 
       for (u_int i = 1; i < c.bodies.size(); ++i)
