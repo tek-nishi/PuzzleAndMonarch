@@ -10,24 +10,29 @@
             {
               "duration": 0.8,
               "loop": true,
-              "delay": 0,
+              "delay": 1.5,
               "pingpong": true,
-              "start": [ 1, 1, 1, 1 ],
-              "end":   [ 1, 1, 1, 0 ]
+              "ease_func": "OutCubic",
+              "start": [ 1, 1, 1, 0 ],
+              "end":   [ 1, 1, 1, 1 ]
             }
           ]
-        },
+        }
+      ]
+    },
+    {
+      "identifier": "GameCenter",
+      "tween": [
         {
-          "param": "size",
-          "type": "float",
+          "param": "offset",
+          "type": "vec2",
           "body": [
             {
-              "duration": 1,
-              "loop": true,
-              "delay": 0,
-              "pingpong": true,
-              "start": 30,
-              "end":   20
+              "duration": 0.8,
+              "delay": 1.5,
+              "ease_func": "OutCubic",
+              "start": [ 30, 0 ],
+              "end":   [  0, 0 ]
             }
           ]
         }

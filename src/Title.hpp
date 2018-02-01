@@ -67,6 +67,8 @@ public:
                                                      });
                                 DOUT << "Settings." << std::endl;
                               });
+
+    canvas_.startTween("start");
   }
 
   ~Title() = default;

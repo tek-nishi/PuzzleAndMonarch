@@ -102,6 +102,17 @@ public:
     return event_;
   }
 
+  void setOffset(const glm::vec2& offset) noexcept
+  {
+    offset_ = offset;
+  }
+
+  // for editor
+  glm::vec2& getOffset() noexcept
+  {
+    return offset_;
+  }
+
 
   void addChild(const WidgetPtr& widget) noexcept
   {
@@ -167,6 +178,11 @@ public:
                         anchor_max_ = boost::any_cast<const glm::vec2&>(v);
                       }
       },
+      { "offset", [this](const boost::any& v) noexcept
+                  {
+                    offset_ = boost::any_cast<const glm::vec2&>(v);
+                  }
+      }
     };
 
     if (tbl.count(name))
@@ -206,6 +222,11 @@ public:
                         return &anchor_max_;
                       }
       },
+      { "offset", [this]() noexcept
+                  {
+                    return &offset_;
+                  }
+      }
     };
 
     if (tbl.count(name))
@@ -246,6 +267,8 @@ private:
   // 親の情報から自分の位置、サイズを計算
   ci::Rectf calcRect(const ci::Rectf& parent_rect, const glm::vec2& scale) const noexcept
   {
+    auto rect = rect_.getOffset(offset_);
+
     glm::vec2 parent_size = parent_rect.getSize();
 
     // 親のサイズとアンカーから左下・右上の座標を計算
@@ -253,8 +276,8 @@ private:
     glm::vec2 anchor_max = parent_size * anchor_max_;
 
     // 相対座標(スケーリング抜き)
-    glm::vec2 pos  = rect_.getUpperLeft()  + anchor_min;
-    glm::vec2 size = rect_.getLowerRight() + anchor_max - pos;
+    glm::vec2 pos  = rect.getUpperLeft()  + anchor_min;
+    glm::vec2 size = rect.getLowerRight() + anchor_max - pos;
 
     // pivotを考慮したスケーリング
     glm::vec2 d = size * pivot_;
@@ -271,6 +294,7 @@ private:
   bool enable_ = true;
 
   ci::Rectf rect_;
+  glm::vec2 offset_ = { 0.0f, 0.0f };
 
   // スケーリングの中心(normalized)
   glm::vec2 pivot_ = { 0.5f, 0.5f };

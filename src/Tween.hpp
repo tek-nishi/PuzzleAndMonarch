@@ -6,6 +6,7 @@
 
 #include <boost/noncopyable.hpp>
 #include <boost/any.hpp>
+#include "EaseFunc.hpp"
 
 
 namespace ngs {
@@ -29,6 +30,8 @@ class Tween
     bool loop;
     bool pingpong;
     float delay;
+
+    ci::EaseFn ease_func;
 
     bool has_start;
     
@@ -69,6 +72,7 @@ public:
         bool loop     = Json::getValue(b, "loop", false);
         bool pingpong = Json::getValue(b, "pingpong", false);
         float delay   = Json::getValue(b, "delay", 0.0f);
+        auto ease_func = Json::getValue(b, "ease_func", std::string("None"));
 
         bool has_start = false;
         boost::any start;
@@ -80,7 +84,7 @@ public:
         }
         end = getValueForType(b["end"], type);
 
-        bodies.push_back({ duration, loop, pingpong, delay, has_start, start, end });
+        bodies.push_back({ duration, loop, pingpong, delay, getEaseFunc(ease_func), has_start, start, end });
       }
 
       // TODO 構造体のコピーを無くす
@@ -155,36 +159,40 @@ private:
   static typename ci::Tween<T>::Options applyTween(const ci::TimelineRef& timeline,
                                                    const boost::any& target,
                                                    const boost::any& start, const boost::any& end,
-                                                   const float duration) noexcept
+                                                   const float duration, const ci::EaseFn& ease_func) noexcept
   {
-    return timeline->applyPtr(boost::any_cast<T*>(target), boost::any_cast<T>(start), boost::any_cast<T>(end), duration);
+    return timeline->applyPtr(boost::any_cast<T*>(target), boost::any_cast<T>(start), boost::any_cast<T>(end),
+                              duration, ease_func);
   }
   
   template <typename T>
   static typename ci::Tween<T>::Options applyTween(const ci::TimelineRef& timeline,
                                                    const boost::any& target,
                                                    const boost::any& end,
-                                                   const float duration) noexcept
+                                                   const float duration, const ci::EaseFn& ease_func) noexcept
   {
-    return timeline->applyPtr(boost::any_cast<T*>(target), boost::any_cast<T>(end), duration);
+    return timeline->applyPtr(boost::any_cast<T*>(target), boost::any_cast<T>(end),
+                              duration, ease_func);
   }
   
   template <typename T>
   static typename ci::Tween<T>::Options appendToTween(const ci::TimelineRef& timeline,
                                                       const boost::any& target,
                                                       const boost::any& start, const boost::any& end,
-                                                      const float duration) noexcept
+                                                      const float duration, const ci::EaseFn& ease_func) noexcept
   {
-    return timeline->appendToPtr(boost::any_cast<T*>(target), boost::any_cast<T>(start), boost::any_cast<T>(end), duration);
+    return timeline->appendToPtr(boost::any_cast<T*>(target), boost::any_cast<T>(start), boost::any_cast<T>(end),
+                                 duration, ease_func);
   }
   
   template <typename T>
   static typename ci::Tween<T>::Options appendToTween(const ci::TimelineRef& timeline,
                                                       const boost::any& target,
                                                       const boost::any& end,
-                                                      const float duration) noexcept
+                                                      const float duration, const ci::EaseFn& ease_func) noexcept
   {
-    return timeline->appendToPtr(boost::any_cast<T*>(target), boost::any_cast<T>(end), duration);
+    return timeline->appendToPtr(boost::any_cast<T*>(target), boost::any_cast<T>(end),
+                                 duration, ease_func);
   }
 
 
@@ -199,14 +207,14 @@ private:
     case Type::FLOAT:
       if (body.has_start)
       {
-        auto options = applyTween<float>(timeline, target, body.start, body.end, body.duration);
+        auto options = applyTween<float>(timeline, target, body.start, body.end, body.duration, body.ease_func);
         if (body.loop)         options.loop();
         if (body.pingpong)     options.pingPong();
         if (body.delay > 0.0f) options.delay(body.delay);
       }
       else
       {
-        auto options = applyTween<float>(timeline, target, body.end, body.duration);
+        auto options = applyTween<float>(timeline, target, body.end, body.duration, body.ease_func);
         if (body.loop)         options.loop();
         if (body.pingpong)     options.pingPong();
         if (body.delay > 0.0f) options.delay(body.delay);
@@ -216,14 +224,14 @@ private:
     case Type::VEC2:
       if (body.has_start)
       {
-        auto options = applyTween<glm::vec2>(timeline, target, body.start, body.end, body.duration);
+        auto options = applyTween<glm::vec2>(timeline, target, body.start, body.end, body.duration, body.ease_func);
         if (body.loop)         options.loop();
         if (body.pingpong)     options.pingPong();
         if (body.delay > 0.0f) options.delay(body.delay);
       }
       else
       {
-        auto options = applyTween<glm::vec2>(timeline, target, body.end, body.duration);
+        auto options = applyTween<glm::vec2>(timeline, target, body.end, body.duration, body.ease_func);
         if (body.loop)         options.loop();
         if (body.pingpong)     options.pingPong();
         if (body.delay > 0.0f) options.delay(body.delay);
@@ -233,14 +241,14 @@ private:
     case Type::VEC3:
       if (body.has_start)
       {
-        auto options = applyTween<glm::vec3>(timeline, target, body.start, body.end, body.duration);
+        auto options = applyTween<glm::vec3>(timeline, target, body.start, body.end, body.duration, body.ease_func);
         if (body.loop)         options.loop();
         if (body.pingpong)     options.pingPong();
         if (body.delay > 0.0f) options.delay(body.delay);
       }
       else
       {
-        auto options = applyTween<glm::vec3>(timeline, target, body.end, body.duration);
+        auto options = applyTween<glm::vec3>(timeline, target, body.end, body.duration, body.ease_func);
         if (body.loop)         options.loop();
         if (body.pingpong)     options.pingPong();
         if (body.delay > 0.0f) options.delay(body.delay);
@@ -250,14 +258,14 @@ private:
     case Type::COLOR:
       if (body.has_start)
       {
-        auto options = applyTween<ci::ColorA>(timeline, target, body.start, body.end, body.duration);
+        auto options = applyTween<ci::ColorA>(timeline, target, body.start, body.end, body.duration, body.ease_func);
         if (body.loop)         options.loop();
         if (body.pingpong)     options.pingPong();
         if (body.delay > 0.0f) options.delay(body.delay);
       }
       else
       {
-        auto options = applyTween<ci::ColorA>(timeline, target, body.end, body.duration);
+        auto options = applyTween<ci::ColorA>(timeline, target, body.end, body.duration, body.ease_func);
         if (body.loop)         options.loop();
         if (body.pingpong)     options.pingPong();
         if (body.delay > 0.0f) options.delay(body.delay);
@@ -267,14 +275,14 @@ private:
     case Type::RECT:
       if (body.has_start)
       {
-        auto options = applyTween<ci::Rectf>(timeline, target, body.start, body.end, body.duration);
+        auto options = applyTween<ci::Rectf>(timeline, target, body.start, body.end, body.duration, body.ease_func);
         if (body.loop)         options.loop();
         if (body.pingpong)     options.pingPong();
         if (body.delay > 0.0f) options.delay(body.delay);
       }
       else
       {
-        auto options = applyTween<ci::Rectf>(timeline, target, body.end, body.duration);
+        auto options = applyTween<ci::Rectf>(timeline, target, body.end, body.duration, body.ease_func);
         if (body.loop)         options.loop();
         if (body.pingpong)     options.pingPong();
         if (body.delay > 0.0f) options.delay(body.delay);
@@ -293,14 +301,14 @@ private:
     case Type::FLOAT:
       if (body.has_start)
       {
-        auto options = appendToTween<float>(timeline, target, body.start, body.end, body.duration);
+        auto options = appendToTween<float>(timeline, target, body.start, body.end, body.duration, body.ease_func);
         if (body.loop)         options.loop();
         if (body.pingpong)     options.pingPong();
         if (body.delay > 0.0f) options.delay(body.delay);
       }
       else
       {
-        auto options = appendToTween<float>(timeline, target, body.end, body.duration);
+        auto options = appendToTween<float>(timeline, target, body.end, body.duration, body.ease_func);
         if (body.loop)         options.loop();
         if (body.pingpong)     options.pingPong();
         if (body.delay > 0.0f) options.delay(body.delay);
@@ -310,14 +318,14 @@ private:
     case Type::VEC2:
       if (body.has_start)
       {
-        auto options = appendToTween<glm::vec2>(timeline, target, body.start, body.end, body.duration);
+        auto options = appendToTween<glm::vec2>(timeline, target, body.start, body.end, body.duration, body.ease_func);
         if (body.loop)         options.loop();
         if (body.pingpong)     options.pingPong();
         if (body.delay > 0.0f) options.delay(body.delay);
       }
       else
       {
-        auto options = appendToTween<glm::vec2>(timeline, target, body.end, body.duration);
+        auto options = appendToTween<glm::vec2>(timeline, target, body.end, body.duration, body.ease_func);
         if (body.loop)         options.loop();
         if (body.pingpong)     options.pingPong();
         if (body.delay > 0.0f) options.delay(body.delay);
@@ -327,14 +335,14 @@ private:
     case Type::VEC3:
       if (body.has_start)
       {
-        auto options = appendToTween<glm::vec3>(timeline, target, body.start, body.end, body.duration);
+        auto options = appendToTween<glm::vec3>(timeline, target, body.start, body.end, body.duration, body.ease_func);
         if (body.loop)         options.loop();
         if (body.pingpong)     options.pingPong();
         if (body.delay > 0.0f) options.delay(body.delay);
       }
       else
       {
-        auto options = appendToTween<glm::vec3>(timeline, target, body.end, body.duration);
+        auto options = appendToTween<glm::vec3>(timeline, target, body.end, body.duration, body.ease_func);
         if (body.loop)         options.loop();
         if (body.pingpong)     options.pingPong();
         if (body.delay > 0.0f) options.delay(body.delay);
@@ -344,14 +352,14 @@ private:
     case Type::COLOR:
       if (body.has_start)
       {
-        auto options = appendToTween<ci::ColorA>(timeline, target, body.start, body.end, body.duration);
+        auto options = appendToTween<ci::ColorA>(timeline, target, body.start, body.end, body.duration, body.ease_func);
         if (body.loop)         options.loop();
         if (body.pingpong)     options.pingPong();
         if (body.delay > 0.0f) options.delay(body.delay);
       }
       else
       {
-        auto options = appendToTween<ci::ColorA>(timeline, target, body.end, body.duration);
+        auto options = appendToTween<ci::ColorA>(timeline, target, body.end, body.duration, body.ease_func);
         if (body.loop)         options.loop();
         if (body.pingpong)     options.pingPong();
         if (body.delay > 0.0f) options.delay(body.delay);
@@ -361,14 +369,14 @@ private:
     case Type::RECT:
       if (body.has_start)
       {
-        auto options = appendToTween<ci::Rectf>(timeline, target, body.start, body.end, body.duration);
+        auto options = appendToTween<ci::Rectf>(timeline, target, body.start, body.end, body.duration, body.ease_func);
         if (body.loop)         options.loop();
         if (body.pingpong)     options.pingPong();
         if (body.delay > 0.0f) options.delay(body.delay);
       }
       else
       {
-        auto options = appendToTween<ci::Rectf>(timeline, target, body.end, body.duration);
+        auto options = appendToTween<ci::Rectf>(timeline, target, body.end, body.duration, body.ease_func);
         if (body.loop)         options.loop();
         if (body.pingpong)     options.pingPong();
         if (body.delay > 0.0f) options.delay(body.delay);
