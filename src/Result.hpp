@@ -30,7 +30,9 @@ class Result
 public:
   Result(const ci::JsonTree& params, Event<Arguments>& event, UI::Drawer& drawer) noexcept
     : event_(event),
-      canvas_(event, drawer, params["ui.camera"], Params::load(params.getValueForKey<std::string>("result.canvas")))
+      canvas_(event, drawer, params["ui.camera"],
+              Params::load(params.getValueForKey<std::string>("result.canvas")),
+              Params::load(params.getValueForKey<std::string>("result.tweens")))
   {
     count_exec_.add(2.0,
                     [this]() {

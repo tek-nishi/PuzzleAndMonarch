@@ -56,44 +56,28 @@
     }
   },
 
-  "ui_test": {
-    "canvas": {
-      "widgets": "ui_test.json"
-    }
-  },
-
   "title": {
-    "canvas": "ui_title.json"
+    "canvas": "ui_title.json",
+    "tweens": "tw_title.json"
   },
 
   "credits": {
-    "canvas": "ui_credits.json"
+    "canvas": "ui_credits.json",
+    "tweens": "tw_credits.json"
   },
 
   "settings": {
-    "canvas": "ui_settings.json"
+    "canvas": "ui_settings.json",
+    "tweens": "tw_settings.json"
   },
   
   "gamemain": {
-    "canvas": "ui_gamemain.json"
+    "canvas": "ui_gamemain.json",
+    "tweens": "tw_gamemain.json"
   },
   
   "result": {
-    "canvas": "ui_result.json"
-  },
-
-  "test": {
-    "camera": {
-      "fov":    35,
-      "near_z": 0.1,
-      "far_z":  100,
-      "distance": 6, 
-      "target": [ 0, 0, 0 ]
-    }
-  },
-
-  "tween": [
-    {
-    }
-  ]
+    "canvas": "ui_result.json",
+    "tweens": "tw_result.json"
+  }
 }

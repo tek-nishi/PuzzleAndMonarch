@@ -188,6 +188,7 @@ private:
   }
 
 
+  // TODO 特殊化してるだけなのをなんとかしたい
   static void applyTween(const int type,
                          const ci::TimelineRef& timeline,
                          const boost::any& target,

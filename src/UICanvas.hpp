@@ -11,7 +11,7 @@
 #include "UIWidgetsFactory.hpp"
 #include "UIDrawer.hpp"
 #include "Camera.hpp"
-#include "Tween.hpp"
+#include "TweenContainer.hpp"
 
 
 namespace ngs { namespace UI {
@@ -24,12 +24,14 @@ public:
   Canvas(Event<Arguments>& event,
          UI::Drawer& drawer,
          const ci::JsonTree& camera_params,
-         const ci::JsonTree& widgets_params) noexcept
+         const ci::JsonTree& widgets_params,
+         const ci::JsonTree& tween_params) noexcept
     : event_(event),
       drawer_(drawer),
       camera_(camera_params),
       widgets_(widgets_factory_.construct(widgets_params)),
-      timeline_(ci::Timeline::create())
+      timeline_(ci::Timeline::create()),
+      tweens_(tween_params)
   {
     // FIXME near_zピッタリの位置だとmacOSのReleaseビルドで絵が出ない
     camera_.body().lookAt(glm::vec3(0, 0, camera_.getNearClip() + 0.001f), glm::vec3(0));
@@ -102,22 +104,15 @@ public:
   }
 
 
-  // 暫定処理
-  void loadTween(const std::string& path) noexcept
+  void startTween(const std::string& name) noexcept
   {
-    auto params = Params::load(path);
-    tween_ = Tween(params["start"][0]["tween"]);
+    const auto& contents = tweens_.at(name);
+    for (const auto& c : contents)
+    {
+      const auto& widget = this->at(c.identifier);
+      c.tween.set(timeline_, widget);
+    }
   }
-  
-
-  void setTween(const std::string& id) noexcept
-  {
-    const auto& widget = this->at(id); 
-    tween_.set(timeline_, widget);
-  }
-
-
-
 
 
 private:
@@ -268,7 +263,7 @@ private:
   bool active_ = true;
 
   ci::TimelineRef timeline_;
-  Tween tween_;
+  TweenContainer tweens_;
 };
 
 

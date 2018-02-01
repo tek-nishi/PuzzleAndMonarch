@@ -27,7 +27,9 @@ class GameMain
 public:
   GameMain(const ci::JsonTree& params, Event<Arguments>& event, UI::Drawer& drawer) noexcept
     : event_(event),
-      canvas_(event, drawer, params["ui.camera"], Params::load(params.getValueForKey<std::string>("gamemain.canvas")))
+      canvas_(event, drawer, params["ui.camera"],
+              Params::load(params.getValueForKey<std::string>("gamemain.canvas")),
+              Params::load(params.getValueForKey<std::string>("gamemain.tweens")))
   {
     // ゲーム開始
     count_exec_.add(2.0, [this]() noexcept

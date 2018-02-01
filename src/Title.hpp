@@ -28,11 +28,10 @@ class Title
 public:
   Title(const ci::JsonTree& params, Event<Arguments>& event, UI::Drawer& drawer) noexcept
     : event_(event),
-      canvas_(event, drawer, params["ui.camera"], Params::load(params.getValueForKey<std::string>("title.canvas")))
+      canvas_(event, drawer, params["ui.camera"],
+              Params::load(params.getValueForKey<std::string>("title.canvas")),
+              Params::load(params.getValueForKey<std::string>("title.tweens")))
   {
-    canvas_.loadTween("tw_title.json");
-    canvas_.setTween("play");
-
     holder_ += event_.connect("play:touch_ended",
                               [this](const Connection&, const Arguments&) noexcept
                               {
@@ -68,8 +67,6 @@ public:
                                                      });
                                 DOUT << "Settings." << std::endl;
                               });
-
-    canvas_.setTween("play");
   }
 
   ~Title() = default;

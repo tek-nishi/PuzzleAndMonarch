@@ -22,7 +22,9 @@ class Credits
 public:
   Credits(const ci::JsonTree& params, Event<Arguments>& event, UI::Drawer& drawer) noexcept
     : event_(event),
-      canvas_(event, drawer, params["ui.camera"], Params::load(params.getValueForKey<std::string>("credits.canvas")))
+      canvas_(event, drawer, params["ui.camera"],
+              Params::load(params.getValueForKey<std::string>("credits.canvas")),
+              Params::load(params.getValueForKey<std::string>("credits.tweens")))
   {
     count_exec_.add(1.0,
                     [this]() {
