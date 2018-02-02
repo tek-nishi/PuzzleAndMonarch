@@ -6,6 +6,7 @@
 
 #include <boost/noncopyable.hpp>
 #include <boost/any.hpp>
+#include <cinder/Timeline.h>
 #include "EaseFunc.hpp"
 
 

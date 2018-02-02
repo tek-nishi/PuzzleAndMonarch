@@ -6,6 +6,7 @@
 
 #include <map>
 #include <cinder/Easing.h>
+#include <cinder/Tween.h>
 
 
 namespace ngs {

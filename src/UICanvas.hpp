@@ -23,11 +23,13 @@ class Canvas
 public:
   Canvas(Event<Arguments>& event,
          UI::Drawer& drawer,
+         TweenCommon& tween_common,
          const ci::JsonTree& camera_params,
          const ci::JsonTree& widgets_params,
          const ci::JsonTree& tween_params) noexcept
     : event_(event),
       drawer_(drawer),
+      tween_common_(tween_common),
       camera_(camera_params),
       widgets_(widgets_factory_.construct(widgets_params)),
       timeline_(ci::Timeline::create()),
@@ -114,6 +116,13 @@ public:
     }
   }
 
+  void startCommonTween(const std::string& id, const std::string& name) noexcept
+  {
+    auto tween = tween_common_.at(name);
+    const auto& widget = this->at(id);
+    tween.set(timeline_, widget);
+  }
+
 
 private:
   void makeQueryWidgets(const UI::WidgetPtr& widget) noexcept
@@ -150,8 +159,12 @@ private:
       if (w->contains(pos))
       {
         // DOUT << "widget touch began: " << w->getIdentifier() << std::endl;
-        // std::string event = w->getEvent() + ":touch_began";
-        // event_.signal(event, Arguments());
+        std::string event = w->getEvent() + ":touch_began";
+        Arguments args = {
+          { "widget", w->getIdentifier() }
+        };
+        event_.signal(event, args);
+
         touching_widget_ = w;
         touching_in_ = true;
         touch.handled = true;
@@ -171,31 +184,35 @@ private:
 
     auto widget = touching_widget_.lock();
     bool contains = widget->contains(pos);
-#if 0
-    // TODO 詳細な実装は後回し
+    Arguments args = {
+      { "widget", widget->getIdentifier() }
+    };
     if (contains)
     {
       if (touching_in_)
       {
-        DOUT << "widget touch moved in-in: " << widget->getIdentifier() << std::endl;
+        // DOUT << "widget touch moved in-in: " << widget->getIdentifier() << std::endl;
       }
       else
       {
-        DOUT << "widget touch moved out-in: " << widget->getIdentifier() << std::endl;
+        // DOUT << "widget touch moved out-in: " << widget->getIdentifier() << std::endl;
+        std::string event = widget->getEvent() + ":moved_in";
+        event_.signal(event, args);
       }
     }
     else
     {
       if (touching_in_)
       {
-        DOUT << "widget touch moved in-out: " << widget->getIdentifier() << std::endl;
+        // DOUT << "widget touch moved in-out: " << widget->getIdentifier() << std::endl;
+        std::string event = widget->getEvent() + ":moved_out";
+        event_.signal(event, args);
       }
       else
       {
-        DOUT << "widget touch moved out-out: " << widget->getIdentifier() << std::endl;
+        // DOUT << "widget touch moved out-out: " << widget->getIdentifier() << std::endl;
       }
     }
-#endif
     touching_in_ = contains;
   }
 
@@ -215,8 +232,10 @@ private:
       // DOUT << "widget touch ended in: " << widget->getIdentifier() << std::endl;
       // イベント送信
       std::string event = widget->getEvent() + ":touch_ended";
-      // DOUT << "event: " << event << std::endl;
-      event_.signal(event, Arguments());
+      Arguments args = {
+        { "widget", widget->getIdentifier() }
+      };
+      event_.signal(event, args);
     }
     else
     {
@@ -259,6 +278,8 @@ private:
   bool touching_in_ = false;
 
   UI::Drawer& drawer_;
+
+  TweenCommon& tween_common_;
 
   bool active_ = true;
 

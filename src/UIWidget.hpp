@@ -182,6 +182,11 @@ public:
                   {
                     offset_ = boost::any_cast<const glm::vec2&>(v);
                   }
+      },
+      { "scale", [this](const boost::any& v) noexcept
+                 {
+                   scale_ = boost::any_cast<const glm::vec2&>(v);
+                 }
       }
     };
 
@@ -226,6 +231,11 @@ public:
                   {
                     return &offset_;
                   }
+      },
+      { "scale", [this]() noexcept
+                 {
+                   return &scale_;
+                 }
       }
     };
 
@@ -246,7 +256,8 @@ public:
   {
     if (!enable_) return;
 
-    disp_rect_ = calcRect(parent_rect, parent_scale);
+    auto scale = parent_scale * scale_;
+    disp_rect_ = calcRect(parent_rect, scale);
     widget_base_->draw(disp_rect_, drawer);
 
 #if defined (DEBUG)
@@ -257,7 +268,6 @@ public:
     
     for (const auto& child : children_)
     {
-      auto scale = parent_scale * scale_;
       child->draw(disp_rect_, scale, drawer);
     }
   }

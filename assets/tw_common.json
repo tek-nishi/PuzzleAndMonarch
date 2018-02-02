@@ -1,0 +1,69 @@
+{
+  "touch-in": {
+    "tween": [
+      {
+        "param": "scale",
+        "type": "vec2",
+        "body": [
+          {
+            "duration": 0.25,
+            "ease_func": "OutCubic",
+            "start": [ 1, 1 ],
+            "end":   [ 1.25, 1.25 ]
+          }
+        ]
+      }
+    ]
+  },
+
+  "moved-out": {
+    "tween": [
+      {
+        "param": "scale",
+        "type": "vec2",
+        "body": [
+          {
+            "duration": 0.25,
+            "ease_func": "OutCubic",
+            "start": [ 1.25, 1.25 ],
+            "end":   [ 1, 1 ]
+          }
+        ]
+      }
+    ]
+  },
+
+  "moved-in": {
+    "tween": [
+      {
+        "param": "scale",
+        "type": "vec2",
+        "body": [
+          {
+            "duration": 0.25,
+            "ease_func": "OutCubic",
+            "start": [ 1, 1 ],
+            "end":   [ 1.25, 1.25 ]
+          }
+        ]
+      }
+    ]
+  },
+
+  "ended-in": {
+    "tween": [
+      {
+        "param": "scale",
+        "type": "vec2",
+        "body": [
+          {
+            "duration": 0.25,
+            "ease_func": "OutBack",
+            "start": [ 1.25, 1.25 ], 
+            "end":   [ 1.25, 1.25 ]
+          }
+        ]
+      }
+    ]
+  }
+}

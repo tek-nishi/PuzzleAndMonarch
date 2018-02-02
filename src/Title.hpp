@@ -26,9 +26,10 @@ class Title
 
 
 public:
-  Title(const ci::JsonTree& params, Event<Arguments>& event, UI::Drawer& drawer) noexcept
+  Title(const ci::JsonTree& params, Event<Arguments>& event, UI::Drawer& drawer, TweenCommon& tween_common) noexcept
     : event_(event),
-      canvas_(event, drawer, params["ui.camera"],
+      canvas_(event, drawer, tween_common,
+              params["ui.camera"],
               Params::load(params.getValueForKey<std::string>("title.canvas")),
               Params::load(params.getValueForKey<std::string>("title.tweens")))
   {
@@ -66,6 +67,31 @@ public:
                                                        active_ = false;
                                                      });
                                 DOUT << "Settings." << std::endl;
+                              });
+
+    holder_ += event_.connect("credits:touch_began",
+                              [this](const Connection&, const Arguments& arg) noexcept
+                              {
+                                const auto& widget = boost::any_cast<const std::string&>(arg.at("widget"));
+                                canvas_.startCommonTween(widget, "touch-in");
+                              });
+    holder_ += event_.connect("credits:moved_out",
+                              [this](const Connection&, const Arguments& arg) noexcept
+                              {
+                                const auto& widget = boost::any_cast<const std::string&>(arg.at("widget"));
+                                canvas_.startCommonTween(widget, "moved-out");
+                              });
+    holder_ += event_.connect("credits:moved_in",
+                              [this](const Connection&, const Arguments& arg) noexcept
+                              {
+                                const auto& widget = boost::any_cast<const std::string&>(arg.at("widget"));
+                                canvas_.startCommonTween(widget, "moved-in");
+                              });
+    holder_ += event_.connect("credits:touch_ended",
+                              [this](const Connection&, const Arguments& arg) noexcept
+                              {
+                                const auto& widget = boost::any_cast<const std::string&>(arg.at("widget"));
+                                canvas_.startCommonTween(widget, "ended-in");
                               });
 
     canvas_.startTween("start");

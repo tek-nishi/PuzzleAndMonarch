@@ -28,9 +28,10 @@ class Result
 
 
 public:
-  Result(const ci::JsonTree& params, Event<Arguments>& event, UI::Drawer& drawer) noexcept
+  Result(const ci::JsonTree& params, Event<Arguments>& event, UI::Drawer& drawer, TweenCommon& tween_common) noexcept
     : event_(event),
-      canvas_(event, drawer, params["ui.camera"],
+      canvas_(event, drawer, tween_common,
+              params["ui.camera"],
               Params::load(params.getValueForKey<std::string>("result.canvas")),
               Params::load(params.getValueForKey<std::string>("result.tweens")))
   {
