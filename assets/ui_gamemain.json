@@ -281,7 +281,7 @@
 
     {
       "identifier": "begin",
-      "rect": [ -100, -10, 100, 10 ],
+      "rect": [ -100, -14, 100, 14 ],
       "anchor": [
         [ 0.5, 0.5 ],
         [ 0.5, 0.5 ]
@@ -291,13 +291,12 @@
       
       "font": "en",
       "text": "Secure the territory!",
-      "text_size": 28,
       "color": [ 1, 1, 1, 1 ]
     },
 
     {
       "identifier": "end",
-      "rect": [ 0, 0, 0, 0 ],
+      "rect": [ -100, -14, 100, 14 ],
       "anchor": [
         [ 0.5, 0.5 ],
         [ 0.5, 0.5 ]
@@ -308,7 +307,6 @@
       
       "font": "en",
       "text": "Well done!",
-      "text_size":28, 
       "color": [ 1, 1, 1, 1 ]
     },
 
@@ -351,7 +349,6 @@
           
           "font": "icon",
           "text": "",
-          "text_size": 30,
           "color": [ 1, 1, 1, 1 ]
         },
         {
@@ -367,7 +364,6 @@
           
           "font": "icon",
           "text": "",
-          "text_size": 30,
           "color": [ 1, 1, 1, 1 ]
         }
       ]
