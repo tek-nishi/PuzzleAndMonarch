@@ -69,6 +69,7 @@ public:
                                 DOUT << "Settings." << std::endl;
                               });
 
+    // ボタンイベント共通Tween
     holder_ += event_.connect("credits:touch_began",
                               [this](const Connection&, const Arguments& arg) noexcept
                               {

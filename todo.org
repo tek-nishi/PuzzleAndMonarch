@@ -1,4 +1,5 @@
 * TODO いい感じに画面全体に街が映るように
+* TODO UI::Textにスケーリングを考慮
 * TODO 共通Tween
 * TODO ゲーム開始時にプレイ時間を決めたい
 * TODO Settings画面での設定をファイルに書き出す
