@@ -10,7 +10,7 @@
   
   "childlen": [
     {
-      "rect": [ -20, 0, 20, 0 ],
+      "rect": [ -20, -14, 20, 14 ],
       "anchor": [
         [ 0.5, 0.91 ],
         [ 0.5, 0.91 ]
@@ -20,12 +20,11 @@
 
       "font": "en",
       "text": "Settings",
-      "text_size": 28,
       "color": [ 1, 1, 1, 1 ]
     },
 
     {
-      "rect": [ -40, 40, -40, 50 ],
+      "rect": [ -60, 36, -20, 54 ],
       "anchor": [
         [ 0.5, 0.5 ],
         [ 0.5, 0.5 ]
@@ -35,7 +34,6 @@
 
       "font": "en",
       "text": "BGM",
-      "text_size": 18,
       "color": [ 1, 1, 1, 1 ]
     },
     {
@@ -51,12 +49,11 @@
 
       "font": "icon",
       "text": "",
-      "text_size": 20,
       "dynamic_layout": false,
       "color": [ 1, 1, 1, 1 ]
     },
     {
-      "rect": [ 40, 40, 40, 50 ],
+      "rect": [ 20, 36, 60, 54 ],
       "anchor": [
         [ 0.5, 0.5 ],
         [ 0.5, 0.5 ]
@@ -66,7 +63,6 @@
 
       "font": "en",
       "text": "SE",
-      "text_size": 18,
       "color": [ 1, 1, 1, 1 ]
     },
     {
@@ -82,7 +78,6 @@
 
       "font": "icon",
       "text": "",
-      "text_size": 20,
       "dynamic_layout": false,
       "color": [ 1, 1, 1, 1 ]
     },
@@ -101,7 +96,6 @@
       
       "font": "icon",
       "text": "",
-      "text_size": 20,
       "layout": [ 0.5, 0 ],
       "color": [ 1, 1, 1, 1 ]
     }

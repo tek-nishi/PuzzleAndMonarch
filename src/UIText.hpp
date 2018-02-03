@@ -13,15 +13,13 @@ class Text
   : public WidgetBase
 {
   std::string text_;
+  // 初期テキスト(動的レイアウトを使わない場合に必要)
+  std::string initial_text_;
 
   std::string font_name_;
-  float text_size_ = 1.0f;
   glm::vec2 layout_ = { 0.5, 0.5 };
   ci::ColorA color_ = { 1.0f, 1.0f, 1.0f, 1.0f };
   bool dynamic_layout_ = true;
-
-  // 初期テキスト(動的レイアウトを使わない場合に必要)
-  std::string initial_text_;
 
 
 public:
@@ -30,10 +28,6 @@ public:
       font_name_(params.getValueForKey<std::string>("font")),
       initial_text_(text_)
   {
-    if (params.hasChild("text_size"))
-    {
-      text_size_ = params.getValueForKey<float>("text_size");
-    }
     if (params.hasChild("layout"))
     {
       layout_ = Json::getVec<glm::vec2>(params["layout"]);
@@ -58,8 +52,8 @@ private:
     ci::gl::ScopedGlslProg prog(drawer.getFontShader());
 
     auto& font = drawer.getFont(font_name_);
-    // FontのサイズとWidgetのサイズからスケーリングを計算
-    auto font_scale = text_size_ / font.getSize();
+    // rectの高さからサイズを決める
+    auto font_scale = rect.getHeight() / font.getSize();
     const auto& t = dynamic_layout_ ? text_
                                     : initial_text_;
     auto size = font.drawSize(t) * font_scale; 
@@ -81,11 +75,6 @@ private:
                   text_ = boost::any_cast<const std::string&>(v);
                 }
       },
-      { "size", [this](const boost::any& v) noexcept
-                 {
-                   text_size_ = boost::any_cast<const float>(v);
-                 }
-      },
       { "color", [this](const boost::any& v) noexcept
                  {
                    color_ = boost::any_cast<const ci::ColorA&>(v);
@@ -103,11 +92,6 @@ private:
                 {
                   return &text_;
                 }
-      },
-      { "size", [this]() noexcept
-                 {
-                   return &text_size_;
-                 }
       },
       { "color", [this]() noexcept
                  {

@@ -1,6 +1,5 @@
 * TODO いい感じに画面全体に街が映るように
 * TODO UI::Textにスケーリングを考慮
-* TODO 共通Tween
 * TODO ゲーム開始時にプレイ時間を決めたい
 * TODO Settings画面での設定をファイルに書き出す
 * TODO 被写界深度の浅い表現
@@ -31,6 +30,8 @@
 * TODO iOS:実績を実装
 * TODO ゲームの途中段階をセーブしたい
 * TODO iOS:他のアプリで再生中のBGMがそのまま再生されるように
+* DONE 共通Tween
+CLOSED: [2018-02-03 土 11:14]
 * DONE UIのアニメーション
 CLOSED: [2018-02-01 木 20:09]
 * DONE 設定画面

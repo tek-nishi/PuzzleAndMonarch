@@ -81,16 +81,16 @@
       "identifier": "title_1",
       "tween": [
         {
-          "param": "size",
-          "type": "float",
+          "param": "scale",
+          "type": "vec2",
           "body": [
             {
               "duration": 0.5,
               "delay": 0.2,
               "copy_start": true,
               "ease_func": "OutCubic",
-              "start": 80,
-              "end":   32
+              "start": [ 3, 3 ],
+              "end":   [ 1, 1 ]
             }
           ]
         },
@@ -114,16 +114,16 @@
       "identifier": "title_2",
       "tween": [
         {
-          "param": "size",
-          "type": "float",
+          "param": "scale",
+          "type": "vec2",
           "body": [
             {
               "duration": 0.5,
               "delay": 0.3,
               "copy_start": true,
               "ease_func": "OutCubic",
-              "start": 80,
-              "end":   32
+              "start": [ 3, 3 ],
+              "end":   [ 1, 1 ]
             }
           ]
         },

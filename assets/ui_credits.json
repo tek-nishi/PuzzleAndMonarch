@@ -10,7 +10,7 @@
   
   "childlen": [
     {
-      "rect": [ -20, 0, 20, 0 ],
+      "rect": [ -20, -14, 20, 14 ],
       "anchor": [
         [ 0.5, 0.91 ],
         [ 0.5, 0.91 ]
@@ -20,12 +20,11 @@
 
       "font": "en",
       "text": "Credits",
-      "text_size": 28,
       "color": [ 1, 1, 1, 1 ]
     },
     
     {
-      "rect": [ 0, -50, 0, 50 ],
+      "rect": [ -100, -50, 100, 50 ],
       "anchor": [
         [ 0.5, 0.5 ],
         [ 0.5, 0.5 ]
@@ -35,7 +34,7 @@
       
       "childlen": [
         {
-          "rect": [ 0, 0, 0, 0 ],
+          "rect": [ 0, -4, 0, 4 ],
           "anchor": [
             [ 0.0, 1 ],
             [ 1.0, 1 ]
@@ -45,11 +44,10 @@
 
           "font": "en",
           "text": "Created by",
-          "text_size": 8,
           "color": [ 1, 1, 1, 1 ]
         },
         {
-          "rect": [ 0, -10, 0, -10 ],
+          "rect": [ 0, -15, 0, -5 ],
           "anchor": [
             [ 0.0, 1 ],
             [ 1.0, 1 ]
@@ -59,11 +57,10 @@
 
           "font": "en",
           "text": "Nishiyama Nobuyuki",
-          "text_size": 10,
           "color": [ 1, 1, 1, 1 ]
         },
         {
-          "rect": [ 0, -25, 0, -25 ],
+          "rect": [ 0, -29, 0, -21 ],
           "anchor": [
             [ 0.0, 1 ],
             [ 1.0, 1 ]
@@ -73,11 +70,10 @@
 
           "font": "en",
           "text": "Powered by",
-          "text_size": 8,
           "color": [ 1, 1, 1, 1 ]
         },
         {
-          "rect": [ 0, -35, 0, -35 ],
+          "rect": [ 0, -40, 0, -30 ],
           "anchor": [
             [ 0.0, 1 ],
             [ 1.0, 1 ]
@@ -87,11 +83,10 @@
 
           "font": "en",
           "text": "Cinder 0.9.1  Boost 1.66.0  glm 0.9.8.5",
-          "text_size": 10,
           "color": [ 1, 1, 1, 1 ]
         },
         {
-          "rect": [ 0, -45, 0, -45 ],
+          "rect": [ 0, -50, 0, -40 ],
           "anchor": [
             [ 0.0, 1 ],
             [ 1.0, 1 ]
@@ -101,11 +96,10 @@
 
           "font": "en",
           "text": "stb_truetype.h 1.17  fontstash  Font Awesome 4.7.0",
-          "text_size": 10,
           "color": [ 1, 1, 1, 1 ]
         },
         {
-          "rect": [ 0, -60, 0, -60 ],
+          "rect": [ 0, -64, 0, -56 ],
           "anchor": [
             [ 0.0, 1 ],
             [ 1.0, 1 ]
@@ -115,11 +109,10 @@
 
           "font": "en",
           "text": "Thanks to",
-          "text_size": 8,
           "color": [ 1, 1, 1, 1 ]
         },
         {
-          "rect": [ 0, -70, 0, -70 ],
+          "rect": [ 0, -75, 0, -65 ],
           "anchor": [
             [ 0.0, 1 ],
             [ 1.0, 1 ]
@@ -129,11 +122,10 @@
 
           "font": "en",
           "text": "Japan Electronics College  Vantan Game Academy",
-          "text_size": 10,
           "color": [ 1, 1, 1, 1 ]
         },
         {
-          "rect": [ 0, -80, 0, -80 ],
+          "rect": [ 0, -85, 0, -75 ],
           "anchor": [
             [ 0.0, 1 ],
             [ 1.0, 1 ]
@@ -143,11 +135,10 @@
 
           "font": "en",
           "text": "Software Society Akihabara",
-          "text_size": 10,
           "color": [ 1, 1, 1, 1 ]
         },
         {
-          "rect": [ 0, -90, 0, -90 ],
+          "rect": [ 0, -95, 0, -85 ],
           "anchor": [
             [ 0.0, 1 ],
             [ 1.0, 1 ]
@@ -157,11 +148,10 @@
 
           "font": "en",
           "text": "Coworking space Kayabacho, Co-Edo",
-          "text_size": 10,
           "color": [ 1, 1, 1, 1 ]
         },
         {
-          "rect": [ 0, -100, 0, -100 ],
+          "rect": [ 0, -105, 0, -95 ],
           "anchor": [
             [ 0.0, 1 ],
             [ 1.0, 1 ]
@@ -171,7 +161,6 @@
 
           "font": "en",
           "text": "Kantou Game Producing unit  Haino Yuka",
-          "text_size": 10,
           "color": [ 1, 1, 1, 1 ]
         }
       ]
@@ -191,7 +180,6 @@
       
       "font": "icon",
       "text": "",
-      "text_size": 20,
       "layout": [ 0.5, 0 ],
       "color": [ 1, 1, 1, 1 ]
     }

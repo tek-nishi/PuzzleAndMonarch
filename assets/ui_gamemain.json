@@ -23,7 +23,7 @@
       "childlen": [
         {
           "identifier": "time_remain",
-          "rect": [ -25, 0, 25, 0 ],
+          "rect": [ -25, -12, 25, 12 ],
           "anchor": [
             [ 0.5, 0.915 ],
             [ 0.5, 0.915 ]
@@ -33,7 +33,6 @@
           
           "font": "en",
           "text": "9:99",
-          "text_size": 25,
           "dynamic_layout": false,
           "color": [ 1, 1, 1, 1 ]
         },
@@ -50,7 +49,6 @@
           
           "font": "icon",
           "text": "",
-          "text_size": 15,
           "color": [ 1, 1, 1, 1 ]
         },
 
@@ -67,7 +65,7 @@
           "childlen": [
             {
               "identifier": "2",
-              "rect": [ -50, 0, 0, 0 ],
+              "rect": [ -50, 0, 0, 8 ],
               "anchor": [
                 [ 0, 1 ],
                 [ 0, 1 ]
@@ -77,13 +75,12 @@
 
               "font": "jp",
               "text": "道の数:",
-              "text_size": 8,
               "layout": [ 1, 0 ],
               "color": [ 1, 1, 1, 1 ]
             },
             {
               "identifier": "3",
-              "rect": [ -50, -13, 0, -13 ],
+              "rect": [ -50, -13, 0, -5 ],
               "anchor": [
                 [ 0, 1 ],
                 [ 0, 1 ]
@@ -93,13 +90,12 @@
 
               "font": "jp",
               "text": "道の長さ:",
-              "text_size": 8,
               "layout": [ 1, 0 ],
               "color": [ 1, 1, 1, 1 ]
             },
             {
               "identifier": "4",
-              "rect": [ -50, -26, 0, -26 ],
+              "rect": [ -50, -26, 0, -18 ],
               "anchor": [
                 [ 0, 1 ],
                 [ 0, 1 ]
@@ -109,13 +105,12 @@
 
               "font": "jp",
               "text": "森の数:",
-              "text_size": 8,
               "layout": [ 1, 0 ],
               "color": [ 1, 1, 1, 1 ]
             },
             {
               "identifier": "5",
-              "rect": [ -50, -39, 0, -39 ],
+              "rect": [ -50, -39, 0, -31 ],
               "anchor": [
                 [ 0, 1 ],
                 [ 0, 1 ]
@@ -125,13 +120,12 @@
 
               "font": "jp",
               "text": "森の広さ:",
-              "text_size": 8,
               "layout": [ 1, 0 ],
               "color": [ 1, 1, 1, 1 ]
             },
             {
               "identifier": "6",
-              "rect": [ -50, -52, 0, -52 ],
+              "rect": [ -50, -52, 0, -44 ],
               "anchor": [
                 [ 0, 1 ],
                 [ 0, 1 ]
@@ -141,13 +135,12 @@
 
               "font": "jp",
               "text": "深い森:",
-              "text_size": 8,
               "layout": [ 1, 0 ],
               "color": [ 1, 1, 1, 1 ]
             },
             {
               "identifier": "7",
-              "rect": [ -50, -65, 0, -65 ],
+              "rect": [ -50, -65, 0, -57 ],
               "anchor": [
                 [ 0, 1 ],
                 [ 0, 1 ]
@@ -157,13 +150,12 @@
 
               "font": "jp",
               "text": "街の数:",
-              "text_size": 8,
               "layout": [ 1, 0 ],
               "color": [ 1, 1, 1, 1 ]
             },
             {
               "identifier": "8",
-              "rect": [ -50, -78, 0, -78 ],
+              "rect": [ -50, -78, 0, -70 ],
               "anchor": [
                 [ 0, 1 ],
                 [ 0, 1 ]
@@ -173,14 +165,13 @@
 
               "font": "jp",
               "text": "教会の数:",
-              "text_size": 8,
               "layout": [ 1, 0 ],
               "color": [ 1, 1, 1, 1 ]
             },
 
             {
               "identifier": "score:1",
-              "rect": [ 5, 0, 25, 0 ],
+              "rect": [ 5, 0, 25, 8 ],
               "anchor": [
                 [ 0, 1 ],
                 [ 0, 1 ]
@@ -190,13 +181,12 @@
 
               "font": "jp",
               "text": "000",
-              "text_size": 8,
               "layout": [ 0, 0 ],
               "color": [ 1, 1, 1, 1 ]
             },
             {
               "identifier": "score:2",
-              "rect": [ 5, -13, 25, -13 ],
+              "rect": [ 5, -13, 25, -5 ],
               "anchor": [
                 [ 0, 1 ],
                 [ 0, 1 ]
@@ -206,13 +196,12 @@
 
               "font": "jp",
               "text": "000",
-              "text_size": 8,
               "layout": [ 0, 0 ],
               "color": [ 1, 1, 1, 1 ]
             },
             {
               "identifier": "score:3",
-              "rect": [ 5, -26, 25, -26 ],
+              "rect": [ 5, -26, 25, -18 ],
               "anchor": [
                 [ 0, 1 ],
                 [ 0, 1 ]
@@ -222,13 +211,12 @@
 
               "font": "jp",
               "text": "000",
-              "text_size": 8,
               "layout": [ 0, 0 ],
               "color": [ 1, 1, 1, 1 ]
             },
             {
               "identifier": "score:4",
-              "rect": [ 5, -39, 25, -39 ],
+              "rect": [ 5, -39, 25, -31 ],
               "anchor": [
                 [ 0, 1 ],
                 [ 0, 1 ]
@@ -238,13 +226,12 @@
 
               "font": "jp",
               "text": "000",
-              "text_size": 8,
               "layout": [ 0, 0 ],
               "color": [ 1, 1, 1, 1 ]
             },
             {
               "identifier": "score:5",
-              "rect": [ 5, -52, 25, -52 ],
+              "rect": [ 5, -52, 25, -44 ],
               "anchor": [
                 [ 0, 1 ],
                 [ 0, 1 ]
@@ -254,13 +241,12 @@
 
               "font": "jp",
               "text": "000",
-              "text_size": 8,
               "layout": [ 0, 0 ],
               "color": [ 1, 1, 1, 1 ]
             },
             {
               "identifier": "score:6",
-              "rect": [ 5, -65, 25, -65 ],
+              "rect": [ 5, -65, 25, -57 ],
               "anchor": [
                 [ 0, 1 ],
                 [ 0, 1 ]
@@ -270,13 +256,12 @@
 
               "font": "jp",
               "text": "000",
-              "text_size": 8,
               "layout": [ 0, 0 ],
               "color": [ 1, 1, 1, 1 ]
             },
             {
               "identifier": "score:7",
-              "rect": [ 5, -78, 25, -78 ],
+              "rect": [ 5, -78, 25, -70 ],
               "anchor": [
                 [ 0, 1 ],
                 [ 0, 1 ]
@@ -286,7 +271,6 @@
 
               "font": "jp",
               "text": "000",
-              "text_size": 8,
               "layout": [ 0, 0 ],
               "color": [ 1, 1, 1, 1 ]
             }
@@ -342,7 +326,7 @@
       "childlen" : [
         {
           "identifier": "pause_title",
-          "rect": [ -25, 0, 25, 0 ],
+          "rect": [ -25, -12, 25, 12 ],
           "anchor": [
             [ 0.5, 0.8 ],
             [ 0.5, 0.8 ]
@@ -352,7 +336,6 @@
           
           "font": "en",
           "text": "Pause",
-          "text_size": 25,
           "color": [ 1, 1, 1, 1 ]
         },
         {

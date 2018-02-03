@@ -11,7 +11,7 @@
   "childlen": [
     {
       "identifier": "title_1",
-      "rect": [ 20, 0, 20, 0 ],
+      "rect": [ 20, 0, 20, 32 ],
       "anchor": [
         [ 0.5, 0.8 ],
         [ 0.5, 0.8 ]
@@ -21,13 +21,12 @@
 
       "font": "en",
       "text": "Apprentice",
-      "text_size": 32,
       "layout": [ 1, 0 ],
       "color": [ 1, 1, 1, 1 ]
     },
     {
       "identifier": "title_2",
-      "rect": [ 0, -35, 0, -35 ],
+      "rect": [ 0, -35, 0, -3 ],
       "anchor": [
         [ 0.5, 0.8 ],
         [ 0.5, 0.8 ]
@@ -37,7 +36,6 @@
 
       "font": "en",
       "text": "Monarch",
-      "text_size": 32,
       "layout": [ 0, 0 ],
       "color": [ 1, 1, 1, 1 ]
     },
@@ -54,12 +52,11 @@
       
       "font": "icon",
       "text": "",
-      "text_size": 30,
       "color": [ 1, 1, 1, 0 ]
     },
     {
       "identifier": "copyright",
-      "rect": [ 0, 3, 0, 20 ],
+      "rect": [ 0, 3, 0, 16 ],
       "anchor": [
         [ 0.5, 0.0 ],
         [ 0.5, 0.0 ]
@@ -69,12 +66,11 @@
 
       "font": "en",
       "text": "2018 new game style",
-      "text_size": 15,
       "color": [ 1, 1, 1, 1 ]
     },
     {
       "identifier": "GameCenter",
-      "rect": [ -30, 80, -10, 60 ],
+      "rect": [ -30, 60, -10, 80 ],
       "anchor": [
         [ 1, 0.1 ],
         [ 1, 0.1 ]
@@ -85,7 +81,6 @@
       
       "font": "icon",
       "text": "",
-      "text_size": 20,
       "color": [ 1, 1, 1, 1 ]
     },
     {
@@ -101,7 +96,6 @@
       
       "font": "icon",
       "text": "",
-      "text_size": 20,
       "color": [ 1, 1, 1, 1 ]
     },
     {
@@ -117,7 +111,6 @@
       
       "font": "icon",
       "text": "",
-      "text_size": 20,
       "color": [ 1, 1, 1, 1 ]
     }
   ]
