@@ -13,7 +13,7 @@ namespace ngs { namespace UI {
 struct WidgetBase
   : private boost::noncopyable
 {
-  virtual ~WidgetBase() {}
+  virtual ~WidgetBase() = default;
 
   virtual void draw(const ci::Rectf& rect, UI::Drawer& drawer) noexcept = 0;
 

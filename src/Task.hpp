@@ -15,7 +15,7 @@ namespace ngs {
 struct Task
   : private boost::noncopyable
 {
-  virtual ~Task() {} 
+  virtual ~Task() = default;
 
   // 戻り値:false タスク終了
   virtual bool update(const double current_time, const double delta_time) noexcept = 0;

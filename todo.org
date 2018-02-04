@@ -9,6 +9,7 @@
 * TODO ngs-0012
 * TODO 正式名称決め
 * TODO 得点計算をparamsで定義
+* TODO Widgetの構築をstatic functionでできないか??
 * TODO ランキングの値をparamsで定義
 * TODO iOS:share機能
 * TODO 無限に置けるモードが欲しい

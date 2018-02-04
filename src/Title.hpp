@@ -70,30 +70,10 @@ public:
                               });
 
     // ボタンイベント共通Tween
-    holder_ += event_.connect("credits:touch_began",
-                              [this](const Connection&, const Arguments& arg) noexcept
-                              {
-                                const auto& widget = boost::any_cast<const std::string&>(arg.at("widget"));
-                                canvas_.startCommonTween(widget, "touch-in");
-                              });
-    holder_ += event_.connect("credits:moved_out",
-                              [this](const Connection&, const Arguments& arg) noexcept
-                              {
-                                const auto& widget = boost::any_cast<const std::string&>(arg.at("widget"));
-                                canvas_.startCommonTween(widget, "moved-out");
-                              });
-    holder_ += event_.connect("credits:moved_in",
-                              [this](const Connection&, const Arguments& arg) noexcept
-                              {
-                                const auto& widget = boost::any_cast<const std::string&>(arg.at("widget"));
-                                canvas_.startCommonTween(widget, "moved-in");
-                              });
-    holder_ += event_.connect("credits:touch_ended",
-                              [this](const Connection&, const Arguments& arg) noexcept
-                              {
-                                const auto& widget = boost::any_cast<const std::string&>(arg.at("widget"));
-                                canvas_.startCommonTween(widget, "ended-in");
-                              });
+    setupCommonTweens(event_, holder_, canvas_, "credits");
+    setupCommonTweens(event_, holder_, canvas_, "settings");
+    setupCommonTweens(event_, holder_, canvas_, "game_center");
+    setupCommonTweens(event_, holder_, canvas_, "play");
 
     canvas_.startTween("start");
   }
@@ -112,6 +92,37 @@ public:
   void draw(const glm::ivec2& window_size) noexcept override
   {
     canvas_.draw();
+  }
+
+
+  static void setupCommonTweens(Event<Arguments>& event, ConnectionHolder& holder, UI::Canvas& canvas,
+                                const std::string& event_name) noexcept
+  {
+    static const char* identifiers[] = {
+      ":touch_began",
+      ":moved_out",
+      ":moved_in",
+      ":touch_ended",
+    };
+    static const char* tween_name[] = {
+      "touch-in",
+      "moved-out",
+      "moved-in",
+      "ended-in",
+    };
+
+    for (int i = 0; i < 4; ++i)
+    {
+      const auto& id = identifiers[i];
+      const auto& tn = tween_name[i];
+
+      holder += event.connect(event_name + id,
+                              [&canvas, &tn](const Connection&, const Arguments& arg) noexcept
+                              {
+                                const auto& widget = boost::any_cast<const std::string&>(arg.at("widget"));
+                                canvas.startCommonTween(widget, tn);
+                              });
+    }
   }
 
 };
