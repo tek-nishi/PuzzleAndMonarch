@@ -78,9 +78,14 @@ struct Game
     {
       // 時間切れ
       DOUT << "Time Up." << std::endl;
-      event_.signal("Game:Timeup", Arguments());
-
       endPlay();
+
+      Arguments args = {
+        { "scores", scores },
+        { "total_score", total_score },
+        { "total_ranking", total_ranking },
+      };
+      event_.signal("Game:Finish", args);
     }
   }
 
@@ -295,24 +300,6 @@ struct Game
   glm::vec2 getFieldCenter() const noexcept
   {
     return field_center;
-  }
-
-
-  // プレイ中のスコア
-  const std::vector<int>& getScores() const noexcept
-  {
-    return scores;
-  }
-
-  // 最終スコア
-  int getTotalScore() const noexcept
-  {
-    return total_score;
-  }
-
-  int getTotalRanking() const noexcept
-  {
-    return total_ranking;
   }
 
 

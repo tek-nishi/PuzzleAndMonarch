@@ -166,10 +166,6 @@ public:
                               [this](const Connection&, const Arguments&) noexcept
                               {
                                 hight_offset = 500.0f;
-                                
-                                game_score = game->getScores();
-                                game_score_effect.resize(game_score.size());
-                                std::fill(std::begin(game_score_effect), std::end(game_score_effect), 0);
                               });
 
     holder_ += event_.connect("Game:Start",
@@ -178,6 +174,12 @@ public:
                                 game->beginPlay();
                                 calcNextPanelPosition();
                                 playing_mode = GAMEMAIN;
+                              });
+
+    holder_ += event_.connect("Game:Finish",
+                              [this](const Connection&, const Arguments&) noexcept
+                              {
+                                playing_mode += 1;
                               });
 
     holder_ += event_.connect("pause:touch_ended",
@@ -413,12 +415,6 @@ private:
     switch (playing_mode)
     {
     case GAMEMAIN:
-      if (!game->isPlaying())
-      {
-        event_.signal("Game:Finish", Arguments());
-        playing_mode += 1;
-      }
-      else
       {
         // パネル設置操作
         if (touch_put_)
@@ -450,8 +446,6 @@ private:
       {
         if (!counter.check("gameend"))
         {
-          game_score = game->getScores();
-          std::fill(std::begin(game_score_effect), std::end(game_score_effect), 0);
           playing_mode = RESULT;
           DOUT << "RESULT." << std::endl;
         }
@@ -736,11 +730,6 @@ private:
 
   // アプリ起動から画面を更新した回数
   u_int frame_counter = 0;
-
-  // 表示用スコア
-  std::vector<int> game_score;
-  std::vector<int> game_score_effect;
-  
 
   // カメラ関連
   glm::vec2 rotation;

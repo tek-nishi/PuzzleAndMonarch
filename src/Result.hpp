@@ -29,7 +29,17 @@ class Result
 
 
 public:
-  Result(const ci::JsonTree& params, Event<Arguments>& event, UI::Drawer& drawer, TweenCommon& tween_common) noexcept
+  // スコア
+  struct Score
+  {
+    std::vector<int> scores;
+    int total_score;
+    int total_ranking;
+  };
+
+
+  Result(const ci::JsonTree& params, Event<Arguments>& event, UI::Drawer& drawer, TweenCommon& tween_common,
+         const Score& score) noexcept
     : event_(event),
       canvas_(event, drawer, tween_common,
               params["ui.camera"],
@@ -67,11 +77,14 @@ public:
     
     setupCommonTweens(event_, holder_, canvas_, "agree");
     setupCommonTweens(event_, holder_, canvas_, "share");
+
+    applyScore(score);
   }
 
   ~Result() = default;
 
 
+private:
   bool update(const double current_time, const double delta_time) noexcept override
   {
     count_exec_.update(delta_time);
@@ -136,6 +149,48 @@ public:
 
 
     return active_;
+  }
+
+  
+  void applyScore(const Score& score) noexcept
+  {
+    int i = 1;
+    for (auto s : score.scores)
+    {
+      char id[16];
+      std::sprintf(id, "score:%d", i);
+
+      const auto& widget = canvas_.at(id);
+      widget->setParam("text", std::to_string(s));
+
+      i += 1;
+    }
+    {
+      const auto& widget = canvas_.at("score:10");
+      widget->setParam("text", std::to_string(score.total_score));
+    }
+    {
+      // TODO params.jsonで定義
+      static const char* ranking_text[] =
+      {
+        "Emperor",
+        "King",
+        "Viceroy",
+        "Grand Duke",
+        "Prince",
+        "Landgrave",
+        "Duke",
+        "Marquess",
+        "Margrave",
+        "Count",  
+        "Viscount",
+        "Baron", 
+        "Baronet",
+      };
+
+      const auto& widget = canvas_.at("score:11");
+      widget->setParam("text", std::string(ranking_text[score.total_ranking]));
+    }
   }
 
 };

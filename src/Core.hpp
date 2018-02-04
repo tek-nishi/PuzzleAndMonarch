@@ -91,11 +91,18 @@ public:
                               });
     // GameMain→Result
     holder_ += event_.connect("Game:Finish",
-                              [this](const Connection&, const Arguments&) noexcept
+                              [this](const Connection&, const Arguments& args) noexcept
                               {
+                                Result::Score score = {
+                                  boost::any_cast<const std::vector<int>&>(args.at("scores")),
+                                  boost::any_cast<int>(args.at("total_score")),
+                                  boost::any_cast<int>(args.at("total_ranking"))
+                                };
+
                                 count_exec_.add(2.0,
-                                                [this]() {
-                                                  tasks_.pushBack<Result>(params_, event_, drawer_, tween_common_);
+                                                [this, score]() noexcept
+                                                {
+                                                  tasks_.pushBack<Result>(params_, event_, drawer_, tween_common_, score);
                                                 });
                               });
     // Result→Title
