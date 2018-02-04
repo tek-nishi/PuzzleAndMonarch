@@ -34,7 +34,7 @@ public:
     : params_(params),
       event_(event),
       panels_(createPanels()),
-      game(std::make_unique<Game>(params["game"], panels_)),
+      game(std::make_unique<Game>(params["game"], event, panels_)),
       rotation(toRadians(Json::getVec<glm::vec2>(params["field.camera.rotation"]))),
       distance(params.getValueForKey<float>("field.camera.distance")),
       camera_(params["field.camera"]),
@@ -176,6 +176,7 @@ public:
                               [this](const Connection&, const Arguments&) noexcept
                               {
                                 game->beginPlay();
+                                calcNextPanelPosition();
                                 playing_mode = GAMEMAIN;
                               });
 

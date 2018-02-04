@@ -104,6 +104,14 @@ public:
                                 widget->setParam("color", color);
                               });
 
+    holder_ += event_.connect("Game:UpdateScores",
+                              [this](const Connection&, const Arguments& args) noexcept
+                              {
+                                const auto& scores = boost::any_cast<std::vector<int>>(args.at("scores"));
+                                updateScores(scores);
+                              });
+
+
     // ゲーム完了
     holder_ += event_.connect("Game:Finish",
                               [this](const Connection&, const Arguments&) noexcept
@@ -135,6 +143,21 @@ public:
   {
     count_exec_.update(delta_time);
     return active_;
+  }
+
+  void updateScores(const std::vector<int>& scores) noexcept
+  {
+    int i = 1;
+    for (auto score : scores)
+    {
+      char id[16];
+      std::sprintf(id, "score:%d", i);
+
+      const auto& widget = canvas_.at(id);
+      widget->setParam("text", std::to_string(score));
+
+      i += 1;
+    }
   }
 
 };

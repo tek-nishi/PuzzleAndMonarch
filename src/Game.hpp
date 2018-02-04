@@ -5,17 +5,22 @@
 //
 
 #include <random>
+#include <boost/noncopyable.hpp>
 #include <cinder/Rand.h>
 #include "Logic.hpp"
 
 
 namespace ngs {
 
-struct Game {
-  Game(const ci::JsonTree& params, const std::vector<Panel>& panels_) noexcept
+struct Game
+  : private boost::noncopyable
+{
+  Game(const ci::JsonTree& params, Event<Arguments>& event,
+       const std::vector<Panel>& panels_) noexcept
     : params_(params),
+      event_(event),
       panels(panels_),
-      scores(8, 0)
+      scores(7, 0)
   {
     DOUT << "Panel: " << panels.size() << std::endl;
 
@@ -59,6 +64,9 @@ struct Game {
     field_panels = field.enumeratePanels();
   }
 
+  ~Game() = default;
+
+
   // 内部時間を進める
   void update(double delta_time) noexcept
   {
@@ -66,9 +74,12 @@ struct Game {
 #ifdef DEBUG
         && time_count
 #endif
-        && ((play_time -= delta_time) < 0.0)) {
+        && ((play_time -= delta_time) < 0.0))
+    {
       // 時間切れ
       DOUT << "Time Up." << std::endl;
+      event_.signal("Game:Timeup", Arguments());
+
       endPlay();
     }
   }
@@ -128,7 +139,8 @@ struct Game {
   {
     bool can_put = false;
     
-    if (std::find(std::begin(blank), std::end(blank), field_pos) != std::end(blank)) {
+    if (std::find(std::begin(blank), std::end(blank), field_pos) != std::end(blank))
+    {
       can_put = canPutPanel(panels[hand_panel], field_pos, hand_rotation,
                             field, panels);
     }
@@ -144,7 +156,8 @@ struct Game {
 
 
   // 操作
-  void putHandPanel(glm::ivec2 field_pos) {
+  void putHandPanel(glm::ivec2 field_pos) noexcept
+  {
     // プレイ中でなければ置けない
     if (!isPlaying()) return;
 
@@ -205,8 +218,16 @@ struct Game {
       }
     }
 
-    if (update_score) {
+    // スコア更新
+    if (update_score)
+    {
       updateScores();
+      
+      Arguments args = {
+        { "scores", scores }
+      };
+
+      event_.signal("Game:UpdateScores", args);
     }
 
 
@@ -233,7 +254,8 @@ struct Game {
   }
 
   // 強制的に次のカード
-  void forceNextHandPanel() {
+  void forceNextHandPanel() noexcept
+  {
     if (!getNextPanel()) {
       // 全パネルを使い切った
       DOUT << "End of panels." << std::endl;
@@ -242,51 +264,61 @@ struct Game {
     }
   }
 
-  void rotationHandPanel() {
+  void rotationHandPanel() noexcept
+  {
     hand_rotation = (hand_rotation + 1) % 4;
   }
 
 
   // 手持ちパネル情報
-  u_int getHandPanel() const {
+  u_int getHandPanel() const noexcept
+  {
     return hand_panel;
   }
 
-  u_int getHandRotation() const {
+  u_int getHandRotation() const noexcept
+  {
     return hand_rotation;
   }
 
   // フィールド情報
-  const std::vector<PanelStatus>& getFieldPanels() const {
+  const std::vector<PanelStatus>& getFieldPanels() const noexcept
+  {
     return field_panels;
   }
 
-  const std::vector<glm::ivec2>& getBlankPositions() const {
+  const std::vector<glm::ivec2>& getBlankPositions() const noexcept
+  {
     return blank;
   };
 
-  glm::vec2 getFieldCenter() const {
+  glm::vec2 getFieldCenter() const noexcept
+  {
     return field_center;
   }
 
 
   // プレイ中のスコア
-  const std::vector<int>& getScores() const {
+  const std::vector<int>& getScores() const noexcept
+  {
     return scores;
   }
 
   // 最終スコア
-  int getTotalScore() const {
+  int getTotalScore() const noexcept
+  {
     return total_score;
   }
 
-  int getTotalRanking() const {
+  int getTotalRanking() const noexcept
+  {
     return total_ranking;
   }
 
 
   // プレイ結果
-  void calcResult() {
+  void calcResult() const noexcept
+  {
     DOUT << "Forest: " << completed_forests.size() << '\n'
          << "  area: " << countTotalAttribute(completed_forests, field, panels) << '\n'
          << "  deep: " << std::count(std::begin(deep_forest), std::end(deep_forest), 1) << '\n'
@@ -298,13 +330,15 @@ struct Game {
 
 #ifdef DEBUG
   // 時間の進みON/OFF
-  void pauseTimeCount() {
+  void pauseTimeCount() noexcept
+  {
     time_count = !time_count;
     DOUT << "time " << (time_count ? "counted." : "paused.") << std::endl;
   }
 
   // 手持ちのパネルを変更
-  void changePanelForced(int next) {
+  void changePanelForced(int next) noexcept
+  {
     hand_panel += next;
     if (hand_panel < 0) {
       hand_panel = int(panels.size()) - 1;
@@ -316,7 +350,8 @@ struct Game {
   }
 
   // 指定位置周囲のパネルを取得
-  std::map<glm::ivec2, PanelStatus, LessVec<glm::ivec2>> enumerateAroundPanels(glm::ivec2 pos) const {
+  std::map<glm::ivec2, PanelStatus, LessVec<glm::ivec2>> enumerateAroundPanels(glm::ivec2 pos) const noexcept
+  {
     // 時計回りに調べる
     const glm::ivec2 offsets[] = {
       {  0,  1 },
@@ -336,13 +371,13 @@ struct Game {
 
     return around_panels;
   }
-
 #endif
 
 
 private:
   // FIXME 参照で持つのいくない
   const ci::JsonTree& params_;
+  Event<Arguments>& event_;
   const std::vector<Panel>& panels;
 
   bool started    = false;
@@ -381,7 +416,8 @@ private:
   glm::vec2 field_center;
 
 
-  bool getNextPanel() {
+  bool getNextPanel() noexcept
+  {
     if (waiting_panels.empty()) return false;
 
     hand_panel      = waiting_panels[0];
@@ -396,7 +432,8 @@ private:
   }
 
   // 各種情報を収集
-  void fieldUpdate() {
+  void fieldUpdate() noexcept
+  {
     field_panels = field.enumeratePanels();
     blank        = field.searchBlank();
 
@@ -410,7 +447,8 @@ private:
   }
 
   // スコア更新
-  void updateScores() {
+  void updateScores() noexcept
+  {
     scores[0] = int(completed_path.size());
     scores[1] = countTotalAttribute(completed_path, field, panels);
     scores[2] = int(completed_forests.size());
@@ -421,7 +459,8 @@ private:
   }
 
   // 最終スコア
-  void calcTotalScore() {
+  void calcTotalScore() noexcept
+  {
     // FIXME 適当に加算しているだけ…
     total_score = scores[0] * 3            // 完成した道の数
                   + scores[1] * 4          // 道の長さ
@@ -437,7 +476,8 @@ private:
   }
 
   // ランキングを決める
-  void calcRanking(int score) {
+  void calcRanking(int score) noexcept
+  {
     const int ranking_score[] = {
       12 * 12 * 700,
       11 * 11 * 700,
