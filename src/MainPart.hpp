@@ -717,14 +717,12 @@ private:
     // prev_pos -= pivot_point;
 
     // 正規化
-    pos.y      = 0;
-    prev_pos.y = 0;
-    glm::normalize(pos);
-    glm::normalize(prev_pos);
+    pos      = glm::normalize(pos);
+    prev_pos = glm::normalize(prev_pos);
 
     // 外積から回転量が決まる
     float cross = prev_pos.x * pos.z - prev_pos.z * pos.x;
-    rotation.y += cross * 0.001;
+    rotation.y += std::asin(cross);
   }
 
   // 次のパネルの出現位置を決める
