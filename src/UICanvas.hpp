@@ -118,7 +118,7 @@ public:
 
   void startCommonTween(const std::string& id, const std::string& name) noexcept
   {
-    auto tween = tween_common_.at(name);
+    auto& tween = tween_common_.at(name);
     const auto& widget = this->at(id);
     tween.set(timeline_, widget);
   }

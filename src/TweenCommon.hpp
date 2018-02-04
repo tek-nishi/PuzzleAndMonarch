@@ -30,7 +30,7 @@ public:
   ~TweenCommon() = default;
 
 
-  Tween& at(const std::string& name) noexcept
+  const Tween& at(const std::string& name) const noexcept
   {
     return tweens_.at(name);
   }

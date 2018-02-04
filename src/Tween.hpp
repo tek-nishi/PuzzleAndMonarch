@@ -13,7 +13,6 @@
 namespace ngs {
 
 class Tween
-  // : private boost::noncopyable
 {
   // FIXME この方式だと果てがない
   enum Type {
@@ -52,8 +51,6 @@ class Tween
 
 
 public:
-  Tween() = default;
-
   Tween(const ci::JsonTree& params) noexcept
   {
     for (int i = 0; i < params.getNumChildren(); ++i)

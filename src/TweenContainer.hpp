@@ -20,6 +20,13 @@ public:
   {
     std::string identifier;
     Tween tween;
+
+    Contents(std::string id, const ci::JsonTree& params) noexcept
+      : identifier(std::move(id)),
+        tween(params)
+    {}
+
+    ~Contents() = default;
   };
 
  
@@ -32,19 +39,16 @@ public:
       for (const auto& pp : p)
       {
         const auto& id = pp.getValueForKey<std::string>("identifier");
-
-        // FIXME Tweenのコピーを無くしたい
-        contents.push_back({ id, { pp["tween"] } });
+        contents.emplace_back(id, pp["tween"]);
       }
-      // FIXME Contentsのコピーを無くしたい
-      tweens_.insert({ name, contents });
+      tweens_.emplace(name, std::move(contents));
     }
   }
 
   ~TweenContainer() = default;
 
 
-  const std::vector<Contents>& at(const std::string& name) noexcept
+  const std::vector<Contents>& at(const std::string& name) const noexcept
   {
     return tweens_.at(name);
   }
