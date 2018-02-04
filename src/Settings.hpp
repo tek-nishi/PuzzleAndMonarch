@@ -4,6 +4,9 @@
 // Settings画面
 //
 
+#include "TweenUtil.hpp"
+
+
 namespace ngs {
 
 class Settings
@@ -65,6 +68,10 @@ public:
                                 const auto& widget = canvas_.at("SE");
                                 widget->setParam("text", std::string(text));
                               });
+
+    setupCommonTweens(event_, holder_, canvas_, "agree");
+    setupCommonTweens(event_, holder_, canvas_, "BGM");
+    setupCommonTweens(event_, holder_, canvas_, "SE");
   }
 
   ~Settings() = default;
@@ -73,6 +80,7 @@ public:
   bool update(const double current_time, const double delta_time) noexcept override
   {
     count_exec_.update(delta_time);
+    canvas_.update(delta_time);
 
     return active_;
   }

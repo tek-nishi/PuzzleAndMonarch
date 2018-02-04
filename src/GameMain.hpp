@@ -7,6 +7,7 @@
 #include "Task.hpp"
 #include "CountExec.hpp"
 #include "UICanvas.hpp"
+#include "TweenUtil.hpp"
 
 
 namespace ngs {
@@ -121,6 +122,10 @@ public:
                                                   active_ = false;
                                                 });
                               });
+
+    setupCommonTweens(event_, holder_, canvas_, "pause");
+    setupCommonTweens(event_, holder_, canvas_, "resume");
+    setupCommonTweens(event_, holder_, canvas_, "abort");
   }
 
   ~GameMain() = default;
@@ -129,6 +134,7 @@ public:
   bool update(const double current_time, const double delta_time) noexcept override
   {
     count_exec_.update(delta_time);
+    canvas_.update(delta_time);
 
     return active_;
   }

@@ -4,6 +4,9 @@
 // Credits画面
 //
 
+#include "TweenUtil.hpp"
+
+
 namespace ngs {
 
 class Credits
@@ -44,6 +47,9 @@ public:
                                                      });
                                 DOUT << "Back to Title" << std::endl;
                               });
+
+    // ボタンイベント共通Tween
+    setupCommonTweens(event_, holder_, canvas_, "agree");
   }
 
   ~Credits() = default;
@@ -52,6 +58,7 @@ public:
   bool update(const double current_time, const double delta_time) noexcept override
   {
     count_exec_.update(delta_time);
+    canvas_.update(delta_time);
 
     return active_;
   }

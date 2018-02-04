@@ -7,6 +7,7 @@
 #include "Task.hpp"
 #include "CountExec.hpp"
 #include "UICanvas.hpp"
+#include "TweenUtil.hpp"
 
 
 namespace ngs {
@@ -63,6 +64,9 @@ public:
                               {
                                 DOUT << "Share." << std::endl;
                               });
+    
+    setupCommonTweens(event_, holder_, canvas_, "agree");
+    setupCommonTweens(event_, holder_, canvas_, "share");
   }
 
   ~Result() = default;
@@ -71,6 +75,7 @@ public:
   bool update(const double current_time, const double delta_time) noexcept override
   {
     count_exec_.update(delta_time);
+    canvas_.update(delta_time);
 
     switch (mode_)
     {
