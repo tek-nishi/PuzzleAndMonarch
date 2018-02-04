@@ -260,17 +260,27 @@ public:
     disp_rect_ = calcRect(parent_rect, scale);
     widget_base_->draw(disp_rect_, drawer);
 
-#if defined (DEBUG)
-    // デバッグ用にRectを描画
-    ci::gl::color(disp_color_);
-    ci::gl::drawStrokedRect(disp_rect_);
-#endif
-    
     for (const auto& child : children_)
     {
       child->draw(disp_rect_, scale, drawer);
     }
   }
+
+#if defined (DEBUG)
+  // デバッグ用にRectを描画
+  void debugDraw() const noexcept
+  {
+    if (!enable_) return;
+
+    ci::gl::color(disp_color_);
+    ci::gl::drawStrokedRect(disp_rect_);
+
+    for (const auto& child : children_)
+    {
+      child->debugDraw();
+    }
+  }
+#endif
 
 
 private:

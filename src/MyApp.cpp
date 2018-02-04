@@ -13,6 +13,7 @@
 #include "JsonUtil.hpp"
 #include "TouchEvent.hpp"
 #include "Core.hpp"
+#include "Debug.hpp"
 
 
 namespace ngs {
@@ -35,6 +36,10 @@ public:
   {
     ci::Rand::randomize();
     prev_time_ = getElapsedSeconds();
+
+#if defined (DEBUG)
+    debug_events_ = Debug::keyEvent(params["app.debug"]);
+#endif
 
 #if defined (CINDER_COCOA_TOUCH)
     // 縦横画面両対応
@@ -136,15 +141,18 @@ private:
         step_update_ = true;
       }
       break;
+
+    default:
+      {
+        Debug::signalKeyEvent(event_, debug_events_, code);
+      }
+      break;
     }
 #endif
-
-    worker->keyDown(event);
   }
 
   void keyUp(ci::app::KeyEvent event) noexcept override
   {
-    worker->keyUp(event);
   }
   
 
@@ -210,6 +218,8 @@ private:
 #if defined (DEBUG)
   bool paused_      = false;
   bool step_update_ = false;
+
+  std::map<int, std::string> debug_events_;
 #endif
 
 };

@@ -54,6 +54,14 @@ public:
     holder_ += event_.connect("single_touch_ended",
                               std::bind(&Canvas::touchEnded,
                                         this, std::placeholders::_1, std::placeholders::_2));
+
+#if defined (DEBUG)
+    holder_ += event_.connect("debug-info",
+                              [this](const Connection&, Arguments& arg) noexcept
+                              {
+                                debug_info_ = !debug_info_;
+                              });
+#endif
   }
 
   ~Canvas() = default;
@@ -88,6 +96,13 @@ public:
     ci::Rectf rect(top_left.x, bottom_right.y, bottom_right.x, top_left.y);
 
     widgets_->draw(rect, glm::vec2(1), drawer_);
+
+#if defined (DEBUG)
+    if (debug_info_)
+    {
+      widgets_->debugDraw();
+    }
+#endif
   }
 
 
@@ -285,6 +300,11 @@ private:
 
   ci::TimelineRef timeline_;
   TweenContainer tweens_;
+
+#if defined (DEBUG)
+  bool debug_info_ = false;
+#endif
+
 };
 
 
