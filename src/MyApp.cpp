@@ -12,8 +12,8 @@
 #include "Params.hpp"
 #include "JsonUtil.hpp"
 #include "TouchEvent.hpp"
-// #include "Core.hpp"
-#include "Sandbox.hpp"
+#include "Core.hpp"
+// #include "Sandbox.hpp"
 #include "Debug.hpp"
 
 
@@ -24,8 +24,8 @@ class MyApp
     private boost::noncopyable
 {
 
-  // using Worker = Core;
-  using Worker = Sandbox;
+  using Worker = Core;
+  // using Worker = Sandbox;
 
 
 public:

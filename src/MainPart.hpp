@@ -190,6 +190,14 @@ public:
                               {
                                 paused_ = false;
                               });
+
+#if defined (DEBUG)
+    holder_ += event_.connect("debug-info",
+                              [this](const Connection&, Arguments& arg) noexcept
+                              {
+                                disp_debug_info_ = !disp_debug_info_;
+                              });
+#endif
   }
 
 
@@ -344,22 +352,9 @@ public:
     pressing_key.insert(code);
 
 #ifdef DEBUG
-    // if (code == ci::app::KeyEvent::KEY_r) {
-    //   // 強制リセット
-    //   game = std::make_unique<ngs::Game>(panels_);
-    //   playing_mode = TITLE;
-    // }
-    if (code == ci::app::KeyEvent::KEY_t) {
-      // 時間停止
-      game->pauseTimeCount();
-    }
     if (code == ci::app::KeyEvent::KEY_e) {
       // 強制終了
       game->endPlay();
-    }
-
-    if (code == ci::app::KeyEvent::KEY_d) {
-      disp_debug_info = !disp_debug_info;
     }
 
     // 手持ちパネル強制変更
@@ -526,7 +521,8 @@ private:
       }
 
 #ifdef DEBUG
-      if (disp_debug_info) {
+      if (disp_debug_info_)
+      {
         // 手元のパネル
         ngs::drawPanelEdge(panels_[game->getHandPanel()], pos, game->getHandRotation());
 
@@ -597,45 +593,6 @@ private:
     }
     return false;
   }
-
-#if 0
-  // 結果を表示
-  void drawResult() {
-    drawGameInfo(30, glm::vec2(-300, 150), -50);
-
-    int score   = game->getTotalScore();
-    int ranking = game->getTotalRanking();
-
-    const char* ranking_text[] = {
-      "Emperor",
-      "King",
-      "Viceroy",
-      "Grand Duke",
-      "Prince",
-      "Landgrave",
-      "Duke",
-      "Marquess",
-      "Margrave",
-      "Count",  
-      "Viscount",
-      "Baron", 
-      "Baronet",
-    };
-
-    {
-      char text[100];
-      sprintf(text, "Your Score: %d", score);
-      font.size(60);
-      font.draw(text, glm::vec2(0, 0), ci::ColorA(1, 1, 1, 1));
-    }
-    {
-      char text[100];
-      sprintf(text, "Your Rank: %s", ranking_text[ranking]);
-      font.size(60);
-      font.draw(text, glm::vec2(0, -100), ci::ColorA(1, 1, 1, 1));
-    }
-  }
-#endif
 
   // Fieldの外接球を計算
   ci::Sphere calcBoundingSphere() noexcept
@@ -811,7 +768,7 @@ private:
   View view;
 
 #ifdef DEBUG
-  bool disp_debug_info = false;
+  bool disp_debug_info_ = false;
 
   // Fieldの外接球
   ci::Sphere framing_sphere_;
