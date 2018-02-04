@@ -12,7 +12,8 @@
 #include "Params.hpp"
 #include "JsonUtil.hpp"
 #include "TouchEvent.hpp"
-#include "Core.hpp"
+// #include "Core.hpp"
+#include "Sandbox.hpp"
 #include "Debug.hpp"
 
 
@@ -23,8 +24,8 @@ class MyApp
     private boost::noncopyable
 {
 
-  using Worker = Core;
-  // using Worker = TestPart;
+  // using Worker = Core;
+  using Worker = Sandbox;
 
 
 public:
@@ -61,7 +62,7 @@ public:
 private:
   void mouseMove(ci::app::MouseEvent event) noexcept override
   {
-    worker->mouseMove(event);
+    // worker->mouseMove(event);
   }
 
 	void mouseDown(ci::app::MouseEvent event) noexcept override
@@ -90,7 +91,7 @@ private:
 
   void mouseWheel(ci::app::MouseEvent event) noexcept override
   {
-    worker->mouseWheel(event);
+    // worker->mouseWheel(event);
   }
 
 
