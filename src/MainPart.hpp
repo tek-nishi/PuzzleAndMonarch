@@ -51,9 +51,14 @@ public:
     camera.lookAt(p, glm::vec3(0));
     eye_position = camera.getEyePoint();
 
-    // 画面リサイズ
-    holder_ += event_.connect("resize", std::bind(&MainPart::resize, this,
-                                                  std::placeholders::_1, std::placeholders::_2));
+    // system
+    holder_ += event_.connect("resize",
+                              std::bind(&MainPart::resize,
+                                        this, std::placeholders::_1, std::placeholders::_2));
+    
+    holder_ += event_.connect("draw",
+                              std::bind(&MainPart::draw,
+                                        this, std::placeholders::_1, std::placeholders::_2));
 
     // 操作
     holder_ += event_.connect("single_touch_began",
@@ -389,6 +394,7 @@ public:
 #endif
 
 
+private:
   void resize(const Connection&, const Arguments&) noexcept
   {
     camera_.resize();
@@ -467,14 +473,14 @@ public:
     return true;
   }
 
-	void draw(const glm::ivec2& window_size) noexcept override
+  void draw(const Connection&, const Arguments&) noexcept
   {
     {
       // UI更新
-      Arguments arg = {
+      Arguments args = {
         { "remaining_time", game->getRemainingTime() }
       };
-      event_.signal("Game:UI", arg);
+      event_.signal("Game:UI", args);
     }
     
     // 本編
@@ -556,7 +562,6 @@ public:
   }
 
 
-private:
   bool calcFieldPos(const glm::vec2& pos) noexcept
   {
     // 画面奥に伸びるRayを生成

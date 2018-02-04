@@ -31,6 +31,16 @@ class Core
     tasks_.pushBack<MainPart>(params_, event_);
     tasks_.pushBack<Title>(params_, event_, drawer_, tween_common_);
   }
+  
+  
+  void update(const Connection&, const Arguments& args) noexcept
+  {
+    auto current_time = boost::any_cast<double>(args.at("current_time"));
+    auto delta_time   = boost::any_cast<double>(args.at("delta_time"));
+
+    count_exec_.update(delta_time);
+    tasks_.update(current_time, delta_time);
+  }
 
 
 public:
@@ -94,6 +104,11 @@ public:
                               {
                                 count_exec_.add(0.5, std::bind(&Core::setupTask, this));
                               });
+
+    // system
+    holder_ += event_.connect("update",
+                              std::bind(&Core::update,
+                                        this, std::placeholders::_1, std::placeholders::_2));
   }
 
   ~Core() = default;
@@ -126,20 +141,6 @@ public:
 
   void keyUp(const ci::app::KeyEvent& event) noexcept
   {
-  }
-
-
-  // 更新
-  void update(const double current_time, const double delta_time) noexcept
-  {
-    count_exec_.update(delta_time);
-    tasks_.update(current_time, delta_time);
-  }
-
-  // 描画
-  void draw(const glm::ivec2& window_size) noexcept
-  {
-    tasks_.draw(window_size);
   }
 
 

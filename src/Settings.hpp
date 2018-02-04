@@ -80,15 +80,9 @@ public:
   bool update(const double current_time, const double delta_time) noexcept override
   {
     count_exec_.update(delta_time);
-    canvas_.update(delta_time);
-
     return active_;
   }
 
-  void draw(const glm::ivec2& window_size) noexcept override
-  {
-    canvas_.draw();
-  }
 };
 
 }

@@ -36,14 +36,6 @@ public:
   }
 
 
-  void draw(const glm::ivec2& window_size) noexcept
-  {
-    for (auto& task : tasks_)
-    {
-      task->draw(window_size);
-    }
-  }
-
   void clear() noexcept
   {
     tasks_.clear();

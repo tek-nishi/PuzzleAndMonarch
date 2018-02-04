@@ -154,6 +154,12 @@ private:
   void keyUp(ci::app::KeyEvent event) noexcept override
   {
   }
+
+
+  void resize() noexcept override
+  {
+    event_.signal("resize", Arguments());
+  }
   
 
 	void update() noexcept override
@@ -169,7 +175,11 @@ private:
     if (!paused_)
 #endif
     {
-      worker->update(current_time, delta_time);
+      Arguments args = {
+        { "current_time", current_time },
+        { "delta_time",   delta_time },
+      };
+      event_.signal("update", args);
     }
 
 #if defined (DEBUG)
@@ -183,19 +193,14 @@ private:
     prev_time_ = current_time;
   }
 
-
-  void resize() noexcept override
-  {
-    event_.signal("resize", Arguments());
-  }
-
-
 	void draw() noexcept override
   {
     ci::gl::clear(ci::Color(0, 0, 0));
 
-    auto window_size = ci::app::getWindowSize();
-    worker->draw(window_size);
+    Arguments args = {
+      { "window_size", ci::app::getWindowSize() },
+    };
+    event_.signal("draw", args);
   }
 
 

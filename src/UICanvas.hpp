@@ -39,9 +39,6 @@ public:
     camera_.body().lookAt(glm::vec3(0, 0, camera_.getNearClip() + 0.001f), glm::vec3(0));
 
     makeQueryWidgets(widgets_);
-    
-    holder_ += event_.connect("resize", std::bind(&Canvas::resize, this,
-                                                  std::placeholders::_1, std::placeholders::_2));
 
     holder_ += event_.connect("single_touch_began",
                               std::bind(&Canvas::touchBegan,
@@ -55,6 +52,20 @@ public:
                               std::bind(&Canvas::touchEnded,
                                         this, std::placeholders::_1, std::placeholders::_2));
 
+    // system
+    holder_ += event_.connect("resize",
+                              std::bind(&Canvas::resize,
+                                        this, std::placeholders::_1, std::placeholders::_2));
+
+    holder_ += event_.connect("update",
+                              std::bind(&UI::Canvas::update,
+                                        this, std::placeholders::_1, std::placeholders::_2));
+
+    holder_ += event_.connect("draw",
+                              std::bind(&UI::Canvas::draw,
+                                        this, std::placeholders::_1, std::placeholders::_2));
+
+
 #if defined (DEBUG)
     holder_ += event_.connect("debug-info",
                               [this](const Connection&, Arguments& arg) noexcept
@@ -65,45 +76,6 @@ public:
   }
 
   ~Canvas() = default;
-
-
-  void resize(const Connection&, const Arguments&) noexcept
-  {
-    camera_.resize();
-  }
-
-
-  void update(const double delta_time) noexcept
-  {
-    timeline_->step(delta_time);
-  }
-
-  void draw() noexcept
-  {
-    ci::gl::enableDepth(false);
-    ci::gl::disable(GL_CULL_FACE);
-    ci::gl::enableAlphaBlending();
-
-    auto& camera = camera_.body();
-    ci::gl::setMatrices(camera);
-
-    // TIPS CameraのNearClipでの四隅の座標を取得→描画領域
-    glm::vec3 top_left;
-    glm::vec3 top_right;
-    glm::vec3 bottom_left;
-    glm::vec3 bottom_right;
-    camera.getNearClipCoordinates(&top_left, &top_right, &bottom_left, &bottom_right);
-    ci::Rectf rect(top_left.x, bottom_right.y, bottom_right.x, top_left.y);
-
-    widgets_->draw(rect, glm::vec2(1), drawer_);
-
-#if defined (DEBUG)
-    if (debug_info_)
-    {
-      widgets_->debugDraw();
-    }
-#endif
-  }
 
 
   const UI::WidgetPtr& at(const std::string& name) const noexcept
@@ -140,6 +112,45 @@ public:
 
 
 private:
+  void resize(const Connection&, const Arguments&) noexcept
+  {
+    camera_.resize();
+  }
+
+  void update(const Connection&, const Arguments& args) noexcept
+  {
+    auto delta_time = boost::any_cast<double>(args.at("delta_time"));
+    timeline_->step(delta_time);
+  }
+
+  void draw(const Connection&, const Arguments&) noexcept
+  {
+    ci::gl::enableDepth(false);
+    ci::gl::disable(GL_CULL_FACE);
+    ci::gl::enableAlphaBlending();
+
+    auto& camera = camera_.body();
+    ci::gl::setMatrices(camera);
+
+    // TIPS CameraのNearClipでの四隅の座標を取得→描画領域
+    glm::vec3 top_left;
+    glm::vec3 top_right;
+    glm::vec3 bottom_left;
+    glm::vec3 bottom_right;
+    camera.getNearClipCoordinates(&top_left, &top_right, &bottom_left, &bottom_right);
+    ci::Rectf rect(top_left.x, bottom_right.y, bottom_right.x, top_left.y);
+
+    widgets_->draw(rect, glm::vec2(1), drawer_);
+
+#if defined (DEBUG)
+    if (debug_info_)
+    {
+      widgets_->debugDraw();
+    }
+#endif
+  }
+
+
   void makeQueryWidgets(const UI::WidgetPtr& widget) noexcept
   {
     if (widget->hasIdentifier())

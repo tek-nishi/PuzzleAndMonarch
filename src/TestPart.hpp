@@ -125,15 +125,7 @@ public:
   void mouseWheel(const ci::app::MouseEvent& event) noexcept
   {
   }
-
-  void keyDown(const ci::app::KeyEvent& event) noexcept
-  {
-  }
-
-  void keyUp(const ci::app::KeyEvent& event) noexcept
-  {
-  }
-
+  
 
   void resize(const Connection&, const Arguments&) noexcept
   {
