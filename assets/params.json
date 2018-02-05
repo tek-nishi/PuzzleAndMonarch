@@ -36,7 +36,7 @@
       "far_z":  600
     },
     
-    "font_texture": 1024,
+    "font_texture": 4096,
 
     "font": [
       {
