@@ -64,10 +64,11 @@ public:
     holder_ += event_.connect("single_touch_began",
                               [this](const Connection&, Arguments& arg) noexcept
                               {
+                                touch_draged_ = false;
+
+#if 0
                                 const auto& touch = boost::any_cast<const Touch&>(arg.at("touch"));
                                 glm::vec3 cursor_pos_orig = cursor_pos;
-                                field_rotate_ = false;
-
                                 // パネルを置ける場所をtouch→そこにパネルが移動
                                 if (calcFieldPos(touch.pos))
                                 {
@@ -80,25 +81,27 @@ public:
                                   // パネルがない場合は画面の回転操作
                                   field_rotate_ = true;
                                 }
+#endif
                               });
 
     
     holder_ += event_.connect("single_touch_moved",
                               [this](const Connection&, Arguments& arg) noexcept
                               {
+                                touch_draged_ = true;
+
                                 const auto& touch = boost::any_cast<const Touch&>(arg.at("touch"));
                                 glm::vec3 cursor_pos_orig = cursor_pos;
 
-                                if (field_rotate_)
-                                {
-                                  // Field回転操作
-                                  rotateField(touch);
+                                // Field回転操作
+                                rotateField(touch);
 
-                                  auto& camera = camera_.body();
-                                  glm::quat q(glm::vec3{ rotation.x, rotation.y, 0 });
-                                  glm::vec3 p = q * glm::vec3{ 0, 0, -distance };
-                                  camera.lookAt(p, glm::vec3(0));
-                                  eye_position = camera.getEyePoint();
+                                auto& camera = camera_.body();
+                                glm::quat q(glm::vec3{ rotation.x, rotation.y, 0 });
+                                glm::vec3 p = q * glm::vec3{ 0, 0, -distance };
+                                camera.lookAt(p, glm::vec3(0));
+                                eye_position = camera.getEyePoint();
+#if 0
                                 }
                                 else
                                 {
@@ -110,11 +113,15 @@ public:
                                     touch_put_ = (cursor_pos_orig == cursor_pos);
                                   }
                                 }
+#endif
                               });
 
     holder_ += event_.connect("single_touch_ended",
                               [this](const Connection&, Arguments& arg) noexcept
                               {
+                                // 画面回転操作をした場合、パネル操作は全て無効
+                                if (touch_draged_) return;
+
                                 const auto& touch = boost::any_cast<const Touch&>(arg.at("touch"));
                                 glm::vec3 cursor_pos_orig = cursor_pos;
 
@@ -553,7 +560,7 @@ private:
   }
 
 
-  bool calcFieldPos(const glm::vec2& pos) noexcept
+  void calcFieldPos(const glm::vec2& pos) noexcept
   {
     // 画面奥に伸びるRayを生成
     ci::Ray ray = camera_.body().generateRay(pos, ci::app::getWindowSize());
@@ -570,23 +577,20 @@ private:
     // 地面との交差を調べ、正確な位置を計算
     float z;
     float on_field = ray.calcPlaneIntersection(glm::vec3(0), glm::vec3(0, 1, 0), &z);
-    can_put = false;
     if (on_field)
     {
+      // ワールド座標→升目座標
       auto touch_pos = ray.calcPosition(z);
-      
-      field_pos.x = roundValue(touch_pos.x, PANEL_SIZE);
-      field_pos.y = roundValue(touch_pos.z, PANEL_SIZE);
+      auto grid_pos  = roundValue(touch_pos.x, touch_pos.z, PANEL_SIZE);
 
-      if (game->isBlank(field_pos))
+      if (game->isBlank(grid_pos))
       {
-        can_put = game->canPutToBlank(field_pos);
+        field_pos = grid_pos;
+        can_put   = game->canPutToBlank(field_pos);
         // 少し宙に浮いた状態
         cursor_pos = glm::vec3(field_pos.x * PANEL_SIZE, panel_height_, field_pos.y * PANEL_SIZE);
-        return true;
       }
     }
-    return false;
   }
 
   // Fieldの外接球を計算
@@ -747,6 +751,7 @@ private:
 
   // パネル操作
   bool touch_put_;
+  bool touch_draged_;
   double touch_timestamp_;
 
   float panel_height_;

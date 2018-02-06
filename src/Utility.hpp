@@ -8,10 +8,15 @@
 namespace ngs {
 
 // xをyで丸めこむ
-int roundValue(int x, int y)
+int roundValue(int x, int y) noexcept
 {
   return (x > 0) ? (x + y / 2) / y
                  : (x - y / 2) / y;
+}
+
+glm::ivec2 roundValue(int x, int y, int v) noexcept
+{
+  return glm::ivec2{ roundValue(x, v), roundValue(y, v) };
 }
 
 
@@ -20,7 +25,7 @@ int roundValue(int x, int y)
 template <typename T>
 struct LessVec
 {
-  bool operator()(const T& lhs, const T& rhs) const
+  bool operator()(const T& lhs, const T& rhs) const noexcept
   {
     for (int i = 0; i < lhs.length(); ++i)
     {
@@ -34,18 +39,19 @@ struct LessVec
 
 // 配列の要素数を取得
 template <typename T>
-std::size_t elemsof(const T& value) {
+std::size_t elemsof(const T& value) noexcept
+{
   return std::end(value) - std::begin(value);
 }
 
 template <typename T>
-T toRadians(const T& v)
+T toRadians(const T& v) noexcept
 {
   return v * float(M_PI) / 180.0f;
 }
 
 template <typename T>
-T toDegrees(const T& v)
+T toDegrees(const T& v) noexcept
 {
   return v * 180.0f / float(M_PI);
 }
