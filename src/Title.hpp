@@ -69,10 +69,23 @@ public:
                                                      });
                                 DOUT << "Settings." << std::endl;
                               });
+    
+    holder_ += event_.connect("records:touch_ended",
+                              [this](const Connection&, const Arguments&) noexcept
+                              {
+                                canvas_.active(false);
+                                count_exec_.add(1.0, [this]() noexcept
+                                                     {
+                                                       event_.signal("Records:begin", Arguments());
+                                                       active_ = false;
+                                                     });
+                                DOUT << "Records." << std::endl;
+                              });
 
     // ボタンイベント共通Tween
     setupCommonTweens(event_, holder_, canvas_, "credits");
     setupCommonTweens(event_, holder_, canvas_, "settings");
+    setupCommonTweens(event_, holder_, canvas_, "records");
     setupCommonTweens(event_, holder_, canvas_, "game_center");
     setupCommonTweens(event_, holder_, canvas_, "play");
 

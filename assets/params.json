@@ -26,7 +26,7 @@
 
     "pivot_point": [ 0, 5, 0 ],
     "panel_height": 10,
-    "putdown_time": 1
+    "putdown_time": 0.6
   },
 
   "ui": {
@@ -73,6 +73,11 @@
   "settings": {
     "canvas": "ui_settings.json",
     "tweens": "tw_settings.json"
+  },
+
+  "records": {
+    "canvas": "ui_records.json",
+    "tweens": "tw_records.json"
   },
   
   "gamemain": {

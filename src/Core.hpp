@@ -17,6 +17,7 @@
 #include "Result.hpp"
 #include "Credits.hpp"
 #include "Settings.hpp"
+#include "Records.hpp"
 
 
 namespace ngs {
@@ -79,6 +80,18 @@ public:
                               });
     // Settings→Title
     holder_ += event_.connect("Settings:Finished",
+                              [this](const Connection&, const Arguments&) noexcept
+                              {
+                                tasks_.pushBack<Title>(params_, event_, drawer_, tween_common_);
+                              });
+    // Title→Records
+    holder_ += event_.connect("Records:begin",
+                              [this](const Connection&, const Arguments&) noexcept
+                              {
+                                tasks_.pushBack<Records>(params_, event_, drawer_, tween_common_);
+                              });
+    // Records→Title
+    holder_ += event_.connect("Records:Finished",
                               [this](const Connection&, const Arguments&) noexcept
                               {
                                 tasks_.pushBack<Title>(params_, event_, drawer_, tween_common_);

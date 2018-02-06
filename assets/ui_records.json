@@ -1,0 +1,44 @@
+{
+  "identifier": "root",
+  "rect": [ 0, 0, 0, 0 ],
+  "anchor": [
+    [ 0, 0 ],
+    [ 1, 1 ]
+  ],
+  "scale": [ 1, 1 ],
+  "pivot": [ 0.5, 0.5 ],
+  
+  "childlen": [
+    {
+      "rect": [ -20, -14, 20, 14 ],
+      "anchor": [
+        [ 0.5, 0.91 ],
+        [ 0.5, 0.91 ]
+      ],
+      "scale": [ 1, 1 ],
+      "pivot": [ 0.5, 0.5 ],
+
+      "font": "en",
+      "text": "Records",
+      "color": [ 1, 1, 1, 1 ]
+    },
+
+    {
+      "identifier": "touch",
+      "rect": [ -10, 8, 10, 28 ],
+      "anchor": [
+        [ 0.5, 0 ],
+        [ 0.5, 0 ]
+      ],
+      "scale": [ 1, 1 ],
+      "pivot": [ 0.5, 0.5 ],
+      "enable": false,
+      "event": "agree",
+      
+      "font": "icon",
+      "text": "",
+      "layout": [ 0.5, 0 ],
+      "color": [ 1, 1, 1, 1 ]
+    }
+  ]
+}

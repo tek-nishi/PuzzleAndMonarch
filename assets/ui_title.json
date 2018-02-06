@@ -70,7 +70,7 @@
     },
     {
       "identifier": "GameCenter",
-      "rect": [ -30, 60, -10, 80 ],
+      "rect": [ -30, 90, -10, 110 ],
       "anchor": [
         [ 1, 0.1 ],
         [ 1, 0.1 ]
@@ -81,6 +81,21 @@
       
       "font": "icon",
       "text": "",
+      "color": [ 1, 1, 1, 1 ]
+    },
+    {
+      "identifier": "Records",
+      "rect": [ -30, 60, -10, 80 ],
+      "anchor": [
+        [ 1, 0.1 ],
+        [ 1, 0.1 ]
+      ],
+      "scale": [ 1, 1 ],
+      "pivot": [ 0.5, 0.5 ],
+      "event": "records",
+      
+      "font": "icon",
+      "text": "",
       "color": [ 1, 1, 1, 1 ]
     },
     {
