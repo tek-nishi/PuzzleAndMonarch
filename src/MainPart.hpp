@@ -64,31 +64,29 @@ public:
     holder_ += event_.connect("single_touch_began",
                               [this](const Connection&, Arguments& arg) noexcept
                               {
+                                if (paused_) return;
+
                                 touch_draged_ = false;
 
-#if 0
                                 const auto& touch = boost::any_cast<const Touch&>(arg.at("touch"));
-                                glm::vec3 cursor_pos_orig = cursor_pos;
-                                // パネルを置ける場所をtouch→そこにパネルが移動
-                                if (calcFieldPos(touch.pos))
+
+                                // 元々パネルのある位置をタップ→長押しで設置
+                                touch_put_ = false;
+                                if (can_put && isCursorPos(touch.pos))
                                 {
-                                  // 位置の変化無し→touchを離した時に置く
-                                  touch_put_ = (cursor_pos_orig == cursor_pos);
-                                  touch_timestamp_ = ci::app::getElapsedSeconds();
+                                  touch_put_ = true;
+                                  put_remaining_ = putdown_time_;
                                 }
-                                else
-                                {
-                                  // パネルがない場合は画面の回転操作
-                                  field_rotate_ = true;
-                                }
-#endif
                               });
 
     
     holder_ += event_.connect("single_touch_moved",
                               [this](const Connection&, Arguments& arg) noexcept
                               {
+                                if (paused_) return;
+
                                 touch_draged_ = true;
+                                touch_put_ = false;
 
                                 const auto& touch = boost::any_cast<const Touch&>(arg.at("touch"));
                                 glm::vec3 cursor_pos_orig = cursor_pos;
@@ -101,33 +99,20 @@ public:
                                 glm::vec3 p = q * glm::vec3{ 0, 0, -distance };
                                 camera.lookAt(p, glm::vec3(0));
                                 eye_position = camera.getEyePoint();
-#if 0
-                                }
-                                else
-                                {
-                                  // パネルを置ける場所をtouch→そこにパネルが移動
-                                  calcFieldPos(touch.pos);
-
-                                  if (touch_put_)
-                                  {
-                                    touch_put_ = (cursor_pos_orig == cursor_pos);
-                                  }
-                                }
-#endif
                               });
 
     holder_ += event_.connect("single_touch_ended",
                               [this](const Connection&, Arguments& arg) noexcept
                               {
+                                if (paused_) return;
+
                                 // 画面回転操作をした場合、パネル操作は全て無効
                                 if (touch_draged_) return;
 
+                                glm::vec3 cursor_pos_prev = cursor_pos;
                                 const auto& touch = boost::any_cast<const Touch&>(arg.at("touch"));
-                                glm::vec3 cursor_pos_orig = cursor_pos;
-
-                                // 移動無し→パネルが置ける→設置
-                                calcFieldPos(touch.pos);
-                                if (touch_put_ && (cursor_pos_orig == cursor_pos))
+                                bool can_rotate = calcFieldPos(touch.pos);
+                                if (can_rotate && (cursor_pos_prev == cursor_pos))
                                 {
                                   // パネルを回転
                                   game->rotationHandPanel();
@@ -427,23 +412,19 @@ private:
         if (touch_put_)
         {
           // タッチしたまま時間経過
-          auto timestamp = ci::app::getElapsedSeconds();
-          if ((timestamp - touch_timestamp_) > putdown_time_)
+          put_remaining_ -= delta_time;
+          if (put_remaining_ <= 0.0)
           {
-            // パネル設置
-            if (can_put)
-            {
-              game->putHandPanel(field_pos);
-              rotate_offset = 0.0f;
-              hight_offset  = 500.0f;
-              can_put       = false;
+            game->putHandPanel(field_pos);
+            rotate_offset = 0.0f;
+            hight_offset  = 500.0f;
+            can_put       = false;
 
-              touch_put_ = false;
+            touch_put_ = false;
 
-              // Fieldの中心を再計算
-              calcFieldCenter();
-              calcNextPanelPosition();
-            }
+            // Fieldの中心を再計算
+            calcFieldCenter();
+            calcNextPanelPosition();
           }
         }
       }
@@ -560,7 +541,9 @@ private:
   }
 
 
-  void calcFieldPos(const glm::vec2& pos) noexcept
+  // タッチ位置からField上の位置を計算する
+  // 戻り値: true  配置可能な場所 
+  bool calcFieldPos(const glm::vec2& pos) noexcept
   {
     // 画面奥に伸びるRayを生成
     ci::Ray ray = camera_.body().generateRay(pos, ci::app::getWindowSize());
@@ -589,9 +572,40 @@ private:
         can_put   = game->canPutToBlank(field_pos);
         // 少し宙に浮いた状態
         cursor_pos = glm::vec3(field_pos.x * PANEL_SIZE, panel_height_, field_pos.y * PANEL_SIZE);
+
+        return true;
       }
     }
+    return false;
   }
+
+  // タッチ位置がパネルのある位置と同じか調べる
+  bool isCursorPos(const glm::vec2& pos) noexcept
+  {
+    // 画面奥に伸びるRayを生成
+    ci::Ray ray = camera_.body().generateRay(pos, ci::app::getWindowSize());
+    
+    glm::quat q(glm::vec3(rotation.x, rotation.y, 0));
+    glm::vec3 p = q * glm::vec3{ 0, 0, pivot_distance };
+    auto m = glm::translate(p);
+    m = glm::translate(m, -pivot_point);
+    auto tpm = glm::inverse(m);
+
+    auto origin = tpm * glm::vec4(ray.getOrigin(), 1);
+    ray.setOrigin(origin);
+
+    // 地面との交差を調べ、正確な位置を計算
+    float z;
+    float on_field = ray.calcPlaneIntersection(glm::vec3(0), glm::vec3(0, 1, 0), &z);
+    if (!on_field) return false;
+
+    // ワールド座標→升目座標
+    auto touch_pos = ray.calcPosition(z);
+    auto grid_pos  = roundValue(touch_pos.x, touch_pos.z, PANEL_SIZE);
+    glm::vec3 fpos = glm::vec3(grid_pos.x * PANEL_SIZE, panel_height_, grid_pos.y * PANEL_SIZE);
+    return fpos == cursor_pos;
+  }
+
 
   // Fieldの外接球を計算
   ci::Sphere calcBoundingSphere() noexcept
@@ -750,9 +764,9 @@ private:
   Camera camera_;
 
   // パネル操作
-  bool touch_put_;
   bool touch_draged_;
-  double touch_timestamp_;
+  bool touch_put_;
+  double put_remaining_;
 
   float panel_height_;
   double putdown_time_;
