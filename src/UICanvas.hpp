@@ -155,7 +155,7 @@ private:
   {
     if (widget->hasIdentifier())
     {
-      query_widgets_.insert({ widget->getIdentifier(), widget });
+      query_widgets_.emplace(widget->getIdentifier(), widget);
       enumerated_widgets_.push_back(widget);
     }
 

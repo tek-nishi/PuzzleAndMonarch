@@ -21,7 +21,7 @@ struct Counter
 
   void add(const std::string& name, const double count) noexcept
   {
-    values.insert({ name, count });
+    values.emplace(name, count);
   }
 
   bool check(const std::string& name) const noexcept

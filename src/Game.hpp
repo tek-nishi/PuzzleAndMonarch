@@ -62,6 +62,10 @@ struct Game
     // 最初のパネルを設置
     field.addPanel(start_panels[0], { 0, 0 }, ci::randInt(4));
     field_panels = field.enumeratePanels();
+
+    // 次のパネルを決めて、置ける場所も探す
+    getNextPanel();
+    fieldUpdate();
   }
 
   ~Game() = default;
@@ -108,9 +112,6 @@ struct Game
   {
     play_time = params_.getValueForKey<double>("play_time");
     started = true;
-
-    getNextPanel();
-    fieldUpdate();
 
     // UI更新
     Arguments args = {
@@ -318,10 +319,12 @@ struct Game
   void changePanelForced(int next) noexcept
   {
     hand_panel += next;
-    if (hand_panel < 0) {
+    if (hand_panel < 0)
+    {
       hand_panel = int(panels.size()) - 1;
     }
-    else if (hand_panel >= panels.size()) {
+    else if (hand_panel >= panels.size())
+    {
       hand_panel = 0;
     }
     DOUT << "hand: " << hand_panel << std::endl; 
@@ -339,12 +342,13 @@ struct Game
     };
 
     std::map<glm::ivec2, PanelStatus, LessVec<glm::ivec2>> around_panels;
-    for (const auto& ofs : offsets) {
+    for (const auto& ofs : offsets)
+    {
       auto p = pos + ofs;
       if (!field.existsPanel(p)) continue;
 
       const auto& panel_status = field.getPanelStatus(p);
-      around_panels.insert({ p, panel_status });
+      around_panels.emplace(p, panel_status);
     }
 
     return around_panels;
@@ -421,7 +425,8 @@ private:
       1 * 1 * 700,
       0 * 0 * 700,
     };
-    for (total_ranking = 0; total_ranking < 12; ++total_ranking) {
+    for (total_ranking = 0; total_ranking < 12; ++total_ranking)
+    {
       if (ranking_score[total_ranking] <= score) break;
     }
   }

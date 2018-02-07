@@ -71,7 +71,7 @@ struct Field {
       rotation
     };
 
-    panel_status_.insert({ pos, status });
+    panel_status_.emplace(pos, status);
   }
 
   // フィールド上のパネルを列挙
