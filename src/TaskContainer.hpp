@@ -44,14 +44,14 @@ public:
 
   // 最前へ追加
   template <typename T, typename... Args>
-  void pushFront(Args&&... args)
+  void pushFront(Args&&... args) noexcept
   {
     tasks_.push_front(std::make_unique<T>(args...));
   }
 
   // 最後尾へ追加
   template <typename T, typename... Args>
-  void pushBack(Args&&... args)
+  void pushBack(Args&&... args) noexcept
   {
     tasks_.push_back(std::make_unique<T>(args...));
   }

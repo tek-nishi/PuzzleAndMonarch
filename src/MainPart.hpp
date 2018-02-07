@@ -66,7 +66,7 @@ public:
                               {
                                 if (paused_) return;
 
-                                touch_draged_ = false;
+                                draged_length_ = 0.0f;
 
                                 const auto& touch = boost::any_cast<const Touch&>(arg.at("touch"));
 
@@ -85,10 +85,14 @@ public:
                               {
                                 if (paused_) return;
 
-                                touch_draged_ = true;
-                                touch_put_ = false;
-
                                 const auto& touch = boost::any_cast<const Touch&>(arg.at("touch"));
+                                // ドラッグの距離を調べて、タップかドラッグか判定
+                                draged_length_ += glm::distance(touch.pos, touch.prev_pos);
+                                if (draged_length_ > 5.0f)
+                                {
+                                  touch_put_ = false;
+                                }
+
                                 glm::vec3 cursor_pos_orig = cursor_pos;
 
                                 // Field回転操作
@@ -107,11 +111,18 @@ public:
                                 if (paused_) return;
 
                                 // 画面回転操作をした場合、パネル操作は全て無効
-                                if (touch_draged_) return;
+                                if (draged_length_ > 5.0f)
+                                {
+                                  DOUT << "draged_length: " << draged_length_ << std::endl;
+                                  return;
+                                }
 
                                 glm::vec3 cursor_pos_prev = cursor_pos;
                                 const auto& touch = boost::any_cast<const Touch&>(arg.at("touch"));
                                 bool can_rotate = calcFieldPos(touch.pos);
+
+                                DOUT << cursor_pos << "," << cursor_pos_prev << std::endl;
+
                                 if (can_rotate && (cursor_pos_prev == cursor_pos))
                                 {
                                   // パネルを回転
@@ -756,7 +767,7 @@ private:
   Camera camera_;
 
   // パネル操作
-  bool touch_draged_;
+  float draged_length_;
   bool touch_put_;
   double put_remaining_;
 
