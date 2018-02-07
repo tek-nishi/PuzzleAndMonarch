@@ -74,18 +74,31 @@ struct Game
 #ifdef DEBUG
         && time_count
 #endif
-        && ((play_time -= delta_time) < 0.0))
+        )
     {
-      // 時間切れ
-      DOUT << "Time Up." << std::endl;
-      endPlay();
+      // UI更新
+      play_time -= delta_time;
 
-      Arguments args = {
-        { "scores", scores },
-        { "total_score", total_score },
-        { "total_ranking", total_ranking },
-      };
-      event_.signal("Game:Finish", args);
+      {
+        Arguments args = {
+          { "remaining_time", std::max(play_time, 0.0) }
+        };
+        event_.signal("Game:UI", args);
+      }
+
+      if (play_time < 0.0) 
+      {
+        // 時間切れ
+        DOUT << "Time Up." << std::endl;
+        endPlay();
+
+        Arguments args = {
+          { "scores", scores },
+          { "total_score", total_score },
+          { "total_ranking", total_ranking },
+        };
+        event_.signal("Game:Finish", args);
+      }
     }
   }
 
@@ -93,13 +106,17 @@ struct Game
   // 本編開始
   void beginPlay() noexcept
   {
-    started = true;
-    // とりあえず３分
     play_time = params_.getValueForKey<double>("play_time");
+    started = true;
 
     getNextPanel();
     fieldUpdate();
 
+    // UI更新
+    Arguments args = {
+      { "remaining_time", std::max(play_time, 0.0) }
+    };
+    event_.signal("Game:UI", args);
     DOUT << "Game started." << std::endl;
   }
 
@@ -110,14 +127,6 @@ struct Game
     calcTotalScore();
     DOUT << "Game ended." << std::endl;
   }
-
-  
-  // 残り時間
-  double getRemainingTime() const noexcept
-  {
-    return std::max(play_time, 0.0);
-  }
-
 
   // プレイ中？
   // 始まったらtrueになり、終了しても変化しない
@@ -239,7 +248,8 @@ struct Game
     fieldUpdate();
 
     // 新しいパネル
-    if (!getNextPanel()) {
+    if (!getNextPanel())
+    {
       // 全パネルを使い切った
       DOUT << "End of panels." << std::endl;
       endPlay();
@@ -249,7 +259,8 @@ struct Game
 #if 0
     // パネルをどこかに置けるか調べる
     if (!canPanelPutField(panels[hand_panel], blank,
-                          field, panels)) {
+                          field, panels))
+    {
       // 置けない…
       DOUT << "Can't put panel." << std::endl;
       endPlay();
@@ -261,11 +272,11 @@ struct Game
   // 強制的に次のカード
   void forceNextHandPanel() noexcept
   {
-    if (!getNextPanel()) {
+    if (!getNextPanel())
+    {
       // 全パネルを使い切った
       DOUT << "End of panels." << std::endl;
       endPlay();
-      return;
     }
   }
 

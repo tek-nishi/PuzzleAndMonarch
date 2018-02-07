@@ -453,14 +453,6 @@ private:
 
   void draw(const Connection&, const Arguments&) noexcept
   {
-    {
-      // UI更新
-      Arguments args = {
-        { "remaining_time", game->getRemainingTime() }
-      };
-      event_.signal("Game:UI", args);
-    }
-    
     // 本編
     ci::gl::enableDepth();
     ci::gl::enable(GL_CULL_FACE);
