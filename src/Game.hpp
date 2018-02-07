@@ -149,7 +149,7 @@ struct Game
 
 
   // パネルが置けるか調べる
-  bool canPutToBlank(glm::ivec2 field_pos) noexcept
+  bool canPutToBlank(const glm::ivec2& field_pos) const noexcept
   {
     bool can_put = false;
     
@@ -163,14 +163,14 @@ struct Game
   }
 
   // そこにblankがあるか？
-  bool isBlank(const glm::ivec2& field_pos) noexcept
+  bool isBlank(const glm::ivec2& field_pos) const noexcept
   {
     return std::find(std::begin(blank), std::end(blank), field_pos) != std::end(blank);
   }
 
 
   // 操作
-  void putHandPanel(glm::ivec2 field_pos) noexcept
+  void putHandPanel(const glm::ivec2& field_pos) noexcept
   {
     // プレイ中でなければ置けない
     if (!isPlaying()) return;
@@ -240,10 +240,8 @@ struct Game
       Arguments args = {
         { "scores", scores }
       };
-
       event_.signal("Game:UpdateScores", args);
     }
-
 
     fieldUpdate();
 
@@ -253,20 +251,7 @@ struct Game
       // 全パネルを使い切った
       DOUT << "End of panels." << std::endl;
       endPlay();
-      return;
     }
-
-#if 0
-    // パネルをどこかに置けるか調べる
-    if (!canPanelPutField(panels[hand_panel], blank,
-                          field, panels))
-    {
-      // 置けない…
-      DOUT << "Can't put panel." << std::endl;
-      endPlay();
-      return;
-    }
-#endif
   }
 
   // 強制的に次のカード
@@ -308,12 +293,8 @@ struct Game
     return blank;
   };
 
-  glm::vec2 getFieldCenter() const noexcept
-  {
-    return field_center;
-  }
 
-
+#if defined (DEBUG)
   // プレイ結果
   void calcResult() const noexcept
   {
@@ -326,7 +307,6 @@ struct Game
          << std::endl;
   }
 
-#ifdef DEBUG
   // 時間の進みON/OFF
   void pauseTimeCount() noexcept
   {
@@ -373,54 +353,12 @@ struct Game
 
 
 private:
-  // FIXME 参照で持つのいくない
-  const ci::JsonTree& params_;
-  Event<Arguments>& event_;
-  const std::vector<Panel>& panels;
-
-  bool started    = false;
-  bool finished   = false;
-
-  double play_time = 0;
-#ifdef DEBUG
-  bool time_count = true;
-#endif
-
-  std::vector<int> waiting_panels;
-  int hand_panel;
-  u_int hand_rotation;
-  bool check_all_blank;
-
-  Field field;
-
-  // 完成した森
-  std::vector<std::vector<glm::ivec2>> completed_forests;
-  // 深い森
-  std::vector<u_int> deep_forest;
-  // 完成した道
-  std::vector<std::vector<glm::ivec2>> completed_path;
-  // 完成した教会
-  std::vector<glm::ivec2> completed_church;
-  // スコア
-  std::vector<int> scores;
-  int total_score = 0;
-  int total_ranking = 0;
-
-  // 列挙したフィールド上のパネル
-  std::vector<PanelStatus> field_panels;
-  // 列挙した置ける箇所
-  std::vector<glm::ivec2> blank;
-  // なんとなく中心位置
-  glm::vec2 field_center;
-
-
   bool getNextPanel() noexcept
   {
     if (waiting_panels.empty()) return false;
 
     hand_panel      = waiting_panels[0];
     hand_rotation   = 0;
-    check_all_blank = true;
 
     waiting_panels.erase(std::begin(waiting_panels));
 
@@ -434,14 +372,6 @@ private:
   {
     field_panels = field.enumeratePanels();
     blank        = field.searchBlank();
-
-    // 中心座標をなんとなく計算
-    glm::vec2 center;
-    for (auto p  : field_panels) {
-      center += p.position;
-    }
-    center /= float(field_panels.size());
-    field_center = center; 
   }
 
   // スコア更新
@@ -495,6 +425,46 @@ private:
       if (ranking_score[total_ranking] <= score) break;
     }
   }
+
+
+  // FIXME 参照で持つのいくない
+  const ci::JsonTree& params_;
+  Event<Arguments>& event_;
+  const std::vector<Panel>& panels;
+
+  bool started  = false;
+  bool finished = false;
+
+  double play_time = 0;
+#ifdef DEBUG
+  bool time_count = true;
+#endif
+
+  std::vector<int> waiting_panels;
+  int hand_panel;
+  u_int hand_rotation;
+
+  Field field;
+
+  // 完成した森
+  std::vector<std::vector<glm::ivec2>> completed_forests;
+  // 深い森
+  std::vector<u_int> deep_forest;
+  // 完成した道
+  std::vector<std::vector<glm::ivec2>> completed_path;
+  // 完成した教会
+  std::vector<glm::ivec2> completed_church;
+
+  // スコア
+  std::vector<int> scores;
+  int total_score   = 0;
+  int total_ranking = 0;
+
+  // 列挙したフィールド上のパネル
+  std::vector<PanelStatus> field_panels;
+  // 列挙した置ける箇所
+  std::vector<glm::ivec2> blank;
+
 };
 
 }
