@@ -93,8 +93,6 @@ public:
                                   touch_put_ = false;
                                 }
 
-                                glm::vec3 cursor_pos_orig = cursor_pos;
-
                                 // Field回転操作
                                 rotateField(touch);
 
@@ -117,16 +115,23 @@ public:
                                   return;
                                 }
 
-                                glm::vec3 cursor_pos_prev = cursor_pos;
                                 const auto& touch = boost::any_cast<const Touch&>(arg.at("touch"));
-                                // パネル位置変更 
-                                bool can_rotate = calcFieldPos(touch.pos);
-                                if (can_rotate && (cursor_pos_prev == cursor_pos))
+                                // タッチ位置→升目位置
+                                auto result = calcGridPos(touch.pos);
+                                if (!result.first) return;
+
+                                const auto& grid_pos = result.second;
+                                if (grid_pos != field_pos_)
+                                {
+                                  // 可能であればパネルを移動
+                                  calcNewFieldPos(grid_pos);
+                                }
+                                else
                                 {
                                   // パネルを回転
                                   game->rotationHandPanel();
                                   rotate_offset = 90.0f;
-                                  can_put = game->canPutToBlank(field_pos);
+                                  can_put = game->canPutToBlank(field_pos_);
                                   touch_put_ = false;
                                 }
                               });
@@ -174,14 +179,12 @@ public:
                               {
                                 game->beginPlay();
                                 calcNextPanelPosition();
-                                playing_mode = GAMEMAIN;
                               });
 
-    holder_ += event_.connect("Game:Finish",
-                              [this](const Connection&, const Arguments&) noexcept
-                              {
-                                playing_mode += 1;
-                              });
+    // holder_ += event_.connect("Game:Finish",
+    //                           [this](const Connection&, const Arguments&) noexcept
+    //                           {
+    //                           });
 
     holder_ += event_.connect("pause:touch_ended",
                               [this](const Connection&, const Arguments&) noexcept
@@ -205,194 +208,6 @@ public:
   }
 
 
-#if 0
-  glm::vec2 touch_pos;
-  bool draged = false;
-
-  void touchBegan(glm::vec2 pos) noexcept
-  {
-    touch_pos = pos;
-    draged = false;
-  }
-
-  void touchMoved(glm::vec2 pos) noexcept
-  {
-    // マウスの移動ベクトルに垂直なベクトル→回転軸
-    glm::vec2 d = pos - touch_pos;
-    glm::vec3 axis(-d.y, -d.x, 0.0f);
-    float l = glm::length(d);
-
-    if (l > 0.0f)
-    {
-      draged = true;
-
-      auto& camera = camera_.body();
-
-      glm::quat q = glm::angleAxis(l * 0.002f, axis / l);
-      auto cam_q = camera.getOrientation();
-      auto cam_iq = glm::inverse(cam_q);
-
-      auto v = eye_position - target_position;
-      v = cam_q * q * cam_iq * v;
-      eye_position = v;
-
-      camera.setEyePoint(eye_position);
-      camera.setOrientation(cam_q * q);
-
-      touch_pos = pos;
-    }
-  }
-
-  void touchEnded(glm::vec2 pos) noexcept
-  {
-    if (!draged)
-    {
-
-    }
-  }
-#endif
-
-
-  void mouseMove(ci::app::MouseEvent event)
-  {
-#if 0
-    auto pos = event.getPos();
-    calcFieldPos(pos);
-#endif
-  }
-
-	void mouseDown(ci::app::MouseEvent event)
-  {
-#if 0
-    if (!event.isLeft()) return;
-
-    mouse_draged   = false;
-    left_click_pos = event.getPos();
-    
-
-    // camera_ui.mouseDown(event);
-#endif
-  }
-  
-	void mouseDrag(ci::app::MouseEvent event)
-  {
-#if 0
-    if (!event.isLeftDown()) return;
-
-    // クリック位置から3pixel程度の動きは無視
-    glm::vec2 pos = event.getPos();
-    if (glm::distance2(left_click_pos, pos) < 9.0f) return;
-
-    mouse_draged = true;
-    // camera_ui.mouseDrag(event);
-#endif
-  }
-  
-	void mouseUp(ci::app::MouseEvent event)
-  {
-#if 0
-    switch (playing_mode) {
-    case TITLE:
-      if (event.isLeft() && !mouse_draged) {
-        // ゲーム開始
-        game->beginPlay();
-        playing_mode = GAMESTART;
-        hight_offset = 500.0f;
-
-        game_score = game->getScores();
-        game_score_effect.resize(game_score.size());
-        std::fill(std::begin(game_score_effect), std::end(game_score_effect), 0);
-
-        counter.add("gamestart", 1.5);
-      }
-      break;
-
-    case GAMESTART:
-    case GAMEMAIN:
-      if (game->isPlaying()) {
-        if (event.isLeft() && !mouse_draged) {
-          // パネルを配置
-          if (can_put) {
-            game->putHandPanel(field_pos);
-            rotate_offset = 0.0f;
-            hight_offset  = 500.0f;
-            can_put = false;
-          }
-        }
-        else if (event.isRight()) {
-          // パネルを回転
-          game->rotationHandPanel();
-          rotate_offset = 90.0f;
-          can_put = game->canPutToBlank(field_pos);
-        }
-      }
-      break;
-
-    case GAMEEND:
-      {
-      }
-      break;
-
-    case RESULT:
-      if (event.isLeft() && !mouse_draged) {
-        // 再ゲーム
-        game = std::make_unique<Game>(panels_);
-        playing_mode = TITLE;
-      }
-      break;
-    }
-#endif
-  }
-
-  void mouseWheel(ci::app::MouseEvent event)
-  {
-    // camera_ui.mouseWheel(event);
-  }
-
-#if 0
-  void keyDown(ci::app::KeyEvent event)
-  {
-    int code = event.getCode();
-    pressing_key.insert(code);
-
-#ifdef DEBUG
-    if (code == ci::app::KeyEvent::KEY_e) {
-      // 強制終了
-      game->endPlay();
-    }
-
-    // 手持ちパネル強制変更
-    if (code == ci::app::KeyEvent::KEY_b) {
-      game->changePanelForced(-1);
-    }
-    else if (code == ci::app::KeyEvent::KEY_n) {
-      game->changePanelForced(1);
-    }
-#endif
-
-    switch (playing_mode) {
-    case GAMEMAIN:
-      if (game->isPlaying()) {
-        // 強制的に次のカードを引く
-        if (code == ci::app::KeyEvent::KEY_f) {
-          game->forceNextHandPanel();
-          rotate_offset = 0.0f;
-          hight_offset  = 500.0f;
-          can_put = false;
-        }
-      }
-      break;
-    }
-  }
-
-  void keyUp(ci::app::KeyEvent event)
-  {
-    int code = event.getCode();
-    pressing_key.erase(code);
-  }
-#endif
-
-
 private:
   void resize(const Connection&, const Arguments&) noexcept
   {
@@ -407,54 +222,36 @@ private:
     }
 
     game->update(delta_time);
-    counter.update(delta_time);
 
     // カメラの中心位置変更
     pivot_point    += (field_center_ - pivot_point) * 0.05f;
     pivot_distance += (field_distance_ - pivot_distance) * 0.05f;
 
-    switch (playing_mode)
+    if (game->isPlaying())
     {
-    case GAMEMAIN:
+      // パネル設置操作
+      if (touch_put_)
       {
-        // パネル設置操作
-        if (touch_put_)
+        // タッチしたまま時間経過
+        put_remaining_ -= delta_time;
+        if (put_remaining_ <= 0.0)
         {
-          // タッチしたまま時間経過
-          put_remaining_ -= delta_time;
-          if (put_remaining_ <= 0.0)
-          {
-            game->putHandPanel(field_pos);
-            rotate_offset = 0.0f;
-            hight_offset  = 500.0f;
-            can_put       = false;
+          game->putHandPanel(field_pos_);
 
-            touch_put_ = false;
-            // 次のパネルを操作できないようにしとく
-            draged_length_ = 100.0f;
+          // 次のパネルの準備
+          rotate_offset = 0.0f;
+          hight_offset  = 500.0f;
+          can_put       = false;
+
+          touch_put_ = false;
+          // 次のパネルを操作できないようにしとく
+          draged_length_ = 100.0f;
             
-            // Fieldの中心を再計算
-            calcFieldCenter();
-            calcNextPanelPosition();
-          }
+          // Fieldの中心を再計算
+          calcFieldCenter();
+          calcNextPanelPosition();
         }
       }
-      break;
-
-    case GAMEEND:
-      {
-        if (!counter.check("gameend"))
-        {
-          playing_mode = RESULT;
-          DOUT << "RESULT." << std::endl;
-        }
-      }
-      break;
-
-    case RESULT:
-      {
-      }
-      break;
     }
 
     frame_counter += 1;
@@ -481,7 +278,7 @@ private:
 
     // フィールド
     const auto& field_panels = game->getFieldPanels();
-    ngs::drawFieldPanels(field_panels, view);
+    drawFieldPanels(field_panels, view);
 
     if (game->isPlaying())
     {
@@ -492,14 +289,14 @@ private:
       // 手持ちパネル
       rotate_offset *= 0.8f;
       hight_offset  *= 0.8f;
-      glm::vec3 pos(cursor_pos.x, cursor_pos.y + hight_offset, cursor_pos.z);
+      glm::vec3 pos(cursor_pos_.x, cursor_pos_.y + hight_offset, cursor_pos_.z);
       ngs::drawPanel(game->getHandPanel(), pos, game->getHandRotation(), view, rotate_offset);
       
       if (can_put)
       {
         float s = std::abs(std::sin(frame_counter * 0.1)) * 0.1;
         glm::vec3 scale(0.9 + s, 1, 0.9 + s);
-        drawFieldSelected(field_pos, scale, view);
+        drawFieldSelected(field_pos_, scale, view);
         
         scale.x = 1.0 + s;
         scale.z = 1.0 + s;
@@ -513,7 +310,7 @@ private:
         ngs::drawPanelEdge(panels_[game->getHandPanel()], pos, game->getHandRotation());
 
         // 置こうとしている場所の周囲
-        auto around = game->enumerateAroundPanels(field_pos);
+        auto around = game->enumerateAroundPanels(field_pos_);
         if (!around.empty()) {
           for (auto it : around) {
             auto p = it.first * int(ngs::PANEL_SIZE);
@@ -542,11 +339,10 @@ private:
 #endif
 #endif
   }
+  
 
-
-  // タッチ位置からField上の位置を計算する
-  // 戻り値: true  配置可能な場所 
-  bool calcFieldPos(const glm::vec2& pos) noexcept
+  // タッチ位置からField上の升目座標を計算する
+  std::pair<bool, glm::ivec2> calcGridPos(const glm::vec2& pos) const noexcept
   {
     // 画面奥に伸びるRayを生成
     ci::Ray ray = camera_.body().generateRay(pos, ci::app::getWindowSize());
@@ -560,53 +356,38 @@ private:
     auto origin = tpm * glm::vec4(ray.getOrigin(), 1);
     ray.setOrigin(origin);
 
-    // 地面との交差を調べ、正確な位置を計算
     float z;
     float on_field = ray.calcPlaneIntersection(glm::vec3(0), glm::vec3(0, 1, 0), &z);
-    if (on_field)
+    if (!on_field)
     {
-      // ワールド座標→升目座標
-      auto touch_pos = ray.calcPosition(z);
-      auto grid_pos  = roundValue(touch_pos.x, touch_pos.z, PANEL_SIZE);
-
-      if (game->isBlank(grid_pos))
-      {
-        field_pos = grid_pos;
-        can_put   = game->canPutToBlank(field_pos);
-        // 少し宙に浮いた状態
-        cursor_pos = glm::vec3(field_pos.x * PANEL_SIZE, panel_height_, field_pos.y * PANEL_SIZE);
-
-        return true;
-      }
+      // なんらかの事情で位置を計算できず
+      return { false, glm::ivec2() }; 
     }
-    return false;
+    // ワールド座標→升目座標
+    auto touch_pos = ray.calcPosition(z);
+    return { true, roundValue(touch_pos.x, touch_pos.z, PANEL_SIZE) };
   }
 
   // タッチ位置がパネルのある位置と同じか調べる
   bool isCursorPos(const glm::vec2& pos) noexcept
   {
-    // 画面奥に伸びるRayを生成
-    ci::Ray ray = camera_.body().generateRay(pos, ci::app::getWindowSize());
-    
-    glm::quat q(glm::vec3(rotation.x, rotation.y, 0));
-    glm::vec3 p = q * glm::vec3{ 0, 0, pivot_distance };
-    auto m = glm::translate(p);
-    m = glm::translate(m, -pivot_point);
-    auto tpm = glm::inverse(m);
+    auto result = calcGridPos(pos);
+    if (!result.first) return false;
 
-    auto origin = tpm * glm::vec4(ray.getOrigin(), 1);
-    ray.setOrigin(origin);
+    const auto& grid_pos = result.second;
+    return grid_pos == field_pos_;
+  }
 
-    // 地面との交差を調べ、正確な位置を計算
-    float z;
-    float on_field = ray.calcPlaneIntersection(glm::vec3(0), glm::vec3(0, 1, 0), &z);
-    if (!on_field) return false;
-
-    // ワールド座標→升目座標
-    auto touch_pos = ray.calcPosition(z);
-    auto grid_pos  = roundValue(touch_pos.x, touch_pos.z, PANEL_SIZE);
-    glm::vec3 fpos = glm::vec3(grid_pos.x * PANEL_SIZE, panel_height_, grid_pos.y * PANEL_SIZE);
-    return fpos == cursor_pos;
+  // 升目位置からPanel位置を計算する
+  void calcNewFieldPos(const glm::ivec2& grid_pos) noexcept
+  {
+    if (game->isBlank(grid_pos))
+    {
+      field_pos_ = grid_pos;
+      can_put    = game->canPutToBlank(field_pos_);
+      // 少し宙に浮いた状態
+      cursor_pos_ = glm::vec3(field_pos_.x * PANEL_SIZE, panel_height_, field_pos_.y * PANEL_SIZE);
+    }
   }
 
 
@@ -708,10 +489,10 @@ private:
   {
     const auto& positions = game->getBlankPositions();
     // FIXME とりあえず無作為に決める
-    field_pos  = positions[ci::randInt(int(positions.size()))];
-    cursor_pos = glm::vec3(field_pos.x * PANEL_SIZE, panel_height_, field_pos.y * PANEL_SIZE);
+    field_pos_  = positions[ci::randInt(int(positions.size()))];
+    cursor_pos_ = glm::vec3(field_pos_.x * PANEL_SIZE, panel_height_, field_pos_.y * PANEL_SIZE);
 
-    can_put = game->canPutToBlank(field_pos);
+    can_put = game->canPutToBlank(field_pos_);
   }
 
 
@@ -722,27 +503,26 @@ private:
   ConnectionHolder holder_;
 
   CountExec count_exec_;
-  Counter counter;
 
   bool paused_ = false;
 
   std::vector<Panel> panels_;
   std::unique_ptr<Game> game;
 
-  glm::vec2 left_click_pos;
-  bool mouse_draged = false;
+  // パネル操作
+  float draged_length_;
+  bool touch_put_;
+  double put_remaining_;
 
-  enum {
-    TITLE,
-    GAMESTART,        // 開始演出
-    GAMEMAIN,
-    GAMEEND,          // 終了演出
-    RESULT,
-  };
-  int playing_mode = TITLE;
+  float panel_height_;
+  double putdown_time_;
 
-  glm::vec3 cursor_pos; 
-  glm::ivec2 field_pos;
+  // 実際のパネル位置
+  glm::vec3 cursor_pos_;
+
+  // パネルを配置しようとしている位置
+  glm::ivec2 field_pos_;
+  // 配置可能
   bool can_put = false;
 
   // 手持ちパネル演出用
@@ -765,16 +545,6 @@ private:
   float field_distance_ = 0.0f;
 
   Camera camera_;
-
-  // パネル操作
-  float draged_length_;
-  bool touch_put_;
-  double put_remaining_;
-
-  float panel_height_;
-  double putdown_time_;
-
-  bool field_rotate_;
 
   // 表示
   View view;

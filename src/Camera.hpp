@@ -75,6 +75,12 @@ struct Camera
   }
 
 
+  // FIXME これ２つ書かなきゃいけないんですかね
+  const ci::CameraPersp& body() const noexcept
+  {
+    return camera_;
+  }
+  
   ci::CameraPersp& body() noexcept
   {
     return camera_;
