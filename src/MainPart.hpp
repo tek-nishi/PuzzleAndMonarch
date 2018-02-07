@@ -119,10 +119,8 @@ public:
 
                                 glm::vec3 cursor_pos_prev = cursor_pos;
                                 const auto& touch = boost::any_cast<const Touch&>(arg.at("touch"));
+                                // パネル位置変更 
                                 bool can_rotate = calcFieldPos(touch.pos);
-
-                                DOUT << cursor_pos << "," << cursor_pos_prev << std::endl;
-
                                 if (can_rotate && (cursor_pos_prev == cursor_pos))
                                 {
                                   // パネルを回転
@@ -432,7 +430,9 @@ private:
             can_put       = false;
 
             touch_put_ = false;
-
+            // 次のパネルを操作できないようにしとく
+            draged_length_ = 100.0f;
+            
             // Fieldの中心を再計算
             calcFieldCenter();
             calcNextPanelPosition();
