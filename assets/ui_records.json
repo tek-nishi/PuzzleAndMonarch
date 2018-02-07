@@ -24,6 +24,34 @@
     },
 
     {
+      "rect": [ 0, -10, 0, 18 ],
+      "anchor": [
+        [ 0.5, 0.5 ],
+        [ 0.5, 0.5 ]
+      ],
+      "scale": [ 1, 1 ],
+      "pivot": [ 0.5, 0.5 ],
+
+      "font": "icon",
+      "text": "",
+      "color": [ 1, 1, 1, 1 ]
+    },
+    {
+      "rect": [ 0, -20, 0, -10 ],
+      "anchor": [
+        [ 0.5, 0.5 ],
+        [ 0.5, 0.5 ]
+      ],
+      "scale": [ 1, 1 ],
+      "pivot": [ 0.5, 0.5 ],
+
+      "font": "en",
+      "text": "Under construction",
+      "color": [ 1, 1, 1, 1 ]
+    },
+
+
+    {
       "identifier": "touch",
       "rect": [ -10, 8, 10, 28 ],
       "anchor": [
