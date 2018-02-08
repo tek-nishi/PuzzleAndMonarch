@@ -77,6 +77,10 @@ struct TouchEvent
   {
     glm::vec2 pos = event.getPos();
     m_prev_pos_ = pos;
+
+    // 対角線上の位置を２つ目のタッチ位置とする
+    auto center = ci::app::getWindowCenter();
+    m_diagonal_prev_pos_ = center - pos + center;
   }
 
   void multiTouchMoved(const ci::app::MouseEvent& event) noexcept
@@ -86,11 +90,22 @@ struct TouchEvent
     std::vector<Touch> touches;
     touches.emplace_back(MOUSE_ID, false, pos, m_prev_pos_);
 
-    // 対角線上の位置を２つ目のタッチ位置とする
-    auto center = ci::app::getWindowCenter();
-    auto pos2      = center - pos + center;
-    auto prev_pos2 = center - m_prev_pos_ + center;
-    touches.emplace_back(MULTI_ID, false, pos2, prev_pos2);
+    if (event.isShiftDown())
+    {
+      // 平行移動
+      auto d = pos - m_prev_pos_;
+      auto pos2 = m_diagonal_prev_pos_ + d;
+      touches.emplace_back(MULTI_ID, false, pos2, m_diagonal_prev_pos_);
+      m_diagonal_prev_pos_ = pos2;
+    }
+    else
+    {
+      // 対角線上の位置を２つ目のタッチ位置とする
+      auto center = ci::app::getWindowCenter();
+      auto pos2 = center - pos + center;
+      touches.emplace_back(MULTI_ID, false, pos2, m_diagonal_prev_pos_);
+      m_diagonal_prev_pos_ = pos2;
+    }
 
     Arguments arg = {
       { "touches", touches }
@@ -236,6 +251,7 @@ private:
     MULTI_ID
   };
   glm::vec2 m_prev_pos_;
+  glm::vec2 m_diagonal_prev_pos_;
 
   std::set<uint32_t> touch_id_;
 

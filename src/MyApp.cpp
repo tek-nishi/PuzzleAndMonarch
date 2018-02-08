@@ -126,9 +126,9 @@ private:
   }
 
 
+#if defined (DEBUG)
   void keyDown(ci::app::KeyEvent event) noexcept override
   {
-#if defined (DEBUG)
     auto code = event.getCode();
     switch (code)
     {
@@ -163,12 +163,12 @@ private:
       }
       break;
     }
-#endif
   }
 
   void keyUp(ci::app::KeyEvent event) noexcept override
   {
   }
+#endif
 
 
   void resize() noexcept override
