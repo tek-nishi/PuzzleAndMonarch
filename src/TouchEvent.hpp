@@ -72,6 +72,38 @@ struct TouchEvent
     event_.signal("single_touch_ended", arg);
   }
 
+  // マウスでのマルチタッチ操作代用
+  void multiTouchBegan(const ci::app::MouseEvent& event) noexcept
+  {
+    glm::vec2 pos = event.getPos();
+    m_prev_pos_ = pos;
+  }
+
+  void multiTouchMoved(const ci::app::MouseEvent& event) noexcept
+  {
+    glm::vec2 pos = event.getPos();
+
+    std::vector<Touch> touches;
+    touches.emplace_back(MOUSE_ID, false, pos, m_prev_pos_);
+
+    // 対角線上の位置を２つ目のタッチ位置とする
+    auto center = ci::app::getWindowCenter();
+    auto pos2      = center - pos + center;
+    auto prev_pos2 = center - m_prev_pos_ + center;
+    touches.emplace_back(MULTI_ID, false, pos2, prev_pos2);
+
+    Arguments arg = {
+      { "touches", touches }
+    };
+    event_.signal("multi_touch_moved", arg);
+
+    m_prev_pos_ = pos;
+  }
+
+  void multiTouchEnded(const ci::app::MouseEvent& event) noexcept
+  {
+  }
+
 
   // タッチされていない状況からの指一本タッチを「タッチ操作」と扱う
   void touchesBegan(const ci::app::TouchEvent& event) noexcept
@@ -120,13 +152,7 @@ struct TouchEvent
       std::vector<Touch> touches_event;
       for (const auto& t : touches)
       {
-        Touch touch = {
-          t.getId(),
-          false,
-          t.getPos(),
-          t.getPrevPos()
-        };
-        touches_event.push_back(touch);
+        touches_event.emplace_back(t.getId(), false, t.getPos(), t.getPrevPos());
       }
 
       Arguments arg = {
@@ -205,7 +231,10 @@ struct TouchEvent
 
 
 private:
-  enum { MOUSE_ID = 1 };
+  enum {
+    MOUSE_ID = 1,
+    MULTI_ID
+  };
   glm::vec2 m_prev_pos_;
 
   std::set<uint32_t> touch_id_;

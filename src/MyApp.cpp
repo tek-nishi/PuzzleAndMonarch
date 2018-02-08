@@ -68,7 +68,15 @@ private:
   {
     if (event.isLeft())
     {
-      touch_event_.touchBegan(event);
+      if (event.isAltDown())
+      {
+        // 擬似マルチタッチ操作
+        touch_event_.multiTouchBegan(event);
+      }
+      else
+      {
+        touch_event_.touchBegan(event);
+      }
     }
   }
   
@@ -76,7 +84,15 @@ private:
   {
     if (event.isLeftDown())
     {
-      touch_event_.touchMoved(event);
+      if (event.isAltDown())
+      {
+        // 擬似マルチタッチ操作
+        touch_event_.multiTouchMoved(event);
+      }
+      else
+      {
+        touch_event_.touchMoved(event);
+      }
     }
   }
   
