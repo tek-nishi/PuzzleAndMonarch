@@ -134,36 +134,6 @@ public:
   ~Core() = default;
 
 
-  // PCで使う
-  void mouseMove(const ci::app::MouseEvent& event) noexcept
-  {
-  }
-
-	void mouseDown(const ci::app::MouseEvent& event) noexcept
-  {
-  }
-
-	void mouseDrag(const ci::app::MouseEvent& event) noexcept
-  {
-  }
-
-	void mouseUp(const ci::app::MouseEvent& event) noexcept
-  {
-  }
-
-  void mouseWheel(const ci::app::MouseEvent& event) noexcept
-  {
-  }
-
-  void keyDown(const ci::app::KeyEvent& event) noexcept
-  {
-  }
-
-  void keyUp(const ci::app::KeyEvent& event) noexcept
-  {
-  }
-
-
 private:
   // メンバ変数を最後尾で定義する実験
   const ci::JsonTree& params_;

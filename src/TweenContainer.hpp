@@ -41,6 +41,7 @@ public:
         const auto& id = pp.getValueForKey<std::string>("identifier");
         contents.emplace_back(id, pp["tween"]);
       }
+      // FIXME move効いてないよね
       tweens_.emplace(name, std::move(contents));
     }
   }
@@ -56,8 +57,6 @@ public:
 
 private:
   std::map<std::string, std::vector<Contents>> tweens_; 
-
-
 };
 
 }

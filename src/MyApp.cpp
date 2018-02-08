@@ -31,20 +31,20 @@ class MyApp
 public:
   // TIPS cinder 0.9.1はコンストラクタが使える
   MyApp() noexcept
-  : params(ngs::Params::load("params.json")),
+  : params_(ngs::Params::load("params.json")),
     touch_event_(event_),
-    worker(std::make_unique<Worker>(params, event_))
+    worker_(std::make_unique<Worker>(params_, event_))
   {
     ci::Rand::randomize();
     prev_time_ = getElapsedSeconds();
 
 #if defined (DEBUG)
-    debug_events_ = Debug::keyEvent(params["app.debug"]);
+    debug_events_ = Debug::keyEvent(params_["app.debug"]);
 #endif
 
 #if defined (CINDER_COCOA_TOUCH)
     // 縦横画面両対応
-    signal_connection = getSignalSupportedOrientations().connect([]() noexcept {
+    signal_connection_ = getSignalSupportedOrientations().connect([]() noexcept {
       return ci::app::InterfaceOrientation::All;
     });
 #endif
@@ -54,16 +54,15 @@ public:
   ~MyApp()
   {
     // FIXME デストラクタ呼ばれないっぽい
-    signal_connection.disconnect();
+    signal_connection_.disconnect();
   }
 #endif
 
 
 private:
-  void mouseMove(ci::app::MouseEvent event) noexcept override
-  {
-    // worker->mouseMove(event);
-  }
+  // void mouseMove(ci::app::MouseEvent event) noexcept override
+  // {
+  // }
 
 	void mouseDown(ci::app::MouseEvent event) noexcept override
   {
@@ -89,10 +88,9 @@ private:
     }
   }
 
-  void mouseWheel(ci::app::MouseEvent event) noexcept override
-  {
-    // worker->mouseWheel(event);
-  }
+  // void mouseWheel(ci::app::MouseEvent event) noexcept override
+  // {
+  // }
 
 
   // タッチ操作ハンドリング
@@ -121,8 +119,8 @@ private:
     case ci::app::KeyEvent::KEY_r:
       {
         // Soft Reset
-        worker.reset();
-        worker = std::make_unique<Worker>(params, event_);
+        worker_.reset();
+        worker_ = std::make_unique<Worker>(params_, event_);
       }
       break;
 
@@ -206,10 +204,10 @@ private:
 
 
   // 変数定義(実験的にクラス定義の最後でまとめている)
-  ci::JsonTree params;
+  ci::JsonTree params_;
 
 #if defined (CINDER_COCOA_TOUCH)
-  ci::signals::Connection signal_connection;
+  ci::signals::Connection signal_connection_;
 #endif
 
   Event<Arguments> event_;
@@ -218,8 +216,7 @@ private:
 
   double prev_time_;
 
-  // MainPart worker;
-  std::unique_ptr<Worker> worker;
+  std::unique_ptr<Worker> worker_;
 
 #if defined (DEBUG)
   bool paused_      = false;

@@ -34,7 +34,7 @@ public:
     : params_(params),
       event_(event),
       panels_(createPanels()),
-      game(std::make_unique<Game>(params["game"], event, panels_)),
+      game_(std::make_unique<Game>(params["game"], event, panels_)),
       rotation(toRadians(Json::getVec<glm::vec2>(params["field.camera.rotation"]))),
       distance(params.getValueForKey<float>("field.camera.distance")),
       camera_(params["field.camera"]),
@@ -42,7 +42,8 @@ public:
       field_center_(pivot_point),
       panel_height_(params.getValueForKey<float>("field.panel_height")),
       putdown_time_(params.getValueForKey<double>("field.putdown_time")),
-      view(createView())
+      view_(createView()),
+      timeline_(ci::Timeline::create())
   {
     // フィールドカメラ
     auto& camera = camera_.body();
@@ -72,7 +73,7 @@ public:
 
                                 // 元々パネルのある位置をタップ→長押しで設置
                                 touch_put_ = false;
-                                if (can_put && isCursorPos(touch.pos))
+                                if (can_put_ && isCursorPos(touch.pos))
                                 {
                                   touch_put_ = true;
                                   put_remaining_ = putdown_time_;
@@ -129,9 +130,9 @@ public:
                                 else
                                 {
                                   // パネルを回転
-                                  game->rotationHandPanel();
+                                  game_->rotationHandPanel();
                                   rotate_offset = 90.0f;
-                                  can_put = game->canPutToBlank(field_pos_);
+                                  can_put_ = game_->canPutToBlank(field_pos_);
                                   touch_put_ = false;
                                 }
                               });
@@ -177,7 +178,7 @@ public:
     holder_ += event_.connect("Game:Start",
                               [this](const Connection&, const Arguments&) noexcept
                               {
-                                game->beginPlay();
+                                game_->beginPlay();
                                 calcNextPanelPosition();
                               });
 
@@ -221,13 +222,13 @@ private:
       return true;
     }
 
-    game->update(delta_time);
+    game_->update(delta_time);
 
     // カメラの中心位置変更
     pivot_point    += (field_center_ - pivot_point) * 0.05f;
     pivot_distance += (field_distance_ - pivot_distance) * 0.05f;
 
-    if (game->isPlaying())
+    if (game_->isPlaying())
     {
       // パネル設置操作
       if (touch_put_)
@@ -236,12 +237,12 @@ private:
         put_remaining_ -= delta_time;
         if (put_remaining_ <= 0.0)
         {
-          game->putHandPanel(field_pos_);
+          game_->putHandPanel(field_pos_);
 
           // 次のパネルの準備
           rotate_offset = 0.0f;
           hight_offset  = 500.0f;
-          can_put       = false;
+          can_put_      = false;
 
           touch_put_ = false;
           // 次のパネルを操作できないようにしとく
@@ -255,6 +256,8 @@ private:
     }
 
     frame_counter += 1;
+
+    timeline_->step(delta_time);
 
     return true;
   }
@@ -277,40 +280,40 @@ private:
     ci::gl::translate(-pivot_point);
 
     // フィールド
-    const auto& field_panels = game->getFieldPanels();
-    drawFieldPanels(field_panels, view);
+    const auto& field_panels = game_->getFieldPanels();
+    drawFieldPanels(field_panels, view_);
 
-    if (game->isPlaying())
+    if (game_->isPlaying())
     {
       // 置ける場所
-      const auto& blank = game->getBlankPositions();
-      ngs::drawFieldBlank(blank, view);
+      const auto& blank = game_->getBlankPositions();
+      ngs::drawFieldBlank(blank, view_);
       
       // 手持ちパネル
       rotate_offset *= 0.8f;
       hight_offset  *= 0.8f;
       glm::vec3 pos(cursor_pos_.x, cursor_pos_.y + hight_offset, cursor_pos_.z);
-      ngs::drawPanel(game->getHandPanel(), pos, game->getHandRotation(), view, rotate_offset);
+      ngs::drawPanel(game_->getHandPanel(), pos, game_->getHandRotation(), view_, rotate_offset);
       
-      if (can_put)
+      if (can_put_)
       {
         float s = std::abs(std::sin(frame_counter * 0.1)) * 0.1;
         glm::vec3 scale(0.9 + s, 1, 0.9 + s);
-        drawFieldSelected(field_pos_, scale, view);
+        drawFieldSelected(field_pos_, scale, view_);
         
         scale.x = 1.0 + s;
         scale.z = 1.0 + s;
-        drawCursor(pos, scale, view);
+        drawCursor(pos, scale, view_);
       }
 
 #ifdef DEBUG
       if (disp_debug_info_)
       {
         // 手元のパネル
-        ngs::drawPanelEdge(panels_[game->getHandPanel()], pos, game->getHandRotation());
+        ngs::drawPanelEdge(panels_[game_->getHandPanel()], pos, game_->getHandRotation());
 
         // 置こうとしている場所の周囲
-        auto around = game->enumerateAroundPanels(field_pos_);
+        auto around = game_->enumerateAroundPanels(field_pos_);
         if (!around.empty()) {
           for (auto it : around) {
             auto p = it.first * int(ngs::PANEL_SIZE);
@@ -323,7 +326,7 @@ private:
       }
 #endif
     }
-    drawFieldBg(view);
+    drawFieldBg(view_);
 
 
 #if 0
@@ -381,10 +384,10 @@ private:
   // 升目位置からPanel位置を計算する
   void calcNewFieldPos(const glm::ivec2& grid_pos) noexcept
   {
-    if (game->isBlank(grid_pos))
+    if (game_->isBlank(grid_pos))
     {
       field_pos_ = grid_pos;
-      can_put    = game->canPutToBlank(field_pos_);
+      can_put_   = game_->canPutToBlank(field_pos_);
       // 少し宙に浮いた状態
       cursor_pos_ = glm::vec3(field_pos_.x * PANEL_SIZE, panel_height_, field_pos_.y * PANEL_SIZE);
     }
@@ -397,7 +400,7 @@ private:
     std::vector<glm::vec3> points;
 #if 0
     {
-      const auto& panels = game->getFieldPanels();
+      const auto& panels = game_->getFieldPanels();
       for (const auto& p : panels) {
         // Panelの４隅の座標を加える
         auto pos = p.position * int(PANEL_SIZE);
@@ -410,7 +413,7 @@ private:
 #endif
 
     {
-      const auto& positions = game->getBlankPositions();
+      const auto& positions = game_->getBlankPositions();
       for (const auto& p : positions) {
         // Panelの４隅の座標を加える
         auto pos = p * int(PANEL_SIZE);
@@ -487,12 +490,12 @@ private:
   // 次のパネルの出現位置を決める
   void calcNextPanelPosition() noexcept
   {
-    const auto& positions = game->getBlankPositions();
+    const auto& positions = game_->getBlankPositions();
     // FIXME とりあえず無作為に決める
     field_pos_  = positions[ci::randInt(int(positions.size()))];
     cursor_pos_ = glm::vec3(field_pos_.x * PANEL_SIZE, panel_height_, field_pos_.y * PANEL_SIZE);
 
-    can_put = game->canPutToBlank(field_pos_);
+    can_put_ = game_->canPutToBlank(field_pos_);
   }
 
 
@@ -507,7 +510,7 @@ private:
   bool paused_ = false;
 
   std::vector<Panel> panels_;
-  std::unique_ptr<Game> game;
+  std::unique_ptr<Game> game_;
 
   // パネル操作
   float draged_length_;
@@ -523,7 +526,7 @@ private:
   // パネルを配置しようとしている位置
   glm::ivec2 field_pos_;
   // 配置可能
-  bool can_put = false;
+  bool can_put_ = false;
 
   // 手持ちパネル演出用
   float rotate_offset = 0.0f;
@@ -544,10 +547,12 @@ private:
   glm::vec3 field_center_;
   float field_distance_ = 0.0f;
 
-  Camera camera_;
-
   // 表示
-  View view;
+  Camera camera_;
+  View view_;
+  
+  ci::TimelineRef timeline_;
+
 
 #ifdef DEBUG
   bool disp_debug_info_ = false;
