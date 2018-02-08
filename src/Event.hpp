@@ -28,13 +28,13 @@ public:
 
 
   template <typename F>
-  Connection connect(const std::string& msg, F callback) noexcept
+  Connection connect(const std::string& msg, const F& callback) noexcept
   {
     return signals_[msg].connect_extended(callback);
   }  
   
   template <typename F>
-  Connection connect(const std::string& msg, const int prioriry, F callback) noexcept
+  Connection connect(const std::string& msg, const int prioriry, const F& callback) noexcept
   {
     return signals_[msg].connect_extended(prioriry, callback);
   }  
