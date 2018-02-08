@@ -87,6 +87,8 @@ public:
                                 if (paused_) return;
 
                                 const auto& touch = boost::any_cast<const Touch&>(arg.at("touch"));
+                                if (touch.handled) return;
+
                                 // ドラッグの距離を調べて、タップかドラッグか判定
                                 draged_length_ += glm::distance(touch.pos, touch.prev_pos);
                                 if (draged_length_ > 5.0f)
@@ -117,6 +119,8 @@ public:
                                 }
 
                                 const auto& touch = boost::any_cast<const Touch&>(arg.at("touch"));
+                                if (touch.handled) return;
+
                                 // タッチ位置→升目位置
                                 auto result = calcGridPos(touch.pos);
                                 if (!result.first) return;

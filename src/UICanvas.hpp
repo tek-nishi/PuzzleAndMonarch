@@ -40,15 +40,15 @@ public:
 
     makeQueryWidgets(widgets_);
 
-    holder_ += event_.connect("single_touch_began",
+    holder_ += event_.connect("single_touch_began", 0,
                               std::bind(&Canvas::touchBegan,
                                         this, std::placeholders::_1, std::placeholders::_2));
     
-    holder_ += event_.connect("single_touch_moved",
+    holder_ += event_.connect("single_touch_moved", 0,
                               std::bind(&Canvas::touchMoved,
                                         this, std::placeholders::_1, std::placeholders::_2));
 
-    holder_ += event_.connect("single_touch_ended",
+    holder_ += event_.connect("single_touch_ended", 0,
                               std::bind(&Canvas::touchEnded,
                                         this, std::placeholders::_1, std::placeholders::_2));
 

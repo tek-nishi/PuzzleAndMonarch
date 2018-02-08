@@ -32,7 +32,12 @@ public:
   {
     return signals_[msg].connect_extended(callback);
   }  
-
+  
+  template <typename F>
+  Connection connect(const std::string& msg, const int prioriry, F callback) noexcept
+  {
+    return signals_[msg].connect_extended(prioriry, callback);
+  }  
   
   template <typename... Args2>
   void signal(const std::string& msg, Args2&&... args) noexcept
