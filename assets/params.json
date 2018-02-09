@@ -42,17 +42,17 @@
       {
         "name": "en",
         "path": "MAIAN.TTF",
-        "size": 128
+        "size": 100 
       },
       {
         "name": "jp",
         "path": "DFKAIC001.ttf",
-        "size": 128
+        "size": 100
       },
       {
         "name": "icon",
         "path": "fontawesome-webfont.ttf",
-        "size": 128
+        "size": 100
       }
     ],
     "shader": {

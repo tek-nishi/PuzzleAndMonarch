@@ -80,7 +80,6 @@ public:
                                 }
                               });
 
-    
     holder_ += event_.connect("single_touch_moved",
                               [this](const Connection&, Arguments& arg) noexcept
                               {
@@ -147,9 +146,16 @@ public:
                                 const auto& touches = boost::any_cast<const std::vector<Touch>&>(arg.at("touches"));
                                 auto& camera = camera_.body();
 
-                                float l      = glm::distance(touches[0].pos, touches[1].pos);
-                                float prev_l = glm::distance(touches[0].prev_pos, touches[1].prev_pos);
-                                float dl = l - prev_l;
+                                // TIPS ２つのタッチ位置の移動ベクトル→内積
+                                //      回転操作か平行移動操作か判別できる
+                                auto d0  = touches[0].pos - touches[0].prev_pos;
+                                auto d1  = touches[1].pos - touches[1].prev_pos;
+                                auto dot = glm::dot(d0, d1);
+                                
+                                // ２つのタッチ位置の距離変化→ズーミング
+                                float l0 = glm::distance(touches[0].pos, touches[1].pos);
+                                float l1 = glm::distance(touches[0].prev_pos, touches[1].prev_pos);
+                                float dl = l0 - l1;
                                 if (std::abs(dl) > 1.0f)
                                 {
                                   // ピンチング
@@ -160,7 +166,7 @@ public:
                                   camera.lookAt(p, glm::vec3(0));
                                   eye_position = camera.getEyePoint();
                                 }
-                                else
+                                else if (dot > 0.0f)
                                 {
                                   // 平行移動
                                   auto v = touches[0].pos - touches[0].prev_pos;
