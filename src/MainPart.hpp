@@ -35,8 +35,8 @@ public:
       event_(event),
       panels_(createPanels()),
       game_(std::make_unique<Game>(params["game"], event, panels_)),
-      rotation(toRadians(Json::getVec<glm::vec2>(params["field.camera.rotation"]))),
-      distance(params.getValueForKey<float>("field.camera.distance")),
+      camera_rotation_(toRadians(Json::getVec<glm::vec2>(params["field.camera.rotation"]))),
+      camera_distance_(params.getValueForKey<float>("field.camera.distance")),
       camera_(params["field.camera"]),
       pivot_point(Json::getVec<glm::vec3>(params["field.pivot_point"])),
       field_center_(pivot_point),
@@ -47,10 +47,12 @@ public:
   {
     // フィールドカメラ
     auto& camera = camera_.body();
-    glm::quat q(glm::vec3(rotation.x, rotation.y, 0));
-    glm::vec3 p = q * glm::vec3{ 0, 0, -distance };
+    glm::quat q(glm::vec3(camera_rotation_.x, camera_rotation_.y, 0));
+    glm::vec3 p = q * glm::vec3{ 0, 0, -camera_distance_ };
     camera.lookAt(p, glm::vec3(0));
-    eye_position = camera.getEyePoint();
+
+    target_position_ = glm::vec3(0);
+    eye_position_    = camera.getEyePoint();
 
     // system
     holder_ += event_.connect("resize",
@@ -99,10 +101,10 @@ public:
                                 rotateField(touch);
 
                                 auto& camera = camera_.body();
-                                glm::quat q(glm::vec3{ rotation.x, rotation.y, 0 });
-                                glm::vec3 p = q * glm::vec3{ 0, 0, -distance };
-                                camera.lookAt(p, glm::vec3(0));
-                                eye_position = camera.getEyePoint();
+                                glm::quat q(glm::vec3{ camera_rotation_.x, camera_rotation_.y, 0 });
+                                glm::vec3 p = q * glm::vec3{ 0, 0, -camera_distance_ };
+                                camera.lookAt(p + target_position_, target_position_);
+                                eye_position_ = camera.getEyePoint();
                               });
 
     holder_ += event_.connect("single_touch_ended",
@@ -159,22 +161,23 @@ public:
                                 if (std::abs(dl) > 1.0f)
                                 {
                                   // ピンチング
-                                  distance = std::max(distance - dl * 0.25f, camera.getNearClip() + 1.0f);
+                                  camera_distance_ = std::max(camera_distance_ - dl * 0.25f, camera.getNearClip() + 1.0f);
 
-                                  glm::quat q(glm::vec3(rotation.x, rotation.y, 0));
-                                  glm::vec3 p = q * glm::vec3{ 0, 0, -distance };
-                                  camera.lookAt(p, glm::vec3(0));
-                                  eye_position = camera.getEyePoint();
+                                  glm::quat q(glm::vec3(camera_rotation_.x, camera_rotation_.y, 0));
+                                  glm::vec3 p = q * glm::vec3{ 0, 0, -camera_distance_ };
+                                  camera.lookAt(p + target_position_, target_position_);
+                                  eye_position_ = camera.getEyePoint();
                                 }
                                 else if (dot > 0.0f)
                                 {
                                   // 平行移動
                                   auto v = touches[0].pos - touches[0].prev_pos;
 
-                                  glm::quat q(glm::vec3(0, rotation.y, 0));
+                                  glm::quat q(glm::vec3(0, camera_rotation_.y, 0));
                                   glm::vec3 p = q * glm::vec3(v.x, 0, v.y);
-                                  eye_position += p;
-                                  camera.setEyePoint(eye_position);
+                                  target_position_ += p;
+                                  eye_position_ += p;
+                                  camera.setEyePoint(eye_position_);
                                 }
                               });
 
@@ -282,7 +285,7 @@ private:
     ci::gl::setMatrices(camera_.body());
 
     {
-      glm::quat q(glm::vec3(rotation.x, rotation.y, 0));
+      glm::quat q(glm::vec3(camera_rotation_.x, camera_rotation_.y, 0));
       glm::vec3 p = q * glm::vec3{ 0, 0, pivot_distance };
       ci::gl::translate(p);
     }
@@ -360,7 +363,7 @@ private:
     // 画面奥に伸びるRayを生成
     ci::Ray ray = camera_.body().generateRay(pos, ci::app::getWindowSize());
     
-    glm::quat q(glm::vec3(rotation.x, rotation.y, 0));
+    glm::quat q(glm::vec3(camera_rotation_.x, camera_rotation_.y, 0));
     glm::vec3 p = q * glm::vec3{ 0, 0, pivot_distance };
     auto m = glm::translate(p);
     m = glm::translate(m, -pivot_point);
@@ -494,7 +497,7 @@ private:
 
     // 外積から回転量が決まる
     float cross = prev_pos.x * pos.z - prev_pos.z * pos.x;
-    rotation.y += std::asin(cross);
+    camera_rotation_.y += std::asin(cross);
   }
 
   // 次のパネルの出現位置を決める
@@ -546,9 +549,10 @@ private:
   u_int frame_counter = 0;
 
   // カメラ関連
-  glm::vec2 rotation;
-  float distance;
-  glm::vec3 eye_position;
+  glm::vec2 camera_rotation_;
+  float camera_distance_;
+  glm::vec3 target_position_;
+  glm::vec3 eye_position_;
 
   glm::vec3 pivot_point;
   float pivot_distance = 0.0f;
