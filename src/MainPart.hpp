@@ -171,12 +171,23 @@ public:
                                 else if (dot > 0.0f)
                                 {
                                   // 平行移動
-                                  auto v = touches[0].pos - touches[0].prev_pos;
+                                  // TIPS ２点をRay castでworld positionに変換して
+                                  //      差分→移動量
+                                  auto ray1 = camera.generateRay(touches[0].pos, ci::app::getWindowSize());
+                                  float z1;
+                                  ray1.calcPlaneIntersection(glm::vec3(0), glm::vec3(0, 1, 0), &z1);
+                                  auto p1 = ray1.calcPosition(z1);
 
-                                  glm::quat q(glm::vec3(0, camera_rotation_.y, 0));
-                                  glm::vec3 p = q * glm::vec3(v.x, 0, v.y);
-                                  target_position_ += p;
-                                  eye_position_ += p;
+                                  auto ray2 = camera.generateRay(touches[0].prev_pos, ci::app::getWindowSize());
+                                  float z2;
+                                  ray2.calcPlaneIntersection(glm::vec3(0), glm::vec3(0, 1, 0), &z2);
+                                  auto p2 = ray2.calcPosition(z2);
+
+                                  auto v = p2 - p1;
+                                  v.y = 0;
+
+                                  target_position_ += v;
+                                  eye_position_ += v;
                                   camera.setEyePoint(eye_position_);
                                 }
                               });
