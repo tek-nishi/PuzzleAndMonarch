@@ -147,12 +147,12 @@ public:
                                 // ２つのタッチ位置の距離変化→ズーミング
                                 float l0 = glm::distance(touches[0].pos, touches[1].pos);
                                 float l1 = glm::distance(touches[0].prev_pos, touches[1].prev_pos);
-                                float dl = l0 - l1;
-                                if (std::abs(dl) > 1.0f)
+                                auto dl = l0 - l1;
+                                if ((std::abs(dl) > 1.0f) && (l0 != 0.0f) && (l1 != 0.0f))
                                 {
                                   // ピンチング
-                                  camera_distance_ = std::max(camera_distance_ - dl * 0.25f, camera.getNearClip() + 1.0f);
-
+                                  float n = l0 / l1;
+                                  camera_distance_ = std::max(camera_distance_ / n, camera.getNearClip() + 1.0f);
                                   calcCamera(camera);
                                 }
                                 else if (dot > 0.0f)
