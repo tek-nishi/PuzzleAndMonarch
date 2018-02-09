@@ -46,13 +46,8 @@ public:
       timeline_(ci::Timeline::create())
   {
     // フィールドカメラ
-    auto& camera = camera_.body();
-    glm::quat q(glm::vec3(camera_rotation_.x, camera_rotation_.y, 0));
-    glm::vec3 p = q * glm::vec3{ 0, 0, -camera_distance_ };
-    camera.lookAt(p, glm::vec3(0));
-
     target_position_ = glm::vec3(0);
-    eye_position_    = camera.getEyePoint();
+    calcCamera(camera_.body());
 
     // system
     holder_ += event_.connect("resize",
@@ -99,12 +94,7 @@ public:
 
                                 // Field回転操作
                                 rotateField(touch);
-
-                                auto& camera = camera_.body();
-                                glm::quat q(glm::vec3{ camera_rotation_.x, camera_rotation_.y, 0 });
-                                glm::vec3 p = q * glm::vec3{ 0, 0, -camera_distance_ };
-                                camera.lookAt(p + target_position_, target_position_);
-                                eye_position_ = camera.getEyePoint();
+                                calcCamera(camera_.body());
                               });
 
     holder_ += event_.connect("single_touch_ended",
@@ -163,10 +153,7 @@ public:
                                   // ピンチング
                                   camera_distance_ = std::max(camera_distance_ - dl * 0.25f, camera.getNearClip() + 1.0f);
 
-                                  glm::quat q(glm::vec3(camera_rotation_.x, camera_rotation_.y, 0));
-                                  glm::vec3 p = q * glm::vec3{ 0, 0, -camera_distance_ };
-                                  camera.lookAt(p + target_position_, target_position_);
-                                  eye_position_ = camera.getEyePoint();
+                                  calcCamera(camera);
                                 }
                                 else if (dot > 0.0f)
                                 {
@@ -367,6 +354,14 @@ private:
 #endif
   }
   
+  void calcCamera(ci::CameraPersp& camera) noexcept
+  {
+    glm::quat q(glm::vec3{ camera_rotation_.x, camera_rotation_.y, 0 });
+    glm::vec3 p = q * glm::vec3{ 0, 0, -camera_distance_ };
+    camera.lookAt(p + target_position_, target_position_);
+    eye_position_ = camera.getEyePoint();
+  }
+
 
   // タッチ位置からField上の升目座標を計算する
   std::pair<bool, glm::ivec2> calcGridPos(const glm::vec2& pos) const noexcept
