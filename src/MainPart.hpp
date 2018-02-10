@@ -506,8 +506,18 @@ private:
   void calcNextPanelPosition() noexcept
   {
     const auto& positions = game_->getBlankPositions();
-    // FIXME とりあえず無作為に決める
-    field_pos_  = positions[ci::randInt(int(positions.size()))];
+
+    // 置いた場所から一番距離の近い場所を選ぶ
+    auto it = std::min_element(std::begin(positions), std::end(positions),
+                               [this](const glm::ivec2& a, const glm::ivec2& b) noexcept
+                               {
+                                 // FIXME 整数型のベクトルだとdistance2とかdotとかが使えない
+                                 auto da = field_pos_ - a;
+                                 auto db = field_pos_ - b;
+
+                                 return (da.x * da.x + da.y * da.y) < (db.x * db.x + db.y * db.y);
+                               });
+    field_pos_ = *it;
     cursor_pos_ = glm::vec3(field_pos_.x * PANEL_SIZE, panel_height_, field_pos_.y * PANEL_SIZE);
 
     can_put_ = game_->canPutToBlank(field_pos_);
