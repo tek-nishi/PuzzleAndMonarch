@@ -42,7 +42,7 @@ public:
       field_center_(pivot_point_),
       panel_height_(params.getValueForKey<float>("field.panel_height")),
       putdown_time_(params.getValueForKey<double>("field.putdown_time")),
-      view_(createView()),
+      view_(params["field"]),
       timeline_(ci::Timeline::create())
   {
     // フィールドカメラ

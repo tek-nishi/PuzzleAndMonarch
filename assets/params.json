@@ -11,7 +11,7 @@
   },
 
   "game": {
-    "play_time": 180 
+    "play_time": 180
   },
 
   "field": {
@@ -26,7 +26,92 @@
 
     "pivot_point": [ 0, 5, 0 ],
     "panel_height": 10,
-    "putdown_time": 0.6
+    "putdown_time": 0.6,
+
+    "panel_path": [
+      "pa00.ply",
+      "pa01.ply",
+      "pa02.ply",
+      "pa03.ply",
+      "pa04.ply",
+      "pa05.ply",
+      "pa06.ply",
+      "pa07.ply",
+      "pa08.ply",
+      "pa09.ply",
+      "pa10.ply",
+      "pa11.ply",
+
+      "pa00.ply",
+      "pa01.ply",
+      "pa02.ply",
+      "pa03.ply",
+      "pa04.ply",
+      "pa05.ply",
+      "pa06.ply",
+      "pa07.ply",
+      "pa08.ply",
+      "pa09.ply",
+      "pa10.ply",
+      "pa11.ply",
+
+      "pa00.ply",
+      "pa01.ply",
+      "pa02.ply",
+      "pa03.ply",
+      "pa04.ply",
+      "pa05.ply",
+      "pa06.ply",
+      "pa07.ply",
+      "pa08.ply",
+      "pa09.ply",
+      "pa10.ply",
+      "pa11.ply",
+      
+      "pd00.ply",
+      "pd01.ply",
+      "pd02.ply",
+      "pd03.ply",
+      "pd04.ply",
+      "pd05.ply",
+      "pd06.ply",
+      "pd07.ply",
+      "pd08.ply",
+      "pd09.ply",
+      "pd10.ply",
+      "pd11.ply",
+      
+      "pd00.ply",
+      "pd01.ply",
+      "pd02.ply",
+      "pd03.ply",
+      "pd04.ply",
+      "pd05.ply",
+      "pd06.ply",
+      "pd07.ply",
+      "pd08.ply",
+      "pd09.ply",
+      "pd10.ply",
+      "pd11.ply",
+      
+      "pf00.ply",
+      "pf01.ply",
+      "pf02.ply",
+      "pf03.ply",
+      "pf04.ply",
+      "pf05.ply",
+      "pf06.ply",
+      "pf07.ply",
+      "pf08.ply",
+      "pf09.ply",
+      "pf10.ply",
+      "pf11.ply"
+    ],
+
+    "blank_model":    "blank.ply",
+    "selected_model": "selected.ply",
+    "cursor_model":   "cursor.ply",
+    "bg_model":       "bg.ply"
   },
 
   "ui": {

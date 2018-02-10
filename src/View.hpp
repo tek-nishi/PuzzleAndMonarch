@@ -4,6 +4,7 @@
 // 表示関連
 //
 
+#include <boost/noncopyable.hpp>
 #include <cinder/TriMesh.h>
 #include <cinder/gl/Vbo.h>
 #include "PLY.hpp"
@@ -17,123 +18,46 @@ enum {
 
 
 struct View
+  : private boost::noncopyable
 {
   // パネル
+  std::vector<std::string> panel_path;
   std::vector<ci::gl::VboMeshRef> panel_models;
 
+  // 演出用
   ci::gl::VboMeshRef blank_model;
   ci::gl::VboMeshRef selected_model;
   ci::gl::VboMeshRef cursor_model;
 
+  // 背景
   ci::gl::VboMeshRef bg_model; 
+
+
+  View(const ci::JsonTree& params) noexcept
+  {
+    const auto& path = params["panel_path"];
+    for (const auto p : path)
+    {
+      panel_path.push_back(p.getValue<std::string>());
+    }
+    panel_models.resize(panel_path.size());
+
+    blank_model    = ci::gl::VboMesh::create(PLY::load(params.getValueForKey<std::string>("blank_model")));
+    selected_model = ci::gl::VboMesh::create(PLY::load(params.getValueForKey<std::string>("selected_model")));
+    cursor_model   = ci::gl::VboMesh::create(PLY::load(params.getValueForKey<std::string>("cursor_model")));
+    bg_model       = ci::gl::VboMesh::create(PLY::load(params.getValueForKey<std::string>("bg_model")));
+  }
+
+  ~View() = default;
 };
 
-
-const char* model_files[] = {
-  "pa00.ply",
-  "pa01.ply",
-  "pa02.ply",
-  "pa03.ply",
-  "pa04.ply",
-  "pa05.ply",
-  "pa06.ply",
-  "pa07.ply",
-  "pa08.ply",
-  "pa09.ply",
-  "pa10.ply",
-  "pa11.ply",
-
-  "pa00.ply",
-  "pa01.ply",
-  "pa02.ply",
-  "pa03.ply",
-  "pa04.ply",
-  "pa05.ply",
-  "pa06.ply",
-  "pa07.ply",
-  "pa08.ply",
-  "pa09.ply",
-  "pa10.ply",
-  "pa11.ply",
-
-  "pa00.ply",
-  "pa01.ply",
-  "pa02.ply",
-  "pa03.ply",
-  "pa04.ply",
-  "pa05.ply",
-  "pa06.ply",
-  "pa07.ply",
-  "pa08.ply",
-  "pa09.ply",
-  "pa10.ply",
-  "pa11.ply",
-    
-  "pd00.ply",
-  "pd01.ply",
-  "pd02.ply",
-  "pd03.ply",
-  "pd04.ply",
-  "pd05.ply",
-  "pd06.ply",
-  "pd07.ply",
-  "pd08.ply",
-  "pd09.ply",
-  "pd10.ply",
-  "pd11.ply",
-    
-  "pd00.ply",
-  "pd01.ply",
-  "pd02.ply",
-  "pd03.ply",
-  "pd04.ply",
-  "pd05.ply",
-  "pd06.ply",
-  "pd07.ply",
-  "pd08.ply",
-  "pd09.ply",
-  "pd10.ply",
-  "pd11.ply",
-    
-  "pf00.ply",
-  "pf01.ply",
-  "pf02.ply",
-  "pf03.ply",
-  "pf04.ply",
-  "pf05.ply",
-  "pf06.ply",
-  "pf07.ply",
-  "pf08.ply",
-  "pf09.ply",
-  "pf10.ply",
-  "pf11.ply",
-};
-
-
-// 画面表示の用意
-View createView() noexcept
-{
-  View view;
-  view.panel_models.resize(elemsof(model_files));
-  // for (const auto& file : model_files) {
-  //   auto mesh = ci::gl::VboMesh::create(PLY::load(file));
-  //   view.panel_models.push_back(mesh);
-  // }
-
-  view.blank_model    = ci::gl::VboMesh::create(PLY::load("blank.ply"));
-  view.selected_model = ci::gl::VboMesh::create(PLY::load("selected.ply"));
-  view.cursor_model   = ci::gl::VboMesh::create(PLY::load("cursor.ply"));
-  view.bg_model       = ci::gl::VboMesh::create(PLY::load("bg.ply"));
-
-  return view;
-}
 
 // 読まれてないパネルを読み込む
 const ci::gl::VboMeshRef& getPanelModel(View& view, const int number) noexcept
 {
   if (!view.panel_models[number])
   {
-    auto mesh = ci::gl::VboMesh::create(PLY::load(model_files[number]));
+    auto mesh = ci::gl::VboMesh::create(PLY::load(view.panel_path[number]));
     view.panel_models[number] = mesh;
   }
 
