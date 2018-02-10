@@ -17,8 +17,8 @@
   "field": {
     "camera": {
       "fov":    25,
-      "near_z": 1,
-      "far_z":  1000,
+      "near_z": 2,
+      "far_z":  1500,
 
       "rotation": [ 35, 45 ],
       "distance": 150
@@ -27,6 +27,8 @@
     "pivot_point": [ 0, 5, 0 ],
     "panel_height": 10,
     "putdown_time": 0.6,
+
+    "camera_distance_range": [ 50, 1000 ],
 
     "panel_path": [
       "pa00.ply",

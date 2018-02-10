@@ -11,6 +11,7 @@
 #include <cinder/Rand.h>
 #include <cinder/Ray.h>
 #include <cinder/Sphere.h>
+#include <cinder/CinderMath.h>
 #include "Params.hpp"
 #include "JsonUtil.hpp"
 #include "Game.hpp"
@@ -37,6 +38,7 @@ public:
       game_(std::make_unique<Game>(params["game"], event, panels_)),
       camera_rotation_(toRadians(Json::getVec<glm::vec2>(params["field.camera.rotation"]))),
       camera_distance_(params.getValueForKey<float>("field.camera.distance")),
+      camera_distance_range_(Json::getVec<glm::vec2>(params["field.camera_distance_range"])),
       camera_(params["field.camera"]),
       pivot_point_(Json::getVec<glm::vec3>(params["field.pivot_point"])),
       field_center_(pivot_point_),
@@ -152,7 +154,8 @@ public:
                                 {
                                   // ピンチング
                                   float n = l0 / l1;
-                                  camera_distance_ = std::max(camera_distance_ / n, camera.getNearClip() + 1.0f);
+                                  camera_distance_ = ci::clamp(camera_distance_ / n,
+                                                               camera_distance_range_.x, camera_distance_range_.y);
                                   calcCamera(camera);
                                 }
                                 else if (dot > 0.0f)
@@ -565,6 +568,9 @@ private:
   float camera_distance_;
   glm::vec3 target_position_;
   glm::vec3 eye_position_;
+
+  // ピンチング操作時の距離の範囲
+  glm::vec2 camera_distance_range_;
 
   glm::vec3 pivot_point_;
   float pivot_distance_ = 0.0f;
