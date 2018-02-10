@@ -215,7 +215,7 @@ public:
 
 #if defined (DEBUG)
     holder_ += event_.connect("debug-info",
-                              [this](const Connection&, Arguments& arg) noexcept
+                              [this](const Connection&, Arguments&) noexcept
                               {
                                 disp_debug_info_ = !disp_debug_info_;
                               });

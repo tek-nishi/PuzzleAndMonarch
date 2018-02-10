@@ -31,7 +31,7 @@ class MyApp
 public:
   // TIPS cinder 0.9.1はコンストラクタが使える
   MyApp() noexcept
-  : params_(ngs::Params::load("params.json")),
+  : params_(Params::load("params.json")),
     touch_event_(event_),
     worker_(std::make_unique<Worker>(params_, event_))
   {
@@ -135,6 +135,7 @@ private:
     case ci::app::KeyEvent::KEY_r:
       {
         // Soft Reset
+        params_ = Params::load("params.json");
         worker_.reset();
         worker_ = std::make_unique<Worker>(params_, event_);
       }

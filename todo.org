@@ -1,5 +1,4 @@
 * TODO チュートリアル
-* TODO SoftReset時にparam.jsonが読み込まれていない
 * TODO iOS:平行移動とスケーリングは一緒にできそう
 * TODO iOS:ズーミングや平行移動のお上品さを実装
 * TODO リプレイ
@@ -48,6 +47,8 @@
 * TODO iOS:実績を実装
 * TODO ゲームの途中段階をセーブしたい
 * TODO iOS:他のアプリで再生中のBGMがそのまま再生されるように
+* DONE SoftReset時にparam.jsonが読み込まれていない
+CLOSED: [2018-02-10 土 23:41]
 * DONE ピンチングの最大・最小距離を定義する
 CLOSED: [2018-02-10 土 16:52]
 * DONE 平行移動すると回転の計算が微妙になる
