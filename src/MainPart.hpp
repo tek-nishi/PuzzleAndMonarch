@@ -490,8 +490,8 @@ private:
     auto pos      = calcTouchPos(touch.pos);
     auto prev_pos = calcTouchPos(touch.prev_pos);
 
-    // pos      -= pivot_point_;
-    // prev_pos -= pivot_point_;
+    pos      -= target_position_;
+    prev_pos -= target_position_;
 
     // 正規化
     pos      = glm::normalize(pos);
