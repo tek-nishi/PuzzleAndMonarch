@@ -20,8 +20,9 @@ class Result
 
   CountExec count_exec_;
 
-  UI::Canvas canvas_;
+  std::vector<std::string> ranking_text_;
 
+  UI::Canvas canvas_;
   bool active_ = true;
 
 
@@ -43,6 +44,12 @@ public:
               Params::load(params.getValueForKey<std::string>("result.canvas")),
               Params::load(params.getValueForKey<std::string>("result.tweens")))
   {
+    for (const auto& ranking : params["result.ranking"])
+    {
+      ranking_text_.push_back(ranking.getValue<std::string>());
+    }
+
+
     count_exec_.add(2.0,
                     [this]() {
                       {
@@ -108,26 +115,8 @@ private:
       widget->setParam("text", std::to_string(score.total_score));
     }
     {
-      // TODO params.jsonで定義
-      static const char* ranking_text[] =
-      {
-        "Emperor",
-        "King",
-        "Viceroy",
-        "Grand Duke",
-        "Prince",
-        "Landgrave",
-        "Duke",
-        "Marquess",
-        "Margrave",
-        "Count",  
-        "Viscount",
-        "Baron", 
-        "Baronet",
-      };
-
       const auto& widget = canvas_.at("score:11");
-      widget->setParam("text", std::string(ranking_text[score.total_ranking]));
+      widget->setParam("text", std::string(ranking_text_[score.total_ranking]));
     }
   }
 
