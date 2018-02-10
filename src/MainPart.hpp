@@ -48,7 +48,6 @@ public:
       timeline_(ci::Timeline::create())
   {
     // フィールドカメラ
-    // target_position_ = glm::vec3(0);
     calcCamera(camera_.body());
 
     // system
@@ -158,17 +157,19 @@ public:
                                                                camera_distance_range_.x, camera_distance_range_.y);
                                   calcCamera(camera);
                                 }
-                                else if (dot > 0.0f)
+                                if (dot > 0.0f)
                                 {
                                   // 平行移動
                                   // TIPS ２点をRay castでworld positionに変換して
                                   //      差分→移動量
-                                  auto ray1 = camera.generateRay(touches[0].pos, ci::app::getWindowSize());
+                                  auto pos = (touches[0].pos + touches[1].pos) * 0.5f;
+                                  auto ray1 = camera.generateRay(pos, ci::app::getWindowSize());
                                   float z1;
                                   ray1.calcPlaneIntersection(glm::vec3(0), glm::vec3(0, 1, 0), &z1);
                                   auto p1 = ray1.calcPosition(z1);
 
-                                  auto ray2 = camera.generateRay(touches[0].prev_pos, ci::app::getWindowSize());
+                                  auto prev_pos = (touches[0].prev_pos + touches[1].prev_pos) * 0.5f;
+                                  auto ray2 = camera.generateRay(prev_pos, ci::app::getWindowSize());
                                   float z2;
                                   ray2.calcPlaneIntersection(glm::vec3(0), glm::vec3(0, 1, 0), &z2);
                                   auto p2 = ray2.calcPosition(z2);
