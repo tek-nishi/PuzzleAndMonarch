@@ -286,12 +286,7 @@ struct Game
     return hand_rotation;
   }
 
-  // フィールド情報
-  const std::vector<PanelStatus>& getFieldPanels() const noexcept
-  {
-    return field.getPanelStatuses();
-  }
-
+  // 配置可能な場所
   const std::vector<glm::ivec2>& getBlankPositions() const noexcept
   {
     return blank;
@@ -461,6 +456,7 @@ private:
   bool time_count = true;
 #endif
 
+  // 配置するパネル
   std::vector<int> waiting_panels;
   int hand_panel;
   u_int hand_rotation;

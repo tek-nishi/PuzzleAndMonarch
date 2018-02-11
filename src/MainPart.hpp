@@ -323,9 +323,12 @@ private:
       ngs::drawFieldBlank(blank, view_);
       
       // 手持ちパネル
+      // TODO フレームレート落ちに対応
       rotate_offset_ *= 0.8f;
       hight_offset_  *= 0.8f;
-      glm::vec3 pos(cursor_pos_.x, cursor_pos_.y + hight_offset_, cursor_pos_.z);
+      panel_disp_pos_ += (cursor_pos_ - panel_disp_pos_) * 0.35f;
+
+      glm::vec3 pos(panel_disp_pos_.x, panel_disp_pos_.y + hight_offset_, panel_disp_pos_.z);
       ngs::drawPanel(game_->getHandPanel(), pos, game_->getHandRotation(), view_, rotate_offset_);
       
       if (can_put_)
@@ -439,20 +442,6 @@ private:
   ci::Sphere calcBoundingSphere() noexcept
   {
     std::vector<glm::vec3> points;
-#if 0
-    {
-      const auto& panels = game_->getFieldPanels();
-      for (const auto& p : panels) {
-        // Panelの４隅の座標を加える
-        auto pos = p.position * int(PANEL_SIZE);
-        points.push_back({ pos.x - PANEL_SIZE / 2, 0, pos.y - PANEL_SIZE / 2 });
-        points.push_back({ pos.x + PANEL_SIZE / 2, 0, pos.y - PANEL_SIZE / 2 });
-        points.push_back({ pos.x - PANEL_SIZE / 2, 0, pos.y + PANEL_SIZE / 2 });
-        points.push_back({ pos.x + PANEL_SIZE / 2, 0, pos.y + PANEL_SIZE / 2 });
-      }
-    }
-#endif
-
     {
       const auto& positions = game_->getBlankPositions();
       for (const auto& p : positions) {
@@ -541,6 +530,7 @@ private:
                                });
     field_pos_ = *it;
     cursor_pos_ = glm::vec3(field_pos_.x * PANEL_SIZE, panel_height_, field_pos_.y * PANEL_SIZE);
+    panel_disp_pos_ = cursor_pos_;
 
     can_put_ = game_->canPutToBlank(field_pos_);
   }
@@ -578,6 +568,7 @@ private:
   // 手持ちパネル演出用
   float rotate_offset_ = 0.0f;
   float hight_offset_  = 0.0f;
+  glm::vec3 panel_disp_pos_;
 
   // アプリ起動から画面を更新した回数
   u_int frame_counter_ = 0;

@@ -78,20 +78,12 @@ struct Field
     };
 
     panel_status_.emplace(pos, status);
-    panel_statuses_.push_back(status);
-  }
-
-  const std::vector<PanelStatus>& getPanelStatuses() const noexcept
-  {
-    return panel_statuses_;
   }
 
 
 private:
   // TIPS 座標をマップのキーにしている
   std::map<glm::ivec2, PanelStatus, LessVec<glm::ivec2>> panel_status_;
-  // こっちは主に表示で使う
-  std::vector<PanelStatus> panel_statuses_;
 };
 
 }
