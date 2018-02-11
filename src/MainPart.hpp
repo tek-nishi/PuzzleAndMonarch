@@ -45,6 +45,8 @@ public:
       field_center_(pivot_point_),
       panel_height_(params.getValueForKey<float>("field.panel_height")),
       putdown_time_(params.getValueForKey<double>("field.putdown_time")),
+      put_duration_(params.getValueForKey<float>("field.put_duration")),
+      put_ease_(params.getValueForKey<std::string>("field.put_ease")),
       view_(params["field"]),
       timeline_(ci::Timeline::create())
   {
@@ -201,16 +203,15 @@ public:
     holder_ += event_.connect("Game:PutPanel",
                               [this](const Connection&, const Arguments& args) noexcept
                               {
-                                auto panel = boost::any_cast<int>(args.at("panel"));
+                                auto panel      = boost::any_cast<int>(args.at("panel"));
                                 const auto& pos = boost::any_cast<glm::ivec2>(args.at("field_pos"));
-                                auto rotation = boost::any_cast<u_int>(args.at("rotation"));
-
+                                auto rotation   = boost::any_cast<u_int>(args.at("rotation"));
                                 view_.addPanel(panel, pos, rotation);
 
                                 // tween
                                 auto& p = view_.field_panels_.back();
-                                timeline_->applyPtr(&p.position.y, panel_height_, 0.0f, 0.5f,
-                                                    getEaseFunc("OutSine"));
+                                timeline_->applyPtr(&p.position.y, panel_height_, 0.0f,
+                                                    put_duration_, getEaseFunc(put_ease_));
                               });
 
     // holder_ += event_.connect("Game:Finish",
@@ -596,6 +597,10 @@ private:
   // Fieldの中心座標
   glm::vec3 field_center_;
   float field_distance_ = 0.0f;
+
+  // パネル設置時の演出
+  float put_duration_;
+  std::string put_ease_;
 
   // 表示
   Camera camera_;

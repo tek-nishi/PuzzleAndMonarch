@@ -113,7 +113,10 @@
     "blank_model":    "blank.ply",
     "selected_model": "selected.ply",
     "cursor_model":   "cursor.ply",
-    "bg_model":       "bg.ply"
+    "bg_model":       "bg.ply",
+
+    "put_duration": 0.6,
+    "put_ease":     "OutExpo"
   },
 
   "ui": {
