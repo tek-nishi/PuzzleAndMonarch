@@ -52,6 +52,7 @@ public:
   {
     // フィールドカメラ
     calcCamera(camera_.body());
+    field_distance_ = camera_distance_;
 
     // system
     holder_ += event_.connect("resize",
@@ -159,6 +160,7 @@ public:
                                   camera_distance_ = ci::clamp(camera_distance_ / n,
                                                                camera_distance_range_.x, camera_distance_range_.y);
                                   calcCamera(camera);
+                                  field_distance_ = camera_distance_;
                                 }
                                 if (dot > 0.0f)
                                 {
@@ -259,8 +261,10 @@ private:
     game_->update(delta_time);
 
     // カメラの中心位置変更
-    pivot_point_    += (field_center_ - pivot_point_) * 0.05f;
-    pivot_distance_ += (field_distance_ - pivot_distance_) * 0.05f;
+    pivot_point_ += (field_center_ - pivot_point_) * 0.05f;
+
+    camera_distance_ += (field_distance_ - camera_distance_) * 0.05f;
+    calcCamera(camera_.body());
 
     if (game_->isPlaying())
     {
@@ -304,13 +308,6 @@ private:
     ci::gl::disableAlphaBlending();
     
     ci::gl::setMatrices(camera_.body());
-
-    {
-      glm::quat q(glm::vec3(camera_rotation_.x, camera_rotation_.y, 0));
-      glm::vec3 p = q * glm::vec3{ 0, 0, pivot_distance_ };
-      ci::gl::translate(p);
-    }
-
     ci::gl::translate(-pivot_point_);
 
     // フィールド
@@ -393,11 +390,7 @@ private:
   {
     // 画面奥に伸びるRayを生成
     ci::Ray ray = camera_.body().generateRay(pos, ci::app::getWindowSize());
-    
-    glm::quat q(glm::vec3(camera_rotation_.x, camera_rotation_.y, 0));
-    glm::vec3 p = q * glm::vec3{ 0, 0, pivot_distance_ };
-    auto m = glm::translate(p);
-    m = glm::translate(m, -pivot_point_);
+    auto m = glm::translate(-pivot_point_);
     auto tpm = glm::inverse(m);
 
     auto origin = tpm * glm::vec4(ray.getOrigin(), 1);
@@ -439,23 +432,21 @@ private:
 
 
   // Fieldの外接球を計算
-  ci::Sphere calcBoundingSphere() noexcept
+  ci::Sphere calcBoundingSphere() const noexcept
   {
     std::vector<glm::vec3> points;
+    const auto& positions = game_->getBlankPositions();
+    for (const auto& p : positions)
     {
-      const auto& positions = game_->getBlankPositions();
-      for (const auto& p : positions) {
-        // Panelの４隅の座標を加える
-        auto pos = p * int(PANEL_SIZE);
-        points.push_back({ pos.x - PANEL_SIZE / 2, 0, pos.y - PANEL_SIZE / 2 });
-        points.push_back({ pos.x + PANEL_SIZE / 2, 0, pos.y - PANEL_SIZE / 2 });
-        points.push_back({ pos.x - PANEL_SIZE / 2, 0, pos.y + PANEL_SIZE / 2 });
-        points.push_back({ pos.x + PANEL_SIZE / 2, 0, pos.y + PANEL_SIZE / 2 });
-      }
+      // Panelの４隅の座標を加える
+      auto pos = p * int(PANEL_SIZE);
+      points.emplace_back(pos.x - PANEL_SIZE / 2, 0.0f, pos.y - PANEL_SIZE / 2);
+      points.emplace_back(pos.x + PANEL_SIZE / 2, 0.0f, pos.y - PANEL_SIZE / 2);
+      points.emplace_back(pos.x - PANEL_SIZE / 2, 0.0f, pos.y + PANEL_SIZE / 2);
+      points.emplace_back(pos.x + PANEL_SIZE / 2, 0.0f, pos.y + PANEL_SIZE / 2);
     }
 
-    auto sphere = ci::Sphere::calculateBoundingSphere(points);
-    return sphere;
+    return ci::Sphere::calculateBoundingSphere(points);
   }
 
   void calcFieldCenter() noexcept
@@ -474,7 +465,9 @@ private:
     float fov_v = camera.getFov();
     float fov_h = camera.getFovHorizontal();
     float fov = (fov_v < fov_h) ? fov_v : fov_h;
-    field_distance_ = (radius * 0.3f) / std::tan(ci::toRadians(fov * 0.5f));
+    field_distance_ = (radius * 0.7f) / std::tan(ci::toRadians(fov * 0.5f));
+    field_distance_ = std::max(field_distance_, camera_distance_);
+
     DOUT << "field distance: " << field_distance_ << std::endl;
   }
 
@@ -583,7 +576,6 @@ private:
   glm::vec2 camera_distance_range_;
 
   glm::vec3 pivot_point_;
-  float pivot_distance_ = 0.0f;
 
   // Fieldの中心座標
   glm::vec3 field_center_;
