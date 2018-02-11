@@ -29,43 +29,6 @@ struct Game
     {
       waiting_panels.push_back(i);
     }
-
-    // 開始パネルを探す
-    std::vector<int> start_panels;
-    for (int i = 0; i < panels.size(); ++i)
-    {
-      if (panels[i].getAttribute() & Panel::START)
-      {
-        start_panels.push_back(i);
-      }
-    }
-    assert(!start_panels.empty());
-
-    // 乱数を用意
-    std::random_device seed_gen;
-    std::mt19937 engine(seed_gen());
-
-    if (start_panels.size() > 1)
-    {
-      // お城が何枚かある時はシャッフル
-      std::shuffle(std::begin(start_panels), std::end(start_panels), engine);
-    }
-
-    {
-      // 最初に置くパネルを取り除いてからシャッフル
-      auto it = std::find(std::begin(waiting_panels), std::end(waiting_panels), start_panels[0]);
-      if (it != std::end(waiting_panels)) waiting_panels.erase(it);
-
-      std::shuffle(std::begin(waiting_panels), std::end(waiting_panels), engine);
-    }
-    
-    // 最初のパネルを設置
-    field.addPanel(start_panels[0], { 0, 0 }, ci::randInt(4));
-    field_panels = field.enumeratePanels();
-
-    // 次のパネルを決めて、置ける場所も探す
-    getNextPanel();
-    fieldUpdate();
   }
 
   ~Game() = default;
@@ -106,6 +69,45 @@ struct Game
     }
   }
 
+
+  // 本編準備
+  void preparationPlay() noexcept
+  {
+    // 開始パネルを探す
+    std::vector<int> start_panels;
+    for (int i = 0; i < panels.size(); ++i)
+    {
+      if (panels[i].getAttribute() & Panel::START)
+      {
+        start_panels.push_back(i);
+      }
+    }
+    assert(!start_panels.empty());
+
+    // 乱数を用意
+    std::random_device seed_gen;
+    std::mt19937 engine(seed_gen());
+
+    if (start_panels.size() > 1)
+    {
+      // お城が何枚かある時はシャッフル
+      std::shuffle(std::begin(start_panels), std::end(start_panels), engine);
+    }
+
+    {
+      // 最初に置くパネルを取り除いてからシャッフル
+      auto it = std::find(std::begin(waiting_panels), std::end(waiting_panels), start_panels[0]);
+      if (it != std::end(waiting_panels)) waiting_panels.erase(it);
+
+      std::shuffle(std::begin(waiting_panels), std::end(waiting_panels), engine);
+    }
+    // 最初のパネルを設置
+    putPanel(start_panels[0], { 0, 0 }, ci::randInt(4));
+
+    // 次のパネルを決めて、置ける場所も探す
+    getNextPanel();
+    fieldUpdate();
+  }
 
   // 本編開始
   void beginPlay() noexcept
@@ -176,7 +178,8 @@ struct Game
     // プレイ中でなければ置けない
     if (!isPlaying()) return;
 
-    field.addPanel(hand_panel, field_pos, hand_rotation);
+    // パネルを追加してイベント送信
+    putPanel(hand_panel, field_pos, hand_rotation);
 
     bool update_score = false;
     {
@@ -286,7 +289,7 @@ struct Game
   // フィールド情報
   const std::vector<PanelStatus>& getFieldPanels() const noexcept
   {
-    return field_panels;
+    return field.getPanelStatuses();
   }
 
   const std::vector<glm::ivec2>& getBlankPositions() const noexcept
@@ -374,8 +377,7 @@ private:
   // 各種情報を収集
   void fieldUpdate() noexcept
   {
-    field_panels = field.enumeratePanels();
-    blank        = field.searchBlank();
+    blank = field.searchBlank();
   }
 
   // スコア更新
@@ -431,6 +433,20 @@ private:
     }
   }
 
+  // パネルを追加してイベント送信
+  void putPanel(int panel, const glm::ivec2& pos, u_int rotation) noexcept
+  {
+    field.addPanel(panel, pos, rotation);
+    {
+      Arguments args = {
+        { "panel",     panel },
+        { "field_pos", pos },
+        { "rotation",  rotation },
+      };
+      event_.signal("Game:PutPanel", args);
+    }
+  }
+
 
   // FIXME 参照で持つのいくない
   const ci::JsonTree& params_;
@@ -465,11 +481,8 @@ private:
   int total_score   = 0;
   int total_ranking = 0;
 
-  // 列挙したフィールド上のパネル
-  std::vector<PanelStatus> field_panels;
   // 列挙した置ける箇所
   std::vector<glm::ivec2> blank;
-
 };
 
 }

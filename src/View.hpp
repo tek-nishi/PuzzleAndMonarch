@@ -32,6 +32,15 @@ struct View
   // 背景
   ci::gl::VboMeshRef bg_model; 
 
+  // Field上のパネル(Modelと被っている)
+  struct Panel
+  {
+    glm::vec3 position;
+    glm::vec3 rotation;
+    int index;
+  };
+  std::vector<Panel> field_panels_;
+
 
   View(const ci::JsonTree& params) noexcept
   {
@@ -49,6 +58,28 @@ struct View
   }
 
   ~View() = default;
+
+
+  // パネル追加
+  void addPanel(int index, glm::ivec2 pos, u_int rotation) noexcept
+  {
+    glm::ivec2 p = pos * int(PANEL_SIZE);
+
+    static const float r_tbl[] = {
+      0.0f,
+      -180.0f * 0.5f,
+      -180.0f,
+      -180.0f * 1.5f 
+    };
+
+    Panel panel = {
+      { p.x, 0, p.y },
+      { 0, ci::toRadians(r_tbl[rotation]), 0 }, 
+      index
+    };
+
+    field_panels_.push_back(panel);
+  }
 };
 
 
@@ -132,6 +163,22 @@ void drawFieldPanels(const std::vector<PanelStatus>& panels, View& view) noexcep
 {
   for (const auto& p : panels) {
     drawPanel(p.number, p.position * int(PANEL_SIZE), p.rotation, view);
+  }
+}
+
+// NOTICE 中でViewが書き換わっているのでconstにできない
+void drawFieldPanels(View& view) noexcept
+{
+  const auto& panels = view.field_panels_;
+  for (const auto& p : panels)
+  {
+    ci::gl::pushModelView();
+    ci::gl::translate(p.position);
+    ci::gl::rotate(p.rotation);
+
+    const auto& model = getPanelModel(view, p.index);
+    ci::gl::draw(model);
+    ci::gl::popModelView();
   }
 }
 

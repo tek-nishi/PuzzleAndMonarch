@@ -22,6 +22,7 @@
 #include "ConnectionHolder.hpp"
 #include "Task.hpp"
 #include "CountExec.hpp"
+#include "EaseFunc.hpp"
 
 
 namespace ngs {
@@ -197,6 +198,21 @@ public:
                                 calcNextPanelPosition();
                               });
 
+    holder_ += event_.connect("Game:PutPanel",
+                              [this](const Connection&, const Arguments& args) noexcept
+                              {
+                                auto panel = boost::any_cast<int>(args.at("panel"));
+                                const auto& pos = boost::any_cast<glm::ivec2>(args.at("field_pos"));
+                                auto rotation = boost::any_cast<u_int>(args.at("rotation"));
+
+                                view_.addPanel(panel, pos, rotation);
+
+                                // tween
+                                auto& p = view_.field_panels_.back();
+                                timeline_->applyPtr(&p.position.y, panel_height_, 0.0f, 0.5f,
+                                                    getEaseFunc("OutSine"));
+                              });
+
     // holder_ += event_.connect("Game:Finish",
     //                           [this](const Connection&, const Arguments&) noexcept
     //                           {
@@ -221,6 +237,8 @@ public:
                                 disp_debug_info_ = !disp_debug_info_;
                               });
 #endif
+    // 本編準備
+    game_->preparationPlay();
   }
 
 
@@ -295,8 +313,7 @@ private:
     ci::gl::translate(-pivot_point_);
 
     // フィールド
-    const auto& field_panels = game_->getFieldPanels();
-    drawFieldPanels(field_panels, view_);
+    drawFieldPanels(view_);
 
     if (game_->isPlaying())
     {
