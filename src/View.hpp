@@ -158,14 +158,6 @@ void drawPanel(int number, glm::ivec2 pos, u_int rotation, View& view) noexcept
   drawPanel(number, glm::vec3(pos.x, 0.0f, pos.y), rotation, view, 0.0f);
 }
 
-// Fieldのパネルをすべて表示
-void drawFieldPanels(const std::vector<PanelStatus>& panels, View& view) noexcept
-{
-  for (const auto& p : panels) {
-    drawPanel(p.number, p.position * int(PANEL_SIZE), p.rotation, view);
-  }
-}
-
 // NOTICE 中でViewが書き換わっているのでconstにできない
 void drawFieldPanels(View& view) noexcept
 {

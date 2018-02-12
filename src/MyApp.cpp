@@ -267,6 +267,7 @@ void setupApp(ci::app::App::Settings* settings) noexcept
 
   settings->setPowerManagementEnabled(params.getValueForKey<bool>("app.power_management"));
   settings->setHighDensityDisplayEnabled(params.getValueForKey<bool>("app.retina"));
+  settings->setFrameRate(Json::getValue(params, "app.frame_rate", 60.0f));
 }
 
 }

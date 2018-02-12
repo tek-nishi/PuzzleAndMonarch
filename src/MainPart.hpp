@@ -465,8 +465,8 @@ private:
     float fov_v = camera.getFov();
     float fov_h = camera.getFovHorizontal();
     float fov = (fov_v < fov_h) ? fov_v : fov_h;
-    field_distance_ = (radius * 0.7f) / std::tan(ci::toRadians(fov * 0.5f));
-    field_distance_ = std::max(field_distance_, camera_distance_);
+    field_distance_ = std::max(radius / std::sin(ci::toRadians(fov * 0.5f)),
+                               camera_distance_);
 
     DOUT << "field distance: " << field_distance_ << std::endl;
   }

@@ -4,6 +4,7 @@
     "retina": true,
     "power_management": true,
     "full_screen": false,
+    "frame_rate": 60,
 
     "debug": [
       [ "d", "debug-info" ]

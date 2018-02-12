@@ -131,23 +131,10 @@ struct Game
     DOUT << "Game ended." << std::endl;
   }
 
-  // プレイ中？
-  // 始まったらtrueになり、終了しても変化しない
-  bool isBeganPlay() const noexcept
-  {
-    return started;
-  }
-
   // 始まって、結果発表直前まで
   bool isPlaying() const noexcept
   {
     return started && !finished;
-  }
-
-  // 結果発表以降
-  bool isEndedPlay() const noexcept
-  {
-    return finished;
   }
 
 
@@ -258,6 +245,7 @@ struct Game
     }
   }
 
+#if defined (DEBUG)
   // 強制的に次のカード
   void forceNextHandPanel() noexcept
   {
@@ -268,6 +256,7 @@ struct Game
       endPlay();
     }
   }
+#endif
 
   void rotationHandPanel() noexcept
   {
@@ -290,7 +279,7 @@ struct Game
   const std::vector<glm::ivec2>& getBlankPositions() const noexcept
   {
     return blank;
-  };
+  }
 
 
 #if defined (DEBUG)
@@ -359,8 +348,8 @@ private:
   {
     if (waiting_panels.empty()) return false;
 
-    hand_panel      = waiting_panels[0];
-    hand_rotation   = 0;
+    hand_panel    = waiting_panels[0];
+    hand_rotation = 0;
 
     waiting_panels.erase(std::begin(waiting_panels));
 
