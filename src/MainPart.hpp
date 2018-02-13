@@ -294,7 +294,7 @@ private:
       }
     }
 
-    frame_counter_ += 1;
+    put_gauge_timer_ += delta_time;
 
     timeline_->step(delta_time);
 
@@ -323,7 +323,7 @@ private:
       
       if (can_put_)
       {
-        float s = std::abs(std::sin(frame_counter_ * 0.1)) * 0.1;
+        float s = std::abs(std::sin(put_gauge_timer_ * 6.0f)) * 0.1;
         glm::vec3 scale(0.9 + s, 1, 0.9 + s);
         view_.drawFieldSelected(field_pos_, scale);
         
@@ -630,8 +630,8 @@ private:
   float height_ease_duration_;
   std::string height_ease_name_;
 
-  // アプリ起動から画面を更新した回数
-  u_int frame_counter_ = 0;
+  // パネルを置くゲージ演出
+  float put_gauge_timer_ = 0.0f;
 
   // カメラ関連
   glm::vec2 camera_rotation_;

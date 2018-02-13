@@ -116,7 +116,7 @@
     "cursor_model":   "cursor.ply",
     "bg_model":       "bg.ply",
 
-    "disp_ease_duration": 0.5,
+    "disp_ease_duration": 0.3,
     "disp_ease_name": "OutExpo",
 
     "rotate_ease_duration": 0.5,
