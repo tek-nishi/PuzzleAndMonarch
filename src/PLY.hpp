@@ -16,12 +16,14 @@
 
 namespace ngs { namespace PLY {
 
-std::vector<std::string> split(const std::string& text) {
+std::vector<std::string> split(const std::string& text) noexcept
+{
   std::istringstream line_separater(text);
   const char delimiter = ' ';
 
   std::vector<std::string> split_text;
-  while (!line_separater.eof()) {
+  while (!line_separater.eof())
+  {
     std::string separated_string;
     std::getline(line_separater, separated_string, delimiter);
     split_text.push_back(separated_string);
@@ -30,7 +32,8 @@ std::vector<std::string> split(const std::string& text) {
   return split_text;
 }
 
-ci::TriMesh load(const std::string& path) {
+ci::TriMesh load(const std::string& path) noexcept
+{
   std::ifstream ifs(getAssetPath(path).string());
   assert(ifs);
 
@@ -41,21 +44,25 @@ ci::TriMesh load(const std::string& path) {
   int face_num = 0;
 
   // ヘッダ解析
-  while (!ifs.eof()) {
+  while (!ifs.eof())
+  {
     // １行読み込む
     std::string line_buffer;
     std::getline(ifs, line_buffer);
 
     auto split_text = split(line_buffer);
-    if (split_text[0] == "element" && split_text[1] == "vertex") {
+    if (split_text[0] == "element" && split_text[1] == "vertex")
+    {
       // 頂点数
       vertex_num = std::stoi(split_text[2]);
     }
-    else if (split_text[0] == "element" && split_text[1] == "face") {
+    else if (split_text[0] == "element" && split_text[1] == "face")
+    {
       // ポリゴン数
       face_num = std::stoi(split_text[2]);
     }
-    else if (split_text[0] == "end_header") {
+    else if (split_text[0] == "end_header")
+    {
       // ヘッダ終了
       break;
     }
@@ -63,7 +70,8 @@ ci::TriMesh load(const std::string& path) {
 
   assert((vertex_num != 0) && (face_num != 0));
   
-  for (int i = 0; i < vertex_num; ++i) {
+  for (int i = 0; i < vertex_num; ++i)
+  {
     std::string line_buffer;
     std::getline(ifs, line_buffer);
     auto split_text = split(line_buffer);
@@ -75,7 +83,8 @@ ci::TriMesh load(const std::string& path) {
     mesh.appendColorRgb(c);
   }
   
-  for (int i = 0; i < face_num; ++i) {
+  for (int i = 0; i < face_num; ++i)
+  {
     std::string line_buffer;
     std::getline(ifs, line_buffer);
     auto split_text = split(line_buffer);

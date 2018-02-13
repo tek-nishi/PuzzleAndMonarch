@@ -23,6 +23,7 @@ class View
   // パネル
   std::vector<std::string> panel_path;
   std::vector<ci::gl::VboMeshRef> panel_models;
+  std::vector<ci::AxisAlignedBox> panel_aabb;
 
   // 演出用
   ci::gl::VboMeshRef blank_model;
@@ -52,7 +53,10 @@ class View
   {
     if (!panel_models[number])
     {
-      auto mesh = ci::gl::VboMesh::create(PLY::load(panel_path[number]));
+      auto tri_mesh = PLY::load(panel_path[number]);
+      panel_aabb[number] = tri_mesh.calcBoundingBox();
+
+      auto mesh = ci::gl::VboMesh::create(tri_mesh);
       panel_models[number] = mesh;
     }
 
@@ -72,6 +76,7 @@ public:
       panel_path.push_back(p.getValue<std::string>());
     }
     panel_models.resize(panel_path.size());
+    panel_aabb.resize(panel_path.size());
 
     blank_model    = ci::gl::VboMesh::create(PLY::load(params.getValueForKey<std::string>("blank_model")));
     selected_model = ci::gl::VboMesh::create(PLY::load(params.getValueForKey<std::string>("selected_model")));
@@ -110,6 +115,10 @@ public:
                        put_duration_, getEaseFunc(put_ease_));
   }
 
+  const ci::AxisAlignedBox& panelAabb(const int number) const noexcept
+  {
+    return panel_aabb[number];
+  }
 
   
   // パネルを１枚表示

@@ -5,6 +5,7 @@
 //
 
 #include "Defines.hpp"
+#include <tuple>
 #include <glm/gtx/norm.hpp>
 #include <glm/gtx/transform.hpp>
 #include <glm/gtc/quaternion.hpp>
@@ -134,8 +135,8 @@ public:
 
                                 // タッチ位置→升目位置
                                 auto result = calcGridPos(touch.pos);
-                                if (!result.first) return;
-                                const auto& grid_pos = result.second;
+                                if (!std::get<0>(result)) return;
+                                const auto& grid_pos = std::get<1>(result);
                                 // 可能であればパネルを移動
                                 calcNewFieldPos(grid_pos);
                               });
@@ -379,7 +380,7 @@ private:
 
 
   // タッチ位置からField上の升目座標を計算する
-  std::pair<bool, glm::ivec2> calcGridPos(const glm::vec2& pos) const noexcept
+  std::tuple<bool, glm::ivec2, ci::Ray> calcGridPos(const glm::vec2& pos) const noexcept
   {
     // 画面奥に伸びるRayを生成
     ci::Ray ray = camera_.body().generateRay(pos, ci::app::getWindowSize());
@@ -389,20 +390,27 @@ private:
     if (!on_field)
     {
       // なんらかの事情で位置を計算できず
-      return { false, glm::ivec2() }; 
+      return { false, glm::ivec2(), ray }; 
     }
     // ワールド座標→升目座標
     auto touch_pos = ray.calcPosition(z);
-    return { true, roundValue(touch_pos.x, touch_pos.z, PANEL_SIZE) };
+    return { true, roundValue(touch_pos.x, touch_pos.z, PANEL_SIZE), ray };
   }
 
   // タッチ位置がパネルのある位置と同じか調べる
   bool isCursorPos(const glm::vec2& pos) const noexcept
   {
     auto result = calcGridPos(pos);
-    if (!result.first) return false;
+    if (!std::get<0>(result)) return false;
 
-    const auto& grid_pos = result.second;
+    // パネルとのRay-cast
+    auto aabb = view_.panelAabb(game_->getHandPanel());
+    const auto& ray = std::get<2>(result);
+    aabb.transform(glm::translate(cursor_pos_));
+    if (aabb.intersects(ray)) return true;
+
+    // タッチ位置の座標が一致しているかで判断
+    const auto& grid_pos = std::get<1>(result);
     return grid_pos == field_pos_;
   }
 
