@@ -60,10 +60,6 @@ public:
 
 
 private:
-  // void mouseMove(ci::app::MouseEvent event) noexcept override
-  // {
-  // }
-
 	void mouseDown(ci::app::MouseEvent event) noexcept override
   {
     if (event.isLeft())

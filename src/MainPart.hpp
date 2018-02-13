@@ -41,8 +41,8 @@ public:
       camera_distance_(params.getValueForKey<float>("field.camera.distance")),
       camera_distance_range_(Json::getVec<glm::vec2>(params["field.camera_distance_range"])),
       camera_(params["field.camera"]),
-      pivot_point_(Json::getVec<glm::vec3>(params["field.pivot_point"])),
-      field_center_(pivot_point_),
+      target_position_(Json::getVec<glm::vec3>(params["field.target_position"])),
+      field_center_(target_position_),
       panel_height_(params.getValueForKey<float>("field.panel_height")),
       putdown_time_(params.getValueForKey<double>("field.putdown_time")),
       put_duration_(params.getValueForKey<float>("field.put_duration")),
@@ -183,6 +183,7 @@ public:
                                   v.y = 0;
 
                                   target_position_ += v;
+                                  field_center_ = target_position_;
                                   eye_position_ += v;
                                   camera.setEyePoint(eye_position_);
                                 }
@@ -261,8 +262,7 @@ private:
     game_->update(delta_time);
 
     // カメラの中心位置変更
-    pivot_point_ += (field_center_ - pivot_point_) * 0.05f;
-
+    target_position_ += (field_center_ - target_position_) * 0.025f;
     camera_distance_ += (field_distance_ - camera_distance_) * 0.05f;
     calcCamera(camera_.body());
 
@@ -287,7 +287,7 @@ private:
           draged_length_ = 100.0f;
             
           // Fieldの中心を再計算
-          calcFieldCenter();
+          calcViewRange();
           calcNextPanelPosition();
         }
       }
@@ -306,9 +306,7 @@ private:
     ci::gl::enableDepth();
     ci::gl::enable(GL_CULL_FACE);
     ci::gl::disableAlphaBlending();
-    
     ci::gl::setMatrices(camera_.body());
-    ci::gl::translate(-pivot_point_);
 
     // フィールド
     drawFieldPanels(view_);
@@ -390,11 +388,6 @@ private:
   {
     // 画面奥に伸びるRayを生成
     ci::Ray ray = camera_.body().generateRay(pos, ci::app::getWindowSize());
-    auto m = glm::translate(-pivot_point_);
-    auto tpm = glm::inverse(m);
-
-    auto origin = tpm * glm::vec4(ray.getOrigin(), 1);
-    ray.setOrigin(origin);
 
     float z;
     float on_field = ray.calcPlaneIntersection(glm::vec3(0), glm::vec3(0, 1, 0), &z);
@@ -471,6 +464,48 @@ private:
     DOUT << "field distance: " << field_distance_ << std::endl;
   }
 
+  // フィールドの広さから注視点と距離を計算
+  void calcViewRange() noexcept
+  {
+    std::vector<glm::vec3> points;
+    const auto& positions = game_->getBlankPositions();
+    for (const auto& p : positions)
+    {
+      // Panelの４隅の座標を加える
+      auto pos = p * int(PANEL_SIZE);
+      points.emplace_back(pos.x - PANEL_SIZE / 2, 0.0f, pos.y - PANEL_SIZE / 2);
+      points.emplace_back(pos.x + PANEL_SIZE / 2, 0.0f, pos.y - PANEL_SIZE / 2);
+      points.emplace_back(pos.x - PANEL_SIZE / 2, 0.0f, pos.y + PANEL_SIZE / 2);
+      points.emplace_back(pos.x + PANEL_SIZE / 2, 0.0f, pos.y + PANEL_SIZE / 2);
+    }
+
+    // 登録した点の平均値→注視点
+    auto center = std::accumulate(std::begin(points), std::end(points), glm::vec3()) / float(points.size());
+    field_center_.x = center.x;
+    field_center_.z = center.z;
+
+    // 中心から一番遠い座標から距離を決める
+    auto it = std::max_element(std::begin(points), std::end(points),
+                               [center](const glm::vec3& a, const glm::vec3& b) noexcept
+                               {
+                                 auto d1 = glm::distance2(a, center);
+                                 auto d2 = glm::distance2(b, center);
+                                 return d1 < d2;
+                               });
+
+    auto d = glm::distance(*it, center);
+    const auto& camera = camera_.body();
+    float fov_v = camera.getFov();
+    float fov_h = camera.getFovHorizontal();
+    float fov = (fov_v < fov_h) ? fov_v : fov_h;
+    float distance = d / std::tan(ci::toRadians(fov * 0.5f));
+
+    float n = d / std::cos(camera_rotation_.x);
+    distance -= n;
+    field_distance_ = std::max(distance, camera_distance_);
+
+    DOUT << "field distance: " << distance << "," << camera_distance_ << std::endl;
+  }
 
   // Touch座標→Field上の座標
   glm::vec3 calcTouchPos(const glm::vec2& touch_pos) const noexcept
@@ -574,8 +609,6 @@ private:
 
   // ピンチング操作時の距離の範囲
   glm::vec2 camera_distance_range_;
-
-  glm::vec3 pivot_point_;
 
   // Fieldの中心座標
   glm::vec3 field_center_;

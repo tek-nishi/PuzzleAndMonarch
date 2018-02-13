@@ -5,6 +5,8 @@
 //
 
 
+#if defined (DEBUG)
+
 namespace ngs { namespace Debug {
 
 std::map<int, std::string> keyEvent(const ci::JsonTree& params) noexcept
@@ -19,6 +21,28 @@ std::map<int, std::string> keyEvent(const ci::JsonTree& params) noexcept
     { "e", ci::app::KeyEvent::KEY_e },
     { "f", ci::app::KeyEvent::KEY_f },
     { "g", ci::app::KeyEvent::KEY_g },
+    
+    { "h", ci::app::KeyEvent::KEY_h },
+    { "i", ci::app::KeyEvent::KEY_i },
+    { "j", ci::app::KeyEvent::KEY_j },
+    { "k", ci::app::KeyEvent::KEY_k },
+    { "l", ci::app::KeyEvent::KEY_l },
+    { "m", ci::app::KeyEvent::KEY_m },
+    { "n", ci::app::KeyEvent::KEY_n },
+
+    { "o", ci::app::KeyEvent::KEY_o },
+    { "p", ci::app::KeyEvent::KEY_p },
+    { "q", ci::app::KeyEvent::KEY_q },
+    { "r", ci::app::KeyEvent::KEY_r },
+    { "s", ci::app::KeyEvent::KEY_s },
+    { "t", ci::app::KeyEvent::KEY_t },
+    { "u", ci::app::KeyEvent::KEY_u },
+    
+    { "v", ci::app::KeyEvent::KEY_v },
+    { "w", ci::app::KeyEvent::KEY_w },
+    { "x", ci::app::KeyEvent::KEY_x },
+    { "y", ci::app::KeyEvent::KEY_y },
+    { "z", ci::app::KeyEvent::KEY_z },
   };
 
   for (const auto& p : params)
@@ -40,3 +64,5 @@ void signalKeyEvent(Event<Arguments>& event, const std::map<int, std::string>& k
 }
 
 } }
+
+#endif
