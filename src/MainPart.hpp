@@ -37,6 +37,8 @@ public:
       event_(event),
       panels_(createPanels()),
       game_(std::make_unique<Game>(params["game"], event, panels_)),
+      disp_ease_duration_(params.getValueForKey<float>("field.disp_ease_duration")),
+      disp_ease_name_(params.getValueForKey<std::string>("field.disp_ease_name")),
       rotate_ease_duration_(params.getValueForKey<float>("field.rotate_ease_duration")),
       rotate_ease_name_(params.getValueForKey<std::string>("field.rotate_ease_name")),
       height_ease_start_(params.getValueForKey<float>("field.height_ease_start")),
@@ -316,11 +318,7 @@ private:
       const auto& blank = game_->getBlankPositions();
       view_.drawFieldBlank(blank);
       
-      // 手持ちパネル
-      // TODO フレームレート落ちに対応
-      panel_disp_pos_ += (cursor_pos_ - panel_disp_pos_) * 0.35f;
-
-      glm::vec3 pos(panel_disp_pos_.x, panel_disp_pos_.y + height_offset_, panel_disp_pos_.z);
+      glm::vec3 pos(panel_disp_pos_().x, panel_disp_pos_().y + height_offset_, panel_disp_pos_().z);
       view_.drawPanel(game_->getHandPanel(), pos, game_->getHandRotation(), rotate_offset_);
       
       if (can_put_)
@@ -417,6 +415,7 @@ private:
       can_put_   = game_->canPutToBlank(field_pos_);
       // 少し宙に浮いた状態
       cursor_pos_ = glm::vec3(field_pos_.x * PANEL_SIZE, panel_height_, field_pos_.y * PANEL_SIZE);
+      startMoveEase();
     }
   }
 
@@ -555,11 +554,18 @@ private:
                                });
     field_pos_ = *it;
     cursor_pos_ = glm::vec3(field_pos_.x * PANEL_SIZE, panel_height_, field_pos_.y * PANEL_SIZE);
+    panel_disp_pos_.stop();
     panel_disp_pos_ = cursor_pos_;
 
     can_put_ = game_->canPutToBlank(field_pos_);
   }
 
+  // パネル移動演出
+  void startMoveEase() noexcept
+  {
+    panel_disp_pos_.stop();
+    timeline_->apply(&panel_disp_pos_, cursor_pos_, disp_ease_duration_, getEaseFunc(disp_ease_name_));
+  }
 
   // パネル回転演出
   void startRotatePanelEase() noexcept
@@ -608,6 +614,11 @@ private:
   // 配置可能
   bool can_put_ = false;
 
+  // パネル位置
+  ci::Anim<glm::vec3> panel_disp_pos_;
+  float disp_ease_duration_;
+  std::string disp_ease_name_;
+
   // パネルの回転
   ci::Anim<float> rotate_offset_ = 0.0f;
   float rotate_ease_duration_;
@@ -618,9 +629,6 @@ private:
   float height_ease_start_;
   float height_ease_duration_;
   std::string height_ease_name_;
-
-
-  glm::vec3 panel_disp_pos_;
 
   // アプリ起動から画面を更新した回数
   u_int frame_counter_ = 0;
