@@ -17,7 +17,7 @@ enum {
 };
 
 
-struct View
+class View
   : private boost::noncopyable
 {
   // パネル
@@ -41,8 +41,30 @@ struct View
   };
   std::vector<Panel> field_panels_;
 
+  // 画面演出用情報
+  float panel_height_;
+  float put_duration_;
+  std::string put_ease_;
 
+
+  // 読まれてないパネルを読み込む
+  const ci::gl::VboMeshRef& getPanelModel(const int number) noexcept
+  {
+    if (!panel_models[number])
+    {
+      auto mesh = ci::gl::VboMesh::create(PLY::load(panel_path[number]));
+      panel_models[number] = mesh;
+    }
+
+    return panel_models[number];
+  }
+
+
+public:
   View(const ci::JsonTree& params) noexcept
+    : panel_height_(params.getValueForKey<float>("panel_height")),
+      put_duration_(params.getValueForKey<float>("put_duration")),
+      put_ease_(params.getValueForKey<std::string>("put_ease"))
   {
     const auto& path = params["panel_path"];
     for (const auto p : path)
@@ -80,22 +102,100 @@ struct View
 
     field_panels_.push_back(panel);
   }
-};
 
-
-// 読まれてないパネルを読み込む
-const ci::gl::VboMeshRef& getPanelModel(View& view, const int number) noexcept
-{
-  if (!view.panel_models[number])
+  void startPutEase(const ci::TimelineRef& timeline) noexcept
   {
-    auto mesh = ci::gl::VboMesh::create(PLY::load(view.panel_path[number]));
-    view.panel_models[number] = mesh;
+    auto& p = field_panels_.back();
+    timeline->applyPtr(&p.position.y, panel_height_, 0.0f,
+                       put_duration_, getEaseFunc(put_ease_));
   }
 
-  return view.panel_models[number];
-}
 
+  
+  // パネルを１枚表示
+  void drawPanel(const int number, const glm::vec3& pos, const u_int rotation, const float rotate_offset) noexcept
+  {
+    static const float r_tbl[] = {
+      0.0f,
+      -180.0f * 0.5f,
+      -180.0f,
+      -180.0f * 1.5f 
+    };
 
+    ci::gl::pushModelView();
+    ci::gl::translate(pos);
+    ci::gl::rotate(toRadians(glm::vec3(0.0f, r_tbl[rotation] + rotate_offset, 0.0f)));
+    const auto& model = getPanelModel(number);
+    ci::gl::draw(model);
+    ci::gl::popModelView();
+  }
+
+  void drawPanel(const int number, const glm::ivec2& pos, const u_int rotation) noexcept
+  {
+    drawPanel(number, glm::vec3(pos.x, 0.0f, pos.y), rotation, 0.0f);
+  }
+  
+  // NOTICE 中でViewが書き換わっているのでconstにできない
+  void drawFieldPanels() noexcept
+  {
+    const auto& panels = field_panels_;
+    for (const auto& p : panels)
+    {
+      ci::gl::pushModelView();
+      ci::gl::translate(p.position);
+      ci::gl::rotate(p.rotation);
+
+      const auto& model = getPanelModel(p.index);
+      ci::gl::draw(model);
+      ci::gl::popModelView();
+    }
+  }
+  
+  // Fieldの置ける場所をすべて表示
+  void drawFieldBlank(const std::vector<glm::ivec2>& blank) noexcept
+  {
+    for (const auto& pos : blank)
+    {
+      glm::ivec2 p = pos * int(PANEL_SIZE);
+
+      ci::gl::pushModelView();
+      ci::gl::translate(p.x, 0.0f, p.y);
+      ci::gl::draw(blank_model);
+      ci::gl::popModelView();
+    }
+  }
+
+  // 置けそうな箇所をハイライト
+  void drawFieldSelected(const glm::ivec2& pos, const glm::vec3& scale) noexcept
+  {
+    glm::ivec2 p = pos * int(PANEL_SIZE);
+
+    ci::gl::pushModelView();
+    ci::gl::translate(p.x, 0.0f, p.y);
+    ci::gl::scale(scale.x, scale.y, scale.z);
+    ci::gl::draw(selected_model);
+    ci::gl::popModelView();
+  }
+
+  void drawCursor(const glm::vec3& pos, const glm::vec3& scale) noexcept
+  {
+    ci::gl::pushModelView();
+    ci::gl::translate(pos.x, pos.y, pos.z);
+    ci::gl::scale(scale.x, scale.y, scale.z);
+    ci::gl::draw(cursor_model);
+    ci::gl::popModelView();
+  }
+
+  // 背景
+  void drawFieldBg() noexcept
+  {
+    ci::gl::pushModelView();
+    ci::gl::translate(10, -15.0, 10);
+    ci::gl::scale(20.0, 10.0, 20.0);
+    ci::gl::draw(bg_model);
+    ci::gl::popModelView();
+  }
+};
 
 
 #ifdef DEBUG
@@ -134,90 +234,6 @@ void drawPanelEdge(const Panel& panel, glm::vec3 pos, u_int rotation) noexcept
 }
 
 #endif
-
-// パネルを１枚表示
-void drawPanel(int number, glm::vec3 pos, u_int rotation, View& view, float rotate_offset) noexcept
-{
-  const float r_tbl[] = {
-    0.0f,
-    -180.0f * 0.5f,
-    -180.0f,
-    -180.0f * 1.5f 
-  };
-
-  ci::gl::pushModelView();
-  ci::gl::translate(pos.x, pos.y, pos.z);
-  ci::gl::rotate(toRadians(ci::vec3(0.0f, r_tbl[rotation] + rotate_offset, 0.0f)));
-  const auto& model = getPanelModel(view, number);
-  ci::gl::draw(model);
-  ci::gl::popModelView();
-}
-
-void drawPanel(int number, glm::ivec2 pos, u_int rotation, View& view) noexcept
-{
-  drawPanel(number, glm::vec3(pos.x, 0.0f, pos.y), rotation, view, 0.0f);
-}
-
-// NOTICE 中でViewが書き換わっているのでconstにできない
-void drawFieldPanels(View& view) noexcept
-{
-  const auto& panels = view.field_panels_;
-  for (const auto& p : panels)
-  {
-    ci::gl::pushModelView();
-    ci::gl::translate(p.position);
-    ci::gl::rotate(p.rotation);
-
-    const auto& model = getPanelModel(view, p.index);
-    ci::gl::draw(model);
-    ci::gl::popModelView();
-  }
-}
-
-// Fieldの置ける場所をすべて表示
-void drawFieldBlank(const std::vector<glm::ivec2>& blank, View& view) noexcept
-{
-  for (const auto& pos : blank) {
-    glm::ivec2 p = pos * int(PANEL_SIZE);
-
-    ci::gl::pushModelView();
-    ci::gl::translate(p.x, 0.0f, p.y);
-    ci::gl::draw(view.blank_model);
-    ci::gl::popModelView();
-  }
-}
-
-// 置けそうな箇所をハイライト
-void drawFieldSelected(glm::ivec2 pos, glm::vec3 scale, const View& view) noexcept
-{
-  glm::ivec2 p = pos * int(PANEL_SIZE);
-
-  ci::gl::pushModelView();
-  ci::gl::translate(p.x, 0.0f, p.y);
-  ci::gl::scale(scale.x, scale.y, scale.z);
-  ci::gl::draw(view.selected_model);
-  ci::gl::popModelView();
-}
-
-void drawCursor(glm::vec3 pos, glm::vec3 scale, const View& view) noexcept
-{
-  ci::gl::pushModelView();
-  ci::gl::translate(pos.x, pos.y, pos.z);
-  ci::gl::scale(scale.x, scale.y, scale.z);
-  ci::gl::draw(view.cursor_model);
-  ci::gl::popModelView();
-}
-
-
-// 背景
-void drawFieldBg(const View& view) noexcept
-{
-  ci::gl::pushModelView();
-  ci::gl::translate(10, -15.0, 10);
-  ci::gl::scale(20.0, 10.0, 20.0);
-  ci::gl::draw(view.bg_model);
-  ci::gl::popModelView();
-}
 
 }
 

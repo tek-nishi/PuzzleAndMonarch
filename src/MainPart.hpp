@@ -45,8 +45,6 @@ public:
       field_center_(target_position_),
       panel_height_(params.getValueForKey<float>("field.panel_height")),
       putdown_time_(params.getValueForKey<double>("field.putdown_time")),
-      put_duration_(params.getValueForKey<float>("field.put_duration")),
-      put_ease_(params.getValueForKey<std::string>("field.put_ease")),
       view_(params["field"]),
       timeline_(ci::Timeline::create())
   {
@@ -116,25 +114,23 @@ public:
 
                                 const auto& touch = boost::any_cast<const Touch&>(arg.at("touch"));
                                 if (touch.handled) return;
-
-                                // タッチ位置→升目位置
-                                auto result = calcGridPos(touch.pos);
-                                if (!result.first) return;
-
-                                const auto& grid_pos = result.second;
-                                if (grid_pos != field_pos_)
-                                {
-                                  // 可能であればパネルを移動
-                                  calcNewFieldPos(grid_pos);
-                                }
-                                else
+                                
+                                if (isCursorPos(touch.pos))
                                 {
                                   // パネルを回転
                                   game_->rotationHandPanel();
                                   rotate_offset_ = 90.0f;
                                   can_put_ = game_->canPutToBlank(field_pos_);
                                   touch_put_ = false;
+                                  return;
                                 }
+
+                                // タッチ位置→升目位置
+                                auto result = calcGridPos(touch.pos);
+                                if (!result.first) return;
+                                const auto& grid_pos = result.second;
+                                // 可能であればパネルを移動
+                                calcNewFieldPos(grid_pos);
                               });
 
     holder_ += event_.connect("multi_touch_moved",
@@ -210,11 +206,7 @@ public:
                                 const auto& pos = boost::any_cast<glm::ivec2>(args.at("field_pos"));
                                 auto rotation   = boost::any_cast<u_int>(args.at("rotation"));
                                 view_.addPanel(panel, pos, rotation);
-
-                                // tween
-                                auto& p = view_.field_panels_.back();
-                                timeline_->applyPtr(&p.position.y, panel_height_, 0.0f,
-                                                    put_duration_, getEaseFunc(put_ease_));
+                                view_.startPutEase(timeline_);
                               });
 
     // holder_ += event_.connect("Game:Finish",
@@ -309,13 +301,13 @@ private:
     ci::gl::setMatrices(camera_.body());
 
     // フィールド
-    drawFieldPanels(view_);
+    view_.drawFieldPanels();
 
     if (game_->isPlaying())
     {
       // 置ける場所
       const auto& blank = game_->getBlankPositions();
-      ngs::drawFieldBlank(blank, view_);
+      view_.drawFieldBlank(blank);
       
       // 手持ちパネル
       // TODO フレームレート落ちに対応
@@ -324,17 +316,17 @@ private:
       panel_disp_pos_ += (cursor_pos_ - panel_disp_pos_) * 0.35f;
 
       glm::vec3 pos(panel_disp_pos_.x, panel_disp_pos_.y + hight_offset_, panel_disp_pos_.z);
-      ngs::drawPanel(game_->getHandPanel(), pos, game_->getHandRotation(), view_, rotate_offset_);
+      view_.drawPanel(game_->getHandPanel(), pos, game_->getHandRotation(), rotate_offset_);
       
       if (can_put_)
       {
         float s = std::abs(std::sin(frame_counter_ * 0.1)) * 0.1;
         glm::vec3 scale(0.9 + s, 1, 0.9 + s);
-        drawFieldSelected(field_pos_, scale, view_);
+        view_.drawFieldSelected(field_pos_, scale);
         
         scale.x = 1.0 + s;
         scale.z = 1.0 + s;
-        drawCursor(pos, scale, view_);
+        view_.drawCursor(pos, scale);
       }
 
 #ifdef DEBUG
@@ -357,7 +349,7 @@ private:
       }
 #endif
     }
-    drawFieldBg(view_);
+    view_.drawFieldBg();
 
 
 #if 0
@@ -613,10 +605,6 @@ private:
   // Fieldの中心座標
   glm::vec3 field_center_;
   float field_distance_ = 0.0f;
-
-  // パネル設置時の演出
-  float put_duration_;
-  std::string put_ease_;
 
   // 表示
   Camera camera_;
