@@ -37,6 +37,8 @@ public:
       event_(event),
       panels_(createPanels()),
       game_(std::make_unique<Game>(params["game"], event, panels_)),
+      rotate_ease_duration_(params.getValueForKey<float>("field.rotate_ease_duration")),
+      rotate_ease_name_(params.getValueForKey<std::string>("field.rotate_ease_name")),
       height_ease_start_(params.getValueForKey<float>("field.height_ease_start")),
       height_ease_duration_(params.getValueForKey<float>("field.height_ease_duration")),
       height_ease_name_(params.getValueForKey<std::string>("field.height_ease_name")),
@@ -122,7 +124,7 @@ public:
                                 {
                                   // パネルを回転
                                   game_->rotationHandPanel();
-                                  rotate_offset_ = 90.0f;
+                                  startRotatePanelEase();
                                   can_put_ = game_->canPutToBlank(field_pos_);
                                   touch_put_ = false;
                                   return;
@@ -273,6 +275,7 @@ private:
           game_->putHandPanel(field_pos_);
 
           // 次のパネルの準備
+          rotate_offset_.stop();
           rotate_offset_ = 0.0f;
           can_put_       = false;
 
@@ -315,7 +318,6 @@ private:
       
       // 手持ちパネル
       // TODO フレームレート落ちに対応
-      rotate_offset_ *= 0.8f;
       panel_disp_pos_ += (cursor_pos_ - panel_disp_pos_) * 0.35f;
 
       glm::vec3 pos(panel_disp_pos_.x, panel_disp_pos_.y + height_offset_, panel_disp_pos_.z);
@@ -558,12 +560,22 @@ private:
     can_put_ = game_->canPutToBlank(field_pos_);
   }
 
+
+  // パネル回転演出
+  void startRotatePanelEase() noexcept
+  {
+    rotate_offset_.stop();
+    rotate_offset_ = 90.0f;
+    timeline_->apply(&rotate_offset_, 0.0f, rotate_ease_duration_, getEaseFunc(rotate_ease_name_));
+  }
+
+
   // 次のパネルの出現演出
   void startNextPanelEase() noexcept
   {
     height_offset_.stop();
     height_offset_ = height_ease_start_;
-    timeline_->apply(&height_offset_, height_ease_start_, 0.0f, height_ease_duration_, getEaseFunc(height_ease_name_));
+    timeline_->apply(&height_offset_, 0.0f, height_ease_duration_, getEaseFunc(height_ease_name_));
   }
 
 
@@ -596,11 +608,13 @@ private:
   // 配置可能
   bool can_put_ = false;
 
-  // 手持ちパネル演出用
-  float rotate_offset_ = 0.0f;
-  ci::Anim<float> height_offset_ = 0.0f;
+  // パネルの回転
+  ci::Anim<float> rotate_offset_ = 0.0f;
+  float rotate_ease_duration_;
+  std::string rotate_ease_name_;
 
   // 次のパネルを引いた時の演出
+  ci::Anim<float> height_offset_ = 0.0f;
   float height_ease_start_;
   float height_ease_duration_;
   std::string height_ease_name_;
