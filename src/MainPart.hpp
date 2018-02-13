@@ -37,6 +37,9 @@ public:
       event_(event),
       panels_(createPanels()),
       game_(std::make_unique<Game>(params["game"], event, panels_)),
+      height_ease_start_(params.getValueForKey<float>("field.height_ease_start")),
+      height_ease_duration_(params.getValueForKey<float>("field.height_ease_duration")),
+      height_ease_name_(params.getValueForKey<std::string>("field.height_ease_name")),
       camera_rotation_(toRadians(Json::getVec<glm::vec2>(params["field.camera.rotation"]))),
       camera_distance_(params.getValueForKey<float>("field.camera.distance")),
       camera_distance_range_(Json::getVec<glm::vec2>(params["field.camera_distance_range"])),
@@ -186,17 +189,17 @@ public:
                               });
 
     // 各種イベント
-    holder_ += event_.connect("Title:finished",
-                              [this](const Connection&, const Arguments&) noexcept
-                              {
-                                hight_offset_ = 500.0f;
-                              });
+    // holder_ += event_.connect("Title:finished",
+    //                           [this](const Connection&, const Arguments&) noexcept
+    //                           {
+    //                           });
 
     holder_ += event_.connect("Game:Start",
                               [this](const Connection&, const Arguments&) noexcept
                               {
                                 game_->beginPlay();
                                 calcNextPanelPosition();
+                                startNextPanelEase();
                               });
 
     holder_ += event_.connect("Game:PutPanel",
@@ -271,8 +274,9 @@ private:
 
           // 次のパネルの準備
           rotate_offset_ = 0.0f;
-          hight_offset_  = 500.0f;
           can_put_       = false;
+
+          startNextPanelEase();
 
           touch_put_ = false;
           // 次のパネルを操作できないようにしとく
@@ -312,10 +316,9 @@ private:
       // 手持ちパネル
       // TODO フレームレート落ちに対応
       rotate_offset_ *= 0.8f;
-      hight_offset_  *= 0.8f;
       panel_disp_pos_ += (cursor_pos_ - panel_disp_pos_) * 0.35f;
 
-      glm::vec3 pos(panel_disp_pos_.x, panel_disp_pos_.y + hight_offset_, panel_disp_pos_.z);
+      glm::vec3 pos(panel_disp_pos_.x, panel_disp_pos_.y + height_offset_, panel_disp_pos_.z);
       view_.drawPanel(game_->getHandPanel(), pos, game_->getHandRotation(), rotate_offset_);
       
       if (can_put_)
@@ -555,6 +558,14 @@ private:
     can_put_ = game_->canPutToBlank(field_pos_);
   }
 
+  // 次のパネルの出現演出
+  void startNextPanelEase() noexcept
+  {
+    height_offset_.stop();
+    height_offset_ = height_ease_start_;
+    timeline_->apply(&height_offset_, height_ease_start_, 0.0f, height_ease_duration_, getEaseFunc(height_ease_name_));
+  }
+
 
   // FIXME 変数を後半に定義する実験
   const ci::JsonTree& params_;
@@ -587,7 +598,14 @@ private:
 
   // 手持ちパネル演出用
   float rotate_offset_ = 0.0f;
-  float hight_offset_  = 0.0f;
+  ci::Anim<float> height_offset_ = 0.0f;
+
+  // 次のパネルを引いた時の演出
+  float height_ease_start_;
+  float height_ease_duration_;
+  std::string height_ease_name_;
+
+
   glm::vec3 panel_disp_pos_;
 
   // アプリ起動から画面を更新した回数
