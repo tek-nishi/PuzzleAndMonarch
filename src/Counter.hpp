@@ -19,7 +19,7 @@ struct Counter
   ~Counter() = default;
 
 
-  void add(const std::string& name, const double count) noexcept
+  void add(const std::string& name, double count) noexcept
   {
     values.emplace(name, count);
   }
@@ -36,7 +36,7 @@ struct Counter
   }
 
 
-  void update(const double delta_time) noexcept
+  void update(double delta_time) noexcept
   {
     if (values.empty()) return;
 

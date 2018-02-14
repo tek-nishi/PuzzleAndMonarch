@@ -133,7 +133,7 @@ public:
   }
 
 
-  void update(const double current_time, const double delta_time) noexcept
+  void update(double current_time, double delta_time) noexcept
   {
     tasks_.update(current_time, delta_time);
     count_exec_.update(delta_time);

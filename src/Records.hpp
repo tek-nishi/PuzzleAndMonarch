@@ -26,6 +26,10 @@ class Records
 
 
 public:
+  // struct {
+  // };
+
+
   Records(const ci::JsonTree& params, Event<Arguments>& event, UI::Drawer& drawer, TweenCommon& tween_common) noexcept
     : event_(event),
       canvas_(event, drawer, tween_common,
@@ -59,7 +63,7 @@ public:
 
 
 private:
-  bool update(const double current_time, const double delta_time) noexcept override
+  bool update(double current_time, double delta_time) noexcept override
   {
     count_exec_.update(delta_time);
     return active_;

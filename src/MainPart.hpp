@@ -252,7 +252,7 @@ private:
     camera_.resize();
   }
 
-	bool update(const double current_time, const double delta_time) noexcept override
+	bool update(double current_time, double delta_time) noexcept override
   {
     if (paused_)
     {

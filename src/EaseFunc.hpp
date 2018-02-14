@@ -52,24 +52,24 @@ ci::EaseFn getEaseFunc(const std::string& name) noexcept
     { "InOutCirc", ci::easeInOutCirc },
     { "OutInCirc", ci::easeOutInCirc },
 
-    { "InBounce",    [](const float t) { return ci::easeInBounce(t); } },
-    { "OutBounce",   [](const float t) { return ci::easeOutBounce(t); } },
-    { "InOutBounce", [](const float t) { return ci::easeInOutBounce(t); } },
-    { "OutInBounce", [](const float t) { return ci::easeOutInBounce(t); } },
+    { "InBounce",    [](float t) { return ci::easeInBounce(t); } },
+    { "OutBounce",   [](float t) { return ci::easeOutBounce(t); } },
+    { "InOutBounce", [](float t) { return ci::easeInOutBounce(t); } },
+    { "OutInBounce", [](float t) { return ci::easeOutInBounce(t); } },
 
-    { "InBack",    [](const float t) { return ci::easeInBack(t); } },
-    { "OutBack",   [](const float t) { return ci::easeOutBack(t); } },
-    { "InOutBack", [](const float t) { return ci::easeInOutBack(t); } },
-    { "OutInBack", [](const float t) { return ci::easeOutInBack(t, 1.70158f); } },
+    { "InBack",    [](float t) { return ci::easeInBack(t); } },
+    { "OutBack",   [](float t) { return ci::easeOutBack(t); } },
+    { "InOutBack", [](float t) { return ci::easeInOutBack(t); } },
+    { "OutInBack", [](float t) { return ci::easeOutInBack(t, 1.70158f); } },
 
-    { "InElastic",    [](const float t) { return ci::easeInElastic(t, 2.0f, 1.0f); } },
-    { "OutElastic",   [](const float t) { return ci::easeOutElastic(t, 2.0f, 1.0f); } },
-    { "InOutElastic", [](const float t) { return ci::easeInOutElastic(t, 2.0f, 1.0f); } },
-    { "OutInElastic", [](const float t) { return ci::easeOutInElastic(t, 2.0f, 1.0f); } },
+    { "InElastic",    [](float t) { return ci::easeInElastic(t, 2.0f, 1.0f); } },
+    { "OutElastic",   [](float t) { return ci::easeOutElastic(t, 2.0f, 1.0f); } },
+    { "InOutElastic", [](float t) { return ci::easeInOutElastic(t, 2.0f, 1.0f); } },
+    { "OutInElastic", [](float t) { return ci::easeOutInElastic(t, 2.0f, 1.0f); } },
 
-    { "InAtan",    [](const float t) { return ci::easeInAtan(t); } },
-    { "OutAtan",   [](const float t) { return ci::easeOutAtan(t); } },
-    { "InOutAtam", [](const float t) { return ci::easeInOutAtan(t); } },
+    { "InAtan",    [](float t) { return ci::easeInAtan(t); } },
+    { "OutAtan",   [](float t) { return ci::easeOutAtan(t); } },
+    { "InOutAtam", [](float t) { return ci::easeInOutAtan(t); } },
   };
 
   return funcs.at(name);

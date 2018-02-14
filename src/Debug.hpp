@@ -56,7 +56,7 @@ std::map<int, std::string> keyEvent(const ci::JsonTree& params) noexcept
   return events;
 }
 
-void signalKeyEvent(Event<Arguments>& event, const std::map<int, std::string>& key_events, const int key) noexcept
+void signalKeyEvent(Event<Arguments>& event, const std::map<int, std::string>& key_events, int key) noexcept
 {
   if (!key_events.count(key)) return;
 

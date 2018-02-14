@@ -18,7 +18,7 @@ class CountExec
   struct Callback
     : private boost::noncopyable
   {
-    Callback(const double time_remain_, std::function<void ()> func_)
+    Callback(double time_remain_, std::function<void ()> func_)
       : time_remain(time_remain_),
         func(func_)
     {}
@@ -34,7 +34,7 @@ class CountExec
 
 
 public:
-  void update(const double delta_time) noexcept
+  void update(double delta_time) noexcept
   {
     // TIPS for文中でitを更新している
     for (auto it = std::begin(callbacks_); it != std::end(callbacks_); )
@@ -52,7 +52,7 @@ public:
   }
 
 
-  void add(const double time_remain, const std::function<void ()>& func) noexcept
+  void add(double time_remain, const std::function<void ()>& func) noexcept
   {
     callbacks_.emplace_back(time_remain, func);
   }

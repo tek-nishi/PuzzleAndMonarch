@@ -135,7 +135,7 @@ private:
     return tbl.at(type);
   }
 
-  static boost::any getValueForType(const ci::JsonTree& param, const int type) noexcept
+  static boost::any getValueForType(const ci::JsonTree& param, int type) noexcept
   {
     switch (type)
     {
@@ -163,7 +163,7 @@ private:
   static typename ci::Tween<T>::Options applyTween(const ci::TimelineRef& timeline,
                                                    const boost::any& target,
                                                    const boost::any& start, const boost::any& end,
-                                                   const float duration, const ci::EaseFn& ease_func) noexcept
+                                                   float duration, const ci::EaseFn& ease_func) noexcept
   {
     return timeline->applyPtr(boost::any_cast<T*>(target), boost::any_cast<T>(start), boost::any_cast<T>(end),
                               duration, ease_func);
@@ -173,7 +173,7 @@ private:
   static typename ci::Tween<T>::Options applyTween(const ci::TimelineRef& timeline,
                                                    const boost::any& target,
                                                    const boost::any& end,
-                                                   const float duration, const ci::EaseFn& ease_func) noexcept
+                                                   float duration, const ci::EaseFn& ease_func) noexcept
   {
     return timeline->applyPtr(boost::any_cast<T*>(target), boost::any_cast<T>(end),
                               duration, ease_func);
@@ -183,7 +183,7 @@ private:
   static typename ci::Tween<T>::Options appendToTween(const ci::TimelineRef& timeline,
                                                       const boost::any& target,
                                                       const boost::any& start, const boost::any& end,
-                                                      const float duration, const ci::EaseFn& ease_func) noexcept
+                                                      float duration, const ci::EaseFn& ease_func) noexcept
   {
     return timeline->appendToPtr(boost::any_cast<T*>(target), boost::any_cast<T>(start), boost::any_cast<T>(end),
                                  duration, ease_func);
@@ -193,7 +193,7 @@ private:
   static typename ci::Tween<T>::Options appendToTween(const ci::TimelineRef& timeline,
                                                       const boost::any& target,
                                                       const boost::any& end,
-                                                      const float duration, const ci::EaseFn& ease_func) noexcept
+                                                      float duration, const ci::EaseFn& ease_func) noexcept
   {
     return timeline->appendToPtr(boost::any_cast<T*>(target), boost::any_cast<T>(end),
                                  duration, ease_func);
@@ -201,7 +201,7 @@ private:
 
 
   // TODO 特殊化してるだけなのをなんとかしたい
-  static void applyTween(const int type,
+  static void applyTween(int type,
                          const ci::TimelineRef& timeline,
                          const boost::any& target,
                          const Body& body) noexcept
@@ -295,7 +295,7 @@ private:
     }
   }
 
-  static void appendToTween(const int type,
+  static void appendToTween(int type,
                             const ci::TimelineRef& timeline,
                             const boost::any& target,
                             const Body& body) noexcept

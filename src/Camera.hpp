@@ -45,7 +45,7 @@ struct Camera
     return fov_;
   }
 
-  void setFov(const float fov) noexcept
+  void setFov(float fov) noexcept
   {
     fov_ = fov;
     resize();
@@ -56,7 +56,7 @@ struct Camera
     return near_z_;
   }
 
-  void setNearClip(const float near_z) noexcept
+  void setNearClip(float near_z) noexcept
   {
     near_z_ = near_z;
     camera_.setNearClip(near_z_);
@@ -68,7 +68,7 @@ struct Camera
     return far_z_;
   }
 
-  void setFarClip(const float far_z) noexcept
+  void setFarClip(float far_z) noexcept
   {
     far_z_ = far_z;
     camera_.setFarClip(far_z_);

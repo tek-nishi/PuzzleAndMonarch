@@ -42,13 +42,13 @@ class Font
 
 public:
   Font(const std::string& path,
-       const int texture_width = 1024, const int texture_height = 1024, const float initial_size = 16) noexcept;
+       int texture_width = 1024, int texture_height = 1024, float initial_size = 16) noexcept;
 
   ~Font();
 
 
   // フォントサイズ指定
-  void size(const float size) noexcept;
+  void size(float size) noexcept;
   float getSize() const noexcept;
 
   // 描画した時のサイズを取得
@@ -161,7 +161,7 @@ void Font::draw(void* userPtr, const float* verts, const float* tcoords, const u
 
 
 Font::Font(const std::string& path,
-           const int texture_width, const int texture_height, const float initial_size) noexcept
+           int texture_width, int texture_height, float initial_size) noexcept
 {
   auto full_path = getAssetPath(path).string();
 
@@ -200,7 +200,7 @@ Font::~Font()
   fonsDeleteInternal(context_);
 }
 
-void Font::size(const float size) noexcept
+void Font::size(float size) noexcept
 {
   fonsSetSize(context_, size);
   font_size_ = size;

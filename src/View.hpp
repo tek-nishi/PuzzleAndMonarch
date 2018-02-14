@@ -50,7 +50,7 @@ class View
 
 
   // 読まれてないパネルを読み込む
-  const ci::gl::VboMeshRef& getPanelModel(const int number) noexcept
+  const ci::gl::VboMeshRef& getPanelModel(int number) noexcept
   {
     if (!panel_models[number])
     {
@@ -117,14 +117,14 @@ public:
                        put_duration_, getEaseFunc(put_ease_));
   }
 
-  const ci::AxisAlignedBox& panelAabb(const int number) const noexcept
+  const ci::AxisAlignedBox& panelAabb(int number) const noexcept
   {
     return panel_aabb_;
   }
 
   
   // パネルを１枚表示
-  void drawPanel(const int number, const glm::vec3& pos, const u_int rotation, const float rotate_offset) noexcept
+  void drawPanel(int number, const glm::vec3& pos, u_int rotation, float rotate_offset) noexcept
   {
     static const float r_tbl[] = {
       0.0f,
@@ -141,7 +141,7 @@ public:
     ci::gl::popModelView();
   }
 
-  void drawPanel(const int number, const glm::ivec2& pos, const u_int rotation) noexcept
+  void drawPanel(int number, const glm::ivec2& pos, u_int rotation) noexcept
   {
     drawPanel(number, glm::vec3(pos.x, 0.0f, pos.y), rotation, 0.0f);
   }
@@ -212,9 +212,9 @@ public:
 #ifdef DEBUG
 
 // パネルのエッジを表示
-void drawPanelEdge(const Panel& panel, glm::vec3 pos, u_int rotation) noexcept
+void drawPanelEdge(const Panel& panel, const glm::vec3& pos, u_int rotation) noexcept
 {
-  const float r_tbl[] = {
+  static const float r_tbl[] = {
     0.0f,
     -180.0f * 0.5f,
     -180.0f,

@@ -22,7 +22,7 @@ public:
   ~TaskContainer() = default;
 
 
-  void update(const double current_time, const double delta_time) noexcept
+  void update(double current_time, double delta_time) noexcept
   {
     for (auto it = std::begin(tasks_); it != std::end(tasks_); )
     {

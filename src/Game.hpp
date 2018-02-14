@@ -398,7 +398,7 @@ private:
   // ランキングを決める
   void calcRanking(int score) noexcept
   {
-    const int ranking_score[] = {
+    static const int ranking_score[] = {
       12 * 12 * 700,
       11 * 11 * 700,
       10 * 10 * 700,
