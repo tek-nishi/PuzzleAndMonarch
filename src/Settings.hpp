@@ -26,7 +26,15 @@ class Settings
 
 
 public:
-  Settings(const ci::JsonTree& params, Event<Arguments>& event, UI::Drawer& drawer, TweenCommon& tween_common) noexcept
+  // FIXME 受け渡しが冗長なのを解決したい
+  struct Detail {
+    bool bgm_enable;
+    bool se_enable;
+  };
+
+
+  Settings(const ci::JsonTree& params, Event<Arguments>& event, UI::Drawer& drawer, TweenCommon& tween_common,
+           const Detail& detail) noexcept
     : event_(event),
       canvas_(event, drawer, tween_common,
               params["ui.camera"],
@@ -45,7 +53,11 @@ public:
                                 canvas_.active(false);
                                 count_exec_.add(1.0, [this]() noexcept
                                                      {
-                                                       event_.signal("Settings:Finished", Arguments());
+                                                       Arguments args = {
+                                                         { "bgm-enable", bgm_enable_ },
+                                                         { "se-enable",  se_enable_ }
+                                                       };
+                                                       event_.signal("Settings:Finished", args);
                                                        active_ = false;
                                                      });
                                 DOUT << "Back to Title" << std::endl;
@@ -72,6 +84,8 @@ public:
     setupCommonTweens(event_, holder_, canvas_, "agree");
     setupCommonTweens(event_, holder_, canvas_, "BGM");
     setupCommonTweens(event_, holder_, canvas_, "SE");
+
+    applyDetail(detail);
   }
 
   ~Settings() = default;
@@ -84,6 +98,23 @@ private:
     return active_;
   }
 
+
+  void applyDetail(const Detail& detail) noexcept
+  {
+    bgm_enable_ = detail.bgm_enable;
+    se_enable_  = detail.se_enable;
+
+    {
+      auto text = bgm_enable_ ? u8"" : u8"";
+      const auto& widget = canvas_.at("BGM");
+      widget->setParam("text", std::string(text));
+    }
+    {
+      auto text = se_enable_ ? u8"" : u8"";
+      const auto& widget = canvas_.at("SE");
+      widget->setParam("text", std::string(text));
+    }
+  }
 };
 
 }

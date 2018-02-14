@@ -78,12 +78,22 @@ public:
     holder_ += event_.connect("Settings:begin",
                               [this](const Connection&, const Arguments&) noexcept
                               {
-                                tasks_.pushBack<Settings>(params_, event_, drawer_, tween_common_);
+                                Settings::Detail detail = {
+                                  archive_.getRecord<bool>("bgm-enable"),
+                                  archive_.getRecord<bool>("se-enable")
+                                };
+
+                                tasks_.pushBack<Settings>(params_, event_, drawer_, tween_common_, detail);
                               });
     // Settings→Title
     holder_ += event_.connect("Settings:Finished",
-                              [this](const Connection&, const Arguments&) noexcept
+                              [this](const Connection&, const Arguments& args) noexcept
                               {
+                                // Settingsの変更内容を記録
+                                archive_.setRecord("bgm-enable", boost::any_cast<bool>(args.at("bgm-enable")));
+                                archive_.setRecord("se-enable",  boost::any_cast<bool>(args.at("se-enable")));
+                                archive_.save();
+
                                 tasks_.pushBack<Title>(params_, event_, drawer_, tween_common_);
                               });
     // Title→Records
@@ -93,7 +103,7 @@ public:
                                 Records::Detail detail = {
                                   archive_.getRecord<u_int>("play-times"),
                                   archive_.getRecord<u_int>("high-score"),
-                                  archive_.getRecord<u_int>("total-panels"),
+                                  archive_.getRecord<u_int>("total-panels")
                                 };
 
                                 tasks_.pushBack<Records>(params_, event_, drawer_, tween_common_, detail);
