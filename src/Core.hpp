@@ -90,7 +90,13 @@ public:
     holder_ += event_.connect("Records:begin",
                               [this](const Connection&, const Arguments&) noexcept
                               {
-                                tasks_.pushBack<Records>(params_, event_, drawer_, tween_common_);
+                                Records::Detail detail = {
+                                  archive_.getRecord<u_int>("play-times"),
+                                  archive_.getRecord<u_int>("high-score"),
+                                  archive_.getRecord<u_int>("total-panels"),
+                                };
+
+                                tasks_.pushBack<Records>(params_, event_, drawer_, tween_common_, detail);
                               });
     // Records→Title
     holder_ += event_.connect("Records:Finished",

@@ -26,11 +26,16 @@ class Records
 
 
 public:
-  // struct {
-  // };
+  // FIXME 受け渡しが冗長なのを解決したい
+  struct Detail {
+    u_int play_times;
+    u_int high_score;
+    u_int total_panels;
+  };
 
 
-  Records(const ci::JsonTree& params, Event<Arguments>& event, UI::Drawer& drawer, TweenCommon& tween_common) noexcept
+  Records(const ci::JsonTree& params, Event<Arguments>& event, UI::Drawer& drawer, TweenCommon& tween_common,
+          const Detail& detail) noexcept
     : event_(event),
       canvas_(event, drawer, tween_common,
               params["ui.camera"],
@@ -57,6 +62,8 @@ public:
 
     // ボタンイベント共通Tween
     setupCommonTweens(event_, holder_, canvas_, "agree");
+
+    applyDetail(detail);
   }
 
   ~Records() = default;
@@ -67,6 +74,23 @@ private:
   {
     count_exec_.update(delta_time);
     return active_;
+  }
+
+
+  void applyDetail(const Detail& detail) noexcept
+  {
+    {
+      const auto& widget = canvas_.at("record:0");
+      widget->setParam("text", std::to_string(detail.play_times));
+    }
+    {
+      const auto& widget = canvas_.at("record:1");
+      widget->setParam("text", std::to_string(detail.high_score));
+    }
+    {
+      const auto& widget = canvas_.at("record:2");
+      widget->setParam("text", std::to_string(detail.total_panels));
+    }
   }
 };
 
