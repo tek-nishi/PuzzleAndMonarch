@@ -350,6 +350,14 @@ private:
             ngs::drawPanelEdge(panels_[status.number], disp_pos, status.rotation);
           }
         }
+
+        if (game_->isPlaying())
+        {
+          auto aabb = view_.panelAabb(game_->getHandPanel());
+          aabb.transform(glm::translate(cursor_pos_));
+          ci::gl::color(0, 1, 0);
+          ci::gl::drawStrokedCube(aabb);
+        }
       }
 #endif
     }

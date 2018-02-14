@@ -23,7 +23,8 @@ class View
   // パネル
   std::vector<std::string> panel_path;
   std::vector<ci::gl::VboMeshRef> panel_models;
-  std::vector<ci::AxisAlignedBox> panel_aabb;
+  // AABBは全パネル共通
+  ci::AxisAlignedBox panel_aabb_;
 
   // 演出用
   ci::gl::VboMeshRef blank_model;
@@ -54,8 +55,7 @@ class View
     if (!panel_models[number])
     {
       auto tri_mesh = PLY::load(panel_path[number]);
-      panel_aabb[number] = tri_mesh.calcBoundingBox();
-
+      // panel_aabb[number] = tri_mesh.calcBoundingBox();
       auto mesh = ci::gl::VboMesh::create(tri_mesh);
       panel_models[number] = mesh;
     }
@@ -76,7 +76,9 @@ public:
       panel_path.push_back(p.getValue<std::string>());
     }
     panel_models.resize(panel_path.size());
-    panel_aabb.resize(panel_path.size());
+
+    panel_aabb_ = ci::AxisAlignedBox(glm::vec3(-PANEL_SIZE / 2, 0, -PANEL_SIZE / 2),
+                                     glm::vec3(PANEL_SIZE / 2, 1, PANEL_SIZE / 2));
 
     blank_model    = ci::gl::VboMesh::create(PLY::load(params.getValueForKey<std::string>("blank_model")));
     selected_model = ci::gl::VboMesh::create(PLY::load(params.getValueForKey<std::string>("selected_model")));
@@ -117,7 +119,7 @@ public:
 
   const ci::AxisAlignedBox& panelAabb(const int number) const noexcept
   {
-    return panel_aabb[number];
+    return panel_aabb_;
   }
 
   
