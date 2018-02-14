@@ -7,7 +7,9 @@
     "frame_rate": 60,
 
     "debug": [
-      [ "d", "debug-info" ]
+      [ "d", "debug-info" ],
+      [ "c", "debug-canvas-draw" ],
+      [ "m", "debug-main-draw" ]
     ]
   },
 

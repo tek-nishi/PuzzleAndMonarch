@@ -240,6 +240,12 @@ public:
                               {
                                 disp_debug_info_ = !disp_debug_info_;
                               });
+    
+    holder_ += event_.connect("debug-main-draw",
+                              [this](const Connection&, Arguments& arg) noexcept
+                              {
+                                debug_draw_ = !debug_draw_;
+                              });
 #endif
     // 本編準備
     game_->preparationPlay();
@@ -304,6 +310,10 @@ private:
 
   void draw(const Connection&, const Arguments&) noexcept
   {
+#if defined (DEBUG)
+    if (debug_draw_) return;
+#endif
+
     // 本編
     ci::gl::enableDepth();
     ci::gl::enable(GL_CULL_FACE);
@@ -674,6 +684,7 @@ private:
 
 #ifdef DEBUG
   bool disp_debug_info_ = false;
+  bool debug_draw_ = false;
 
   // Fieldの外接球
   ci::Sphere framing_sphere_;

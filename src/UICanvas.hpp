@@ -72,6 +72,12 @@ public:
                               {
                                 debug_info_ = !debug_info_;
                               });
+    
+    holder_ += event_.connect("debug-canvas-draw",
+                              [this](const Connection&, Arguments& arg) noexcept
+                              {
+                                debug_draw_ = !debug_draw_;
+                              });
 #endif
   }
 
@@ -125,6 +131,9 @@ private:
 
   void draw(const Connection&, const Arguments&) noexcept
   {
+#if defined (DEBUG)
+    if (debug_draw_) return;
+#endif
     ci::gl::enableDepth(false);
     ci::gl::disable(GL_CULL_FACE);
     ci::gl::enableAlphaBlending();
@@ -314,6 +323,7 @@ private:
 
 #if defined (DEBUG)
   bool debug_info_ = false;
+  bool debug_draw_ = false;
 #endif
 
 };
