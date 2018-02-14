@@ -103,6 +103,10 @@ private:
       i += 1;
     }
     {
+      const auto& widget = canvas_.at("score:8");
+      widget->setParam("text", std::to_string(score.total_panels));
+    }
+    {
       const auto& widget = canvas_.at("score:10");
       widget->setParam("text", std::to_string(score.total_score));
     }

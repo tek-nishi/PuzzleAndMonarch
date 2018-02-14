@@ -60,9 +60,10 @@ struct Game
         endPlay();
 
         Arguments args = {
-          { "scores", scores },
-          { "total_score", total_score },
+          { "scores",        scores },
+          { "total_score",   total_score },
           { "total_ranking", total_ranking },
+          { "total_panels",  total_panels }
         };
         event_.signal("Game:Finish", args);
       }
@@ -166,6 +167,7 @@ struct Game
     if (!isPlaying()) return;
 
     // パネルを追加してイベント送信
+    total_panels += 1;
     putPanel(hand_panel, field_pos, hand_rotation);
 
     bool update_score = false;
@@ -421,6 +423,7 @@ private:
   void putPanel(int panel, const glm::ivec2& pos, u_int rotation) noexcept
   {
     field.addPanel(panel, pos, rotation);
+
     {
       Arguments args = {
         { "panel",     panel },
@@ -465,6 +468,7 @@ private:
   std::vector<u_int> scores;
   u_int total_score   = 0;
   u_int total_ranking = 0;
+  u_int total_panels  = 0;
 
   // 列挙した置ける箇所
   std::vector<glm::ivec2> blank;
