@@ -336,23 +336,26 @@ private:
 #ifdef DEBUG
       if (disp_debug_info_)
       {
-        // 手元のパネル
-        ngs::drawPanelEdge(panels_[game_->getHandPanel()], pos, game_->getHandRotation());
-
-        // 置こうとしている場所の周囲
-        auto around = game_->enumerateAroundPanels(field_pos_);
-        if (!around.empty()) {
-          for (auto it : around) {
-            auto p = it.first * int(ngs::PANEL_SIZE);
-            glm::vec3 disp_pos(p.x, 0.0f, p.y);
-
-            auto status = it.second;
-            ngs::drawPanelEdge(panels_[status.number], disp_pos, status.rotation);
-          }
-        }
-
         if (game_->isPlaying())
         {
+          // 手元のパネル
+          // drawPanelEdge(panels_[game_->getHandPanel()], pos, game_->getHandRotation());
+          
+          // 置こうとしている場所の周囲
+          auto around = game_->enumerateAroundPanels(field_pos_);
+          if (!around.empty())
+          {
+            for (auto it : around)
+            {
+              auto p = it.first * int(PANEL_SIZE);
+              glm::vec3 disp_pos(p.x, 0.0f, p.y);
+
+              auto status = it.second;
+              drawPanelEdge(panels_[status.number], disp_pos, status.rotation);
+            }
+          }
+
+          // パネルのAABB
           auto aabb = view_.panelAabb(game_->getHandPanel());
           aabb.transform(glm::translate(cursor_pos_));
           ci::gl::color(0, 1, 0);

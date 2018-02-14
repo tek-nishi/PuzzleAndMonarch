@@ -8,6 +8,7 @@
 #include "CountExec.hpp"
 #include "UICanvas.hpp"
 #include "TweenUtil.hpp"
+#include "Score.hpp"
 
 
 namespace ngs {
@@ -27,15 +28,6 @@ class Result
 
 
 public:
-  // スコア
-  struct Score
-  {
-    std::vector<int> scores;
-    int total_score;
-    int total_ranking;
-  };
-
-
   Result(const ci::JsonTree& params, Event<Arguments>& event, UI::Drawer& drawer, TweenCommon& tween_common,
          const Score& score) noexcept
     : event_(event),

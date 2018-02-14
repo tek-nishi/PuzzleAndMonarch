@@ -107,7 +107,7 @@ public:
     holder_ += event_.connect("Game:UpdateScores",
                               [this](const Connection&, const Arguments& args) noexcept
                               {
-                                const auto& scores = boost::any_cast<std::vector<int>>(args.at("scores"));
+                                const auto& scores = boost::any_cast<std::vector<u_int>>(args.at("scores"));
                                 updateScores(scores);
                               });
 
@@ -146,7 +146,7 @@ private:
     return active_;
   }
 
-  void updateScores(const std::vector<int>& scores) noexcept
+  void updateScores(const std::vector<u_int>& scores) noexcept
   {
     int i = 1;
     for (auto score : scores)

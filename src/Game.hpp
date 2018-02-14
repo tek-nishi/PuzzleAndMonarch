@@ -462,9 +462,9 @@ private:
   std::vector<glm::ivec2> completed_church;
 
   // スコア
-  std::vector<int> scores;
-  int total_score   = 0;
-  int total_ranking = 0;
+  std::vector<u_int> scores;
+  u_int total_score   = 0;
+  u_int total_ranking = 0;
 
   // 列挙した置ける箇所
   std::vector<glm::ivec2> blank;

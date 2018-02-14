@@ -18,6 +18,7 @@
 #include "Credits.hpp"
 #include "Settings.hpp"
 #include "Records.hpp"
+#include "Archive.hpp"
 
 
 namespace ngs {
@@ -48,6 +49,7 @@ public:
   Core(const ci::JsonTree& params, Event<Arguments>& event) noexcept
     : params_(params),
       event_(event),
+      archive_("records.json"),
       drawer_(params["ui"]),
       tween_common_(Params::load("tw_common.json"))
   {
@@ -106,11 +108,14 @@ public:
     holder_ += event_.connect("Game:Finish",
                               [this](const Connection&, const Arguments& args) noexcept
                               {
-                                Result::Score score = {
-                                  boost::any_cast<const std::vector<int>&>(args.at("scores")),
-                                  boost::any_cast<int>(args.at("total_score")),
-                                  boost::any_cast<int>(args.at("total_ranking"))
+                                Score score = {
+                                  boost::any_cast<const std::vector<u_int>&>(args.at("scores")),
+                                  boost::any_cast<u_int>(args.at("total_score")),
+                                  boost::any_cast<u_int>(args.at("total_ranking")),
+                                  0
                                 };
+
+                                archive_.recordGameResults(score);
 
                                 count_exec_.add(2.0,
                                                 [this, score]() noexcept
@@ -143,6 +148,9 @@ private:
 
   CountExec count_exec_;
   TaskContainer tasks_;
+
+  Archive archive_;
+
 
   // UI
   UI::Drawer drawer_;

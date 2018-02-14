@@ -12,13 +12,14 @@
 
 namespace ngs {
 
-ci::fs::path getAssetPath(const std::string& path);
-ci::fs::path getDocumentPath();
+ci::fs::path getAssetPath(const std::string& path) noexcept;
+ci::fs::path getDocumentPath() noexcept;
 
 
 #if defined (NGS_PATH_IMPLEMENTATION)
 
-ci::fs::path getAssetPath(const std::string& path) {
+ci::fs::path getAssetPath(const std::string& path) noexcept
+{
 #if defined (DEBUG) && defined (CINDER_MAC)
   // Debug時、OSXはプロジェクトの場所からfileを読み込む
   ci::fs::path full_path(std::string(PREPRO_TO_STR(SRCROOT)) + "../assets/" + path);
@@ -30,7 +31,8 @@ ci::fs::path getAssetPath(const std::string& path) {
 #endif
 }
 
-ci::fs::path getDocumentPath() {
+ci::fs::path getDocumentPath() noexcept
+{
 #if defined(CINDER_COCOA_TOUCH)
   // iOS版はアプリごとに用意された場所
   return ci::getDocumentsDirectory();
