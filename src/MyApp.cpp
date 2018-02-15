@@ -35,6 +35,9 @@ public:
     touch_event_(event_),
     worker_(std::make_unique<Worker>(params_, event_))
   {
+    DOUT << "Window size: " << getWindowSize() << std::endl;
+    DOUT << "Resolution:  " << ci::app::toPixels(getWindowSize()) << std::endl;
+
     ci::Rand::randomize();
     prev_time_ = getElapsedSeconds();
 
