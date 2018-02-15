@@ -124,11 +124,16 @@ public:
     holder_ += event_.connect("Game:Finish",
                               [this](const Connection&, const Arguments& args) noexcept
                               {
+                                // ハイスコア判定
+                                auto total_score = boost::any_cast<u_int>(args.at("total_score"));
+                                auto high_score  = archive_.getRecord<u_int>("high-score");
+
                                 Score score = {
                                   boost::any_cast<const std::vector<u_int>&>(args.at("scores")),
-                                  boost::any_cast<u_int>(args.at("total_score")),
+                                  total_score,
                                   boost::any_cast<u_int>(args.at("total_ranking")),
-                                  boost::any_cast<u_int>(args.at("total_panels"))
+                                  boost::any_cast<u_int>(args.at("total_panels")),
+                                  total_score > high_score,
                                 };
 
                                 archive_.recordGameResults(score);

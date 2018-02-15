@@ -21,6 +21,8 @@ class Result
 
   CountExec count_exec_;
 
+  bool high_score_;
+
   std::vector<std::string> ranking_text_;
 
   UI::Canvas canvas_;
@@ -31,6 +33,7 @@ public:
   Result(const ci::JsonTree& params, Event<Arguments>& event, UI::Drawer& drawer, TweenCommon& tween_common,
          const Score& score) noexcept
     : event_(event),
+      high_score_(score.high_score),
       canvas_(event, drawer, tween_common,
               params["ui.camera"],
               Params::load(params.getValueForKey<std::string>("result.canvas")),
@@ -84,6 +87,13 @@ private:
   bool update(double current_time, double delta_time) noexcept override
   {
     count_exec_.update(delta_time);
+
+    if (high_score_)
+    {
+      const auto& widget = canvas_.at("score:10");
+      auto color = ci::ColorA(ci::hsvToRgb({ std::fmod(current_time * 2.0, 1.0),1, 1 }));
+      widget->setParam("color", color);
+    }
 
     return active_;
   }
