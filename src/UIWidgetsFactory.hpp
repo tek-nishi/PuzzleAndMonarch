@@ -17,44 +17,9 @@ class WidgetsFactory
   : private boost::noncopyable
 {
   // JSONから生成(階層構造も含む)
-  WidgetPtr create(const ci::JsonTree& params) noexcept
+  WidgetPtr create(const ci::JsonTree& params) const noexcept
   {
-    auto rect = Json::getRect(params["rect"]);
-    auto widget = std::make_shared<UI::Widget>(rect);
-
-    if (params.hasChild("identifier"))
-    {
-      auto id = params.getValueForKey<std::string>("identifier");
-      widget->setIdentifier(id);
-    }
-    if (params.hasChild("enable"))
-    {
-      widget->enable(params.getValueForKey<bool>("enable"));
-    }
-
-    // アンカー
-    if (params.hasChild("anchor"))
-    {
-      widget->setAnchor(Json::getVec<glm::vec2>(params["anchor"][0]),
-                        Json::getVec<glm::vec2>(params["anchor"][1]));
-    }
-    
-    // スケーリング
-    if (params.hasChild("scale"))
-    {
-      widget->setScale(Json::getVec<glm::vec2>(params["scale"]));
-    }
-
-    if (params.hasChild("pivot"))
-    {
-      widget->setPivot(Json::getVec<glm::vec2>(params["pivot"]));
-    }
-
-    if (params.hasChild("event"))
-    {
-      widget->setEvent(params.getValueForKey<std::string>("event"));
-    }
-
+    auto widget = UI::Widget::createFromParams(params);
 
     // タイプ別
     if (params.hasChild("text"))
@@ -78,14 +43,13 @@ class WidgetsFactory
       widget->setWidgetBase(std::move(base));
     }
 
-
     // 子供を追加
     // TIPS:再帰で実装
     if (params.hasChild("childlen"))
     {
       for (const auto& child : params["childlen"])
       {
-        widget->addChild(create(child));
+        widget->addChildren(create(child));
       }
     }
     

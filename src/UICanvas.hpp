@@ -168,9 +168,9 @@ private:
       enumerated_widgets_.push_back(widget);
     }
 
-    const auto& children = widget->getChildren();
-    if (children.empty()) return;
+    if (!widget->hasChild()) return;
 
+    const auto& children = widget->getChildren();
     for (const auto& child : children)
     {
       makeQueryWidgets(child);

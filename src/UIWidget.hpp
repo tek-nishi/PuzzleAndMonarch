@@ -29,11 +29,8 @@ public:
 #endif
   }
 
+  ~Widget() = default;
 
-  void setIdentifier(std::string id) noexcept
-  {
-    identifier_ = std::move(id);
-  }
 
   const std::string& getIdentifier() const noexcept
   {
@@ -45,76 +42,22 @@ public:
     return !identifier_.empty();
   }
 
-
-  ci::Rectf& getRect() noexcept
-  {
-    return rect_;
-  }
-  
-  void setPivot(const glm::vec2& pivot) noexcept
-  {
-    pivot_ = pivot;
-  }
-
-  // for Editor
-  glm::vec2& getPivot() noexcept
-  {
-    return pivot_;
-  }
-  
-  void setAnchor(const glm::vec2& anchor_min, const glm::vec2& anchor_max) noexcept
-  {
-    anchor_min_ = anchor_min;
-    anchor_max_ = anchor_max;
-  }
-
-  // for Editor
-  glm::vec2& getAnchorMin() noexcept
-  {
-    return anchor_min_;
-  }
-
-  // for Editor
-  glm::vec2& getAnchorMax() noexcept
-  {
-    return anchor_min_;
-  }
-
-  void setScale(const glm::vec2& scale) noexcept
-  {
-    scale_ = scale;
-  }
-
-  // for Editor
-  glm::vec2& getScale() noexcept
-  {
-    return scale_;
-  }
-
-  void setEvent(std::string name) noexcept
-  {
-    event_ = std::move(name);
-    has_event_ = true;
-  }
-
   const std::string& getEvent() const noexcept
   {
     return event_;
   }
 
-  void setOffset(const glm::vec2& offset) noexcept
+  bool hasEvent() const noexcept
   {
-    offset_ = offset;
+    return has_event_;
   }
 
-  // for editor
-  glm::vec2& getOffset() noexcept
+  bool hasChild() const noexcept
   {
-    return offset_;
+    return !children_.empty();
   }
 
-
-  void addChild(const WidgetPtr& widget) noexcept
+  void addChildren(const WidgetPtr& widget) noexcept
   {
     children_.push_back(widget);
   }
@@ -124,14 +67,9 @@ public:
     return children_;
   }
 
-  void setWidgetBase(std::unique_ptr<UI::WidgetBase> base) noexcept
+  void setWidgetBase(std::unique_ptr<UI::WidgetBase>&& base) noexcept
   {
     widget_base_ = std::move(base);
-  }
-
-  bool hasEvent() const noexcept
-  {
-    return has_event_;
   }
 
   // FIXME 直前の描画結果から判定している
@@ -281,6 +219,43 @@ public:
     }
   }
 #endif
+
+
+  // パラメーターから生成
+  static WidgetPtr createFromParams(const ci::JsonTree& params) noexcept
+  {
+    auto rect = Json::getRect(params["rect"]);
+    auto widget = std::make_shared<UI::Widget>(rect);
+
+    if (params.hasChild("identifier"))
+    {
+      widget->identifier_ = params.getValueForKey<std::string>("identifier");
+    }
+    if (params.hasChild("enable"))
+    {
+      widget->enable_ = params.getValueForKey<bool>("enable");
+    }
+    if (params.hasChild("anchor"))
+    {
+      widget->anchor_min_ = Json::getVec<glm::vec2>(params["anchor"][0]);
+      widget->anchor_max_ = Json::getVec<glm::vec2>(params["anchor"][1]);
+    }
+    if (params.hasChild("scale"))
+    {
+      widget->scale_ = Json::getVec<glm::vec2>(params["scale"]);
+    }
+    if (params.hasChild("pivot"))
+    {
+      widget->pivot_ = Json::getVec<glm::vec2>(params["pivot"]);
+    }
+    if (params.hasChild("event"))
+    {
+      widget->event_     = params.getValueForKey<std::string>("event");
+      widget->has_event_ = true;
+    }
+
+    return widget;
+  }
 
 
 private:
