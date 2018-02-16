@@ -17,6 +17,12 @@ namespace ngs {
 
 using Shader = std::pair<std::string, std::string>;
 
+ci::gl::GlslProgRef createShader(const std::string& vertex_path,
+                                 const std::string& fragment_path) noexcept;
+
+
+#if defined (NGS_SHADER_IMPLEMENTATION)
+
 // テキストファイル -> std::string
 std::string readFile(const std::string& path) noexcept
 {
@@ -73,5 +79,7 @@ ci::gl::GlslProgRef createShader(const std::string& vertex_path,
   auto shader = readShader(vertex_path, fragment_path);
   return ci::gl::GlslProg::create(shader.first, shader.second);
 }
+
+#endif
 
 }

@@ -11,6 +11,11 @@
 
 namespace ngs {
 
+ci::EaseFn getEaseFunc(const std::string& name) noexcept;
+
+
+#if defined(NGS_EASEFUNC_IMPLEMENTATION)
+
 ci::EaseFn getEaseFunc(const std::string& name) noexcept
 {
   const static std::map<std::string, ci::EaseFn> funcs =
@@ -74,5 +79,7 @@ ci::EaseFn getEaseFunc(const std::string& name) noexcept
 
   return funcs.at(name);
 }
+
+#endif
 
 }

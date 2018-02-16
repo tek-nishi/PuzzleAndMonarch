@@ -13,8 +13,12 @@
 #include <sstream> 
 #include <vector> 
 
-
 namespace ngs { namespace PLY {
+
+ci::TriMesh load(const std::string& path) noexcept;
+
+
+#if defined (NGS_PLY_IMPLEMENTATION)
 
 std::vector<std::string> split(const std::string& text) noexcept
 {
@@ -104,5 +108,7 @@ ci::TriMesh load(const std::string& path) noexcept
 
   return mesh;
 }
+
+#endif
 
 } }

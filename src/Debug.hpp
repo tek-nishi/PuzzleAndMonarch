@@ -4,10 +4,23 @@
 // Debug用のコード
 //
 
+#include <cinder/Json.h>
+#include <boost/signals2.hpp>
+#include <map>
+#include <string>
+#include "Arguments.hpp"
+#include "Event.hpp"
+
 
 #if defined (DEBUG)
 
 namespace ngs { namespace Debug {
+
+std::map<int, std::string> keyEvent(const ci::JsonTree& params) noexcept;
+void signalKeyEvent(Event<Arguments>& event, const std::map<int, std::string>& key_events, int key) noexcept;
+
+
+#if defined (NGS_DEBUG_IMPLEMENTATION)
 
 std::map<int, std::string> keyEvent(const ci::JsonTree& params) noexcept
 {
@@ -62,6 +75,8 @@ void signalKeyEvent(Event<Arguments>& event, const std::map<int, std::string>& k
 
   event.signal(key_events.at(key), Arguments());
 }
+
+#endif
 
 } }
 

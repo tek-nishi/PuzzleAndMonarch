@@ -165,7 +165,7 @@ public:
                                 {
                                   const auto& pos = boost::any_cast<glm::vec3>(args.at("pos"));
                                   auto offset = canvas_.ndcToPos(pos);
-                                  
+
                                   const auto& widget = canvas_.at("put_timer");
                                   widget->setParam("offset", offset);
                                   widget->enable();
