@@ -14,7 +14,23 @@
   },
 
   "game": {
-    "play_time": 10
+    "play_time": 10,
+
+    "score_rates": [
+      3,
+      4,
+      5,
+      8,
+      15,
+      4,
+      20
+    ],
+
+    "total_score_rate": 50,
+
+    "ranking": [
+      { }
+    ]
   },
 
   "field": {

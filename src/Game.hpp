@@ -20,7 +20,8 @@ struct Game
     : params_(params),
       event_(event),
       panels(panels_),
-      scores(7, 0)
+      scores_(7, 0),
+      total_score_rate_(params.getValueForKey<u_int>("total_score_rate"))
   {
     DOUT << "Panel: " << panels.size() << std::endl;
 
@@ -28,6 +29,11 @@ struct Game
     for (int i = 0; i < panels.size(); ++i)
     {
       waiting_panels.push_back(i);
+    }
+
+    for (const auto& p : params["score_rates"])
+    {
+      score_rates_.push_back(p.getValue<u_int>());
     }
   }
 
@@ -60,7 +66,7 @@ struct Game
         endPlay();
 
         Arguments args = {
-          { "scores",        scores },
+          { "scores",        scores_ },
           { "total_score",   total_score },
           { "total_ranking", total_ranking },
           { "total_panels",  total_panels }
@@ -144,7 +150,7 @@ struct Game
   {
     bool can_put = false;
     
-    if (std::find(std::begin(blank), std::end(blank), field_pos) != std::end(blank))
+    if (std::find(std::begin(blank_), std::end(blank_), field_pos) != std::end(blank_))
     {
       can_put = canPutPanel(panels[hand_panel], field_pos, hand_rotation,
                             field, panels);
@@ -156,7 +162,7 @@ struct Game
   // そこにblankがあるか？
   bool isBlank(const glm::ivec2& field_pos) const noexcept
   {
-    return std::find(std::begin(blank), std::end(blank), field_pos) != std::end(blank);
+    return std::find(std::begin(blank_), std::end(blank_), field_pos) != std::end(blank_);
   }
 
 
@@ -231,7 +237,7 @@ struct Game
       updateScores();
       
       Arguments args = {
-        { "scores", scores }
+        { "scores", scores_ }
       };
       event_.signal("Game:UpdateScores", args);
     }
@@ -280,7 +286,7 @@ struct Game
   // 配置可能な場所
   const std::vector<glm::ivec2>& getBlankPositions() const noexcept
   {
-    return blank;
+    return blank_;
   }
 
 
@@ -363,34 +369,32 @@ private:
   // 各種情報を収集
   void fieldUpdate() noexcept
   {
-    blank = field.searchBlank();
+    blank_ = field.searchBlank();
   }
 
   // スコア更新
   void updateScores() noexcept
   {
-    scores[0] = int(completed_path.size());
-    scores[1] = countTotalAttribute(completed_path, field, panels);
-    scores[2] = int(completed_forests.size());
-    scores[3] = countTotalAttribute(completed_forests, field, panels);
-    scores[4] = int(std::count(std::begin(deep_forest), std::end(deep_forest), 1));
-    scores[5] = countTown(completed_path, field, panels);
-    scores[6] = int(completed_church.size());
+    scores_[0] = int(completed_path.size());
+    scores_[1] = countTotalAttribute(completed_path, field, panels);
+    scores_[2] = int(completed_forests.size());
+    scores_[3] = countTotalAttribute(completed_forests, field, panels);
+    scores_[4] = int(std::count(std::begin(deep_forest), std::end(deep_forest), 1));
+    scores_[5] = countTown(completed_path, field, panels);
+    scores_[6] = int(completed_church.size());
   }
 
   // 最終スコア
   void calcTotalScore() noexcept
   {
     // FIXME 適当に加算しているだけ…
-    total_score = scores[0] * 3            // 完成した道の数
-                  + scores[1] * 4          // 道の長さ
-                  + scores[2] * 5          // 完成した森の数
-                  + scores[3] * 8          // 森の面積
-                  + scores[4] * 15         // 深い森の数
-                  + scores[5] * 4          // 街の数
-                  + scores[6] * 20;        // 教会の数
+    total_score = 0;
+    for (u_int i = 0; i < scores_.size(); ++i)
+    {
+      total_score += scores_[i] * score_rates_[i];
+    }
 
-    total_score *= 50;
+    total_score *= total_score_rate_;
 
     calcRanking(total_score);
   }
@@ -454,6 +458,9 @@ private:
   u_int hand_rotation;
 
   Field field;
+  
+  // 列挙した置ける箇所
+  std::vector<glm::ivec2> blank_;
 
   // 完成した森
   std::vector<std::vector<glm::ivec2>> completed_forests;
@@ -465,13 +472,14 @@ private:
   std::vector<glm::ivec2> completed_church;
 
   // スコア
-  std::vector<u_int> scores;
+  std::vector<u_int> scores_;
   u_int total_score   = 0;
   u_int total_ranking = 0;
   u_int total_panels  = 0;
 
-  // 列挙した置ける箇所
-  std::vector<glm::ivec2> blank;
+  // スコア計算用係数
+  std::vector<u_int> score_rates_;
+  u_int total_score_rate_;
 };
 
 }
