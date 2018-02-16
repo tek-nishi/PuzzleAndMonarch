@@ -43,6 +43,10 @@
 	<string></string>
 	<key>UILaunchStoryboardName</key>
 	<string>LaunchScreen.xib</string>
+	<key>UIRequiredDeviceCapabilities</key>
+	<array>
+		<string>opengles-3</string>
+	</array>
 	<key>UIRequiresFullScreen</key>
 	<true/>
 	<key>UIStatusBarHidden</key>
