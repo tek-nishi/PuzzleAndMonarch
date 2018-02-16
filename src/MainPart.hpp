@@ -23,6 +23,7 @@
 #include "ConnectionHolder.hpp"
 #include "Task.hpp"
 #include "CountExec.hpp"
+#include "FixedTimeExec.hpp"
 #include "EaseFunc.hpp"
 
 
@@ -73,9 +74,10 @@ public:
     holder_ += event_.connect("single_touch_began",
                               [this](const Connection&, Arguments& arg) noexcept
                               {
-                                if (paused_) return;
+                                if (paused_ || prohibited_) return;
 
                                 draged_length_ = 0.0f;
+                                manipulated_ = false;
 
                                 const auto& touch = boost::any_cast<const Touch&>(arg.at("touch"));
 
@@ -97,7 +99,7 @@ public:
     holder_ += event_.connect("single_touch_moved",
                               [this](const Connection&, Arguments& arg) noexcept
                               {
-                                if (paused_) return;
+                                if (paused_ || prohibited_) return;
 
                                 const auto& touch = boost::any_cast<const Touch&>(arg.at("touch"));
                                 if (touch.handled) return;
@@ -110,6 +112,8 @@ public:
                                   event_.signal("Game:PutEnd", Arguments());
                                 }
 
+                                manipulated_ = draged_length_ > 5.0f;
+
                                 // Field回転操作
                                 rotateField(touch);
                                 calcCamera(camera_.body());
@@ -118,7 +122,7 @@ public:
     holder_ += event_.connect("single_touch_ended",
                               [this](const Connection&, Arguments& arg) noexcept
                               {
-                                if (paused_) return;
+                                if (paused_ || prohibited_) return;
 
                                 // 画面回転操作をした場合、パネル操作は全て無効
                                 if (draged_length_ > 5.0f)
@@ -156,6 +160,10 @@ public:
     holder_ += event_.connect("multi_touch_moved",
                               [this](const Connection&, const Arguments& arg) noexcept
                               {
+                                if (paused_ || prohibited_) return;
+
+                                manipulated_ = true;
+                                 
                                 const auto& touches = boost::any_cast<const std::vector<Touch>&>(arg.at("touches"));
                                 auto& camera = camera_.body();
 
@@ -206,11 +214,6 @@ public:
                               });
 
     // 各種イベント
-    // holder_ += event_.connect("Title:finished",
-    //                           [this](const Connection&, const Arguments&) noexcept
-    //                           {
-    //                           });
-
     holder_ += event_.connect("Game:Start",
                               [this](const Connection&, const Arguments&) noexcept
                               {
@@ -229,10 +232,32 @@ public:
                                 view_.startPutEase(timeline_);
                               });
 
-    // holder_ += event_.connect("Game:Finish",
-    //                           [this](const Connection&, const Arguments&) noexcept
-    //                           {
-    //                           });
+    holder_ += event_.connect("Game:Finish",
+                              [this](const Connection&, const Arguments&) noexcept
+                              {
+                                DOUT << "Game:Finish" << std::endl;
+
+                                force_camera_ = true;
+                                prohibited_   = true;
+                                manipulated_  = false;
+
+                                calcViewRange();
+
+                                count_exec_.add(3.0,
+                                                [this]() noexcept
+                                                {
+                                                  force_camera_ = false;
+                                                  prohibited_   = false;
+                                                });
+                                fixed_exec_.add(0.5, -1.0,
+                                                [this](double delta_time) noexcept
+                                                {
+                                                  camera_rotation_.y += M_PI * 0.1 * delta_time;
+                                                  calcCamera(camera_.body());
+
+                                                  return !manipulated_;
+                                                });
+                              });
 
     holder_ += event_.connect("pause:touch_ended",
                               [this](const Connection&, const Arguments&) noexcept
@@ -278,6 +303,8 @@ private:
     }
 
     game_->update(delta_time);
+    count_exec_.update(delta_time);
+    fixed_exec_.update(delta_time);
 
     // カメラの中心位置変更
     target_position_ += (field_center_ - target_position_) * 0.025f;
@@ -473,47 +500,6 @@ private:
     }
   }
 
-
-  // Fieldの外接球を計算
-  ci::Sphere calcBoundingSphere() const noexcept
-  {
-    std::vector<glm::vec3> points;
-    const auto& positions = game_->getBlankPositions();
-    for (const auto& p : positions)
-    {
-      // Panelの４隅の座標を加える
-      auto pos = p * int(PANEL_SIZE);
-      points.emplace_back(pos.x - PANEL_SIZE / 2, 0.0f, pos.y - PANEL_SIZE / 2);
-      points.emplace_back(pos.x + PANEL_SIZE / 2, 0.0f, pos.y - PANEL_SIZE / 2);
-      points.emplace_back(pos.x - PANEL_SIZE / 2, 0.0f, pos.y + PANEL_SIZE / 2);
-      points.emplace_back(pos.x + PANEL_SIZE / 2, 0.0f, pos.y + PANEL_SIZE / 2);
-    }
-
-    return ci::Sphere::calculateBoundingSphere(points);
-  }
-
-  void calcFieldCenter() noexcept
-  {
-    auto sphere = calcBoundingSphere();
-#if defined (DEBUG)
-    framing_sphere_ = sphere;
-#endif
-    auto center = sphere.getCenter();
-    field_center_.x = center.x;
-    field_center_.z = center.z;
-
-    // Sphereがちょうどすっぽり収まる距離を計算
-    float radius = sphere.getRadius();
-    const auto& camera = camera_.body();
-    float fov_v = camera.getFov();
-    float fov_h = camera.getFovHorizontal();
-    float fov = (fov_v < fov_h) ? fov_v : fov_h;
-    field_distance_ = std::max(radius / std::sin(ci::toRadians(fov * 0.5f)),
-                               camera_distance_);
-
-    DOUT << "field distance: " << field_distance_ << std::endl;
-  }
-
   // フィールドの広さから注視点と距離を計算
   void calcViewRange() noexcept
   {
@@ -553,8 +539,8 @@ private:
     float n = d / std::cos(camera_rotation_.x);
     distance -= n;
     field_distance_ = std::max(distance, camera_distance_);
-
-    DOUT << "field distance: " << distance << "," << camera_distance_ << std::endl;
+    // 矯正モード
+    if (prohibited_) field_distance_ = distance;
   }
 
   // Touch座標→Field上の座標
@@ -646,8 +632,10 @@ private:
   ConnectionHolder holder_;
 
   CountExec count_exec_;
+  FixedTimeExec fixed_exec_;
 
   bool paused_ = false;
+  bool prohibited_ = false;
 
   std::vector<Panel> panels_;
   std::unique_ptr<Game> game_;
@@ -656,6 +644,8 @@ private:
   float draged_length_;
   bool touch_put_;
   double put_remaining_;
+
+  bool manipulated_ = false;
 
   float panel_height_;
   double putdown_time_;
@@ -699,6 +689,9 @@ private:
   // Fieldの中心座標
   glm::vec3 field_center_;
   float field_distance_ = 0.0f;
+
+  // カメラは計算が優先
+  bool force_camera_ = false;
 
   // 表示
   Camera camera_;
