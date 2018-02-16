@@ -21,7 +21,9 @@ struct Game
       event_(event),
       panels(panels_),
       scores_(7, 0),
-      total_score_rate_(params.getValueForKey<u_int>("total_score_rate"))
+      total_score_rate_(params.getValueForKey<u_int>("total_score_rate")),
+      ranking_num_(params.getValueForKey<u_int>("ranking_num")),
+      ranking_rate_(Json::getVec<glm::vec2>(params["ranking_rate"]))
   {
     DOUT << "Panel: " << panels.size() << std::endl;
 
@@ -35,6 +37,19 @@ struct Game
     {
       score_rates_.push_back(p.getValue<u_int>());
     }
+
+#if defined (DEBUG)
+    // ランキング計算テスト
+    {
+      DOUT << "Ranking scores.\n";
+
+      for (int i = 0; i < ranking_num_; ++i)
+      {
+        DOUT << (std::cosh(i * ranking_rate_.x) - 1.0) * ranking_rate_.y << '\n';
+      }
+      DOUT << std::endl;
+    }
+#endif
   }
 
   ~Game() = default;
@@ -400,26 +415,13 @@ private:
   }
 
   // ランキングを決める
+  // TIPS 数値の上昇にカテナリー曲線を利用
   void calcRanking(int score) noexcept
   {
-    static const int ranking_score[] = {
-      12 * 12 * 700,
-      11 * 11 * 700,
-      10 * 10 * 700,
-      9 * 9 * 700,
-      8 * 8 * 700,
-      7 * 7 * 700,
-      6 * 6 * 700,
-      5 * 5 * 700,
-      4 * 4 * 700,
-      3 * 3 * 700,
-      2 * 2 * 700,
-      1 * 1 * 700,
-      0 * 0 * 700,
-    };
-    for (total_ranking = 0; total_ranking < 12; ++total_ranking)
+    for (total_ranking = (ranking_num_ - 1); total_ranking > 0; --total_ranking)
     {
-      if (ranking_score[total_ranking] <= score) break;
+      auto rank_score = (std::cosh(total_ranking * ranking_rate_.x) - 1.0) * ranking_rate_.y;
+      if (score >= rank_score) break;
     }
   }
 
@@ -480,6 +482,10 @@ private:
   // スコア計算用係数
   std::vector<u_int> score_rates_;
   u_int total_score_rate_;
+
+  // ランキング計算用
+  u_int ranking_num_;
+  glm::vec2 ranking_rate_;
 };
 
 }

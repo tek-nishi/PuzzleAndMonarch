@@ -14,7 +14,7 @@
   },
 
   "game": {
-    "play_time": 10,
+    "play_time": 180,
 
     "score_rates": [
       3,
@@ -28,9 +28,8 @@
 
     "total_score_rate": 50,
 
-    "ranking": [
-      { }
-    ]
+    "ranking_num": 13,
+    "ranking_rate": [ 0.16, 40261.2148 ]
   },
 
   "field": {
@@ -209,19 +208,19 @@
     "tweens": "tw_result.json",
 
     "ranking": [
-      "Emperor",
-      "King",
-      "Viceroy",
-      "Grand Duke",
-      "Prince",
-      "Landgrave",
-      "Duke",
-      "Marquess",
-      "Margrave",
-      "Count",  
+      "Baronet",
+      "Baron",
       "Viscount",
-      "Baron", 
-      "Baronet"
+      "Count", 
+      "Margrave",
+      "Marquess",
+      "Duke",
+      "Landgrave",
+      "Prince",
+      "Grand Duke",
+      "Viceroy",
+      "King",
+      "Emperor"
     ]
   }
 }
