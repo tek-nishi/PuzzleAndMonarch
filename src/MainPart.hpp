@@ -328,16 +328,17 @@ private:
       // 置ける場所
       const auto& blank = game_->getBlankPositions();
       view_.drawFieldBlank(blank);
-      
+
+      // 手持ちパネル
       glm::vec3 pos(panel_disp_pos_().x, panel_disp_pos_().y + height_offset_, panel_disp_pos_().z);
       view_.drawPanel(game_->getHandPanel(), pos, game_->getHandRotation(), rotate_offset_);
+
+      float s = std::abs(std::sin(put_gauge_timer_ * 6.0f)) * 0.1;
+      glm::vec3 scale(0.9 + s, 1, 0.9 + s);
+      view_.drawFieldSelected(field_pos_, scale);
       
       if (can_put_)
       {
-        float s = std::abs(std::sin(put_gauge_timer_ * 6.0f)) * 0.1;
-        glm::vec3 scale(0.9 + s, 1, 0.9 + s);
-        view_.drawFieldSelected(field_pos_, scale);
-        
         scale.x = 1.0 + s;
         scale.z = 1.0 + s;
         view_.drawCursor(pos, scale);
