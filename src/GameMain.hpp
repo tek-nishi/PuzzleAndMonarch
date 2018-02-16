@@ -131,6 +131,58 @@ public:
                                                 });
                               });
 
+    // パネル位置
+    holder_ += event_.connect("Game:PutBegin",
+                              [this](const Connection&, const Arguments& args) noexcept
+                              {
+                                {
+                                  const auto& pos = boost::any_cast<glm::vec3>(args.at("pos"));
+                                  auto offset = canvas_.ndcToPos(pos);
+                                  
+                                  const auto& widget = canvas_.at("put_timer");
+                                  widget->setParam("offset", offset);
+                                  widget->enable();
+                                }
+                                {
+                                  const auto& widget = canvas_.at("put_timer:fringe");
+                                  widget->setParam("color", ci::ColorA(1, 1, 1, 0));
+                                }
+                                {
+                                  const auto& widget = canvas_.at("put_timer:body");
+                                  widget->setParam("scale", glm::vec2());
+                                  widget->setParam("color", ci::ColorA(1, 1, 1, 0));
+                                }
+                              });
+    holder_ += event_.connect("Game:PutEnd",
+                              [this](const Connection&, const Arguments&) noexcept
+                              {
+                                const auto& widget = canvas_.at("put_timer");
+                                widget->enable(false);
+                              });
+    holder_ += event_.connect("Game:PutHold",
+                              [this](const Connection&, const Arguments& args) noexcept
+                              {
+                                {
+                                  const auto& pos = boost::any_cast<glm::vec3>(args.at("pos"));
+                                  auto offset = canvas_.ndcToPos(pos);
+                                  
+                                  const auto& widget = canvas_.at("put_timer");
+                                  widget->setParam("offset", offset);
+                                  widget->enable();
+                                }
+                                auto scale = boost::any_cast<float>(args.at("scale"));
+                                auto alpha = getEaseFunc("OutExpo")(scale);
+                                {
+                                  const auto& widget = canvas_.at("put_timer:fringe");
+                                  widget->setParam("color", ci::ColorA(1, 1, 1, alpha));
+                                }
+                                {
+                                  const auto& widget = canvas_.at("put_timer:body");
+                                  widget->setParam("scale", glm::vec2(scale, scale));
+                                  widget->setParam("color", ci::ColorA(1, 1, 1, alpha));
+                                }
+                              });
+
     setupCommonTweens(event_, holder_, canvas_, "pause");
     setupCommonTweens(event_, holder_, canvas_, "resume");
     setupCommonTweens(event_, holder_, canvas_, "abort");

@@ -275,6 +275,47 @@
               "color": [ 1, 1, 1, 1 ]
             }
           ]
+        },
+
+        {
+          "identifier": "put_timer",
+          "rect": [ -10, 10, 10, 30 ],
+          "anchor": [
+            [ 0.5, 0.5 ],
+            [ 0.5, 0.5 ]
+          ],
+          "scale": [ 1, 1 ],
+          "pivot": [ 0.5, 0.5 ],
+          "enable": false,
+
+          "childlen": [
+            {
+              "identifier": "put_timer:fringe",
+              "rect": [ 0, 0, 0, 0 ],
+              "anchor": [
+                [ 0, 0 ],
+                [ 1, 1 ]
+              ],
+              "scale": [ 1, 1 ],
+              "pivot": [ 0.5, 0.5 ],
+              "font": "icon",
+              "text": "",
+              "color": [ 1, 1, 1, 1 ]
+            },
+            {
+              "identifier": "put_timer:body",
+              "rect": [ 0, 0, 0, 0 ],
+              "anchor": [
+                [ 0, 0 ],
+                [ 1, 1 ]
+              ],
+              "scale": [ 0.5, 0.5 ],
+              "pivot": [ 0.5, 0.5 ],
+              "font": "icon",
+              "text": "",
+              "color": [ 1, 1, 1, 1 ]
+            }
+          ]
         }
       ]
     },

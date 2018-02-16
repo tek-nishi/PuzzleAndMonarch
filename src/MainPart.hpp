@@ -85,6 +85,12 @@ public:
                                 {
                                   touch_put_ = true;
                                   put_remaining_ = putdown_time_;
+
+                                  auto ndc_pos = camera_.body().worldToNdc(cursor_pos_);
+                                  Arguments args = {
+                                    { "pos", ndc_pos }
+                                  };
+                                  event_.signal("Game:PutBegin", args);
                                 }
                               });
 
@@ -98,9 +104,10 @@ public:
 
                                 // ドラッグの距離を調べて、タップかドラッグか判定
                                 draged_length_ += glm::distance(touch.pos, touch.prev_pos);
-                                if (draged_length_ > 5.0f)
+                                if (touch_put_ && (draged_length_ > 5.0f))
                                 {
                                   touch_put_ = false;
+                                  event_.signal("Game:PutEnd", Arguments());
                                 }
 
                                 // Field回転操作
@@ -118,6 +125,11 @@ public:
                                 {
                                   DOUT << "draged_length: " << draged_length_ << std::endl;
                                   return;
+                                }
+
+                                if (touch_put_)
+                                {
+                                  event_.signal("Game:PutEnd", Arguments());
                                 }
 
                                 const auto& touch = boost::any_cast<const Touch&>(arg.at("touch"));
@@ -279,9 +291,21 @@ private:
       {
         // タッチしたまま時間経過
         put_remaining_ -= delta_time;
+
+        {
+          auto ndc_pos = camera_.body().worldToNdc(cursor_pos_);
+          auto scale = 1.0f - glm::clamp(float(put_remaining_ / putdown_time_), 0.0f, 1.0f);
+          Arguments args = {
+            { "pos",   ndc_pos },
+            { "scale", scale },
+          };
+          event_.signal("Game:PutHold", args);
+        }
+
         if (put_remaining_ <= 0.0)
         {
           game_->putHandPanel(field_pos_);
+          event_.signal("Game:PutEnd", Arguments());
 
           // 次のパネルの準備
           rotate_offset_.stop();

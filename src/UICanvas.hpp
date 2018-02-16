@@ -116,6 +116,20 @@ public:
     tween.set(timeline_, widget);
   }
 
+  glm::vec2 ndcToPos(const glm::vec3& pos) const noexcept
+  {
+    glm::vec3 top_left;
+    glm::vec3 top_right;
+    glm::vec3 bottom_left;
+    glm::vec3 bottom_right;
+
+    camera_.body().getNearClipCoordinates(&top_left, &top_right,
+                                          &bottom_left, &bottom_right);
+
+    return { top_left.x + (top_right.x - top_left.x) * (pos.x + 1.0f) * 0.5f,
+             bottom_left.y + (top_left.y - bottom_left.y) * (pos.y + 1.0f) * 0.5f };
+  }
+
 
 private:
   void resize(const Connection&, const Arguments&) noexcept
