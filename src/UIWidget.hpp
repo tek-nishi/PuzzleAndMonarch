@@ -75,14 +75,24 @@ public:
   // FIXME 直前の描画結果から判定している
   bool contains(const glm::vec2& point) const noexcept
   {
-    return disp_rect_.contains(point);
+    return parent_enable_
+           && enable_
+           && disp_rect_.contains(point);
   }
 
   // 画面に表示するかどうかの制御
   //   全ての子供にも影響
-  void enable(const bool enable = true) noexcept
+  void enable(bool enable = true) noexcept
   {
     enable_ = enable;
+    // 再帰的に設定
+
+    if (children_.empty()) return;
+
+    for (const auto& child : children_)
+    {
+      child->parentEnable(enable);
+    }
   }
 
   bool isEnable() const noexcept
@@ -282,11 +292,18 @@ private:
     glm::vec2 parent_pos = parent_rect.getUpperLeft();
     return ci::Rectf(pos + parent_pos, pos + size + parent_pos);
   }
+  
+  void parentEnable(bool enable) noexcept
+  {
+    parent_enable_ = enable;
+  }
 
 
   // メンバ変数
   std::string identifier_;
   bool enable_ = true;
+  // 親も有効
+  bool parent_enable_ = true;
 
   ci::Rectf rect_;
   glm::vec2 offset_ = { 0.0f, 0.0f };

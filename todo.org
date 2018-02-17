@@ -1,6 +1,4 @@
 * TODO チュートリアル
-* TODO Cinderの行列計算がiOSだと重い？
-* TODO Resultが重い
 * TODO 無限に広がる背景
 * TODO ポーズ画面ボカす
 * TODO drawの更新が30fpsだと演出が遅くなる
@@ -19,7 +17,6 @@
 * TODO いい感じに画面全体に街が映るように
 * TODO ゲーム開始時にプレイ時間を決めたい
 * TODO 被写界深度の浅い表現
-* TODO enableでないWidgetがEventをsignalする
 * TODO fontの選定
 * TODO 残り時間に時計アイコンを
 * TODO ngs-0012
@@ -33,7 +30,7 @@
 * TODO 本格的な画面設計
 * TODO 本格的に見た目を決める
 * TODO サウンド周りの再設計
-* TODO ファイルを１つにまとめる
+* TODO ファルを１つにまとめる
 * TODO AppStore提出に必要な書類や素材
 * TODO iPhone 5sでの動作確認
 * TODO カルカソンヌ公式に許可を取る
@@ -42,6 +39,14 @@
 * TODO iOS:実績を実装
 * TODO ゲームの途中段階をセーブしたい
 * TODO iOS:他のアプリで再生中のBGMがそのまま再生されるように
+* DONE 時々本編中に終わる
+CLOSED: [2018-02-17 土 17:43]
+* DONE enableでないWidgetがEventをsignalする
+CLOSED: [2018-02-17 土 17:43]
+* DONE Resultが重い
+CLOSED: [2018-02-17 土 16:25]
+* DONE Cinderの行列計算がiOSだと重い？
+CLOSED: [2018-02-17 土 16:25]
 * DONE iOS:文字表示が重い
 CLOSED: [2018-02-17 土 10:24]
 * DONE 結果画面で俯瞰カメラにする

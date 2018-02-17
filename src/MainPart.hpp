@@ -536,8 +536,12 @@ private:
     float fov = (fov_v < fov_h) ? fov_v : fov_h;
     float distance = d / std::tan(ci::toRadians(fov * 0.5f));
 
-    float n = d / std::cos(camera_rotation_.x);
-    distance -= n;
+    if (fov_v < fov_h)
+    {
+      // 横長画面の場合はカメラが斜め上から見下ろしているのを考慮
+      float n = d / std::cos(camera_rotation_.x);
+      distance -= n;
+    }
     field_distance_ = std::max(distance, camera_distance_);
     // 矯正モード
     if (prohibited_) field_distance_ = distance;
