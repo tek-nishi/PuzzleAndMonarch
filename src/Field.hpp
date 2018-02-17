@@ -58,18 +58,18 @@ struct Field
   }
 
 
-  bool existsPanel(glm::ivec2 pos) const noexcept
+  bool existsPanel(const glm::ivec2& pos) const noexcept
   {
     return panel_status_.count(pos);
   }
 
-  const PanelStatus& getPanelStatus(glm::ivec2 pos) const noexcept
+  const PanelStatus& getPanelStatus(const glm::ivec2& pos) const noexcept
   {
     return panel_status_.at(pos);
   }
 
   // 追加
-  void addPanel(int number, glm::ivec2 pos, u_int rotation) noexcept
+  void addPanel(int number, const glm::ivec2& pos, u_int rotation) noexcept
   {
     PanelStatus status = {
       pos,
@@ -78,6 +78,23 @@ struct Field
     };
 
     panel_status_.emplace(pos, status);
+  }
+
+  ci::JsonTree serialize() const noexcept
+  {
+    ci::JsonTree data = ci::JsonTree::makeObject("field");
+
+    for (const auto it : panel_status_)
+    {
+      ci::JsonTree p;
+      p.addChild(Json::createFromVec("pos", it.second.position))
+       .addChild(ci::JsonTree("number", it.second.number))
+       .addChild(ci::JsonTree("rotation", it.second.rotation));
+
+      data.pushBack(p);
+    }
+
+    return data;
   }
 
 

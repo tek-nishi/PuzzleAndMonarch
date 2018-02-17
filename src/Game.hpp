@@ -305,6 +305,55 @@ struct Game
   }
 
 
+  template <typename T>
+  static ci::JsonTree createVecArray(const std::string& key, const T& array) noexcept
+  {
+    ci::JsonTree json = ci::JsonTree::makeObject(key);
+
+    for (const auto& obj : array)
+    {
+      json.pushBack(Json::createFromVec(obj));
+    }
+
+    return json;
+  }
+
+  template <typename T>
+  static ci::JsonTree createVecVecArray(const std::string& key, const T& array) noexcept
+  {
+    ci::JsonTree json = ci::JsonTree::makeObject(key);
+
+    for (const auto& aa : array)
+    {
+      for (const auto& obj : aa)
+      {
+        json.pushBack(Json::createFromVec(obj));
+      }
+    }
+
+    return json;
+  }
+
+  // 保存
+  void save() const noexcept
+  {
+    ci::JsonTree save_data;
+
+    save_data.addChild(ci::JsonTree("hand_panel", hand_panel))
+    .addChild(ci::JsonTree("hand_rotation", hand_rotation))
+    .addChild(Json::createArray("waiting_panels", waiting_panels))
+    .addChild(field.serialize())
+    .addChild(ci::JsonTree("play_time", play_time))
+    .addChild(Json::createArray("deep_forest", deep_forest))
+    .addChild(Json::createArray("scores", scores_))
+    .addChild(createVecArray("completed_church", completed_church))
+    .addChild(createVecVecArray("completed_forests", completed_forests))
+    .addChild(createVecVecArray("completed_path", completed_path));
+
+    save_data.write(getDocumentPath() / "game.json"); 
+  }
+
+
 #if defined (DEBUG)
   // プレイ結果
   void calcResult() const noexcept

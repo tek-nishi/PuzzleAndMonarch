@@ -263,6 +263,7 @@ public:
                               [this](const Connection&, const Arguments&) noexcept
                               {
                                 paused_ = true;
+                                game_->save();
                               });
     
     holder_ += event_.connect("resume:touch_ended",

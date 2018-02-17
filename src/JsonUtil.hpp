@@ -68,10 +68,32 @@ ci::quat getQuat(const ci::JsonTree& json) noexcept
 
 
 template <typename T>
+ci::JsonTree createArray(const T& array) noexcept
+{
+  ci::JsonTree json;
+  for (size_t i = 0; i < array.size(); ++i)
+  {
+    json.pushBack(ci::JsonTree("", array[i]));
+  }
+  return json;
+}
+
+template <typename T>
+ci::JsonTree createArray(const std::string& key, const T& array) noexcept
+{
+  ci::JsonTree json = ci::JsonTree::makeObject(key);
+  for (size_t i = 0; i < array.size(); ++i)
+  {
+    json.pushBack(ci::JsonTree("", array[i]));
+  }
+  return json;
+}
+
+template <typename T>
 ci::JsonTree createFromVec(const T& vec) noexcept
 {
   ci::JsonTree json;
-  for (size_t i = 0; i < vec.size(); ++i)
+  for (int i = 0; i < vec.length(); ++i)
   {
     json.pushBack(ci::JsonTree("", vec[i]));
   }
@@ -82,7 +104,7 @@ template <typename T>
 ci::JsonTree createFromVec(const std::string& key, const T& vec) noexcept
 {
   auto json = ci::JsonTree::makeObject(key);
-  for (size_t i = 0; i < vec.size(); ++i)
+  for (int i = 0; i < vec.length(); ++i)
   {
     json.pushBack(ci::JsonTree("", vec[i]));
   }
