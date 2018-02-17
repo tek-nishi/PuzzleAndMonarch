@@ -11,6 +11,7 @@
 #include <cinder/TriMesh.h>
 
 #if defined (NGS_FONT_IMPLEMENTATION)
+#define FONS_VERTEX_COUNT 2048
 #define FONTSTASH_IMPLEMENTATION
 #endif
 #include "fontstash.h"
@@ -66,6 +67,8 @@ public:
 
 int Font::create(void* userPtr, int width, int height) noexcept
 {
+  DOUT << "Font::create: " << width << "," << height << std::endl;
+
   Context* gl = (Context*)userPtr;
 
   // TIPS:テクスチャ内部形式をGL_R8にしといて
@@ -87,6 +90,8 @@ int Font::resize(void* userPtr, int width, int height) noexcept
 
 void Font::update(void* userPtr, int* rect, const unsigned char* data) noexcept
 {
+  DOUT << "Font::update" << std::endl;
+
   Context* gl = (Context*)userPtr;
   if (!gl->tex.get()) return;
 
@@ -115,47 +120,46 @@ void Font::draw(void* userPtr, const float* verts, const float* tcoords, const u
   auto* ctx = gl::context();
   const gl::GlslProg* curGlslProg = ctx->getGlslProg();
 
-  size_t totalArrayBufferSize = sizeof(float) * nverts * 2
-                                + sizeof(float) * nverts * 2
-                                + nverts * 4;
+  size_t vtx_size = sizeof(float) * nverts * 2;
+  size_t total_array_size = vtx_size * 2 + nverts * 4;
+  
+  // データをまとめる
+  std::vector<char> data(total_array_size);
+  std::memcpy(&data[0], verts, vtx_size);
+  std::memcpy(&data[vtx_size], tcoords, vtx_size);
+  std::memcpy(&data[vtx_size * 2], colors, nverts * 4);
 
   ctx->pushVao();
   ctx->getDefaultVao()->replacementBindBegin();
 
-  gl::VboRef defaultArrayVbo = ctx->getDefaultArrayVbo( totalArrayBufferSize );
+  gl::VboRef defaultArrayVbo = ctx->getDefaultArrayVbo(total_array_size);
+  gl::ScopedBuffer vboScp(defaultArrayVbo);
+  // まとめたデータを一気に転送
+  defaultArrayVbo->bufferSubData(0, total_array_size, &data[0]);
 
-  gl::ScopedBuffer vboScp( defaultArrayVbo );
-  gl::ScopedTextureBind texScp( gl->tex );
-
-  size_t curBufferOffset = 0;
   {
-    int loc = curGlslProg->getAttribSemanticLocation( geom::Attrib::POSITION );
-    gl::enableVertexAttribArray( loc );
-    gl::vertexAttribPointer( loc, 2, GL_FLOAT, GL_FALSE, 0, (void*)curBufferOffset );
-    defaultArrayVbo->bufferSubData( curBufferOffset, sizeof(float) * nverts * 2, verts );
-    curBufferOffset += sizeof(float) * nverts * 2;
+    int loc = curGlslProg->getAttribSemanticLocation(geom::Attrib::POSITION);
+    gl::enableVertexAttribArray(loc);
+    gl::vertexAttribPointer(loc, 2, GL_FLOAT, GL_FALSE, 0, (void*)0);
   }
 
   {
-    int loc = curGlslProg->getAttribSemanticLocation( geom::Attrib::TEX_COORD_0 );
-    gl::enableVertexAttribArray( loc );
-    gl::vertexAttribPointer( loc, 2, GL_FLOAT, GL_FALSE, 0, (void*)curBufferOffset );
-    defaultArrayVbo->bufferSubData( curBufferOffset, sizeof(float) * nverts * 2, tcoords );
-    curBufferOffset += sizeof(float)* nverts * 2;
+    int loc = curGlslProg->getAttribSemanticLocation(geom::Attrib::TEX_COORD_0);
+    gl::enableVertexAttribArray(loc);
+    gl::vertexAttribPointer(loc, 2, GL_FLOAT, GL_FALSE, 0, (void*)(vtx_size));
   }
 
   {
-    int loc = curGlslProg->getAttribSemanticLocation( geom::Attrib::COLOR );
-    gl::enableVertexAttribArray( loc );
-    gl::vertexAttribPointer( loc, 4, GL_UNSIGNED_BYTE, GL_TRUE, 0, (void*)curBufferOffset );
-    defaultArrayVbo->bufferSubData( curBufferOffset, nverts * 4, colors );
-    // curBufferOffset += nverts * 4;
+    int loc = curGlslProg->getAttribSemanticLocation(geom::Attrib::COLOR);
+    gl::enableVertexAttribArray(loc);
+    gl::vertexAttribPointer(loc, 4, GL_UNSIGNED_BYTE, GL_TRUE, 0, (void*)(vtx_size * 2));
   }
 
   ctx->getDefaultVao()->replacementBindEnd();
 
+  gl::ScopedTextureBind texScp(gl->tex);
   ctx->setDefaultShaderVars();
-  ctx->drawArrays( GL_TRIANGLES, 0, nverts );
+  ctx->drawArrays(GL_TRIANGLES, 0, nverts);
   ctx->popVao();
 }
 

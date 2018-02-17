@@ -154,7 +154,7 @@
       "far_z":  600
     },
     
-    "font_texture": 4096,
+    "font_texture": 2048,
 
     "font": [
       {
