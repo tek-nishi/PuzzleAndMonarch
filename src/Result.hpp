@@ -39,6 +39,8 @@ public:
               Params::load(params.getValueForKey<std::string>("result.canvas")),
               Params::load(params.getValueForKey<std::string>("result.tweens")))
   {
+    DOUT << "Result" << std::endl;
+
     for (const auto& ranking : params["result.ranking"])
     {
       ranking_text_.push_back(ranking.getValue<std::string>());

@@ -5,6 +5,7 @@
 //
 
 #include "UIWidgetBase.hpp"
+#include <glm/gtx/transform.hpp>
 
 
 namespace ngs { namespace UI {
@@ -48,9 +49,6 @@ public:
 private:
   void draw(const ci::Rectf& rect, UI::Drawer& drawer) noexcept override
   {
-    ci::gl::pushModelMatrix();
-    ci::gl::ScopedGlslProg prog(drawer.getFontShader());
-
     auto& font = drawer.getFont(font_name_);
     // rectの高さからサイズを決める
     auto font_scale = rect.getHeight() / font.getSize();
@@ -59,11 +57,14 @@ private:
     auto size = font.drawSize(t) * font_scale; 
     // レイアウトを計算
     glm::vec2 pos = rect.getUpperLeft() * (glm::vec2(1.0) - layout_) + (rect.getLowerRight() - size) * layout_; 
+
+    ci::gl::ScopedGlslProg prog(drawer.getFontShader());
+    ci::gl::ScopedModelMatrix m;
     
-    ci::gl::translate(pos);
+    auto mtx = glm::translate(glm::vec3(pos.x, pos.y, 0.0));
+    ci::gl::setModelMatrix(mtx);
     ci::gl::scale(glm::vec3(font_scale));
     font.draw(text_, glm::vec2(0), color_);
-    ci::gl::popModelMatrix();
   }
 
 

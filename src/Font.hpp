@@ -120,39 +120,47 @@ void Font::draw(void* userPtr, const float* verts, const float* tcoords, const u
   auto* ctx = gl::context();
   const gl::GlslProg* curGlslProg = ctx->getGlslProg();
 
-  size_t vtx_size = sizeof(float) * nverts * 2;
-  size_t total_array_size = vtx_size * 2 + nverts * 4;
-  
   // データをまとめる
-  std::vector<char> data(total_array_size);
-  std::memcpy(&data[0], verts, vtx_size);
-  std::memcpy(&data[vtx_size], tcoords, vtx_size);
-  std::memcpy(&data[vtx_size * 2], colors, nverts * 4);
+  struct Vtx {
+    glm::vec2 pos;
+    glm::vec2 uv;
+    unsigned int color;
+  };
+
+  std::vector<Vtx> data(nverts);
+  for (int i = 0; i < nverts; ++i)
+  {
+    data[i].pos   = { *(verts + i * 2), *(verts + i * 2 + 1) };
+    data[i].uv    = { *(tcoords + i * 2), *(tcoords + i * 2 + 1) };
+    data[i].color = *(colors + i);
+  }
+
+  size_t data_size = sizeof(Vtx) * nverts;
 
   ctx->pushVao();
   ctx->getDefaultVao()->replacementBindBegin();
 
-  gl::VboRef defaultArrayVbo = ctx->getDefaultArrayVbo(total_array_size);
+  gl::VboRef defaultArrayVbo = ctx->getDefaultArrayVbo(data_size);
   gl::ScopedBuffer vboScp(defaultArrayVbo);
   // まとめたデータを一気に転送
-  defaultArrayVbo->bufferSubData(0, total_array_size, &data[0]);
+  defaultArrayVbo->bufferSubData(0, data_size, &data[0]);
 
   {
     int loc = curGlslProg->getAttribSemanticLocation(geom::Attrib::POSITION);
     gl::enableVertexAttribArray(loc);
-    gl::vertexAttribPointer(loc, 2, GL_FLOAT, GL_FALSE, 0, (void*)0);
+    gl::vertexAttribPointer(loc, 2, GL_FLOAT, GL_FALSE, sizeof(Vtx), (void*)(offsetof(Vtx, pos)));
   }
 
   {
     int loc = curGlslProg->getAttribSemanticLocation(geom::Attrib::TEX_COORD_0);
     gl::enableVertexAttribArray(loc);
-    gl::vertexAttribPointer(loc, 2, GL_FLOAT, GL_FALSE, 0, (void*)(vtx_size));
+    gl::vertexAttribPointer(loc, 2, GL_FLOAT, GL_FALSE, sizeof(Vtx), (void*)(offsetof(Vtx, uv)));
   }
 
   {
     int loc = curGlslProg->getAttribSemanticLocation(geom::Attrib::COLOR);
     gl::enableVertexAttribArray(loc);
-    gl::vertexAttribPointer(loc, 4, GL_UNSIGNED_BYTE, GL_TRUE, 0, (void*)(vtx_size * 2));
+    gl::vertexAttribPointer(loc, 4, GL_UNSIGNED_BYTE, GL_TRUE, sizeof(Vtx), (void*)(offsetof(Vtx, color)));
   }
 
   ctx->getDefaultVao()->replacementBindEnd();

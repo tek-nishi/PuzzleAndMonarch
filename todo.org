@@ -1,4 +1,5 @@
 * TODO チュートリアル
+* TODO Cinderの行列計算がiOSだと重い？
 * TODO Resultが重い
 * TODO 無限に広がる背景
 * TODO ポーズ画面ボカす

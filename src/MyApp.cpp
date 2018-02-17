@@ -45,6 +45,11 @@ public:
     debug_events_ = Debug::keyEvent(params_["app.debug"]);
 #endif
 
+    if (!isFrameRateEnabled())
+    {
+      ci::gl::enableVerticalSync();
+    }
+
 #if defined (CINDER_COCOA_TOUCH)
     // 縦横画面両対応
     signal_connection_ = getSignalSupportedOrientations().connect([]() noexcept {
@@ -266,7 +271,10 @@ void setupApp(ci::app::App::Settings* settings) noexcept
 
   settings->setPowerManagementEnabled(params.getValueForKey<bool>("app.power_management"));
   settings->setHighDensityDisplayEnabled(params.getValueForKey<bool>("app.retina"));
-  settings->setFrameRate(Json::getValue(params, "app.frame_rate", 60.0f));
+
+  float frame_rate = params.getValueForKey<float>("app.frame_rate");
+  (frame_rate > 0.0f) ? settings->setFrameRate(frame_rate)
+                      : settings->disableFrameRate();
 }
 
 }

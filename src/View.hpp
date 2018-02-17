@@ -149,30 +149,32 @@ public:
   // NOTICE 中でViewが書き換わっているのでconstにできない
   void drawFieldPanels() noexcept
   {
+    ci::gl::ScopedModelMatrix m;
+
     const auto& panels = field_panels_;
     for (const auto& p : panels)
     {
-      ci::gl::pushModelView();
-      ci::gl::translate(p.position);
+      auto mtx = glm::translate(p.position);
+      ci::gl::setModelMatrix(mtx);
       ci::gl::rotate(p.rotation);
 
       const auto& model = getPanelModel(p.index);
       ci::gl::draw(model);
-      ci::gl::popModelView();
     }
   }
   
   // Fieldの置ける場所をすべて表示
   void drawFieldBlank(const std::vector<glm::ivec2>& blank) noexcept
   {
+    ci::gl::ScopedModelMatrix m;
+
     for (const auto& pos : blank)
     {
       glm::ivec2 p = pos * int(PANEL_SIZE);
 
-      ci::gl::pushModelView();
-      ci::gl::translate(p.x, 0.0f, p.y);
+      auto mtx = glm::translate(glm::vec3(p.x, 0.0, p.y));
+      ci::gl::setModelMatrix(mtx);
       ci::gl::draw(blank_model);
-      ci::gl::popModelView();
     }
   }
 
@@ -180,21 +182,23 @@ public:
   void drawFieldSelected(const glm::ivec2& pos, const glm::vec3& scale) noexcept
   {
     glm::ivec2 p = pos * int(PANEL_SIZE);
+    
+    ci::gl::ScopedModelMatrix m;
 
-    ci::gl::pushModelView();
-    ci::gl::translate(p.x, 0.0f, p.y);
+    auto mtx = glm::translate(glm::vec3(p.x, 0.0f, p.y));
+    ci::gl::setModelMatrix(mtx);
     ci::gl::scale(scale.x, scale.y, scale.z);
     ci::gl::draw(selected_model);
-    ci::gl::popModelView();
   }
 
   void drawCursor(const glm::vec3& pos, const glm::vec3& scale) noexcept
   {
-    ci::gl::pushModelView();
-    ci::gl::translate(pos.x, pos.y, pos.z);
-    ci::gl::scale(scale.x, scale.y, scale.z);
+    ci::gl::ScopedModelMatrix m;
+    
+    auto mtx = glm::translate(pos);
+    ci::gl::setModelMatrix(mtx);
+    ci::gl::scale(scale);
     ci::gl::draw(cursor_model);
-    ci::gl::popModelView();
   }
 
   // 背景

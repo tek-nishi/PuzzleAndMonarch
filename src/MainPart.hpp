@@ -249,10 +249,10 @@ public:
                                                   force_camera_ = false;
                                                   prohibited_   = false;
                                                 });
-                                fixed_exec_.add(0.5, -1.0,
+                                fixed_exec_.add(1.5, -1.0,
                                                 [this](double delta_time) noexcept
                                                 {
-                                                  camera_rotation_.y += M_PI * 0.1 * delta_time;
+                                                  camera_rotation_.y += M_PI * 0.025 * delta_time;
                                                   calcCamera(camera_.body());
 
                                                   return !manipulated_;
