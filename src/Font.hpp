@@ -143,7 +143,7 @@ void Font::draw(void* userPtr, const float* verts, const float* tcoords, const u
   gl::VboRef defaultArrayVbo = ctx->getDefaultArrayVbo(data_size);
   gl::ScopedBuffer vboScp(defaultArrayVbo);
   // まとめたデータを一気に転送
-  defaultArrayVbo->bufferSubData(0, data_size, &data[0]);
+  defaultArrayVbo->bufferData(data_size, &data[0], GL_STATIC_DRAW);
 
   {
     int loc = curGlslProg->getAttribSemanticLocation(geom::Attrib::POSITION);
