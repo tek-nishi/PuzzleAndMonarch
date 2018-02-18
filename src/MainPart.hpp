@@ -39,9 +39,9 @@ public:
       event_(event),
       panels_(createPanels()),
       game_(std::make_unique<Game>(params["game"], event, panels_)),
-      disp_ease_duration_(params.getValueForKey<float>("field.disp_ease_duration")),
+      disp_ease_duration_(Json::getVec<glm::vec2>(params["field.disp_ease_duration"])),
       disp_ease_name_(params.getValueForKey<std::string>("field.disp_ease_name")),
-      rotate_ease_duration_(params.getValueForKey<float>("field.rotate_ease_duration")),
+      rotate_ease_duration_(Json::getVec<glm::vec2>(params["field.rotate_ease_duration"])),
       rotate_ease_name_(params.getValueForKey<std::string>("field.rotate_ease_name")),
       height_ease_start_(params.getValueForKey<float>("field.height_ease_start")),
       height_ease_duration_(params.getValueForKey<float>("field.height_ease_duration")),
@@ -86,10 +86,9 @@ public:
                                 if (can_put_ && isCursorPos(touch.pos))
                                 {
                                   touch_put_ = true;
+                                  // ゲーム終盤さっさとパネルを置ける
                                   current_putdown_time_ = glm::mix(putdown_time_.x, putdown_time_.y, game_->getPlayTimeRate());
                                   put_remaining_ = current_putdown_time_;
-
-                                  DOUT << "put_remaining: " << put_remaining_ << std::endl;
 
                                   auto ndc_pos = camera_.body().worldToNdc(cursor_pos_);
                                   Arguments args = {
@@ -616,7 +615,10 @@ private:
   void startMoveEase() noexcept
   {
     panel_disp_pos_.stop();
-    timeline_->apply(&panel_disp_pos_, cursor_pos_, disp_ease_duration_, getEaseFunc(disp_ease_name_));
+    // 経過時間で移動速度が上がる
+    // NOTICE プレイに影響は無い
+    auto duration = glm::mix(disp_ease_duration_.x, disp_ease_duration_.y, game_->getPlayTimeRate());
+    timeline_->apply(&panel_disp_pos_, cursor_pos_, duration, getEaseFunc(disp_ease_name_));
   }
 
   // パネル回転演出
@@ -624,7 +626,10 @@ private:
   {
     rotate_offset_.stop();
     rotate_offset_ = 90.0f;
-    timeline_->apply(&rotate_offset_, 0.0f, rotate_ease_duration_, getEaseFunc(rotate_ease_name_));
+    // 経過時間で回転速度が上がる
+    // NOTICE プレイに影響は無い
+    auto duration = glm::mix(rotate_ease_duration_.x, rotate_ease_duration_.y, game_->getPlayTimeRate());
+    timeline_->apply(&rotate_offset_, 0.0f, duration, getEaseFunc(rotate_ease_name_));
   }
 
 
@@ -673,12 +678,12 @@ private:
 
   // パネル位置
   ci::Anim<glm::vec3> panel_disp_pos_;
-  float disp_ease_duration_;
+  glm::vec2 disp_ease_duration_;
   std::string disp_ease_name_;
 
   // パネルの回転
   ci::Anim<float> rotate_offset_ = 0.0f;
-  float rotate_ease_duration_;
+  glm::vec2 rotate_ease_duration_;
   std::string rotate_ease_name_;
 
   // 次のパネルを引いた時の演出

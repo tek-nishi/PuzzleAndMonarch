@@ -133,10 +133,10 @@
     "cursor_model":   "cursor.ply",
     "bg_model":       "bg.ply",
 
-    "disp_ease_duration": 0.3,
+    "disp_ease_duration": [ 0.3, 0.2 ],
     "disp_ease_name": "OutExpo",
 
-    "rotate_ease_duration": 0.5,
+    "rotate_ease_duration": [ 0.5, 0.3 ],
     "rotate_ease_name": "OutExpo",
 
     "height_ease_start": 200,
