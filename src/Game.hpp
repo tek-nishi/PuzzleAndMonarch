@@ -21,6 +21,7 @@ struct Game
     : params_(params),
       event_(event),
       panels_(panels),
+      play_time_(params.getValueForKey<double>("play_time")),
       scores_(7, 0),
       total_score_rate_(params.getValueForKey<u_int>("total_score_rate")),
       ranking_num_(params.getValueForKey<u_int>("ranking_num")),
@@ -68,16 +69,16 @@ struct Game
         )
     {
       // UI更新
-      play_time -= delta_time;
+      play_time_ -= delta_time;
 
       {
         Arguments args = {
-          { "remaining_time", std::max(play_time, 0.0) }
+          { "remaining_time", std::max(play_time_, 0.0) }
         };
         event_.signal("Game:UI", args);
       }
 
-      if (play_time < 0.0) 
+      if (play_time_ < 0.0) 
       {
         // 時間切れ
         DOUT << "Time Up." << std::endl;
@@ -137,12 +138,11 @@ struct Game
   // 本編開始
   void beginPlay() noexcept
   {
-    play_time = params_.getValueForKey<double>("play_time");
     started = true;
 
     // UI更新
     Arguments args = {
-      { "remaining_time", std::max(play_time, 0.0) }
+      { "remaining_time", std::max(play_time_, 0.0) }
     };
     event_.signal("Game:UI", args);
     DOUT << "Game started." << std::endl;
@@ -380,7 +380,7 @@ struct Game
              .addChild(ci::JsonTree("hand_rotation", hand_rotation))
              .addChild(Json::createArray("waiting_panels", waiting_panels))
              .addChild(field.serialize())
-             .addChild(ci::JsonTree("play_time", play_time))
+             .addChild(ci::JsonTree("play_time", play_time_))
              .addChild(createVecVecArray("completed_forests", completed_forests))
              .addChild(Json::createArray("deep_forest", deep_forest))
              .addChild(createVecVecArray("completed_path", completed_path))
@@ -397,7 +397,7 @@ struct Game
     hand_rotation  = json.getValueForKey<u_int>("hand_rotation");
     waiting_panels = Json::getArray<int>(json["waiting_panels"]);
     field          = Field(json["field"]);
-    play_time      = json.getValueForKey<double>("play_time");
+    play_time_     = json.getValueForKey<double>("play_time");
     
     completed_forests = getVecVecArray<glm::ivec2>(json["completed_forests"]);
     deep_forest       = Json::getArray<u_int>(json["deep_forest"]);
@@ -429,6 +429,7 @@ struct Game
       };
       event_.signal("Game:UpdateScores", args);
     }
+    fieldUpdate();
   }
 
 
@@ -578,7 +579,7 @@ private:
   bool started  = false;
   bool finished = false;
 
-  double play_time = 0;
+  double play_time_;
 #ifdef DEBUG
   bool time_count = true;
 #endif

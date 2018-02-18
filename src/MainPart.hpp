@@ -61,9 +61,6 @@ public:
     calcCamera(camera_.body());
     field_distance_ = camera_distance_;
 
-    // load test
-    // game_->load();
-
     // system
     holder_ += event_.connect("resize",
                               std::bind(&MainPart::resize,
@@ -289,7 +286,7 @@ public:
                               });
 #endif
     // 本編準備
-    game_->preparationPlay();
+    // game_->preparationPlay();
   }
 
 
