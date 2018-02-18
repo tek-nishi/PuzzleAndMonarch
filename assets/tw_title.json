@@ -29,6 +29,25 @@
           "body": [
             {
               "duration": 0.5,
+              "delay": 1.3,
+              "copy_start": true,
+              "ease_func": "OutBack",
+              "start": [ 30, 0 ],
+              "end":   [  0, 0 ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "identifier": "Ranking",
+      "tween": [
+        {
+          "param": "offset",
+          "type": "vec2",
+          "body": [
+            {
+              "duration": 0.5,
               "delay": 1.4,
               "copy_start": true,
               "ease_func": "OutBack",

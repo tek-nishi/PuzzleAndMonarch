@@ -18,6 +18,7 @@
 #include "Credits.hpp"
 #include "Settings.hpp"
 #include "Records.hpp"
+#include "Ranking.hpp"
 #include "Archive.hpp"
 
 
@@ -110,6 +111,18 @@ public:
                               });
     // Records→Title
     holder_ += event_.connect("Records:Finished",
+                              [this](const Connection&, const Arguments&) noexcept
+                              {
+                                tasks_.pushBack<Title>(params_, event_, drawer_, tween_common_);
+                              });
+    // Title→Ranking
+    holder_ += event_.connect("Ranking:begin",
+                              [this](const Connection&, const Arguments&) noexcept
+                              {
+                                tasks_.pushBack<Ranking>(params_, event_, drawer_, tween_common_);
+                              });
+    // Ranking→Title
+    holder_ += event_.connect("Ranking:Finished",
                               [this](const Connection&, const Arguments&) noexcept
                               {
                                 tasks_.pushBack<Title>(params_, event_, drawer_, tween_common_);

@@ -286,7 +286,7 @@ public:
                               });
 #endif
     // 本編準備
-    // game_->preparationPlay();
+    game_->preparationPlay();
   }
 
 
