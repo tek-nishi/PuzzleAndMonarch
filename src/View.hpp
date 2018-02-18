@@ -5,6 +5,7 @@
 //
 
 #include <boost/noncopyable.hpp>
+#include <deque>
 #include <cinder/TriMesh.h>
 #include <cinder/gl/Vbo.h>
 #include "PLY.hpp"
@@ -41,7 +42,8 @@ class View
     glm::vec3 rotation;
     int index;
   };
-  std::vector<Panel> field_panels_;
+  // NOTICE 追加時にメモリ上で再配置されるのを避けるためstd::vectorではない
+  std::deque<Panel> field_panels_;
 
   // 画面演出用情報
   float panel_height_;

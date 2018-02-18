@@ -8,6 +8,7 @@
 #include <boost/noncopyable.hpp>
 #include <cinder/Rand.h>
 #include "Logic.hpp"
+#include "CountExec.hpp"
 
 
 namespace ngs {
@@ -16,19 +17,19 @@ struct Game
   : private boost::noncopyable
 {
   Game(const ci::JsonTree& params, Event<Arguments>& event,
-       const std::vector<Panel>& panels_) noexcept
+       const std::vector<Panel>& panels) noexcept
     : params_(params),
       event_(event),
-      panels(panels_),
+      panels_(panels),
       scores_(7, 0),
       total_score_rate_(params.getValueForKey<u_int>("total_score_rate")),
       ranking_num_(params.getValueForKey<u_int>("ranking_num")),
       ranking_rate_(Json::getVec<glm::vec2>(params["ranking_rate"]))
   {
-    DOUT << "Panel: " << panels.size() << std::endl;
+    DOUT << "Panel: " << panels_.size() << std::endl;
 
     // パネルを通し番号で用意
-    for (int i = 0; i < panels.size(); ++i)
+    for (int i = 0; i < panels_.size(); ++i)
     {
       waiting_panels.push_back(i);
     }
@@ -58,6 +59,8 @@ struct Game
   // 内部時間を進める
   void update(double delta_time) noexcept
   {
+    count_exec_.update(delta_time);
+
     if (isPlaying()
 #ifdef DEBUG
         && time_count
@@ -97,9 +100,9 @@ struct Game
   {
     // 開始パネルを探す
     std::vector<int> start_panels;
-    for (int i = 0; i < panels.size(); ++i)
+    for (int i = 0; i < panels_.size(); ++i)
     {
-      if (panels[i].getAttribute() & Panel::START)
+      if (panels_[i].getAttribute() & Panel::START)
       {
         start_panels.push_back(i);
       }
@@ -167,8 +170,8 @@ struct Game
     
     if (std::find(std::begin(blank_), std::end(blank_), field_pos) != std::end(blank_))
     {
-      can_put = canPutPanel(panels[hand_panel], field_pos, hand_rotation,
-                            field, panels);
+      can_put = canPutPanel(panels_[hand_panel], field_pos, hand_rotation,
+                            field, panels_);
     }
 
     return can_put;
@@ -194,7 +197,7 @@ struct Game
     bool update_score = false;
     {
       // 森完成チェック
-      auto completed = isCompleteAttribute(Panel::FOREST, field_pos, field, panels);
+      auto completed = isCompleteAttribute(Panel::FOREST, field_pos, field, panels_);
       if (!completed.empty()) {
         // 得点
         DOUT << "Forest: " << completed.size() << '\n';
@@ -203,7 +206,7 @@ struct Game
           DOUT << " Point: " << comp.size() << '\n';
 
           // 深い森
-          bool deep = isDeepForest(comp, field, panels);
+          bool deep = isDeepForest(comp, field, panels_);
           if (deep) {
             deep_num += 1;
           }
@@ -219,7 +222,7 @@ struct Game
     }
     {
       // 道完成チェック
-      auto completed = isCompleteAttribute(Panel::PATH, field_pos, field, panels);
+      auto completed = isCompleteAttribute(Panel::PATH, field_pos, field, panels_);
       if (!completed.empty()) {
         // 得点
         DOUT << "  Path: " << completed.size() << '\n';
@@ -235,7 +238,7 @@ struct Game
     }
     {
       // 教会完成チェック
-      auto completed = isCompleteChurch(field_pos, field, panels);
+      auto completed = isCompleteChurch(field_pos, field, panels_);
       if (!completed.empty()) {
         // 得点
         DOUT << "Church: " << completed.size() << std::endl;
@@ -325,14 +328,48 @@ struct Game
 
     for (const auto& aa : array)
     {
+      ci::JsonTree j;
       for (const auto& obj : aa)
       {
-        json.pushBack(Json::createFromVec(obj));
+        j.pushBack(Json::createFromVec(obj));
       }
+      json.pushBack(j);
     }
 
     return json;
   }
+
+  template <typename T>
+  static std::vector<T> getVecArray(const ci::JsonTree& json) noexcept
+  {
+    std::vector<T> array;
+
+    for (const auto& obj : json)
+    {
+      array.push_back(Json::getVec<T>(obj));
+    }
+
+    return array;
+  }
+
+  template <typename T>
+  static std::vector<std::vector<T>> getVecVecArray(const ci::JsonTree& json) noexcept
+  {
+    std::vector<std::vector<T>> array;
+
+    for (const auto aa : json)
+    {
+      std::vector<T> ar;
+      for (const auto& obj : aa)
+      {
+        ar.push_back(Json::getVec<T>(obj));
+      }
+      array.push_back(ar);
+    }
+
+    return array;
+  }
+
 
   // 保存
   void save() const noexcept
@@ -340,17 +377,58 @@ struct Game
     ci::JsonTree save_data;
 
     save_data.addChild(ci::JsonTree("hand_panel", hand_panel))
-    .addChild(ci::JsonTree("hand_rotation", hand_rotation))
-    .addChild(Json::createArray("waiting_panels", waiting_panels))
-    .addChild(field.serialize())
-    .addChild(ci::JsonTree("play_time", play_time))
-    .addChild(Json::createArray("deep_forest", deep_forest))
-    .addChild(Json::createArray("scores", scores_))
-    .addChild(createVecArray("completed_church", completed_church))
-    .addChild(createVecVecArray("completed_forests", completed_forests))
-    .addChild(createVecVecArray("completed_path", completed_path));
+             .addChild(ci::JsonTree("hand_rotation", hand_rotation))
+             .addChild(Json::createArray("waiting_panels", waiting_panels))
+             .addChild(field.serialize())
+             .addChild(ci::JsonTree("play_time", play_time))
+             .addChild(createVecVecArray("completed_forests", completed_forests))
+             .addChild(Json::createArray("deep_forest", deep_forest))
+             .addChild(createVecVecArray("completed_path", completed_path))
+             .addChild(createVecArray("completed_church", completed_church));
 
     save_data.write(getDocumentPath() / "game.json"); 
+  }
+
+  void load() noexcept
+  {
+    auto json = ci::JsonTree(ci::loadFile(getDocumentPath() / "game.json"));
+
+    hand_panel     = json.getValueForKey<int>("hand_panel");
+    hand_rotation  = json.getValueForKey<u_int>("hand_rotation");
+    waiting_panels = Json::getArray<int>(json["waiting_panels"]);
+    field          = Field(json["field"]);
+    play_time      = json.getValueForKey<double>("play_time");
+    
+    completed_forests = getVecVecArray<glm::ivec2>(json["completed_forests"]);
+    deep_forest       = Json::getArray<u_int>(json["deep_forest"]);
+    completed_path    = getVecVecArray<glm::ivec2>(json["completed_path"]);
+    completed_church  = getVecArray<glm::ivec2>(json["completed_church"]);
+
+    auto panels = field.enumeratePanels();
+    double at_time = 0.5;
+    for (const auto status : panels)
+    {
+      count_exec_.add(at_time,
+                      [status, this]()
+                      {
+                        Arguments args = {
+                          { "panel",     status.number },
+                          { "field_pos", status.position },
+                          { "rotation",  status.rotation },
+                        };
+                        event_.signal("Game:PutPanel", args);
+                      });
+      at_time += 0.1;
+    }
+
+    {
+      updateScores();
+      
+      Arguments args = {
+        { "scores", scores_ }
+      };
+      event_.signal("Game:UpdateScores", args);
+    }
   }
 
 
@@ -359,11 +437,11 @@ struct Game
   void calcResult() const noexcept
   {
     DOUT << "Forest: " << completed_forests.size() << '\n'
-         << "  area: " << countTotalAttribute(completed_forests, field, panels) << '\n'
+         << "  area: " << countTotalAttribute(completed_forests, field, panels_) << '\n'
          << "  deep: " << std::count(std::begin(deep_forest), std::end(deep_forest), 1) << '\n'
          << "  Path: " << completed_path.size() << '\n'
-         << "length: " << countTotalAttribute(completed_path, field, panels) << '\n'
-         << "  Town: " << countTown(completed_path, field, panels)
+         << "length: " << countTotalAttribute(completed_path, field, panels_) << '\n'
+         << "  Town: " << countTown(completed_path, field, panels_)
          << std::endl;
   }
 
@@ -380,9 +458,9 @@ struct Game
     hand_panel += next;
     if (hand_panel < 0)
     {
-      hand_panel = int(panels.size()) - 1;
+      hand_panel = int(panels_.size()) - 1;
     }
-    else if (hand_panel >= panels.size())
+    else if (hand_panel >= panels_.size())
     {
       hand_panel = 0;
     }
@@ -390,7 +468,7 @@ struct Game
   }
 
   // 指定位置周囲のパネルを取得
-  std::map<glm::ivec2, PanelStatus, LessVec<glm::ivec2>> enumerateAroundPanels(glm::ivec2 pos) const noexcept
+  std::map<glm::ivec2, PanelStatus, LessVec<glm::ivec2>> enumerateAroundPanels(const glm::ivec2& pos) const noexcept
   {
     // 時計回りに調べる
     const glm::ivec2 offsets[] = {
@@ -440,11 +518,11 @@ private:
   void updateScores() noexcept
   {
     scores_[0] = int(completed_path.size());
-    scores_[1] = countTotalAttribute(completed_path, field, panels);
+    scores_[1] = countTotalAttribute(completed_path, field, panels_);
     scores_[2] = int(completed_forests.size());
-    scores_[3] = countTotalAttribute(completed_forests, field, panels);
+    scores_[3] = countTotalAttribute(completed_forests, field, panels_);
     scores_[4] = int(std::count(std::begin(deep_forest), std::end(deep_forest), 1));
-    scores_[5] = countTown(completed_path, field, panels);
+    scores_[5] = countTown(completed_path, field, panels_);
     scores_[6] = int(completed_church.size());
   }
 
@@ -493,7 +571,9 @@ private:
   // FIXME 参照で持つのいくない
   const ci::JsonTree& params_;
   Event<Arguments>& event_;
-  const std::vector<Panel>& panels;
+  const std::vector<Panel>& panels_;
+
+  CountExec count_exec_;
 
   bool started  = false;
   bool finished = false;

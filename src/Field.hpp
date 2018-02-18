@@ -23,8 +23,24 @@ struct PanelStatus
 
 
 struct Field
-  : private boost::noncopyable
 {
+  Field()  = default;
+  ~Field() = default;
+
+
+  Field(const ci::JsonTree& json) noexcept
+  {
+    for (const auto& obj : json)
+    {
+      int number     = obj.getValueForKey<int>("number");
+      auto pos       = Json::getVec<glm::ivec2>(obj["pos"]);
+      u_int rotation = obj.getValueForKey<u_int>("rotation");
+
+      addPanel(number, pos, rotation);
+    }
+  }
+
+
   // 置ける場所を探す
   std::vector<glm::ivec2> searchBlank() const noexcept
   {
@@ -79,6 +95,18 @@ struct Field
 
     panel_status_.emplace(pos, status);
   }
+
+  std::vector<PanelStatus> enumeratePanels() const noexcept
+  {
+    std::vector<PanelStatus> panels;
+
+    for (const auto it : panel_status_)
+    {
+      panels.emplace_back(it.second);
+    }
+    return panels;
+  }
+
 
   ci::JsonTree serialize() const noexcept
   {
