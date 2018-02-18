@@ -21,7 +21,8 @@ struct Game
     : params_(params),
       event_(event),
       panels_(panels),
-      play_time_(params.getValueForKey<double>("play_time")),
+      initial_play_time_(params.getValueForKey<double>("play_time")),
+      play_time_(initial_play_time_),
       scores_(7, 0),
       total_score_rate_(params.getValueForKey<u_int>("total_score_rate")),
       ranking_num_(params.getValueForKey<u_int>("ranking_num")),
@@ -95,6 +96,12 @@ struct Game
     }
   }
 
+
+  // ゲームが始まってから進んだ時間 [0, 1]
+  double getPlayTimeRate() const noexcept
+  {
+    return 1.0 - glm::clamp(play_time_ / initial_play_time_, 0.0, 1.0); 
+  }
 
   // 本編準備
   void preparationPlay() noexcept
@@ -617,6 +624,7 @@ private:
   bool started  = false;
   bool finished = false;
 
+  double initial_play_time_;
   double play_time_;
 #ifdef DEBUG
   bool time_count = true;

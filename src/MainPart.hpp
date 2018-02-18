@@ -53,7 +53,7 @@ public:
       target_position_(Json::getVec<glm::vec3>(params["field.target_position"])),
       field_center_(target_position_),
       panel_height_(params.getValueForKey<float>("field.panel_height")),
-      putdown_time_(params.getValueForKey<double>("field.putdown_time")),
+      putdown_time_(Json::getVec<glm::vec2>(params["field.putdown_time"])),
       view_(params["field"]),
       timeline_(ci::Timeline::create())
   {
@@ -86,7 +86,10 @@ public:
                                 if (can_put_ && isCursorPos(touch.pos))
                                 {
                                   touch_put_ = true;
-                                  put_remaining_ = putdown_time_;
+                                  current_putdown_time_ = glm::mix(putdown_time_.x, putdown_time_.y, game_->getPlayTimeRate());
+                                  put_remaining_ = current_putdown_time_;
+
+                                  DOUT << "put_remaining: " << put_remaining_ << std::endl;
 
                                   auto ndc_pos = camera_.body().worldToNdc(cursor_pos_);
                                   Arguments args = {
@@ -345,7 +348,7 @@ private:
 
         {
           auto ndc_pos = camera_.body().worldToNdc(cursor_pos_);
-          auto scale = 1.0f - glm::clamp(float(put_remaining_ / putdown_time_), 0.0f, 1.0f);
+          auto scale = 1.0f - glm::clamp(float(put_remaining_ / current_putdown_time_), 0.0f, 1.0f);
           Arguments args = {
             { "pos",   ndc_pos },
             { "scale", scale },
@@ -657,7 +660,8 @@ private:
   bool manipulated_ = false;
 
   float panel_height_;
-  double putdown_time_;
+  glm::vec2 putdown_time_;
+  double current_putdown_time_;
 
   // 実際のパネル位置
   glm::vec3 cursor_pos_;
