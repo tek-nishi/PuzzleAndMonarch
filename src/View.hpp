@@ -47,7 +47,7 @@ class View
 
   // 画面演出用情報
   float panel_height_;
-  float put_duration_;
+  glm::vec2 put_duration_;
   std::string put_ease_;
 
 
@@ -69,7 +69,7 @@ class View
 public:
   View(const ci::JsonTree& params) noexcept
     : panel_height_(params.getValueForKey<float>("panel_height")),
-      put_duration_(params.getValueForKey<float>("put_duration")),
+      put_duration_(Json::getVec<glm::vec2>(params["put_duration"])),
       put_ease_(params.getValueForKey<std::string>("put_ease"))
   {
     const auto& path = params["panel_path"];
@@ -118,11 +118,13 @@ public:
     field_panels_.push_back(panel);
   }
 
-  void startPutEase(const ci::TimelineRef& timeline) noexcept
+  void startPutEase(const ci::TimelineRef& timeline, double time_rate) noexcept
   {
+    auto duration = glm::mix(put_duration_.x, put_duration_.y, time_rate);
+
     auto& p = field_panels_.back();
     timeline->applyPtr(&p.position.y, panel_height_, 0.0f,
-                       put_duration_, getEaseFunc(put_ease_));
+                       duration, getEaseFunc(put_ease_));
   }
 
   const ci::AxisAlignedBox& panelAabb(int number) const noexcept

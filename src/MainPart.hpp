@@ -231,7 +231,7 @@ public:
                                 const auto& pos = boost::any_cast<glm::ivec2>(args.at("field_pos"));
                                 auto rotation   = boost::any_cast<u_int>(args.at("rotation"));
                                 view_.addPanel(panel, pos, rotation);
-                                view_.startPutEase(timeline_);
+                                view_.startPutEase(timeline_, game_->getPlayTimeRate());
                               });
 
     holder_ += event_.connect("Game:Finish",
@@ -279,8 +279,12 @@ public:
                               {
                                 timeline_->clear();
                                 view_.clear();
+                                // Game再生成
                                 game_ = std::make_unique<Game>(params_["game"], event_, panels_);
                                 game_->preparationPlay();
+
+                                field_center_   = glm::vec3();
+                                field_distance_ = params_.getValueForKey<float>("field.camera.distance");
                               });
 
 

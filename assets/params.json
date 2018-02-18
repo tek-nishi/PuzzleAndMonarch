@@ -38,7 +38,7 @@
       "near_z": 2,
       "far_z":  1500,
 
-      "rotation": [ 35, 45 ],
+      "rotation": [ 40, 45 ],
       "distance": 150
     },
 
@@ -139,11 +139,11 @@
     "rotate_ease_duration": [ 0.5, 0.3 ],
     "rotate_ease_name": "OutExpo",
 
-    "height_ease_start": 200,
+    "height_ease_start": 100,
     "height_ease_duration": 0.5,
     "height_ease_name": "OutExpo",
 
-    "put_duration": 0.6,
+    "put_duration": [ 0.6, 0.4 ],
     "put_ease":     "OutExpo"
   },
 
