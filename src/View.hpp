@@ -91,6 +91,12 @@ public:
   ~View() = default;
 
 
+  void clear() noexcept
+  {
+    field_panels_.clear();
+  }
+
+
   // パネル追加
   void addPanel(int index, glm::ivec2 pos, u_int rotation) noexcept
   {

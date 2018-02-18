@@ -391,7 +391,14 @@ struct Game
 
   void load() noexcept
   {
-    auto json = ci::JsonTree(ci::loadFile(getDocumentPath() / "game.json"));
+    auto full_path = getDocumentPath() / "game.json";
+    if (!ci::fs::is_regular_file(full_path))
+    {
+      DOUT << "No game data." << std::endl;
+      return;
+    }
+
+    auto json = ci::JsonTree(ci::loadFile(full_path));
 
     hand_panel     = json.getValueForKey<int>("hand_panel");
     hand_rotation  = json.getValueForKey<u_int>("hand_rotation");
@@ -430,6 +437,37 @@ struct Game
       event_.signal("Game:UpdateScores", args);
     }
     fieldUpdate();
+  }
+
+
+  // Fieldの中心位置と広さを計算
+  std::pair<glm::vec3, float> getFieldCenterAndDistance(bool blank = true) const noexcept
+  {
+    std::vector<glm::vec3> points;
+    const auto& positions = blank ? getBlankPositions() : field.enumeratePanelsPosition();
+    for (const auto& p : positions)
+    {
+      // Panelの４隅の座標を加える
+      points.emplace_back(p.x - 0.5, 0.0f, p.y - 0.5);
+      points.emplace_back(p.x + 0.5, 0.0f, p.y - 0.5);
+      points.emplace_back(p.x - 0.5, 0.0f, p.y + 0.5);
+      points.emplace_back(p.x + 0.5, 0.0f, p.y + 0.5);
+    }
+
+    // 登録した点の平均値→注視点
+    auto center = std::accumulate(std::begin(points), std::end(points), glm::vec3()) / float(points.size());
+
+    // 中心から一番遠い座標から距離を決める
+    auto it = std::max_element(std::begin(points), std::end(points),
+                               [center](const glm::vec3& a, const glm::vec3& b) noexcept
+                               {
+                                 auto d1 = glm::distance2(a, center);
+                                 auto d2 = glm::distance2(b, center);
+                                 return d1 < d2;
+                               });
+    auto d = glm::distance(*it, center);
+
+    return { center, d };
   }
 
 

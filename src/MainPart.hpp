@@ -241,7 +241,10 @@ public:
                                 prohibited_   = true;
                                 manipulated_  = false;
 
-                                calcViewRange();
+                                calcViewRange(false);
+
+                                // 記録にとっとく
+                                game_->save();
 
                                 count_exec_.add(3.0,
                                                 [this]() noexcept
@@ -259,11 +262,31 @@ public:
                                                 });
                               });
 
+    // Ranking
+    holder_ += event_.connect("Ranking:begin",
+                              [this](const Connection&, const Arguments&) noexcept
+                              {
+                                timeline_->clear();
+                                view_.clear();
+                                game_->load();
+                                calcViewRange(false);
+                              });
+    
+    holder_ += event_.connect("Ranking:Finished",
+                              [this](const Connection&, const Arguments&) noexcept
+                              {
+                                timeline_->clear();
+                                view_.clear();
+                                game_ = std::make_unique<Game>(params_["game"], event_, panels_);
+                                game_->preparationPlay();
+                              });
+
+
+
     holder_ += event_.connect("pause:touch_ended",
                               [this](const Connection&, const Arguments&) noexcept
                               {
                                 paused_ = true;
-                                game_->save();
                               });
     
     holder_ += event_.connect("resume:touch_ended",
@@ -347,7 +370,7 @@ private:
           draged_length_ = 100.0f;
             
           // Fieldの中心を再計算
-          calcViewRange();
+          calcViewRange(true);
           calcNextPanelPosition();
         }
       }
@@ -502,35 +525,16 @@ private:
   }
 
   // フィールドの広さから注視点と距離を計算
-  void calcViewRange() noexcept
+  // blank:  true パネルが置ける場所を考慮する
+  void calcViewRange(bool blank) noexcept
   {
-    std::vector<glm::vec3> points;
-    const auto& positions = game_->getBlankPositions();
-    for (const auto& p : positions)
-    {
-      // Panelの４隅の座標を加える
-      auto pos = p * int(PANEL_SIZE);
-      points.emplace_back(pos.x - PANEL_SIZE / 2, 0.0f, pos.y - PANEL_SIZE / 2);
-      points.emplace_back(pos.x + PANEL_SIZE / 2, 0.0f, pos.y - PANEL_SIZE / 2);
-      points.emplace_back(pos.x - PANEL_SIZE / 2, 0.0f, pos.y + PANEL_SIZE / 2);
-      points.emplace_back(pos.x + PANEL_SIZE / 2, 0.0f, pos.y + PANEL_SIZE / 2);
-    }
+    auto result = game_->getFieldCenterAndDistance(blank);
 
-    // 登録した点の平均値→注視点
-    auto center = std::accumulate(std::begin(points), std::end(points), glm::vec3()) / float(points.size());
+    auto center = result.first * float(PANEL_SIZE);
     field_center_.x = center.x;
     field_center_.z = center.z;
-
-    // 中心から一番遠い座標から距離を決める
-    auto it = std::max_element(std::begin(points), std::end(points),
-                               [center](const glm::vec3& a, const glm::vec3& b) noexcept
-                               {
-                                 auto d1 = glm::distance2(a, center);
-                                 auto d2 = glm::distance2(b, center);
-                                 return d1 < d2;
-                               });
-
-    auto d = glm::distance(*it, center);
+    
+    auto d = result.second * PANEL_SIZE;
     const auto& camera = camera_.body();
     float fov_v = camera.getFov();
     float fov_h = camera.getFovHorizontal();

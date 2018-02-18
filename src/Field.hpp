@@ -106,6 +106,17 @@ struct Field
     }
     return panels;
   }
+  
+  std::vector<glm::ivec2> enumeratePanelsPosition() const noexcept
+  {
+    std::vector<glm::ivec2> panels;
+
+    for (const auto it : panel_status_)
+    {
+      panels.emplace_back(it.second.position);
+    }
+    return panels;
+  }
 
 
   ci::JsonTree serialize() const noexcept
