@@ -234,18 +234,7 @@ public:
                                 touch_put_ = false;
                                 game_->abortPlay();
 
-                                count_exec_.add(0.5,
-                                                [this]() noexcept
-                                                {
-                                                  timeline_->clear();
-                                                  view_.clear();
-                                                  // Game再生成
-                                                  game_ = std::make_unique<Game>(params_["game"], event_, panels_);
-                                                  game_->preparationPlay();
-                                                  
-                                                  field_center_   = glm::vec3();
-                                                  field_distance_ = params_.getValueForKey<float>("field.camera.distance");
-                                                });
+                                resetGame();
                               });
 
     holder_ += event_.connect("Game:PutPanel",
@@ -320,18 +309,7 @@ public:
     holder_ += event.connect("Result:Finished",
                               [this](const Connection&, const Arguments&) noexcept
                               {
-                                count_exec_.add(0.5,
-                                                [this]() noexcept
-                                                {
-                                                  timeline_->clear();
-                                                  view_.clear();
-                                                  // Game再生成
-                                                  game_ = std::make_unique<Game>(params_["game"], event_, panels_);
-                                                  game_->preparationPlay();
-                                                  
-                                                  field_center_   = glm::vec3();
-                                                  field_distance_ = params_.getValueForKey<float>("field.camera.distance");
-                                                });
+                                resetGame();
                               });
 
     // Ranking
@@ -682,7 +660,8 @@ private:
     panel_disp_pos_.stop();
     panel_disp_pos_ = cursor_pos_;
 
-    can_put_ = game_->canPutToBlank(field_pos_);
+    touch_put_ = false;
+    can_put_   = game_->canPutToBlank(field_pos_);
   }
 
   // パネル移動演出
@@ -714,6 +693,25 @@ private:
     height_offset_ = height_ease_start_;
     timeline_->apply(&height_offset_, 0.0f, height_ease_duration_, getEaseFunc(height_ease_name_));
   }
+
+
+  // Game本体初期化
+  void resetGame() noexcept
+  {
+    count_exec_.add(0.5,
+                    [this]() noexcept
+                    {
+                      timeline_->clear();
+                      view_.clear();
+                      // Game再生成
+                      game_ = std::make_unique<Game>(params_["game"], event_, panels_);
+                      game_->preparationPlay();
+                                                  
+                      field_center_   = glm::vec3();
+                      field_distance_ = params_.getValueForKey<float>("field.camera.distance");
+                    });
+  }
+
 
 
   // FIXME 変数を後半に定義する実験
