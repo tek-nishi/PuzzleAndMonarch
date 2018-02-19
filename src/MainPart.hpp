@@ -25,6 +25,8 @@
 #include "CountExec.hpp"
 #include "FixedTimeExec.hpp"
 #include "EaseFunc.hpp"
+#include "Archive.hpp"
+#include "Score.hpp"
 
 
 namespace ngs {
@@ -34,9 +36,10 @@ class MainPart
 {
 
 public:
-  MainPart(const ci::JsonTree& params, Event<Arguments>& event) noexcept
+  MainPart(const ci::JsonTree& params, Event<Arguments>& event, Archive& archive) noexcept
     : params_(params),
       event_(event),
+      archive_(archive),
       panels_(createPanels()),
       game_(std::make_unique<Game>(params["game"], event, panels_)),
       disp_ease_duration_(Json::getVec<glm::vec2>(params["field.disp_ease_duration"])),
@@ -235,7 +238,7 @@ public:
                               });
 
     holder_ += event_.connect("Game:Finish",
-                              [this](const Connection&, const Arguments&) noexcept
+                              [this](const Connection&, const Arguments& args) noexcept
                               {
                                 DOUT << "Game:Finish" << std::endl;
 
@@ -245,8 +248,36 @@ public:
 
                                 calcViewRange(false);
 
-                                // 記録にとっとく
-                                game_->save();
+                                // ハイスコア判定
+                                auto high_score     = archive_.getRecord<u_int>("high-score");
+                                auto total_score    = boost::any_cast<u_int>(args.at("total_score"));
+                                bool get_high_score = total_score > high_score;
+
+                                Score score = {
+                                  boost::any_cast<const std::vector<u_int>&>(args.at("scores")),
+                                  boost::any_cast<u_int>(args.at("total_score")),
+                                  boost::any_cast<u_int>(args.at("total_ranking")),
+                                  boost::any_cast<u_int>(args.at("total_panels")),
+                                  get_high_score
+                                };
+                                archive_.recordGameResults(score);
+
+                                DOUT << "high: " << high_score << " total: " << total_score << std::endl;
+
+                                if (get_high_score)
+                                {
+                                  // 記録にとっとく
+                                  game_->save();
+                                }
+
+                                count_exec_.add(2.0,
+                                                [this, score]() noexcept
+                                                {
+                                                  Arguments a {
+                                                    { "score", score } 
+                                                  };
+                                                  event_.signal("Result:begin", a);
+                                                });
 
                                 count_exec_.add(3.0,
                                                 [this]() noexcept
@@ -654,6 +685,8 @@ private:
 
   CountExec count_exec_;
   FixedTimeExec fixed_exec_;
+
+  Archive& archive_;
 
   bool paused_ = false;
   bool prohibited_ = false;

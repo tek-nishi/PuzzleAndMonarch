@@ -393,7 +393,9 @@ struct Game
              .addChild(createVecVecArray("completed_path", completed_path))
              .addChild(createVecArray("completed_church", completed_church));
 
-    save_data.write(getDocumentPath() / "game.json"); 
+    save_data.write(getDocumentPath() / "game.json");
+
+    DOUT << "Game saved." << std::endl;
   }
 
   void load() noexcept

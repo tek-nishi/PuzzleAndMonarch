@@ -31,7 +31,7 @@ class Core
   {
     tasks_.clear();
 
-    tasks_.pushBack<MainPart>(params_, event_);
+    tasks_.pushBack<MainPart>(params_, event_, archive_);
     tasks_.pushBack<Title>(params_, event_, drawer_, tween_common_);
   }
   
@@ -134,28 +134,11 @@ public:
                                 count_exec_.add(0.5, std::bind(&Core::setupTask, this));
                               });
     // GameMain→Result
-    holder_ += event_.connect("Game:Finish",
+    holder_ += event_.connect("Result:begin",
                               [this](const Connection&, const Arguments& args) noexcept
                               {
-                                // ハイスコア判定
-                                auto total_score = boost::any_cast<u_int>(args.at("total_score"));
-                                auto high_score  = archive_.getRecord<u_int>("high-score");
-
-                                Score score = {
-                                  boost::any_cast<const std::vector<u_int>&>(args.at("scores")),
-                                  total_score,
-                                  boost::any_cast<u_int>(args.at("total_ranking")),
-                                  boost::any_cast<u_int>(args.at("total_panels")),
-                                  total_score > high_score,
-                                };
-
-                                archive_.recordGameResults(score);
-
-                                count_exec_.add(2.0,
-                                                [this, score]() noexcept
-                                                {
-                                                  tasks_.pushBack<Result>(params_, event_, drawer_, tween_common_, score);
-                                                });
+                                auto score = boost::any_cast<Score>(args.at("score"));
+                                tasks_.pushBack<Result>(params_, event_, drawer_, tween_common_, score);
                               });
     // Result→Title
     holder_ += event_.connect("Result:Finished",
