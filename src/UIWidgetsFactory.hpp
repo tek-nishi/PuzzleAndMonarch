@@ -56,6 +56,7 @@ class WidgetsFactory
     return widget;
   }
 
+
   
 public:
   WidgetsFactory()  = default; 
@@ -65,7 +66,10 @@ public:
   // JSONからWidgetを生成する
   WidgetPtr construct(const ci::JsonTree& params) noexcept
   {
-    return create(params);
+    auto widget = create(params);
+    Widget::checkInactiveWidget(widget);
+
+    return widget;
   }
   
 };

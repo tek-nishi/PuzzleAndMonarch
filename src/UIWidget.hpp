@@ -283,6 +283,23 @@ public:
   }
 
 
+  // 非表示なWidgetの検査
+  static void checkInactiveWidget(const WidgetPtr& widget) noexcept
+  {
+    if (!widget->isEnable())
+    {
+      widget->enable(false);
+    }
+
+    if (widget->children_.empty()) return;
+
+    for (const auto& child : widget->children_)
+    {
+      checkInactiveWidget(child);
+    }
+  }
+
+
 private:
   // 親の情報から自分の位置、サイズを計算
   ci::Rectf calcRect(const ci::Rectf& parent_rect, const glm::vec2& scale) const noexcept
