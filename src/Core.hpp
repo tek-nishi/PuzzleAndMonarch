@@ -3,6 +3,7 @@
 //
 // アプリの中核
 //   ソフトリセットはこのクラスを再インスタンスすれば良い
+//   画面遷移担当
 //
 
 #include <boost/noncopyable.hpp>
@@ -27,15 +28,6 @@ namespace ngs {
 class Core
   : private boost::noncopyable
 {
-  void setupTask() noexcept
-  {
-    tasks_.clear();
-
-    tasks_.pushBack<MainPart>(params_, event_, archive_);
-    tasks_.pushBack<Title>(params_, event_, drawer_, tween_common_);
-  }
-  
-  
   void update(const Connection&, const Arguments& args) noexcept
   {
     auto current_time = boost::any_cast<double>(args.at("current_time"));
@@ -54,8 +46,6 @@ public:
       drawer_(params["ui"]),
       tween_common_(Params::load("tw_common.json"))
   {
-    setupTask();
-
     // 各種イベント登録
     // Title→GameMain
     holder_ += event_.connect("Title:finished",
@@ -131,7 +121,11 @@ public:
     holder_ += event_.connect("Game:Aborted",
                               [this](const Connection&, const Arguments&) noexcept
                               {
-                                count_exec_.add(0.5, std::bind(&Core::setupTask, this));
+                                count_exec_.add(0.5,
+                                                [this]() noexcept
+                                                {
+                                                  tasks_.pushBack<Title>(params_, event_, drawer_, tween_common_);
+                                                });
                               });
     // GameMain→Result
     holder_ += event_.connect("Result:begin",
@@ -144,13 +138,21 @@ public:
     holder_ += event_.connect("Result:Finished",
                               [this](const Connection&, const Arguments&) noexcept
                               {
-                                count_exec_.add(0.5, std::bind(&Core::setupTask, this));
+                                count_exec_.add(0.5,
+                                                [this]() noexcept
+                                                {
+                                                  tasks_.pushBack<Title>(params_, event_, drawer_, tween_common_);
+                                                });
                               });
 
     // system
     holder_ += event_.connect("update",
                               std::bind(&Core::update,
                                         this, std::placeholders::_1, std::placeholders::_2));
+
+    // 最初のタスクを登録
+    tasks_.pushBack<MainPart>(params_, event_, archive_);
+    tasks_.pushBack<Title>(params_, event_, drawer_, tween_common_);
   }
 
   ~Core() = default;

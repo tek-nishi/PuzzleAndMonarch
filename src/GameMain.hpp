@@ -80,6 +80,10 @@ public:
                               {
                                 // ゲーム終了
                                 event_.signal("Game:Aborted", Arguments());
+                                count_exec_.add(0.5, [this]() noexcept
+                                                     {
+                                                       active_ = false;
+                                                     });
                                 DOUT << "GameMain finished." << std::endl;
                               });
 

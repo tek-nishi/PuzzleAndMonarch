@@ -77,10 +77,10 @@ public:
     holder_ += event_.connect("single_touch_began",
                               [this](const Connection&, Arguments& arg) noexcept
                               {
-                                if (paused_ || prohibited_) return;
+                                if (!game_->isPlaying() || paused_ || prohibited_) return;
 
                                 draged_length_ = 0.0f;
-                                manipulated_ = false;
+                                manipulated_   = false;
 
                                 const auto& touch = boost::any_cast<const Touch&>(arg.at("touch"));
 
@@ -127,7 +127,7 @@ public:
     holder_ += event_.connect("single_touch_ended",
                               [this](const Connection&, Arguments& arg) noexcept
                               {
-                                if (paused_ || prohibited_) return;
+                                if (!game_->isPlaying() || paused_ || prohibited_) return;
 
                                 // 画面回転操作をした場合、パネル操作は全て無効
                                 if (draged_length_ > 5.0f)
@@ -227,6 +227,27 @@ public:
                                 startNextPanelEase();
                               });
 
+    holder_ += event_.connect("Game:Aborted",
+                              [this](const Connection&, const Arguments&) noexcept
+                              {
+                                paused_    = false;
+                                touch_put_ = false;
+                                game_->abortPlay();
+
+                                count_exec_.add(0.5,
+                                                [this]() noexcept
+                                                {
+                                                  timeline_->clear();
+                                                  view_.clear();
+                                                  // Game再生成
+                                                  game_ = std::make_unique<Game>(params_["game"], event_, panels_);
+                                                  game_->preparationPlay();
+                                                  
+                                                  field_center_   = glm::vec3();
+                                                  field_distance_ = params_.getValueForKey<float>("field.camera.distance");
+                                                });
+                              });
+
     holder_ += event_.connect("Game:PutPanel",
                               [this](const Connection&, const Arguments& args) noexcept
                               {
@@ -292,6 +313,24 @@ public:
                                                   calcCamera(camera_.body());
 
                                                   return !manipulated_;
+                                                });
+                              });
+
+    // Result→Title
+    holder_ += event.connect("Result:Finished",
+                              [this](const Connection&, const Arguments&) noexcept
+                              {
+                                count_exec_.add(0.5,
+                                                [this]() noexcept
+                                                {
+                                                  timeline_->clear();
+                                                  view_.clear();
+                                                  // Game再生成
+                                                  game_ = std::make_unique<Game>(params_["game"], event_, panels_);
+                                                  game_->preparationPlay();
+                                                  
+                                                  field_center_   = glm::vec3();
+                                                  field_distance_ = params_.getValueForKey<float>("field.camera.distance");
                                                 });
                               });
 
@@ -585,7 +624,7 @@ private:
       distance -= n;
     }
     field_distance_ = std::max(distance, camera_distance_);
-    // 矯正モード
+    // 強制モード
     if (prohibited_) field_distance_ = distance;
   }
 

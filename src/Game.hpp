@@ -163,6 +163,13 @@ struct Game
     DOUT << "Game ended." << std::endl;
   }
 
+  // 強制終了
+  void abortPlay() noexcept
+  {
+    finished = true;
+  }
+
+
   // 始まって、結果発表直前まで
   bool isPlaying() const noexcept
   {
