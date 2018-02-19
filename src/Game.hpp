@@ -470,7 +470,7 @@ struct Game
   std::pair<glm::vec3, float> getFieldCenterAndDistance(bool blank = true) const noexcept
   {
     std::vector<glm::vec3> points;
-    const auto& positions = blank ? getBlankPositions() : field.enumeratePanelsPosition();
+    const auto& positions = blank ? getBlankPositions() : field.getPanelPositions();
     for (const auto& p : positions)
     {
       // Panelの４隅の座標を加える

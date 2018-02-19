@@ -92,30 +92,25 @@ struct Field
       number,
       rotation
     };
-
     panel_status_.emplace(pos, status);
+    panel_pos_array_.push_back(pos);
   }
 
   std::vector<PanelStatus> enumeratePanels() const noexcept
   {
     std::vector<PanelStatus> panels;
 
-    for (const auto it : panel_status_)
+    for (const auto& pos : panel_pos_array_)
     {
-      panels.emplace_back(it.second);
+      const auto& status = panel_status_.at(pos);
+      panels.emplace_back(status);
     }
     return panels;
   }
   
-  std::vector<glm::ivec2> enumeratePanelsPosition() const noexcept
+  const std::vector<glm::ivec2>& getPanelPositions() const noexcept
   {
-    std::vector<glm::ivec2> panels;
-
-    for (const auto it : panel_status_)
-    {
-      panels.emplace_back(it.second.position);
-    }
-    return panels;
+    return panel_pos_array_;
   }
 
 
@@ -123,12 +118,14 @@ struct Field
   {
     ci::JsonTree data = ci::JsonTree::makeObject("field");
 
-    for (const auto it : panel_status_)
+    for (const auto& pos : panel_pos_array_)
     {
+      const auto& status = panel_status_.at(pos);
+
       ci::JsonTree p;
-      p.addChild(Json::createFromVec("pos", it.second.position))
-       .addChild(ci::JsonTree("number", it.second.number))
-       .addChild(ci::JsonTree("rotation", it.second.rotation));
+      p.addChild(Json::createFromVec("pos", status.position))
+       .addChild(ci::JsonTree("number", status.number))
+       .addChild(ci::JsonTree("rotation", status.rotation));
 
       data.pushBack(p);
     }
@@ -140,6 +137,8 @@ struct Field
 private:
   // TIPS 座標をマップのキーにしている
   std::map<glm::ivec2, PanelStatus, LessVec<glm::ivec2>> panel_status_;
+  // 置いた順序
+  std::vector<glm::ivec2> panel_pos_array_;
 };
 
 }
