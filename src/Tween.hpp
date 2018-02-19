@@ -149,7 +149,7 @@ private:
       return Json::getVec<glm::vec3>(param);
 
     case Type::COLOR:
-      return Json::getColorA<float>(param);
+      return Json::getColor<float>(param);
 
     case Type::RECT:
       return Json::getRect<float>(param);
@@ -262,14 +262,14 @@ private:
     case Type::COLOR:
       if (body.has_start)
       {
-        auto options = applyTween<ci::ColorA>(timeline, target, body.start, body.end, body.duration, body.ease_func);
+        auto options = applyTween<ci::Color>(timeline, target, body.start, body.end, body.duration, body.ease_func);
         if (body.loop)         options.loop();
         if (body.pingpong)     options.pingPong();
         if (body.delay > 0.0f) options.delay(body.delay);
       }
       else
       {
-        auto options = applyTween<ci::ColorA>(timeline, target, body.end, body.duration, body.ease_func);
+        auto options = applyTween<ci::Color>(timeline, target, body.end, body.duration, body.ease_func);
         if (body.loop)         options.loop();
         if (body.pingpong)     options.pingPong();
         if (body.delay > 0.0f) options.delay(body.delay);
@@ -356,14 +356,14 @@ private:
     case Type::COLOR:
       if (body.has_start)
       {
-        auto options = appendToTween<ci::ColorA>(timeline, target, body.start, body.end, body.duration, body.ease_func);
+        auto options = appendToTween<ci::Color>(timeline, target, body.start, body.end, body.duration, body.ease_func);
         if (body.loop)         options.loop();
         if (body.pingpong)     options.pingPong();
         if (body.delay > 0.0f) options.delay(body.delay);
       }
       else
       {
-        auto options = appendToTween<ci::ColorA>(timeline, target, body.end, body.duration, body.ease_func);
+        auto options = appendToTween<ci::Color>(timeline, target, body.end, body.duration, body.ease_func);
         if (body.loop)         options.loop();
         if (body.pingpong)     options.pingPong();
         if (body.delay > 0.0f) options.delay(body.delay);

@@ -97,9 +97,10 @@ public:
                                 widget->setParam("text", std::string(text));
 
                                 // 時間が10秒切ったら色を変える
-                                ci::ColorA color(1, 1, 1, 1);
-                                if (remainig_time <= 10) {
-                                  color = ci::ColorA(1, 0, 0, 1);
+                                ci::Color color(1, 1, 1);
+                                if (remainig_time <= 10)
+                                {
+                                  color = ci::Color(1, 0, 0);
                                 }
                                 widget->setParam("color", color);
                               });
@@ -145,12 +146,12 @@ public:
                                 }
                                 {
                                   const auto& widget = canvas_.at("put_timer:fringe");
-                                  widget->setParam("color", ci::ColorA(1, 1, 1, 0));
+                                  widget->setParam("color", ci::Color(1, 1, 1));
                                 }
                                 {
                                   const auto& widget = canvas_.at("put_timer:body");
                                   widget->setParam("scale", glm::vec2());
-                                  widget->setParam("color", ci::ColorA(1, 1, 1, 0));
+                                  widget->setParam("color", ci::Color(1, 1, 1));
                                 }
                               });
     holder_ += event_.connect("Game:PutEnd",
@@ -174,12 +175,12 @@ public:
                                 auto alpha = getEaseFunc("OutExpo")(scale);
                                 {
                                   const auto& widget = canvas_.at("put_timer:fringe");
-                                  widget->setParam("color", ci::ColorA(1, 1, 1, alpha));
+                                  widget->setParam("alpha", alpha);
                                 }
                                 {
                                   const auto& widget = canvas_.at("put_timer:body");
                                   widget->setParam("scale", glm::vec2(scale, scale));
-                                  widget->setParam("color", ci::ColorA(1, 1, 1, alpha));
+                                  widget->setParam("alpha", alpha);
                                 }
                               });
 

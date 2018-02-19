@@ -434,16 +434,26 @@ struct Game
                       });
       at_time += 0.1;
     }
+    total_panels = u_int(panels.size());
 
     {
+      // スコア情報は時間差で送信
       updateScores();
+      calcTotalScore();
       
-      Arguments args = {
-        { "scores", scores_ }
-      };
-      event_.signal("Game:UpdateScores", args);
+      count_exec_.add(0.1,
+                      [this]()
+                      {
+                        Arguments args = {
+                          { "scores",        scores_ },
+                          { "total_score",   total_score },
+                          { "total_ranking", total_ranking },
+                          { "total_panels",  total_panels }
+                        };
+                        event_.signal("Ranking:UpdateScores", args);
+                      });
     }
-    fieldUpdate();
+    // fieldUpdate();
   }
 
 

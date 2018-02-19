@@ -16,7 +16,7 @@ class Circle
 {
   float radius_;
   int segment_ = 0;
-  ci::ColorA color_ = { 1.0f, 1.0f, 1.0f, 1.0f };
+  ci::Color color_ = { 1.0f, 1.0f, 1.0f };
   bool fill_ = false;
   glm::vec2 alignment_ = { 0.5, 0.5 };
 
@@ -31,7 +31,7 @@ public:
     }
     if (params.hasChild("color"))
     {
-      color_ = Json::getColorA<float>(params["color"]);
+      color_ = Json::getColor<float>(params["color"]);
     }
     if (params.hasChild("fill"))
     {
@@ -47,10 +47,10 @@ public:
 
 
 private:
-  void draw(const ci::Rectf& rect, UI::Drawer& drawer) noexcept override
+  void draw(const ci::Rectf& rect, UI::Drawer& drawer, float alpha) noexcept override
   {
     ci::gl::ScopedGlslProg prog(drawer.getColorShader());
-    ci::gl::color(color_);
+    ci::gl::color(ci::ColorA(color_, alpha));
 
     auto center = rect.getCenter(); 
 
@@ -80,7 +80,7 @@ private:
       },
       { "color", [this](const boost::any& v) noexcept
                  {
-                   color_ = boost::any_cast<const ci::ColorA&>(v);
+                   color_ = boost::any_cast<const ci::Color&>(v);
                  }
       }
     };

@@ -21,7 +21,7 @@
 
       "font": "en",
       "text": "Result",
-      "color": [ 1, 1, 1, 1 ]
+      "color": [ 1, 1, 1 ]
     },
 
     {
@@ -47,7 +47,7 @@
           "font": "jp",
           "text": "道:",
           "layout": [ 1, 0 ],
-          "color": [ 1, 1, 1, 1 ]
+          "color": [ 1, 1, 1 ]
         },
         {
           "rect": [ -50, -15, 0, -5 ],
@@ -61,7 +61,7 @@
           "font": "jp",
           "text": "道の長さ:",
           "layout": [ 1, 0 ],
-          "color": [ 1, 1, 1, 1 ]
+          "color": [ 1, 1, 1 ]
         },
         {
           "rect": [ -50, -30, 0, -20 ],
@@ -75,7 +75,7 @@
           "font": "jp",
           "text": "森:",
           "layout": [ 1, 0 ],
-          "color": [ 1, 1, 1, 1 ]
+          "color": [ 1, 1, 1 ]
         },
         {
           "rect": [ -50, -45, 0, -35 ],
@@ -89,7 +89,7 @@
           "font": "jp",
           "text": "森の広さ:",
           "layout": [ 1, 0 ],
-          "color": [ 1, 1, 1, 1 ]
+          "color": [ 1, 1, 1 ]
         },
         {
           "rect": [ -50, -60, 0, -50 ],
@@ -103,7 +103,7 @@
           "font": "jp",
           "text": "深い森:",
           "layout": [ 1, 0 ],
-          "color": [ 1, 1, 1, 1 ]
+          "color": [ 1, 1, 1 ]
         },
         {
           "rect": [ -50, -75, 0, -65 ],
@@ -117,7 +117,7 @@
           "font": "jp",
           "text": "街:",
           "layout": [ 1, 0 ],
-          "color": [ 1, 1, 1, 1 ]
+          "color": [ 1, 1, 1 ]
         },
         {
           "rect": [ -50, -90, 0, -80 ],
@@ -131,7 +131,7 @@
           "font": "jp",
           "text": "教会:",
           "layout": [ 1, 0 ],
-          "color": [ 1, 1, 1, 1 ]
+          "color": [ 1, 1, 1 ]
         },
         {
           "rect": [ -50, -105, 0, -95 ],
@@ -145,7 +145,7 @@
           "font": "jp",
           "text": "置いた数:",
           "layout": [ 1, 0 ],
-          "color": [ 1, 1, 1, 1 ]
+          "color": [ 1, 1, 1 ]
         },
 
         {
@@ -161,7 +161,7 @@
           "font": "en",
           "text": "000",
           "layout": [ 0, 0 ],
-          "color": [ 1, 1, 1, 1 ]
+          "color": [ 1, 1, 1 ]
         },
         {
           "identifier": "score:2",
@@ -176,7 +176,7 @@
           "font": "en",
           "text": "000",
           "layout": [ 0, 0 ],
-          "color": [ 1, 1, 1, 1 ]
+          "color": [ 1, 1, 1 ]
         },
         {
           "identifier": "score:3",
@@ -191,7 +191,7 @@
           "font": "en",
           "text": "000",
           "layout": [ 0, 0 ],
-          "color": [ 1, 1, 1, 1 ]
+          "color": [ 1, 1, 1 ]
         },
         {
           "identifier": "score:4",
@@ -206,7 +206,7 @@
           "font": "en",
           "text": "000",
           "layout": [ 0, 0 ],
-          "color": [ 1, 1, 1, 1 ]
+          "color": [ 1, 1, 1 ]
         },
         {
           "identifier": "score:5",
@@ -221,7 +221,7 @@
           "font": "en",
           "text": "000",
           "layout": [ 0, 0 ],
-          "color": [ 1, 1, 1, 1 ]
+          "color": [ 1, 1, 1 ]
         },
         {
           "identifier": "score:6",
@@ -236,7 +236,7 @@
           "font": "en",
           "text": "000",
           "layout": [ 0, 0 ],
-          "color": [ 1, 1, 1, 1 ]
+          "color": [ 1, 1, 1 ]
         },
         {
           "identifier": "score:7",
@@ -251,7 +251,7 @@
           "font": "en",
           "text": "000",
           "layout": [ 0, 0 ],
-          "color": [ 1, 1, 1, 1 ]
+          "color": [ 1, 1, 1 ]
         },
         {
           "identifier": "score:8",
@@ -266,7 +266,7 @@
           "font": "en",
           "text": "000",
           "layout": [ 0, 0 ],
-          "color": [ 1, 1, 1, 1 ]
+          "color": [ 1, 1, 1 ]
         }
       ]
     },
@@ -295,7 +295,7 @@
           "font": "en",
           "text": "Your Score",
           "layout": [ 1, 0 ],
-          "color": [ 1, 1, 1, 1 ]
+          "color": [ 1, 1, 1 ]
         },
         {
           "identifier": "score:10",
@@ -310,7 +310,7 @@
           "font": "en",
           "text": "99999",
           "layout": [ 1, 0 ],
-          "color": [ 1, 1, 1, 1 ]
+          "color": [ 1, 1, 1 ]
         },
         {
           "identifier": "11",
@@ -325,7 +325,7 @@
           "font": "en",
           "text": "Your Rank",
           "layout": [ 1, 0 ],
-          "color": [ 1, 1, 1, 1 ]
+          "color": [ 1, 1, 1 ]
         },
         {
           "identifier": "score:11",
@@ -340,7 +340,7 @@
           "font": "en",
           "text": "Grand Duke",
           "layout": [ 1, 0 ],
-          "color": [ 1, 1, 1, 1 ]
+          "color": [ 1, 1, 1 ]
         },
         {
           "identifier": "share",
@@ -357,7 +357,7 @@
           "font": "icon",
           "text": "",
           "layout": [ 1, 0 ],
-          "color": [ 1, 1, 1, 1 ]
+          "color": [ 1, 1, 1 ]
         }
       ]
     },
@@ -377,7 +377,7 @@
       "font": "icon",
       "text": "",
       "layout": [ 0.5, 0 ],
-      "color": [ 1, 1, 1, 1 ]
+      "color": [ 1, 1, 1 ]
     }
   ]
 }

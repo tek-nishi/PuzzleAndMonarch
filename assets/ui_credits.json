@@ -20,7 +20,7 @@
 
       "font": "en",
       "text": "Credits",
-      "color": [ 1, 1, 1, 1 ]
+      "color": [ 1, 1, 1 ]
     },
     
     {
@@ -44,7 +44,7 @@
 
           "font": "en",
           "text": "Created by",
-          "color": [ 1, 1, 1, 1 ]
+          "color": [ 1, 1, 1 ]
         },
         {
           "rect": [ 0, -15, 0, -5 ],
@@ -57,7 +57,7 @@
 
           "font": "en",
           "text": "Nishiyama Nobuyuki",
-          "color": [ 1, 1, 1, 1 ]
+          "color": [ 1, 1, 1 ]
         },
         {
           "rect": [ 0, -29, 0, -21 ],
@@ -70,7 +70,7 @@
 
           "font": "en",
           "text": "Powered by",
-          "color": [ 1, 1, 1, 1 ]
+          "color": [ 1, 1, 1 ]
         },
         {
           "rect": [ 0, -40, 0, -30 ],
@@ -83,7 +83,7 @@
 
           "font": "en",
           "text": "Cinder 0.9.1  Boost 1.66.0  glm 0.9.8.5",
-          "color": [ 1, 1, 1, 1 ]
+          "color": [ 1, 1, 1 ]
         },
         {
           "rect": [ 0, -50, 0, -40 ],
@@ -96,7 +96,7 @@
 
           "font": "en",
           "text": "stb_truetype.h 1.17  fontstash  Font Awesome 4.7.0",
-          "color": [ 1, 1, 1, 1 ]
+          "color": [ 1, 1, 1 ]
         },
         {
           "rect": [ 0, -64, 0, -56 ],
@@ -109,7 +109,7 @@
 
           "font": "en",
           "text": "Thanks to",
-          "color": [ 1, 1, 1, 1 ]
+          "color": [ 1, 1, 1 ]
         },
         {
           "rect": [ 0, -75, 0, -65 ],
@@ -122,7 +122,7 @@
 
           "font": "en",
           "text": "Japan Electronics College  Vantan Game Academy",
-          "color": [ 1, 1, 1, 1 ]
+          "color": [ 1, 1, 1 ]
         },
         {
           "rect": [ 0, -85, 0, -75 ],
@@ -135,7 +135,7 @@
 
           "font": "en",
           "text": "Software Society Akihabara",
-          "color": [ 1, 1, 1, 1 ]
+          "color": [ 1, 1, 1 ]
         },
         {
           "rect": [ 0, -95, 0, -85 ],
@@ -148,7 +148,7 @@
 
           "font": "en",
           "text": "Coworking space Kayabacho, Co-Edo",
-          "color": [ 1, 1, 1, 1 ]
+          "color": [ 1, 1, 1 ]
         },
         {
           "rect": [ 0, -105, 0, -95 ],
@@ -161,7 +161,7 @@
 
           "font": "en",
           "text": "Kantou Game Producing unit  Haino Yuka",
-          "color": [ 1, 1, 1, 1 ]
+          "color": [ 1, 1, 1 ]
         }
       ]
     },
@@ -181,7 +181,7 @@
       "font": "icon",
       "text": "",
       "layout": [ 0.5, 0 ],
-      "color": [ 1, 1, 1, 1 ]
+      "color": [ 1, 1, 1 ]
     }
   ]
 }

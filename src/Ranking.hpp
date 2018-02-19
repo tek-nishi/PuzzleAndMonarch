@@ -8,6 +8,7 @@
 #include "CountExec.hpp"
 #include "UICanvas.hpp"
 #include "TweenUtil.hpp"
+#include "Score.hpp"
 
 
 namespace ngs {
@@ -20,14 +21,16 @@ class Ranking
 
   CountExec count_exec_;
 
-  UI::Canvas canvas_;
+  std::vector<std::string> ranking_text_;
 
+  UI::Canvas canvas_;
   bool active_ = true;
 
 
 public:
   Ranking(const ci::JsonTree& params, Event<Arguments>& event, UI::Drawer& drawer, TweenCommon& tween_common) noexcept
     : event_(event),
+      ranking_text_(Json::getArray<std::string>(params["result.ranking"])),
       canvas_(event, drawer, tween_common,
               params["ui.camera"],
               Params::load(params.getValueForKey<std::string>("ranking.canvas")),
@@ -51,6 +54,16 @@ public:
                                 DOUT << "Back to Title" << std::endl;
                               });
 
+    holder_ += event_.connect("Ranking:UpdateScores",
+                              [this](const Connection&, const Arguments& args) noexcept
+                              {
+                                applyScore(args);
+                                
+                                const auto& widget = canvas_.at("scores");
+                                widget->enable();
+                                canvas_.startTween("start");
+                              });
+
     // ボタンイベント共通Tween
     setupCommonTweens(event_, holder_, canvas_, "agree");
   }
@@ -63,6 +76,35 @@ private:
   {
     count_exec_.update(delta_time);
     return active_;
+  }
+
+
+  void applyScore(const Arguments& args) noexcept
+  {
+    const auto& scores = boost::any_cast<const std::vector<u_int>&>(args.at("scores"));
+    int i = 1;
+    for (auto s : scores)
+    {
+      char id[16];
+      std::sprintf(id, "score:%d", i);
+
+      const auto& widget = canvas_.at(id);
+      widget->setParam("text", std::to_string(s));
+
+      i += 1;
+    }
+    {
+      const auto& widget = canvas_.at("score:8");
+      widget->setParam("text", std::to_string(boost::any_cast<u_int>(args.at("total_panels"))));
+    }
+    {
+      const auto& widget = canvas_.at("score:9");
+      widget->setParam("text", std::to_string(boost::any_cast<u_int>(args.at("total_score"))));
+    }
+    {
+      const auto& widget = canvas_.at("score:10");
+      widget->setParam("text", std::string(ranking_text_[boost::any_cast<u_int>(args.at("total_ranking"))]));
+    }
   }
 };
 

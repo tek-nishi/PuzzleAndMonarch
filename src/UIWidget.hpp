@@ -135,6 +135,11 @@ public:
                  {
                    scale_ = boost::any_cast<const glm::vec2&>(v);
                  }
+      },
+      { "alpha", [this](const boost::any& v) noexcept
+                 {
+                   alpha_ = boost::any_cast<float>(v);
+                 }
       }
     };
 
@@ -184,6 +189,11 @@ public:
                  {
                    return &scale_;
                  }
+      },
+      { "alpha", [this]() noexcept
+                 {
+                   return &alpha_;
+                 }
       }
     };
 
@@ -200,17 +210,18 @@ public:
 
 
   void draw(const ci::Rectf& parent_rect, const glm::vec2& parent_scale,
-            UI::Drawer& drawer) noexcept
+            UI::Drawer& drawer, float parent_alpha) noexcept
   {
     if (!enable_) return;
 
     auto scale = parent_scale * scale_;
+    auto alpha = parent_alpha * alpha_;
     disp_rect_ = calcRect(parent_rect, scale);
-    widget_base_->draw(disp_rect_, drawer);
+    widget_base_->draw(disp_rect_, drawer, alpha);
 
     for (const auto& child : children_)
     {
-      child->draw(disp_rect_, scale, drawer);
+      child->draw(disp_rect_, scale, drawer, alpha);
     }
   }
 
@@ -244,6 +255,10 @@ public:
     if (params.hasChild("enable"))
     {
       widget->enable_ = params.getValueForKey<bool>("enable");
+    }
+    if (params.hasChild("alpha"))
+    {
+      widget->alpha_ = params.getValueForKey<float>("alpha");
     }
     if (params.hasChild("anchor"))
     {
@@ -319,6 +334,8 @@ private:
 
   bool has_event_ = false;
   std::string event_;
+
+  float alpha_ = 1.0;
 
   // 描画用クラス
   std::unique_ptr<UI::WidgetBase> widget_base_;

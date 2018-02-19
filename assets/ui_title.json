@@ -22,7 +22,7 @@
       "font": "en",
       "text": "Apprentice",
       "layout": [ 1, 0 ],
-      "color": [ 1, 1, 1, 1 ]
+      "color": [ 1, 1, 1 ]
     },
     {
       "identifier": "title_2",
@@ -37,7 +37,7 @@
       "font": "en",
       "text": "Monarch",
       "layout": [ 0, 0 ],
-      "color": [ 1, 1, 1, 1 ]
+      "color": [ 1, 1, 1 ]
     },
     {
       "identifier": "play",
@@ -49,10 +49,11 @@
       "scale": [ 1, 1 ],
       "pivot": [ 0.5, 0.5 ],
       "event": "play",
+      "alpha": 0,
       
       "font": "icon",
       "text": "",
-      "color": [ 1, 1, 1, 0 ]
+      "color": [ 1, 1, 1 ]
     },
     {
       "identifier": "copyright",
@@ -66,7 +67,7 @@
 
       "font": "en",
       "text": "2018 new game style",
-      "color": [ 1, 1, 1, 1 ]
+      "color": [ 1, 1, 1 ]
     },
     {
       "identifier": "GameCenter",
@@ -81,7 +82,7 @@
       
       "font": "icon",
       "text": "",
-      "color": [ 1, 1, 1, 1 ]
+      "color": [ 1, 1, 1 ]
     },
     {
       "identifier": "Ranking",
@@ -96,7 +97,7 @@
       
       "font": "icon",
       "text": "",
-      "color": [ 1, 1, 1, 1 ]
+      "color": [ 1, 1, 1 ]
     },
     {
       "identifier": "Records",
@@ -111,7 +112,7 @@
       
       "font": "icon",
       "text": "",
-      "color": [ 1, 1, 1, 1 ]
+      "color": [ 1, 1, 1 ]
     },
     {
       "identifier": "Settings",
@@ -126,7 +127,7 @@
       
       "font": "icon",
       "text": "",
-      "color": [ 1, 1, 1, 1 ]
+      "color": [ 1, 1, 1 ]
     },
     {
       "identifier": "Credits",
@@ -141,7 +142,7 @@
       
       "font": "icon",
       "text": "",
-      "color": [ 1, 1, 1, 1 ]
+      "color": [ 1, 1, 1 ]
     }
   ]
 }

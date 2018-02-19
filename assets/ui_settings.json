@@ -20,7 +20,7 @@
 
       "font": "en",
       "text": "Settings",
-      "color": [ 1, 1, 1, 1 ]
+      "color": [ 1, 1, 1 ]
     },
 
     {
@@ -34,7 +34,7 @@
 
       "font": "en",
       "text": "BGM",
-      "color": [ 1, 1, 1, 1 ]
+      "color": [ 1, 1, 1 ]
     },
     {
       "identifier": "BGM",
@@ -50,7 +50,7 @@
       "font": "icon",
       "text": "",
       "dynamic_layout": false,
-      "color": [ 1, 1, 1, 1 ]
+      "color": [ 1, 1, 1 ]
     },
     {
       "rect": [ 20, 36, 60, 54 ],
@@ -63,7 +63,7 @@
 
       "font": "en",
       "text": "SE",
-      "color": [ 1, 1, 1, 1 ]
+      "color": [ 1, 1, 1 ]
     },
     {
       "identifier": "SE",
@@ -79,7 +79,7 @@
       "font": "icon",
       "text": "",
       "dynamic_layout": false,
-      "color": [ 1, 1, 1, 1 ]
+      "color": [ 1, 1, 1 ]
     },
 
     {
@@ -97,7 +97,7 @@
       "font": "icon",
       "text": "",
       "layout": [ 0.5, 0 ],
-      "color": [ 1, 1, 1, 1 ]
+      "color": [ 1, 1, 1 ]
     }
   ]
 }

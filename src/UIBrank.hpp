@@ -13,7 +13,7 @@ class Brank
   : public WidgetBase
 {
 
-  void draw(const ci::Rectf& rect, UI::Drawer& drawer) noexcept override
+  void draw(const ci::Rectf& rect, UI::Drawer& drawer, float alpha) noexcept override
   {
   }
 

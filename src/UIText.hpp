@@ -19,7 +19,7 @@ class Text
 
   std::string font_name_;
   glm::vec2 layout_ = { 0.5, 0.5 };
-  ci::ColorA color_ = { 1.0f, 1.0f, 1.0f, 1.0f };
+  ci::Color color_ = { 1.0f, 1.0f, 1.0f };
   bool dynamic_layout_ = true;
 
 
@@ -35,7 +35,7 @@ public:
     }
     if (params.hasChild("color"))
     {
-      color_ = Json::getColorA<float>(params["color"]);
+      color_ = Json::getColor<float>(params["color"]);
     }
     if (params.hasChild("dynamic_layout"))
     {
@@ -47,7 +47,7 @@ public:
 
 
 private:
-  void draw(const ci::Rectf& rect, UI::Drawer& drawer) noexcept override
+  void draw(const ci::Rectf& rect, UI::Drawer& drawer, float alpha) noexcept override
   {
     auto& font = drawer.getFont(font_name_);
     // rectの高さからサイズを決める
@@ -64,7 +64,8 @@ private:
     auto mtx = glm::translate(glm::vec3(pos.x, pos.y, 0.0));
     ci::gl::setModelMatrix(mtx);
     ci::gl::scale(glm::vec3(font_scale));
-    font.draw(text_, glm::vec2(0), color_);
+    ci::ColorA color(color_, alpha);
+    font.draw(text_, glm::vec2(0), color);
   }
 
 
@@ -78,7 +79,7 @@ private:
       },
       { "color", [this](const boost::any& v) noexcept
                  {
-                   color_ = boost::any_cast<const ci::ColorA&>(v);
+                   color_ = boost::any_cast<const ci::Color&>(v);
                  }
       }
     };

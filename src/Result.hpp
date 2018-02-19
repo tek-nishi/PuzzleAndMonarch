@@ -34,18 +34,13 @@ public:
          const Score& score) noexcept
     : event_(event),
       high_score_(score.high_score),
+      ranking_text_(Json::getArray<std::string>(params["result.ranking"])),
       canvas_(event, drawer, tween_common,
               params["ui.camera"],
               Params::load(params.getValueForKey<std::string>("result.canvas")),
               Params::load(params.getValueForKey<std::string>("result.tweens")))
   {
     DOUT << "Result" << std::endl;
-
-    for (const auto& ranking : params["result.ranking"])
-    {
-      ranking_text_.push_back(ranking.getValue<std::string>());
-    }
-
 
     count_exec_.add(2.0,
                     [this]() {
@@ -93,7 +88,7 @@ private:
     if (high_score_)
     {
       const auto& widget = canvas_.at("score:10");
-      auto color = ci::ColorA(ci::hsvToRgb({ std::fmod(current_time * 2.0, 1.0),1, 1 }));
+      auto color = ci::hsvToRgb({ std::fmod(current_time * 2.0, 1.0), 1, 1 });
       widget->setParam("color", color);
     }
 

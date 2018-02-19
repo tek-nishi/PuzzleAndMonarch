@@ -20,7 +20,7 @@
 
       "font": "en",
       "text": "Records",
-      "color": [ 1, 1, 1, 1 ]
+      "color": [ 1, 1, 1 ]
     },
 
     {
@@ -45,7 +45,7 @@
           "font": "jp",
           "text": "プレイ回数",
           "layout": [ 1, 0 ],
-          "color": [ 1, 1, 1, 1 ]
+          "color": [ 1, 1, 1 ]
         },
         {
           "rect": [ -100, -25, -5, -15 ],
@@ -59,7 +59,7 @@
           "font": "jp",
           "text": "ハイスコア",
           "layout": [ 1, 0 ],
-          "color": [ 1, 1, 1, 1 ]
+          "color": [ 1, 1, 1 ]
         },
         {
           "rect": [ -100, -40, -5, -30 ],
@@ -73,7 +73,7 @@
           "font": "jp",
           "text": "置いたパネル数",
           "layout": [ 1, 0 ],
-          "color": [ 1, 1, 1, 1 ]
+          "color": [ 1, 1, 1 ]
         },
 
         {
@@ -89,7 +89,7 @@
           "font": "en",
           "text": "0",
           "layout": [ 0, 0 ],
-          "color": [ 1, 1, 1, 1 ]
+          "color": [ 1, 1, 1 ]
         },
         {
           "identifier": "record:1",
@@ -104,7 +104,7 @@
           "font": "en",
           "text": "0",
           "layout": [ 0, 0 ],
-          "color": [ 1, 1, 1, 1 ]
+          "color": [ 1, 1, 1 ]
         },
         {
           "identifier": "record:2",
@@ -119,7 +119,7 @@
           "font": "en",
           "text": "0",
           "layout": [ 0, 0 ],
-          "color": [ 1, 1, 1, 1 ]
+          "color": [ 1, 1, 1 ]
         }
       ]
     },
@@ -140,7 +140,7 @@
       "font": "icon",
       "text": "",
       "layout": [ 0.5, 0 ],
-      "color": [ 1, 1, 1, 1 ]
+      "color": [ 1, 1, 1 ]
     }
   ]
 }

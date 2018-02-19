@@ -34,7 +34,7 @@
           "font": "en",
           "text": "9:99",
           "dynamic_layout": false,
-          "color": [ 1, 1, 1, 1 ]
+          "color": [ 1, 1, 1 ]
         },
         {
           "identifier": "pause",
@@ -49,7 +49,7 @@
           
           "font": "icon",
           "text": "",
-          "color": [ 1, 1, 1, 1 ]
+          "color": [ 1, 1, 1 ]
         },
 
         {
@@ -76,7 +76,7 @@
               "font": "jp",
               "text": "道:",
               "layout": [ 1, 0 ],
-              "color": [ 1, 1, 1, 1 ]
+              "color": [ 1, 1, 1 ]
             },
             {
               "identifier": "3",
@@ -91,7 +91,7 @@
               "font": "jp",
               "text": "道の長さ:",
               "layout": [ 1, 0 ],
-              "color": [ 1, 1, 1, 1 ]
+              "color": [ 1, 1, 1 ]
             },
             {
               "identifier": "4",
@@ -106,7 +106,7 @@
               "font": "jp",
               "text": "森:",
               "layout": [ 1, 0 ],
-              "color": [ 1, 1, 1, 1 ]
+              "color": [ 1, 1, 1 ]
             },
             {
               "identifier": "5",
@@ -121,7 +121,7 @@
               "font": "jp",
               "text": "森の広さ:",
               "layout": [ 1, 0 ],
-              "color": [ 1, 1, 1, 1 ]
+              "color": [ 1, 1, 1 ]
             },
             {
               "identifier": "6",
@@ -136,7 +136,7 @@
               "font": "jp",
               "text": "深い森:",
               "layout": [ 1, 0 ],
-              "color": [ 1, 1, 1, 1 ]
+              "color": [ 1, 1, 1 ]
             },
             {
               "identifier": "7",
@@ -151,7 +151,7 @@
               "font": "jp",
               "text": "街:",
               "layout": [ 1, 0 ],
-              "color": [ 1, 1, 1, 1 ]
+              "color": [ 1, 1, 1 ]
             },
             {
               "identifier": "8",
@@ -166,7 +166,7 @@
               "font": "jp",
               "text": "教会:",
               "layout": [ 1, 0 ],
-              "color": [ 1, 1, 1, 1 ]
+              "color": [ 1, 1, 1 ]
             },
 
             {
@@ -182,7 +182,7 @@
               "font": "en",
               "text": "0",
               "layout": [ 0, 0 ],
-              "color": [ 1, 1, 1, 1 ]
+              "color": [ 1, 1, 1 ]
             },
             {
               "identifier": "score:2",
@@ -197,7 +197,7 @@
               "font": "en",
               "text": "0",
               "layout": [ 0, 0 ],
-              "color": [ 1, 1, 1, 1 ]
+              "color": [ 1, 1, 1 ]
             },
             {
               "identifier": "score:3",
@@ -212,7 +212,7 @@
               "font": "en",
               "text": "0",
               "layout": [ 0, 0 ],
-              "color": [ 1, 1, 1, 1 ]
+              "color": [ 1, 1, 1 ]
             },
             {
               "identifier": "score:4",
@@ -227,7 +227,7 @@
               "font": "en",
               "text": "0",
               "layout": [ 0, 0 ],
-              "color": [ 1, 1, 1, 1 ]
+              "color": [ 1, 1, 1 ]
             },
             {
               "identifier": "score:5",
@@ -242,7 +242,7 @@
               "font": "en",
               "text": "0",
               "layout": [ 0, 0 ],
-              "color": [ 1, 1, 1, 1 ]
+              "color": [ 1, 1, 1 ]
             },
             {
               "identifier": "score:6",
@@ -257,7 +257,7 @@
               "font": "en",
               "text": "0",
               "layout": [ 0, 0 ],
-              "color": [ 1, 1, 1, 1 ]
+              "color": [ 1, 1, 1 ]
             },
             {
               "identifier": "score:7",
@@ -272,7 +272,7 @@
               "font": "en",
               "text": "0",
               "layout": [ 0, 0 ],
-              "color": [ 1, 1, 1, 1 ]
+              "color": [ 1, 1, 1 ]
             }
           ]
         },
@@ -300,7 +300,7 @@
               "pivot": [ 0.5, 0.5 ],
               "font": "icon",
               "text": "",
-              "color": [ 1, 1, 1, 1 ]
+              "color": [ 1, 1, 1 ]
             },
             {
               "identifier": "put_timer:body",
@@ -313,7 +313,7 @@
               "pivot": [ 0.5, 0.5 ],
               "font": "icon",
               "text": "",
-              "color": [ 1, 1, 1, 1 ]
+              "color": [ 1, 1, 1 ]
             }
           ]
         }
@@ -332,7 +332,7 @@
       
       "font": "en",
       "text": "Secure the territory!",
-      "color": [ 1, 1, 1, 1 ]
+      "color": [ 1, 1, 1 ]
     },
 
     {
@@ -348,7 +348,7 @@
       
       "font": "en",
       "text": "Well done!",
-      "color": [ 1, 1, 1, 1 ]
+      "color": [ 1, 1, 1 ]
     },
 
     {
@@ -375,7 +375,7 @@
           
           "font": "en",
           "text": "Pause",
-          "color": [ 1, 1, 1, 1 ]
+          "color": [ 1, 1, 1 ]
         },
         {
           "identifier": "resume",
@@ -390,7 +390,7 @@
           
           "font": "icon",
           "text": "",
-          "color": [ 1, 1, 1, 1 ]
+          "color": [ 1, 1, 1 ]
         },
         {
           "identifier": "abort",
@@ -405,7 +405,7 @@
           
           "font": "icon",
           "text": "",
-          "color": [ 1, 1, 1, 1 ]
+          "color": [ 1, 1, 1 ]
         }
       ]
     }

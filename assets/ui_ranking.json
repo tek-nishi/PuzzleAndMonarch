@@ -21,9 +21,316 @@
 
       "font": "en",
       "text": "Ranking",
-      "color": [ 1, 1, 1, 1 ]
+      "color": [ 1, 1, 1 ]
     },
+    
+    {
+      "identifier": "scores",
+      "rect": [ 50, 150, 60, 150 ],
+      "anchor": [
+        [ 0, 0.1 ],
+        [ 0, 0.1 ]
+      ],
+      "scale": [ 0.8, 0.8 ],
+      "pivot": [ 0.5, 0.5 ],
+      "enable": false,
+      "alpha": 0,
 
+      "childlen": [
+        {
+          "rect": [ -50, 0, 0, 10 ],
+          "anchor": [
+            [ 0, 1 ],
+            [ 0, 1 ]
+          ],
+          "scale": [ 1, 1 ],
+          "pivot": [ 1, 0.5 ],
+
+          "font": "jp",
+          "text": "道:",
+          "layout": [ 1, 0 ],
+          "color": [ 1, 1, 1 ]
+        },
+        {
+          "rect": [ -50, -15, 0, -5 ],
+          "anchor": [
+            [ 0, 1 ],
+            [ 0, 1 ]
+          ],
+          "scale": [ 1, 1 ],
+          "pivot": [ 1, 0.5 ],
+
+          "font": "jp",
+          "text": "道の長さ:",
+          "layout": [ 1, 0 ],
+          "color": [ 1, 1, 1 ]
+        },
+        {
+          "rect": [ -50, -30, 0, -20 ],
+          "anchor": [
+            [ 0, 1 ],
+            [ 0, 1 ]
+          ],
+          "scale": [ 1, 1 ],
+          "pivot": [ 1, 0.5 ],
+
+          "font": "jp",
+          "text": "森:",
+          "layout": [ 1, 0 ],
+          "color": [ 1, 1, 1 ]
+        },
+        {
+          "rect": [ -50, -45, 0, -35 ],
+          "anchor": [
+            [ 0, 1 ],
+            [ 0, 1 ]
+          ],
+          "scale": [ 1, 1 ],
+          "pivot": [ 1, 0.5 ],
+
+          "font": "jp",
+          "text": "森の広さ:",
+          "layout": [ 1, 0 ],
+          "color": [ 1, 1, 1 ]
+        },
+        {
+          "rect": [ -50, -60, 0, -50 ],
+          "anchor": [
+            [ 0, 1 ],
+            [ 0, 1 ]
+          ],
+          "scale": [ 1, 1 ],
+          "pivot": [ 1, 0.5 ],
+
+          "font": "jp",
+          "text": "深い森:",
+          "layout": [ 1, 0 ],
+          "color": [ 1, 1, 1 ]
+        },
+        {
+          "rect": [ -50, -75, 0, -65 ],
+          "anchor": [
+            [ 0, 1 ],
+            [ 0, 1 ]
+          ],
+          "scale": [ 1, 1 ],
+          "pivot": [ 1, 0.5 ],
+
+          "font": "jp",
+          "text": "街:",
+          "layout": [ 1, 0 ],
+          "color": [ 1, 1, 1 ]
+        },
+        {
+          "rect": [ -50, -90, 0, -80 ],
+          "anchor": [
+            [ 0, 1 ],
+            [ 0, 1 ]
+          ],
+          "scale": [ 1, 1 ],
+          "pivot": [ 1, 0.5 ],
+
+          "font": "jp",
+          "text": "教会:",
+          "layout": [ 1, 0 ],
+          "color": [ 1, 1, 1 ]
+        },
+        {
+          "rect": [ -50, -105, 0, -95 ],
+          "anchor": [
+            [ 0, 1 ],
+            [ 0, 1 ]
+          ],
+          "scale": [ 1, 1 ],
+          "pivot": [ 1, 0.5 ],
+
+          "font": "jp",
+          "text": "置いた数:",
+          "layout": [ 1, 0 ],
+          "color": [ 1, 1, 1 ]
+        },
+        {
+          "rect": [ -50, -120, 0, -110 ],
+          "anchor": [
+            [ 0, 1 ],
+            [ 0, 1 ]
+          ],
+          "scale": [ 1, 1 ],
+          "pivot": [ 1, 0.5 ],
+
+          "font": "en",
+          "text": "Score:",
+          "layout": [ 1, 0 ],
+          "color": [ 1, 1, 1 ]
+        },
+        {
+          "rect": [ -50, -135, 0, -125 ],
+          "anchor": [
+            [ 0, 1 ],
+            [ 0, 1 ]
+          ],
+          "scale": [ 1, 1 ],
+          "pivot": [ 1, 0.5 ],
+
+          "font": "en",
+          "text": "Rank:",
+          "layout": [ 1, 0 ],
+          "color": [ 1, 1, 1 ]
+        },
+
+        {
+          "identifier": "score:1",
+          "rect": [ 5, 0, 25, 10 ],
+          "anchor": [
+            [ 0, 1 ],
+            [ 0, 1 ]
+          ],
+          "scale": [ 1, 1 ],
+          "pivot": [ 0, 0.5 ],
+
+          "font": "en",
+          "text": "000",
+          "layout": [ 0, 0 ],
+          "color": [ 1, 1, 1 ]
+        },
+        {
+          "identifier": "score:2",
+          "rect": [ 5, -15, 25, -5 ],
+          "anchor": [
+            [ 0, 1 ],
+            [ 0, 1 ]
+          ],
+          "scale": [ 1, 1 ],
+          "pivot": [ 0, 0.5 ],
+
+          "font": "en",
+          "text": "000",
+          "layout": [ 0, 0 ],
+          "color": [ 1, 1, 1 ]
+        },
+        {
+          "identifier": "score:3",
+          "rect": [ 5, -30, 25, -20 ],
+          "anchor": [
+            [ 0, 1 ],
+            [ 0, 1 ]
+          ],
+          "scale": [ 1, 1 ],
+          "pivot": [ 0, 0.5 ],
+
+          "font": "en",
+          "text": "000",
+          "layout": [ 0, 0 ],
+          "color": [ 1, 1, 1 ]
+        },
+        {
+          "identifier": "score:4",
+          "rect": [ 5, -45, 25, -35 ],
+          "anchor": [
+            [ 0, 1 ],
+            [ 0, 1 ]
+          ],
+          "scale": [ 1, 1 ],
+          "pivot": [ 0, 0.5 ],
+
+          "font": "en",
+          "text": "000",
+          "layout": [ 0, 0 ],
+          "color": [ 1, 1, 1 ]
+        },
+        {
+          "identifier": "score:5",
+          "rect": [ 5, -60, 25, -50 ],
+          "anchor": [
+            [ 0, 1 ],
+            [ 0, 1 ]
+          ],
+          "scale": [ 1, 1 ],
+          "pivot": [ 0, 0.5 ],
+
+          "font": "en",
+          "text": "000",
+          "layout": [ 0, 0 ],
+          "color": [ 1, 1, 1 ]
+        },
+        {
+          "identifier": "score:6",
+          "rect": [ 5, -75, 25, -65 ],
+          "anchor": [
+            [ 0, 1 ],
+            [ 0, 1 ]
+          ],
+          "scale": [ 1, 1 ],
+          "pivot": [ 0, 0.5 ],
+
+          "font": "en",
+          "text": "000",
+          "layout": [ 0, 0 ],
+          "color": [ 1, 1, 1 ]
+        },
+        {
+          "identifier": "score:7",
+          "rect": [ 5, -90, 25, -80 ],
+          "anchor": [
+            [ 0, 1 ],
+            [ 0, 1 ]
+          ],
+          "scale": [ 1, 1 ],
+          "pivot": [ 0, 0.5 ],
+
+          "font": "en",
+          "text": "000",
+          "layout": [ 0, 0 ],
+          "color": [ 1, 1, 1 ]
+        },
+        {
+          "identifier": "score:8",
+          "rect": [ 5, -105, 25, -95 ],
+          "anchor": [
+            [ 0, 1 ],
+            [ 0, 1 ]
+          ],
+          "scale": [ 1, 1 ],
+          "pivot": [ 0, 0.5 ],
+
+          "font": "en",
+          "text": "000",
+          "layout": [ 0, 0 ],
+          "color": [ 1, 1, 1 ]
+        },
+        {
+          "identifier": "score:9",
+          "rect": [ 5, -120, 25, -110 ],
+          "anchor": [
+            [ 0, 1 ],
+            [ 0, 1 ]
+          ],
+          "scale": [ 1, 1 ],
+          "pivot": [ 0, 0.5 ],
+
+          "font": "en",
+          "text": "000",
+          "layout": [ 0, 0 ],
+          "color": [ 1, 1, 1 ]
+        },
+        {
+          "identifier": "score:10",
+          "rect": [ 5, -135, 25, -125 ],
+          "anchor": [
+            [ 0, 1 ],
+            [ 0, 1 ]
+          ],
+          "scale": [ 1, 1 ],
+          "pivot": [ 0, 0.5 ],
+
+          "font": "en",
+          "text": "000",
+          "layout": [ 0, 0 ],
+          "color": [ 1, 1, 1 ]
+        }
+      ]
+    },
+    
     {
       "identifier": "touch",
       "rect": [ -10, 8, 10, 28 ],
@@ -39,7 +346,7 @@
       "font": "icon",
       "text": "",
       "layout": [ 0.5, 0 ],
-      "color": [ 1, 1, 1, 1 ]
+      "color": [ 1, 1, 1 ]
     }
   ]
 }
