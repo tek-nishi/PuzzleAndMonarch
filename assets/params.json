@@ -34,19 +34,21 @@
 
   "field": {
     "camera": {
-      "fov":    25,
+      "fov":    20,
       "near_z": 2,
       "far_z":  1500,
 
       "rotation": [ 40, 45 ],
-      "distance": 150
+      "distance": 180
     },
 
     "target_position": [ 0, 5, 0 ],
     "panel_height": 10,
     "putdown_time": [ 0.5, 0.25 ],
 
-    "camera_distance_range": [ 50, 1000 ],
+    "camera_distance_range": [ 80, 1000 ],
+    "target_rate":   [ 0.01, 0.1 ],
+    "distance_rate": [ 1.0, 1.35 ],
 
     "panel_path": [
       "pa00.ply",

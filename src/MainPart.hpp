@@ -52,6 +52,8 @@ public:
       camera_rotation_(toRadians(Json::getVec<glm::vec2>(params["field.camera.rotation"]))),
       camera_distance_(params.getValueForKey<float>("field.camera.distance")),
       camera_distance_range_(Json::getVec<glm::vec2>(params["field.camera_distance_range"])),
+      target_rate_(Json::getVec<glm::vec2>(params["field.target_rate"])),
+      distance_rate_(Json::getVec<glm::vec2>(params["field.distance_rate"])),
       camera_(params["field.camera"]),
       target_position_(Json::getVec<glm::vec3>(params["field.target_position"])),
       field_center_(target_position_),
@@ -312,6 +314,8 @@ public:
     holder_ += event_.connect("Ranking:begin",
                               [this](const Connection&, const Arguments&) noexcept
                               {
+                                force_camera_ = true;
+
                                 timeline_->clear();
                                 view_.clear();
                                 game_->load();
@@ -321,6 +325,8 @@ public:
     holder_ += event_.connect("Ranking:Finished",
                               [this](const Connection&, const Arguments&) noexcept
                               {
+                                force_camera_ = false;
+
                                 timeline_->clear();
                                 view_.clear();
                                 // Game再生成
@@ -580,14 +586,25 @@ private:
   }
 
   // フィールドの広さから注視点と距離を計算
-  // blank:  true パネルが置ける場所を考慮する
+  // blank: true パネルが置ける場所を考慮する
   void calcViewRange(bool blank) noexcept
   {
     auto result = game_->getFieldCenterAndDistance(blank);
 
     auto center = result.first * float(PANEL_SIZE);
-    field_center_.x = center.x;
-    field_center_.z = center.z;
+
+    {
+      // ある程度の範囲が変更対象
+      auto d = glm::distance(center, target_position_);
+      // 見た目の距離に変換
+      auto dd = d / camera_distance_;
+      DOUT << "target_rate: " << dd << std::endl;
+      if ((dd > target_rate_.x) && (dd < target_rate_.y))
+      {
+        field_center_.x = center.x;
+        field_center_.z = center.z;
+      }
+    }
     
     auto d = result.second * PANEL_SIZE;
     const auto& camera = camera_.body();
@@ -602,9 +619,25 @@ private:
       float n = d / std::cos(camera_rotation_.x);
       distance -= n;
     }
-    field_distance_ = std::max(distance, camera_distance_);
+
+    {
+      // 一定値以上遠のく場合は「ユーザー操作で意図的に離れている」
+      // と判断する
+      auto rate = distance / camera_distance_;
+      DOUT << "distace_rate: " << rate << std::endl;
+      if ((rate > distance_rate_.x) && (rate < distance_rate_.y))
+      {
+        field_distance_ = distance;
+      }
+    }
+
     // 強制モード
-    if (prohibited_) field_distance_ = distance;
+    if (force_camera_)
+    {
+      field_center_.x = center.x;
+      field_center_.z = center.z;
+      field_distance_ = distance;
+    }
   }
 
   // Touch座標→Field上の座標
@@ -784,12 +817,15 @@ private:
   // ピンチング操作時の距離の範囲
   glm::vec2 camera_distance_range_;
 
+  // 距離を調整するための係数
+  glm::vec2 target_rate_;
+  glm::vec2 distance_rate_;
+  // カメラ計算を優先
+  bool force_camera_ = false;
+
   // Fieldの中心座標
   glm::vec3 field_center_;
   float field_distance_ = 0.0f;
-
-  // カメラは計算が優先
-  bool force_camera_ = false;
 
   // 表示
   Camera camera_;
