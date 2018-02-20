@@ -1,13 +1,12 @@
 * TODO チュートリアル
+* TODO iOS：Night shiftで処理落ち
 * TODO ローカライズ
 * TODO pauseメニューから再開するアイコンの意味がわからん
 * TODO 道がわかりずらい
-* TODO たて画面やりにくい
 * TODO TOP10の記録を覚えるようにしてみる
 * TODO 湖と川が欲しい
 * TODO 飛行場が欲しい
 * TODO 電車(乗り物系)が欲しい
-* TODO 無限に広がる背景
 * TODO ポーズ画面ボカす
 * TODO CanvasにWidgetを追加したい
 * TODO drawの更新が30fpsだと演出が遅くなる
@@ -46,6 +45,10 @@
 * TODO iOS:GameCenter対応
 * TODO iOS:実績を実装
 * TODO iOS:他のアプリで再生中のBGMがそのまま再生されるように
+* DONE 無限に広がる背景
+CLOSED: [2018-02-20 火 18:55]
+* DONE たて画面やりにくい
+CLOSED: [2018-02-20 火 18:05]
 * DONE 画面拡大すると、パネルを置いた時にいちいちカメラが引いてウザい
 CLOSED: [2018-02-20 火 17:15]
 * DONE Game中断時に置ける場所だけ消えるのがみっともない

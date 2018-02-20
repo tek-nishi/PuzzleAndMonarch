@@ -212,11 +212,11 @@ public:
   }
 
   // 背景
-  void drawFieldBg() noexcept
+  void drawFieldBg(const glm::vec3& pos) noexcept
   {
     ci::gl::pushModelView();
-    ci::gl::translate(10, -15.0, 10);
-    ci::gl::scale(20.0, 10.0, 20.0);
+    ci::gl::translate(pos + glm::vec3(PANEL_SIZE / 2, -15.0, PANEL_SIZE / 2));
+    ci::gl::scale(PANEL_SIZE, 10.0, PANEL_SIZE);
     ci::gl::draw(bg_model);
     ci::gl::popModelView();
   }

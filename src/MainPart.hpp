@@ -511,7 +511,8 @@ private:
       }
 #endif
     }
-    view_.drawFieldBg();
+    auto bg_pos = calcBgPosition();
+    view_.drawFieldBg(bg_pos);
 
 
 #if 0
@@ -751,6 +752,21 @@ private:
                     true);
   }
 
+  // カメラから見える範囲のBGを計算
+  glm::vec3 calcBgPosition() const noexcept
+  {
+    const auto& camera = camera_.body();
+    auto aspect = camera.getAspectRatio();
+    auto ray = camera.generateRay(0.5, 0.5, aspect);
+    // 地面との交差位置を計算
+    float z;
+    ray.calcPlaneIntersection(glm::vec3(0, -5, 0), glm::vec3(0, 1, 0), &z);
+    auto pos = ray.calcPosition(z);
+    // World position→升目座標
+    auto p = roundValue(pos.x, pos.z, PANEL_SIZE * 2);
+
+    return { p.x * PANEL_SIZE * 2, 0, p.y * PANEL_SIZE * 2 };
+  }
 
 
   // FIXME 変数を後半に定義する実験
