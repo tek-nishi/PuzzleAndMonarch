@@ -230,10 +230,6 @@ public:
     holder_ += event_.connect("Game:Aborted",
                               [this](const Connection&, const Arguments&) noexcept
                               {
-                                paused_    = false;
-                                touch_put_ = false;
-                                game_->abortPlay();
-
                                 resetGame();
                               });
 
@@ -341,12 +337,14 @@ public:
                               [this](const Connection&, const Arguments&) noexcept
                               {
                                 paused_ = true;
+                                count_exec_.pause();
                               });
     
     holder_ += event_.connect("resume:touch_ended",
                               [this](const Connection&, const Arguments&) noexcept
                               {
                                 paused_ = false;
+                                count_exec_.pause(false);
                               });
 
 #if defined (DEBUG)
@@ -375,13 +373,16 @@ private:
 
 	bool update(double current_time, double delta_time) noexcept override
   {
+    // NOTICE pause中でもカウンタだけは進める
+    //        pause→タイトルへ戻る演出のため
+    count_exec_.update(delta_time);
+
     if (paused_)
     {
       return true;
     }
 
     game_->update(delta_time);
-    count_exec_.update(delta_time);
     fixed_exec_.update(delta_time);
 
     // カメラの中心位置変更
@@ -457,11 +458,11 @@ private:
       // 置ける場所
       const auto& blank = game_->getBlankPositions();
       view_.drawFieldBlank(blank);
-
+      
       // 手持ちパネル
       glm::vec3 pos(panel_disp_pos_().x, panel_disp_pos_().y + height_offset_, panel_disp_pos_().z);
       view_.drawPanel(game_->getHandPanel(), pos, game_->getHandRotation(), rotate_offset_);
-
+      
       float s = std::abs(std::sin(put_gauge_timer_ * 6.0f)) * 0.1;
       glm::vec3 scale(0.9 + s, 1, 0.9 + s);
       view_.drawFieldSelected(field_pos_, scale);
@@ -703,13 +704,18 @@ private:
                     {
                       timeline_->clear();
                       view_.clear();
+
+                      paused_ = false;
+                      count_exec_.pause(false);
+
                       // Game再生成
                       game_ = std::make_unique<Game>(params_["game"], event_, panels_);
                       game_->preparationPlay();
                                                   
                       field_center_   = glm::vec3();
                       field_distance_ = params_.getValueForKey<float>("field.camera.distance");
-                    });
+                    },
+                    true);
   }
 
 
