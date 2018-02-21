@@ -176,7 +176,7 @@ std::vector<Panel> createPanels() noexcept
     { Panel::START, Panel::PATH, Panel::FOREST | Panel::EDGE, Panel::PATH,   Panel::GRASS },
     
     { 0, Panel::FOREST, Panel::FOREST, Panel::PATH,   Panel::PATH },
-    { Panel::DEEP_FOREST, Panel::FOREST, Panel::FOREST, Panel::FOREST, Panel::FOREST },
+    { Panel::START | Panel::DEEP_FOREST, Panel::FOREST, Panel::FOREST, Panel::FOREST, Panel::FOREST },
     { Panel::DEEP_FOREST, Panel::FOREST, Panel::PATH | Panel::EDGE,   Panel::FOREST, Panel::FOREST },
     { Panel::TOWN, Panel::PATH | Panel::EDGE,   Panel::PATH | Panel::EDGE,   Panel::PATH | Panel::EDGE,   Panel::PATH | Panel::EDGE },
 

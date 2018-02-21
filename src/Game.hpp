@@ -123,7 +123,7 @@ struct Game
 
     if (start_panels.size() > 1)
     {
-      // お城が何枚かある時はシャッフル
+      // 開始パネルが何枚かある時はシャッフル
       std::shuffle(std::begin(start_panels), std::end(start_panels), engine);
     }
 
@@ -138,8 +138,8 @@ struct Game
     putPanel(start_panels[0], { 0, 0 }, ci::randInt(4));
 
     // 次のパネルを決めて、置ける場所も探す
-    getNextPanel();
     fieldUpdate();
+    getNextPanel();
   }
 
   // 本編開始
@@ -495,16 +495,31 @@ struct Game
 
 
 private:
+  // NOTICE 先にfieldUpdateしとく
   bool getNextPanel() noexcept
   {
     if (waiting_panels.empty()) return false;
 
-    hand_panel    = waiting_panels[0];
+    // 先頭から順に置けるかどうか調べる
+    size_t i;
+    for (i = 0; i < waiting_panels.size(); ++i)
+    {
+      if (canPanelPutField(panels_[waiting_panels[i]], blank_, field)) break;
+    }
+
+    if (i == waiting_panels.size())
+    {
+      // 全く置けない(積んだ)
+      return false;
+    }
+
+    hand_panel    = waiting_panels[i];
     hand_rotation = 0;
 
-    waiting_panels.erase(std::begin(waiting_panels));
+    // コンテナから削除
+    waiting_panels.erase(std::begin(waiting_panels) + i);
 
-    DOUT << "Next panel: " << hand_panel << std::endl;
+    DOUT << "Next panel: " << hand_panel << "(index: " << i << ")" << std::endl;
 
     return true;
   }
