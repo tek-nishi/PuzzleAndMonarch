@@ -272,9 +272,16 @@ void setupApp(ci::app::App::Settings* settings) noexcept
   settings->setPowerManagementEnabled(params.getValueForKey<bool>("app.power_management"));
   settings->setHighDensityDisplayEnabled(params.getValueForKey<bool>("app.retina"));
 
+#if defined (CINDER_COCOA_TOUCH)
+  // Night shiftなどで処理速度が落ちるので
+  // FrameRateは固定
+  settings->disableFrameRate();
+#else
+  // PC版は設定で変更可能
   float frame_rate = params.getValueForKey<float>("app.frame_rate");
   (frame_rate > 0.0f) ? settings->setFrameRate(frame_rate)
                       : settings->disableFrameRate();
+#endif
 }
 
 }
