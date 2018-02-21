@@ -62,6 +62,10 @@ public:
       view_(params["field"]),
       timeline_(ci::Timeline::create())
   {
+    // 乱数
+    std::random_device seed_gen;
+    engine_ = std::mt19937(seed_gen());
+
     // フィールドカメラ
     calcCamera(camera_.body());
     field_distance_ = camera_distance_;
@@ -331,7 +335,7 @@ public:
                                 view_.clear();
                                 // Game再生成
                                 game_ = std::make_unique<Game>(params_["game"], event_, panels_);
-                                game_->preparationPlay();
+                                game_->preparationPlay(engine_);
 
                                 field_center_   = glm::vec3();
                                 field_distance_ = params_.getValueForKey<float>("field.camera.distance");
@@ -367,7 +371,7 @@ public:
                               });
 #endif
     // 本編準備
-    game_->preparationPlay();
+    game_->preparationPlay(engine_);
   }
 
 
@@ -678,7 +682,9 @@ private:
   // 次のパネルの出現位置を決める
   void calcNextPanelPosition() noexcept
   {
-    const auto& positions = game_->getBlankPositions();
+    auto positions = game_->getBlankPositions();
+    // 適当に並び替える
+    std::shuffle(std::begin(positions), std::end(positions), engine_);
 
     // 置いた場所から一番距離の近い場所を選ぶ
     auto it = std::min_element(std::begin(positions), std::end(positions),
@@ -744,7 +750,7 @@ private:
 
                       // Game再生成
                       game_ = std::make_unique<Game>(params_["game"], event_, panels_);
-                      game_->preparationPlay();
+                      game_->preparationPlay(engine_);
                                                   
                       field_center_   = glm::vec3();
                       field_distance_ = params_.getValueForKey<float>("field.camera.distance");
@@ -779,6 +785,8 @@ private:
   FixedTimeExec fixed_exec_;
 
   Archive& archive_;
+  
+  std::mt19937 engine_;
 
   bool paused_ = false;
   bool prohibited_ = false;

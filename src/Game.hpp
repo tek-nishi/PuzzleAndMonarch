@@ -104,7 +104,7 @@ struct Game
   }
 
   // 本編準備
-  void preparationPlay() noexcept
+  void preparationPlay(std::mt19937& engine) noexcept
   {
     // 開始パネルを探す
     std::vector<int> start_panels;
@@ -116,10 +116,6 @@ struct Game
       }
     }
     assert(!start_panels.empty());
-
-    // 乱数を用意
-    std::random_device seed_gen;
-    std::mt19937 engine(seed_gen());
 
     if (start_panels.size() > 1)
     {

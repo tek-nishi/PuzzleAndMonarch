@@ -1,6 +1,5 @@
 * TODO チュートリアル
 * TODO 「再生開始」アイコンでゲームを始められるのが伝わっていない
-* TODO iOS：Night shiftで処理落ち
 * TODO ローカライズ
 * TODO pauseメニューから再開するアイコンの意味がわからん
 * TODO 道がわかりずらい
@@ -19,7 +18,7 @@
 * TODO 結果画面、スコアのイージング
 * TODO ランクは文字だけでなく格好いい勲章とか出す
 * TODO iOS:ボタンとか大きくしないとタップしずらい
-* TODO 次のパネルを置く時に、blankをシャッフルしてみる
+* TODO 保存したゲームは得点した瞬間などもプレイバックできる
 * TODO 森や道が完成した時の演出
 * TODO モデルデータが重い
 * TODO いい感じに画面全体に街が映るように
@@ -46,6 +45,12 @@
 * TODO iOS:GameCenter対応
 * TODO iOS:実績を実装
 * TODO iOS:他のアプリで再生中のBGMがそのまま再生されるように
+* DONE randomをMainPart.cppあたりで保持する
+CLOSED: [2018-02-22 Thu 00:31]
+* DONE 次のパネルを置く時に、blankをシャッフルしてみる
+CLOSED: [2018-02-22 Thu 00:24]
+* DONE iOS：Night shiftで処理落ち
+CLOSED: [2018-02-21 Wed 23:32]
 * DONE 置けないパターンをどうする？
 CLOSED: [2018-02-21 Wed 23:18]
 * DONE 残り時間に時計アイコンを
