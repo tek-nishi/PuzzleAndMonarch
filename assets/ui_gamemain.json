@@ -22,8 +22,7 @@
 
       "childlen": [
         {
-          "identifier": "time_remain",
-          "rect": [ -25, -12, 25, 12 ],
+          "rect": [ -36, -12, 14, 12 ],
           "anchor": [
             [ 0.5, 0.915 ],
             [ 0.5, 0.915 ]
@@ -31,10 +30,38 @@
           "scale": [ 1, 1 ],
           "pivot": [ 0.5, 0.5 ],
           
-          "font": "en",
-          "text": "9:99",
-          "dynamic_layout": false,
-          "color": [ 1, 1, 1 ]
+          "childlen": [
+            {
+              "rect": [ -3, 5, -3, -2 ],
+              "anchor": [
+                [ 0.5, 0 ],
+                [ 0.5, 1 ]
+              ],
+              "scale": [ 1, 1 ],
+              "pivot": [ 0.5, 0.5 ],
+              
+              "font": "icon",
+              "text": "",
+              "layout": [ 1, 0.5 ],
+              "color": [ 1, 1, 1 ]
+            },
+            {
+              "identifier": "time_remain",
+              "rect": [ 0, 0, 0, 0 ],
+              "anchor": [
+                [ 0.5, 0 ],
+                [ 0.5, 1 ]
+              ],
+              "scale": [ 1, 1 ],
+              "pivot": [ 0.5, 0.5 ],
+              
+              "font": "en",
+              "text": "9:99",
+              "dynamic_layout": false,
+              "layout": [ 0, 0.5 ],
+              "color": [ 1, 1, 1 ]
+            }
+          ]
         },
         {
           "identifier": "pause",
