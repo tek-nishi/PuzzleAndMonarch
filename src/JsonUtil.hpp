@@ -180,4 +180,67 @@ T getVec(const ci::JsonTree& json, const std::string& name, const T& default_val
                                : default_value;
 }
 
+// コンテナ→JsonTree
+template <typename T>
+ci::JsonTree createVecArray(const std::string& key, const T& array) noexcept
+{
+  ci::JsonTree json = ci::JsonTree::makeObject(key);
+
+  for (const auto& obj : array)
+  {
+    json.pushBack(createFromVec(obj));
+  }
+
+  return json;
+}
+
+template <typename T>
+ci::JsonTree createVecVecArray(const std::string& key, const T& array) noexcept
+{
+  ci::JsonTree json = ci::JsonTree::makeObject(key);
+
+  for (const auto& aa : array)
+  {
+    ci::JsonTree j;
+    for (const auto& obj : aa)
+    {
+      j.pushBack(createFromVec(obj));
+    }
+    json.pushBack(j);
+  }
+
+  return json;
+}
+
+template <typename T>
+std::vector<T> getVecArray(const ci::JsonTree& json) noexcept
+{
+  std::vector<T> array;
+
+  for (const auto& obj : json)
+  {
+    array.push_back(getVec<T>(obj));
+  }
+
+  return array;
+}
+
+template <typename T>
+std::vector<std::vector<T>> getVecVecArray(const ci::JsonTree& json) noexcept
+{
+  std::vector<std::vector<T>> array;
+
+  for (const auto aa : json)
+  {
+    std::vector<T> ar;
+    for (const auto& obj : aa)
+    {
+      ar.push_back(getVec<T>(obj));
+    }
+    array.push_back(ar);
+  }
+
+  return array;
+}
+
 } }

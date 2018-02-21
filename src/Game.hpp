@@ -321,69 +321,6 @@ struct Game
   }
 
 
-  template <typename T>
-  static ci::JsonTree createVecArray(const std::string& key, const T& array) noexcept
-  {
-    ci::JsonTree json = ci::JsonTree::makeObject(key);
-
-    for (const auto& obj : array)
-    {
-      json.pushBack(Json::createFromVec(obj));
-    }
-
-    return json;
-  }
-
-  template <typename T>
-  static ci::JsonTree createVecVecArray(const std::string& key, const T& array) noexcept
-  {
-    ci::JsonTree json = ci::JsonTree::makeObject(key);
-
-    for (const auto& aa : array)
-    {
-      ci::JsonTree j;
-      for (const auto& obj : aa)
-      {
-        j.pushBack(Json::createFromVec(obj));
-      }
-      json.pushBack(j);
-    }
-
-    return json;
-  }
-
-  template <typename T>
-  static std::vector<T> getVecArray(const ci::JsonTree& json) noexcept
-  {
-    std::vector<T> array;
-
-    for (const auto& obj : json)
-    {
-      array.push_back(Json::getVec<T>(obj));
-    }
-
-    return array;
-  }
-
-  template <typename T>
-  static std::vector<std::vector<T>> getVecVecArray(const ci::JsonTree& json) noexcept
-  {
-    std::vector<std::vector<T>> array;
-
-    for (const auto aa : json)
-    {
-      std::vector<T> ar;
-      for (const auto& obj : aa)
-      {
-        ar.push_back(Json::getVec<T>(obj));
-      }
-      array.push_back(ar);
-    }
-
-    return array;
-  }
-
-
   // 保存
   void save() const noexcept
   {
@@ -394,10 +331,10 @@ struct Game
              .addChild(Json::createArray("waiting_panels", waiting_panels))
              .addChild(field.serialize())
              .addChild(ci::JsonTree("play_time", play_time_))
-             .addChild(createVecVecArray("completed_forests", completed_forests))
+             .addChild(Json::createVecVecArray("completed_forests", completed_forests))
              .addChild(Json::createArray("deep_forest", deep_forest))
-             .addChild(createVecVecArray("completed_path", completed_path))
-             .addChild(createVecArray("completed_church", completed_church));
+             .addChild(Json::createVecVecArray("completed_path", completed_path))
+             .addChild(Json::createVecArray("completed_church", completed_church));
 
     save_data.write(getDocumentPath() / "game.json");
 
@@ -421,10 +358,10 @@ struct Game
     field          = Field(json["field"]);
     play_time_     = json.getValueForKey<double>("play_time");
     
-    completed_forests = getVecVecArray<glm::ivec2>(json["completed_forests"]);
+    completed_forests = Json::getVecVecArray<glm::ivec2>(json["completed_forests"]);
     deep_forest       = Json::getArray<u_int>(json["deep_forest"]);
-    completed_path    = getVecVecArray<glm::ivec2>(json["completed_path"]);
-    completed_church  = getVecArray<glm::ivec2>(json["completed_church"]);
+    completed_path    = Json::getVecVecArray<glm::ivec2>(json["completed_path"]);
+    completed_church  = Json::getVecArray<glm::ivec2>(json["completed_church"]);
 
     auto panels = field.enumeratePanels();
     double at_time = 0.5;

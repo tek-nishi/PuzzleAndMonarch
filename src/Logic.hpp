@@ -15,7 +15,7 @@ namespace ngs {
 bool canPutPanel(const Panel& panel, const glm::ivec2& pos, u_int rotation, const Field& field) noexcept
 {
   // 時計回りに調べる
-  const glm::ivec2 offsets[] = {
+  static const glm::ivec2 offsets[] = {
     {  0,  1 },
     {  1,  0 },
     {  0, -1 },
@@ -72,7 +72,7 @@ bool checkAttributeEdge(const glm::ivec2& pos, u_int direction,
   checked.push_back(pos);
 
   // 時計回りに調べる
-  const glm::ivec2 offsets[] = {
+  static const glm::ivec2 offsets[] = {
     {  0,  1 },
     {  1,  0 },
     {  0, -1 },
@@ -125,7 +125,7 @@ std::vector<std::vector<glm::ivec2>> isCompleteAttribute(u_int attribute,
   if (!has_attr) return completed;
 
   // 時計回りに調べる
-  const glm::ivec2 offsets[] = {
+  static const glm::ivec2 offsets[] = {
     {  0,  1 },
     {  1,  0 },
     {  0, -1 },
@@ -190,7 +190,7 @@ std::vector<std::vector<glm::ivec2>> isCompleteAttribute(u_int attribute,
 bool isPanelAroundPos(const glm::ivec2& pos, const Field& field) noexcept
 {
   // 周囲を時計回りに調べる
-  const glm::ivec2 offsets[] = {
+  static const glm::ivec2 offsets[] = {
     {  0,  1 },
     {  1,  1 },
     {  1,  0 },
@@ -215,7 +215,7 @@ std::vector<glm::ivec2> isCompleteChurch(const glm::ivec2& pos,
 {
   std::vector<glm::ivec2> completed;
 
-  const glm::ivec2 offsets[] = {
+  static const glm::ivec2 offsets[] = {
     {  0,  0 },
     {  0,  1 },
     {  1,  1 },

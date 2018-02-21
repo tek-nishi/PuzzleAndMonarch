@@ -64,7 +64,7 @@ T rotateRight(T x, unsigned int n) noexcept
   // s = n % (sizeof(T) * 8)
   unsigned int s = (n & ((sizeof(T) << 3) - 1));
   return (x >> n) | (x << ((sizeof(T) << 3) - s));
-};
+}
 
 // 左シフト
 template<typename T>
@@ -73,6 +73,6 @@ T rotateLeft(T x, unsigned int n) noexcept
   // s = n % (sizeof(T) * 8)
   unsigned int s = (n & ((sizeof(T) << 3) - 1));
   return (x << s) | (x >> ((sizeof(T) << 3) - s));
-};
+}
 
 }

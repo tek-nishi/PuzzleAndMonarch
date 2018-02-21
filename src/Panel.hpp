@@ -5,6 +5,7 @@
 //
 
 #include <vector>
+#include "Utility.hpp"
 
 
 namespace ngs {
@@ -37,6 +38,13 @@ struct Panel {
     edge_[1] = edge_right;
     edge_[2] = edge_up;
     edge_[3] = edge_left;
+
+    uint64_t edge = 0;
+    for (u_int i = 0; i < edge_.size(); ++i)
+    {
+      edge |= uint64_t(edge_[i] & Panel::EDGE_MASK) << (16 * i);
+    }
+    edge_bundled_ = edge;
   }
 
   ~Panel() = default;
@@ -65,21 +73,15 @@ struct Panel {
   // uint64_t で返す
   uint64_t getRotatedEdgeValue(u_int rotation) const noexcept
   {
-    auto edges = getRotatedEdge(rotation);
-
-    uint64_t edge = 0;
-    for (u_int i = 0; i < edges.size(); ++i)
-    {
-      edge |= uint64_t(edges[i] & Panel::EDGE_MASK) << (16 * i);
-    }
-    return edge; 
+    return rotateRight(edge_bundled_, rotation * 16);
   }
 
 
 private:
   u_int attribute_;
   std::vector<u_int> edge_;     // ４辺の構造
-  
+  uint64_t edge_bundled_;       // ４辺の構造(１つにまとめた値)
+
 };
 
 

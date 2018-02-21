@@ -47,31 +47,30 @@ struct Field
   // 置ける場所を探す
   std::vector<glm::ivec2> searchBlank() const noexcept
   {
-    std::vector<glm::ivec2> blank; 
+    // TIPS 重複する場所の列挙を回避できる
+    std::set<glm::ivec2, LessVec<glm::ivec2>> blank_candidate;
 
-    const glm::ivec2 offsets[] = {
+    static const glm::ivec2 offsets[] = {
       { -1,  0 },
       {  1,  0 },
       {  0, -1 },
       {  0,  1 },
     };
 
-    // FIXME std::mapの列挙はあまり好ましくない
-    for (const auto& it : panel_status_)
+    for (const auto& pos : panel_pos_array_)
     {
       for (const auto& ofs : offsets)
       {
-        auto p = it.first + ofs;
+        auto p = pos + ofs;
         if (!panel_status_.count(p))
         {
-          // 重複を調べてから追加
-          if (std::find(std::begin(blank), std::end(blank), p) == std::end(blank))
-          {
-            blank.push_back(p);
-          }
+          blank_candidate.insert(p);
         }
       }
     }
+
+    std::vector<glm::ivec2> blank;
+    std::copy(std::begin(blank_candidate), std::end(blank_candidate), std::back_inserter(blank));
 
     return blank;
   }
