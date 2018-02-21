@@ -56,5 +56,23 @@ T toDegrees(const T& v) noexcept
   return v * 180.0f / float(M_PI);
 }
 
+// ビットローテート
+// SOURCE http://qune.jp/archive/001213/index.html
+template<typename T>
+T rotateRight(T x, unsigned int n) noexcept
+{
+  // s = n % (sizeof(T) * 8)
+  unsigned int s = (n & ((sizeof(T) << 3) - 1));
+  return (x >> n) | (x << ((sizeof(T) << 3) - s));
+};
+
+// 左シフト
+template<typename T>
+T rotateLeft(T x, unsigned int n) noexcept
+{
+  // s = n % (sizeof(T) * 8)
+  unsigned int s = (n & ((sizeof(T) << 3) - 1));
+  return (x << s) | (x >> ((sizeof(T) << 3) - s));
+};
 
 }

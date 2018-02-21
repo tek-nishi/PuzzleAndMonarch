@@ -12,8 +12,7 @@
 namespace ngs {
 
 // Fieldにパネルが置けるか判定
-bool canPutPanel(const Panel& panel, const glm::ivec2& pos, u_int rotation,
-                 const Field& field, const std::vector<Panel>& panels) noexcept
+bool canPutPanel(const Panel& panel, const glm::ivec2& pos, u_int rotation, const Field& field) noexcept
 {
   // 時計回りに調べる
   const glm::ivec2 offsets[] = {
@@ -24,25 +23,22 @@ bool canPutPanel(const Panel& panel, const glm::ivec2& pos, u_int rotation,
   };
 
   // ４隅の情報
-  auto edge = panel.getRotatedEdge(rotation);
+  auto edge = panel.getRotatedEdgeValue(rotation);
+  auto field_edge = edge;
 
-  // ４方向確認
-  bool can_put = true;
-  for (u_int i = 0; can_put && (i < 4); ++i)
+  for (u_int i = 0; i < 4; ++i)
   {
     glm::ivec2 p = pos + offsets[i];
     if (!field.existsPanel(p)) continue;
 
     // Field上のパネル情報
     const auto& panel_status = field.getPanelStatus(p);
-    const auto& field_panel  = panels[panel_status.number];
-    auto field_panel_edge    = field_panel.getRotatedEdge(panel_status.rotation);
+    auto field_panel_edge    = rotateLeft(panel_status.edge, 32);
 
-    // エッジが一致していないと置けない
-    can_put = ((edge[i] & ~Panel::EDGE) == (field_panel_edge[(i + 2) % 4] & ~Panel::EDGE)); 
+    field_edge = (field_edge & ~(uint64_t(Panel::EDGE_MASK) << (i * 16))) | (field_panel_edge & (uint64_t(Panel::EDGE_MASK) << (i * 16)));  
   }
 
-  return can_put;
+  return edge == field_edge;
 }
 
 
@@ -310,16 +306,14 @@ int countTown(const std::vector<std::vector<glm::ivec2>>& completed,
 
 
 // 手持ちのパネルがフィールドにおけるか調べる
-bool canPanelPutField(const Panel& panel, const std::vector<glm::ivec2>& blank,
-                      const Field& field, const std::vector<Panel>& panels) noexcept
+bool canPanelPutField(const Panel& panel, const std::vector<glm::ivec2>& blank, const Field& field) noexcept
 {
   // 総当たりで調査
   for (const auto& pos : blank)
   {
     for (u_int i = 0; i < 4; ++i)
     {
-      if (canPutPanel(panel, pos, i,
-                      field, panels))
+      if (canPutPanel(panel, pos, i, field))
       {
         return true;
       }

@@ -184,8 +184,7 @@ struct Game
     
     if (std::find(std::begin(blank_), std::end(blank_), field_pos) != std::end(blank_))
     {
-      can_put = canPutPanel(panels_[hand_panel], field_pos, hand_rotation,
-                            field, panels_);
+      can_put = canPutPanel(panels_[hand_panel], field_pos, hand_rotation, field);
     }
 
     return can_put;
@@ -620,7 +619,10 @@ private:
   // パネルを追加してイベント送信
   void putPanel(int panel, const glm::ivec2& pos, u_int rotation) noexcept
   {
-    field.addPanel(panel, pos, rotation);
+    // Panel端をここで調べる
+    const auto p = panels_[panel];
+    auto edge = p.getRotatedEdgeValue(rotation);
+    field.addPanel(panel, pos, rotation, edge);
 
     {
       Arguments args = {

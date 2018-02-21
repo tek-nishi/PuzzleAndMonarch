@@ -19,6 +19,8 @@ struct PanelStatus
   glm::ivec2 position;
   int number;              // パネル番号
   u_int rotation;          // 0~3 時計回りに回転している状態
+  // 置いた状態でのパネル端情報
+  uint64_t edge;
 };
 
 
@@ -32,11 +34,12 @@ struct Field
   {
     for (const auto& obj : json)
     {
-      int number     = obj.getValueForKey<int>("number");
-      auto pos       = Json::getVec<glm::ivec2>(obj["pos"]);
-      u_int rotation = obj.getValueForKey<u_int>("rotation");
+      auto number   = obj.getValueForKey<int>("number");
+      auto pos      = Json::getVec<glm::ivec2>(obj["pos"]);
+      auto rotation = obj.getValueForKey<u_int>("rotation");
+      auto edge     = Json::getValue<uint64_t>(obj, "edge", 0);
 
-      addPanel(number, pos, rotation);
+      addPanel(number, pos, rotation, edge);
     }
   }
 
@@ -85,13 +88,15 @@ struct Field
   }
 
   // 追加
-  void addPanel(int number, const glm::ivec2& pos, u_int rotation) noexcept
+  void addPanel(int number, const glm::ivec2& pos, u_int rotation, uint64_t edge) noexcept
   {
     PanelStatus status = {
       pos,
       number,
-      rotation
+      rotation,
+      edge
     };
+
     panel_status_.emplace(pos, status);
     panel_pos_array_.push_back(pos);
   }
@@ -125,7 +130,8 @@ struct Field
       ci::JsonTree p;
       p.addChild(Json::createFromVec("pos", status.position))
        .addChild(ci::JsonTree("number", status.number))
-       .addChild(ci::JsonTree("rotation", status.rotation));
+       .addChild(ci::JsonTree("rotation", status.rotation))
+       .addChild(ci::JsonTree("edge", status.edge));
 
       data.pushBack(p);
     }

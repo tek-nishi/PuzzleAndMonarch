@@ -15,6 +15,9 @@ struct Panel {
     PATH   = 1 << 0,         // 道
     GRASS  = 1 << 1,         // 草原
     FOREST = 1 << 2,         // 森
+    WATER  = 1 << 3,         // 水
+    
+    EDGE_MASK = (1 << 16) - 1, 
 
     EDGE = 1 << 16,          // 端
 
@@ -26,7 +29,7 @@ struct Panel {
     START       = 1 << 4,         // 開始用
   };
 
-  Panel(u_int attribute, u_int edge_up, u_int edge_right, u_int edge_bottom, u_int edge_left)
+  Panel(u_int attribute, u_int edge_up, u_int edge_right, u_int edge_bottom, u_int edge_left) noexcept
     : attribute_(attribute),
       edge_(4)
   {
@@ -36,13 +39,22 @@ struct Panel {
     edge_[3] = edge_left;
   }
 
+  ~Panel() = default;
 
-  u_int getAttribute() const { return attribute_; }
 
-  const std::vector<u_int>& getEdge() const { return edge_; }
+  u_int getAttribute() const noexcept
+  {
+    return attribute_;
+  }
+
+  const std::vector<u_int>& getEdge() const noexcept
+  {
+    return edge_;
+  }
 
   // 回転ずみの端情報
-  std::vector<u_int> getRotatedEdge(u_int rotation) const {
+  std::vector<u_int> getRotatedEdge(u_int rotation) const noexcept
+  {
     std::vector<u_int> edge = edge_;
 
     // 左方向へのシフト
@@ -50,18 +62,31 @@ struct Panel {
     return edge;
   }
 
+  // uint64_t で返す
+  uint64_t getRotatedEdgeValue(u_int rotation) const noexcept
+  {
+    auto edges = getRotatedEdge(rotation);
+
+    uint64_t edge = 0;
+    for (u_int i = 0; i < edges.size(); ++i)
+    {
+      edge |= uint64_t(edges[i] & Panel::EDGE_MASK) << (16 * i);
+    }
+    return edge; 
+  }
+
 
 private:
   u_int attribute_;
   std::vector<u_int> edge_;     // ４辺の構造
-
+  
 };
 
 
-
 // 初期パネル生成
-std::vector<Panel> createPanels() {
-  std::vector<Panel> panels = {
+std::vector<Panel> createPanels() noexcept
+{
+  static const std::vector<Panel> panels = {
     // a
     { Panel::DEEP_FOREST, Panel::GRASS,  Panel::FOREST, Panel::FOREST, Panel::FOREST },
     { 0, Panel::PATH,   Panel::PATH,   Panel::FOREST, Panel::FOREST },

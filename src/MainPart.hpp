@@ -486,7 +486,7 @@ private:
         if (game_->isPlaying())
         {
           // 手元のパネル
-          // drawPanelEdge(panels_[game_->getHandPanel()], pos, game_->getHandRotation());
+          drawPanelEdge(panels_[game_->getHandPanel()], pos, game_->getHandRotation());
           
           // 置こうとしている場所の周囲
           auto around = game_->enumerateAroundPanels(field_pos_);
@@ -503,10 +503,10 @@ private:
           }
 
           // パネルのAABB
-          auto aabb = view_.panelAabb(game_->getHandPanel());
-          aabb.transform(glm::translate(cursor_pos_));
-          ci::gl::color(0, 1, 0);
-          ci::gl::drawStrokedCube(aabb);
+          // auto aabb = view_.panelAabb(game_->getHandPanel());
+          // aabb.transform(glm::translate(cursor_pos_));
+          // ci::gl::color(0, 1, 0);
+          // ci::gl::drawStrokedCube(aabb);
         }
       }
 #endif
