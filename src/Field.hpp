@@ -70,7 +70,7 @@ struct Field
     }
 
     std::vector<glm::ivec2> blank;
-    std::copy(std::begin(blank_candidate), std::end(blank_candidate), std::back_inserter(blank));
+    appendContainer(blank_candidate, blank);
 
     return blank;
   }

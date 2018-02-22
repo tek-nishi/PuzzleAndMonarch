@@ -207,16 +207,19 @@ struct Game
     {
       // 森完成チェック
       auto completed = isCompleteAttribute(Panel::FOREST, field_pos, field, panels_);
-      if (!completed.empty()) {
+      if (!completed.empty())
+      {
         // 得点
         DOUT << "Forest: " << completed.size() << '\n';
         u_int deep_num = 0;
-        for (const auto& comp : completed) {
+        for (const auto& comp : completed)
+        {
           DOUT << " Point: " << comp.size() << '\n';
 
           // 深い森
           bool deep = isDeepForest(comp, field, panels_);
-          if (deep) {
+          if (deep)
+          {
             deep_num += 1;
           }
           deep_forest.push_back(deep ? 1 : 0);
@@ -224,36 +227,54 @@ struct Game
         DOUT << "  Deep: " << deep_num 
              << std::endl;
 
-        // TIPS コンテナ同士の連結
-        std::copy(std::begin(completed), std::end(completed), std::back_inserter(completed_forests));
+        appendContainer(completed, completed_forests);
+
+        Arguments args {
+          { "completed", completed }
+        };
+        event_.signal("Game:completed_forests", args);
+
         update_score = true;
       }
     }
     {
       // 道完成チェック
       auto completed = isCompleteAttribute(Panel::PATH, field_pos, field, panels_);
-      if (!completed.empty()) {
+      if (!completed.empty())
+      {
         // 得点
         DOUT << "  Path: " << completed.size() << '\n';
-        for (const auto& comp : completed) {
+        for (const auto& comp : completed)
+        {
           DOUT << " Point: " << comp.size() << '\n';
         }
         DOUT << std::endl;
 
-        // TIPS コンテナ同士の連結
-        std::copy(std::begin(completed), std::end(completed), std::back_inserter(completed_path));
+        appendContainer(completed, completed_path);
+
+        Arguments args {
+          { "completed", completed }
+        };
+        event_.signal("Game:completed_path", args);
+
         update_score = true;
       }
     }
     {
       // 教会完成チェック
       auto completed = isCompleteChurch(field_pos, field, panels_);
-      if (!completed.empty()) {
+      if (!completed.empty())
+      {
         // 得点
         DOUT << "Church: " << completed.size() << std::endl;
               
-        // TIPS コンテナ同士の連結
-        std::copy(std::begin(completed), std::end(completed), std::back_inserter(completed_church));
+        appendContainer(completed, completed_church);
+        
+        Arguments args {
+          { "completed", completed }
+        };
+        event_.signal("Game:completed_church", args);
+
         update_score = true;
       }
     }

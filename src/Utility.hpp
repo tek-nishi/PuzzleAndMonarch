@@ -75,4 +75,12 @@ T rotateLeft(T x, unsigned int n) noexcept
   return (x << s) | (x >> ((sizeof(T) << 3) - s));
 }
 
+
+// コンテナへ追記
+template<typename T1, typename T2>
+void appendContainer(const T1& src, T2& dst) noexcept
+{
+  std::copy(std::begin(src), std::end(src), std::back_inserter(dst));
+}
+
 }
