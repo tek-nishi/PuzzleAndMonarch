@@ -4,6 +4,8 @@
 // テスト用タスク
 //
 
+#if defined (DEBUG)
+
 #include "Task.hpp"
 #include "Camera.hpp"
 
@@ -114,3 +116,5 @@ public:
 }; 
 
 }
+
+#endif
