@@ -157,27 +157,27 @@
       "far_z":  600
     },
     
-    "font_texture": 2048,
+    "font_texture": 1024,
 
     "font": [
       {
         "name": "en",
         "path": "MAIAN.TTF",
-        "size": 100 
+        "size": 64 
       },
       {
         "name": "jp",
         "path": "DFKAIC001.ttf",
-        "size": 100
+        "size": 64
       },
       {
         "name": "icon",
         "path": "fontawesome-webfont.ttf",
-        "size": 100
+        "size": 64
       }
     ],
     "shader": {
-      "font": "font"
+      "font": "font2"
     }
   },
 

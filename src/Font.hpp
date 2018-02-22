@@ -11,7 +11,8 @@
 #include <cinder/TriMesh.h>
 
 #if defined (NGS_FONT_IMPLEMENTATION)
-#define FONS_VERTEX_COUNT 2048
+// #define FONS_VERTEX_COUNT 2048
+#define FONS_SCRATCH_BUF_SIZE (64000*2)
 #define FONTSTASH_IMPLEMENTATION
 #endif
 #include "fontstash.h"
@@ -60,6 +61,8 @@ public:
   // pos   表示位置
   // color 表示色
   void draw(const std::string& text, const glm::vec2& pos, const ci::ColorA& color) noexcept;
+
+  void setBlur(float blur) noexcept;
 
 #if defined (DEBUG)
   const ci::gl::Texture2dRef& texture() const noexcept;
@@ -208,6 +211,8 @@ Font::Font(const std::string& path,
 
   font_size_ = initial_size;
 
+  setBlur(4.0f);
+
   DOUT << "Font(" << path << ") handle: " << handle << std::endl;
 }
 
@@ -247,6 +252,10 @@ void Font::draw(const std::string& text, const glm::vec2& pos, const ci::ColorA&
   fonsDrawText(context_, pos.x, pos.y, text.c_str(), nullptr);
 }
 
+void Font::setBlur(float blur) noexcept
+{
+  fonsSetBlur(context_, blur);
+}
 
 #if defined (DEBUG)
 

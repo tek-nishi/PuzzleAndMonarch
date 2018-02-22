@@ -153,6 +153,9 @@ FONS_DEF void fonsDrawDebug(FONScontext* s, float x, float y);
 
 #ifdef FONTSTASH_IMPLEMENTATION
 
+#define SDF_IMPLEMENTATION
+#include "sdf.h"
+
 #define FONS_NOTUSED(v)  (void)sizeof(v)
 
 #ifdef FONS_USE_FREETYPE
@@ -1178,10 +1181,21 @@ static FONSglyph* fons__getGlyph(FONScontext* stash, FONSfont* font, unsigned in
 	}*/
 
 	// Blur
-	if (iblur > 0) {
+	if (iblur > 0)
+  {
 		stash->nscratch = 0;
 		bdst = &stash->texData[glyph->x0 + glyph->y0 * stash->params.width];
-		fons__blur(stash, bdst, gw,gh, stash->params.width, iblur);
+    // 通常のBlur
+		/* fons__blur(stash, bdst, gw,gh, stash->params.width, iblur); */
+
+    // Signed distance field用のブラー
+    unsigned char* sdfTemp = (unsigned char*)fons__tmpalloc(gw * gh * sizeof(float) * 3, stash);
+    assert(sdfTemp);
+    if (sdfTemp)
+    {
+      sdfBuildDistanceFieldNoAlloc(bdst, stash->params.width, iblur, bdst, gw, gh, stash->params.width, sdfTemp);
+      fons__tmpfree(sdfTemp, stash);
+    }
 	}
 
 	stash->dirtyRect[0] = fons__mini(stash->dirtyRect[0], glyph->x0);
