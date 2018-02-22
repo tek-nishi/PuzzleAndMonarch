@@ -1,5 +1,4 @@
 * TODO チュートリアル
-* TODO Fontのデバッグ機能
 * TODO VisualStudioでDEBUGが定義されていない疑惑
 * TODO 「再生開始」アイコンでゲームを始められるのが伝わっていない
 * TODO ローカライズ
@@ -47,6 +46,8 @@
 * TODO iOS:GameCenter対応
 * TODO iOS:実績を実装
 * TODO iOS:他のアプリで再生中のBGMがそのまま再生されるように
+* DONE Fontのデバッグ機能
+CLOSED: [2018-02-22 木 11:17]
 * DONE randomをMainPart.cppあたりで保持する
 CLOSED: [2018-02-22 Thu 00:31]
 * DONE 次のパネルを置く時に、blankをシャッフルしてみる
