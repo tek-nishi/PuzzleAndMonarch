@@ -60,6 +60,10 @@ public:
   // pos   表示位置
   // color 表示色
   void draw(const std::string& text, const glm::vec2& pos, const ci::ColorA& color) noexcept;
+
+#if defined (DEBUG)
+  const ci::gl::Texture2dRef& texture() const noexcept;
+#endif
 };
 
 
@@ -243,6 +247,15 @@ void Font::draw(const std::string& text, const glm::vec2& pos, const ci::ColorA&
   fonsDrawText(context_, pos.x, pos.y, text.c_str(), nullptr);
 }
 
+
+#if defined (DEBUG)
+
+const ci::gl::Texture2dRef& Font::texture() const noexcept
+{
+  return gl_.tex;
+}
+
+#endif
 
 #endif
 

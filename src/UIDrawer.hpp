@@ -60,6 +60,16 @@ struct Drawer
   }
 
 
+#if defined (DEBUG)
+
+  const std::map<std::string, Font>& getFonts() const noexcept
+  {
+    return fonts_;
+  }
+
+#endif
+
+
 private:
   std::map<std::string, Font> fonts_;
 

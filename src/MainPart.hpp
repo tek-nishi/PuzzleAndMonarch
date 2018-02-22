@@ -75,7 +75,7 @@ public:
                               std::bind(&MainPart::resize,
                                         this, std::placeholders::_1, std::placeholders::_2));
     
-    holder_ += event_.connect("draw",
+    holder_ += event_.connect("draw", 0,
                               std::bind(&MainPart::draw,
                                         this, std::placeholders::_1, std::placeholders::_2));
 

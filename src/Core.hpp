@@ -21,6 +21,7 @@
 #include "Records.hpp"
 #include "Ranking.hpp"
 #include "Archive.hpp"
+#include "DebugTask.hpp"
 
 
 namespace ngs {
@@ -153,6 +154,10 @@ public:
     // 最初のタスクを登録
     tasks_.pushBack<MainPart>(params_, event_, archive_);
     tasks_.pushBack<Title>(params_, event_, drawer_, tween_common_);
+
+#if defined (DEBUG)
+    tasks_.pushBack<DebugTask>(params_, event_, drawer_);
+#endif
   }
 
   ~Core() = default;

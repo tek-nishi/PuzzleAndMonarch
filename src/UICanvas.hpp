@@ -58,11 +58,11 @@ public:
                                         this, std::placeholders::_1, std::placeholders::_2));
 
     holder_ += event_.connect("update",
-                              std::bind(&UI::Canvas::update,
+                              std::bind(&Canvas::update,
                                         this, std::placeholders::_1, std::placeholders::_2));
 
-    holder_ += event_.connect("draw",
-                              std::bind(&UI::Canvas::draw,
+    holder_ += event_.connect("draw", 0,
+                              std::bind(&Canvas::draw,
                                         this, std::placeholders::_1, std::placeholders::_2));
 
 

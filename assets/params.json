@@ -9,7 +9,8 @@
     "debug": [
       [ "d", "debug-info" ],
       [ "c", "debug-canvas-draw" ],
-      [ "m", "debug-main-draw" ]
+      [ "m", "debug-main-draw" ],
+      [ "f", "debug-font" ]
     ]
   },
 

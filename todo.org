@@ -1,4 +1,6 @@
 * TODO チュートリアル
+* TODO Fontのデバッグ機能
+* TODO VisualStudioでDEBUGが定義されていない疑惑
 * TODO 「再生開始」アイコンでゲームを始められるのが伝わっていない
 * TODO ローカライズ
 * TODO pauseメニューから再開するアイコンの意味がわからん
