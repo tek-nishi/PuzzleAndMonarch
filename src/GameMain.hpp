@@ -50,29 +50,42 @@ public:
     holder_ += event_.connect("pause:touch_ended",
                               [this](const Connection&, const Arguments&) noexcept
                               {
-                                {
-                                  const auto& widget = canvas_.at("main");
-                                  widget->enable(false);
-                                }
-                                {
-                                  const auto& widget = canvas_.at("pause_menu");
-                                  widget->enable();
-                                }
+                                // Pause開始
+                                canvas_.active(false);
                                 event_.signal("GameMain:pause", Arguments());
+                                // 時間差でUI演出
+                                count_exec_.add(0.5,
+                                                [this]() noexcept
+                                                {
+                                                  {
+                                                    const auto& widget = canvas_.at("main");
+                                                    widget->enable(false);
+                                                  }
+                                                  {
+                                                    const auto& widget = canvas_.at("pause_menu");
+                                                    widget->enable();
+                                                  }
+                                                  canvas_.active();
+                                                });
                               });
     
     holder_ += event_.connect("resume:touch_ended",
                               [this](const Connection&, const Arguments&) noexcept
                               {
-                                {
-                                  const auto& widget = canvas_.at("pause_menu");
-                                  widget->enable(false);
-                                }
-                                {
-                                  const auto& widget = canvas_.at("main");
-                                  widget->enable();
-                                }
-                                event_.signal("GameMain:resume", Arguments());
+                                // Game続行(時間差で演出)
+                                count_exec_.add(0.5,
+                                                [this]() noexcept
+                                                {
+                                                  {
+                                                    const auto& widget = canvas_.at("pause_menu");
+                                                    widget->enable(false);
+                                                  }
+                                                  {
+                                                    const auto& widget = canvas_.at("main");
+                                                    widget->enable();
+                                                  }
+                                                  event_.signal("GameMain:resume", Arguments());
+                                                });
                               });
     
     holder_ += event_.connect("abort:touch_ended",

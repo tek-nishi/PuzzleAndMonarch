@@ -350,7 +350,7 @@ public:
                                 count_exec_.pause();
                               });
     
-    holder_ += event_.connect("resume:touch_ended",
+    holder_ += event_.connect("GameMain:resume",
                               [this](const Connection&, const Arguments&) noexcept
                               {
                                 paused_ = false;
