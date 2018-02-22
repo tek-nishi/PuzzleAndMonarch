@@ -158,6 +158,7 @@
     "selected_model": "selected.ply",
     "cursor_model":   "cursor.ply",
     "bg_model":       "bg.ply",
+    "effect_model":   "effect.ply",
 
     "disp_ease_duration": [ 0.3, 0.2 ],
     "disp_ease_name": "OutExpo",

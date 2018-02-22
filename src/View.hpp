@@ -50,6 +50,17 @@ class View
   glm::vec2 put_duration_;
   std::string put_ease_;
 
+  // 得点時演出用
+  ci::gl::VboMeshRef effect_model;
+
+  struct Effect {
+    bool active;
+    glm::vec3 pos;
+    glm::vec3 rot;
+  };
+  // FIXME 途中の削除が多いのでvectorは向いていない??
+  std::list<Effect> effects_;
+
 
   // 読まれてないパネルを読み込む
   const ci::gl::VboMeshRef& getPanelModel(int number) noexcept
@@ -86,6 +97,7 @@ public:
     selected_model = ci::gl::VboMesh::create(PLY::load(params.getValueForKey<std::string>("selected_model")));
     cursor_model   = ci::gl::VboMesh::create(PLY::load(params.getValueForKey<std::string>("cursor_model")));
     bg_model       = ci::gl::VboMesh::create(PLY::load(params.getValueForKey<std::string>("bg_model")));
+    effect_model   = ci::gl::VboMesh::create(PLY::load(params.getValueForKey<std::string>("effect_model")));
   }
 
   ~View() = default;
@@ -118,6 +130,7 @@ public:
     field_panels_.push_back(panel);
   }
 
+  // パネルを置く時の演出
   void startPutEase(const ci::TimelineRef& timeline, double time_rate) noexcept
   {
     auto duration = glm::mix(put_duration_.x, put_duration_.y, time_rate);
@@ -126,6 +139,15 @@ public:
     timeline->applyPtr(&p.position.y, panel_height_, 0.0f,
                        duration, getEaseFunc(put_ease_));
   }
+
+  // 得点した時の演出
+  void startEffect(const ci::TimelineRef& timeline, const glm::vec3& pos) noexcept
+  {
+    // ランダムに落下する立方体
+
+
+  }
+  
 
   const ci::AxisAlignedBox& panelAabb(int number) const noexcept
   {

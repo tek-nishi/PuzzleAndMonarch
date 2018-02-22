@@ -93,10 +93,28 @@ ci::TriMesh load(const std::string& path) noexcept
     std::getline(ifs, line_buffer);
     auto split_text = split(line_buffer);
 
-    uint32_t v0 = uint32_t(std::stoul(split_text[1]));
-    uint32_t v1 = uint32_t(std::stoul(split_text[2]));
-    uint32_t v2 = uint32_t(std::stoul(split_text[3]));
-    mesh.appendTriangle(v0, v1, v2);
+    switch (std::stoi(split_text[0]))
+    {
+    case 3:
+      {
+        uint32_t v0 = uint32_t(std::stoul(split_text[1]));
+        uint32_t v1 = uint32_t(std::stoul(split_text[2]));
+        uint32_t v2 = uint32_t(std::stoul(split_text[3]));
+        mesh.appendTriangle(v0, v1, v2);
+      }
+      break;
+
+    case 4:
+      {
+        uint32_t v0 = uint32_t(std::stoul(split_text[1]));
+        uint32_t v1 = uint32_t(std::stoul(split_text[2]));
+        uint32_t v2 = uint32_t(std::stoul(split_text[3]));
+        uint32_t v3 = uint32_t(std::stoul(split_text[4]));
+        mesh.appendTriangle(v0, v1, v2);
+        mesh.appendTriangle(v0, v2, v3);
+      }
+      break;
+    }
   }
 
   mesh.recalculateNormals();
