@@ -73,6 +73,7 @@
           "scale": [ 1, 1 ],
           "pivot": [ 0.5, 0.5 ],
           "event": "pause",
+          "se": "selected",
           
           "font": "icon",
           "text": "",
@@ -414,6 +415,7 @@
           "scale": [ 1, 1 ],
           "pivot": [ 0.5, 0.5 ],
           "event": "resume",
+          "se": "agree",
           
           "font": "icon",
           "text": "",
@@ -429,6 +431,7 @@
           "scale": [ 1, 1 ],
           "pivot": [ 0.5, 0.5 ],
           "event": "abort",
+          "se": "agree",
           
           "font": "icon",
           "text": "",

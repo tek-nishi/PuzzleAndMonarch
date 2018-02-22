@@ -34,6 +34,13 @@ public:
               Params::load(params.getValueForKey<std::string>("title.canvas")),
               Params::load(params.getValueForKey<std::string>("title.tweens")))
   {
+    {
+      Arguments args{
+        { "timeline", params["title.se"] }
+      };
+      event_.signal("SE:timeline", args);
+    }
+
     holder_ += event_.connect("play:touch_ended",
                               [this](const Connection&, const Arguments&) noexcept
                               {

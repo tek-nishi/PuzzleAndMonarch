@@ -80,7 +80,7 @@
       "scale": [ 1, 1 ],
       "pivot": [ 0.5, 0.5 ],
       "event": "game_center",
-      "se":    "agree",
+      "se":    "selected",
       
       "font": "icon",
       "text": "",
@@ -96,7 +96,7 @@
       "scale": [ 1, 1 ],
       "pivot": [ 0.5, 0.5 ],
       "event": "ranking",
-      "se":    "agree",
+      "se":    "selected",
       
       "font": "icon",
       "text": "",
@@ -112,7 +112,7 @@
       "scale": [ 1, 1 ],
       "pivot": [ 0.5, 0.5 ],
       "event": "records",
-      "se":    "agree",
+      "se":    "selected",
       
       "font": "icon",
       "text": "",
@@ -128,7 +128,7 @@
       "scale": [ 1, 1 ],
       "pivot": [ 0.5, 0.5 ],
       "event": "settings",
-      "se":    "agree",
+      "se":    "selected",
       
       "font": "icon",
       "text": "",
@@ -144,7 +144,7 @@
       "scale": [ 1, 1 ],
       "pivot": [ 0.5, 0.5 ],
       "event": "credits",
-      "se":    "agree",
+      "se":    "selected",
       
       "font": "icon",
       "text": "",

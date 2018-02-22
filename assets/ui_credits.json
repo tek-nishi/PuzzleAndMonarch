@@ -177,6 +177,7 @@
       "pivot": [ 0.5, 0.5 ],
       "enable": false,
       "event": "agree",
+      "se": "agree",
       
       "font": "icon",
       "text": "",

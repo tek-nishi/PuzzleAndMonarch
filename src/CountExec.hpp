@@ -71,6 +71,11 @@ public:
     callbacks_.emplace_back(time_remain, func, forced);
   }
 
+  void clear() noexcept
+  {
+    callbacks_.clear();
+  }
+
   void pause(bool enable = false) noexcept
   {
     pause_ = enable;

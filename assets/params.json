@@ -21,24 +21,51 @@
       "type": "bgm"
     },
     {
-      "name": "time-up",
+      "name": "result",
       "path": "stageclear.m4a",
       "type": "bgm"
     },
+
     {
       "name": "agree",
       "path": "agree.m4a",
       "type": "se"
     },
     {
+      "name": "selected",
+      "path": "selected.m4a",
+      "type": "se"
+    },
+    {
       "name": "panel-put",
       "path": "panel-set.m4a",
+      "type": "se"
+    },
+    {
+      "name": "panel-rotate",
+      "path": "panel-rotate.m4a",
+      "type": "se"
+    },
+    {
+      "name": "timeup",
+      "path": "timeup.m4a",
+      "type": "se"
+    },
+
+    {
+      "name": "bgm-test",
+      "path": "toggle-se.m4a",
+      "type": "bgm"
+    },
+    {
+      "name": "se-test",
+      "path": "toggle-se.m4a",
       "type": "se"
     }
   ],
 
   "game": {
-    "play_time": 180,
+    "play_time": 10,
 
     "score_rates": [
       3,
@@ -212,7 +239,11 @@
   
   "title": {
     "canvas": "ui_title.json",
-    "tweens": "tw_title.json"
+    "tweens": "tw_title.json",
+
+    "se": [
+      [ 0.25, "title" ]
+    ]
   },
 
   "credits": {
@@ -238,6 +269,10 @@
   "result": {
     "canvas": "ui_result.json",
     "tweens": "tw_result.json",
+    
+    "se": [
+      [ 0.5, "result" ]
+    ],
 
     "ranking": [
       "Baronet",

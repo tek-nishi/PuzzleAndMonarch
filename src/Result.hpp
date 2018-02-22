@@ -40,7 +40,12 @@ public:
               Params::load(params.getValueForKey<std::string>("result.canvas")),
               Params::load(params.getValueForKey<std::string>("result.tweens")))
   {
-    DOUT << "Result" << std::endl;
+    {
+      Arguments args{
+        { "timeline", params["result.se"] }
+      };
+      event_.signal("SE:timeline", args);
+    }
 
     count_exec_.add(2.0,
                     [this]() {
