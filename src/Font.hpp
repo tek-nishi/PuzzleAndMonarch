@@ -211,8 +211,6 @@ Font::Font(const std::string& path,
 
   font_size_ = initial_size;
 
-  setBlur(4.0f);
-
   DOUT << "Font(" << path << ") handle: " << handle << std::endl;
 }
 

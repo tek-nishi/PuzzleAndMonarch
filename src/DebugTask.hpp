@@ -21,7 +21,7 @@ class DebugTask
   UI::Drawer& drawer_;
 
   bool active_ = true;
-  bool disp_   = true;
+  bool disp_   = false;
 
   u_int disp_index_ = 0;
 

@@ -158,6 +158,7 @@
     },
     
     "font_texture": 1024,
+    "font_blur": 5,
 
     "font": [
       {
@@ -177,10 +178,14 @@
       }
     ],
     "shader": {
-      "font": "font2"
+      "font": {
+        "name": "font2",
+        "u_buffer": 0.5,
+        "u_gamma": 0.03
+      }
     }
   },
-
+  
   "title": {
     "canvas": "ui_title.json",
     "tweens": "tw_title.json"

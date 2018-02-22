@@ -8,8 +8,8 @@ $precision$
 
 uniform sampler2D	uTex0;
 
-float u_buffer = 0.5;
-float u_gamma  = 0.5;
+uniform float u_buffer;
+uniform float u_gamma;
 
 in vec4 Color;
 in vec2 TexCoord0;

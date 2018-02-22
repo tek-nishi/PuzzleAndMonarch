@@ -18,7 +18,8 @@ struct Drawer
 {
   Drawer(const ci::JsonTree& params) noexcept
   {
-    int texture_size = params.getValueForKey<int>("font_texture"); 
+    int texture_size = params.getValueForKey<int>("font_texture");
+    float blur = params.getValueForKey<float>("font_blur");
     const auto& json = params["font"];
     for (size_t i = 0; i < json.getNumChildren(); ++i)
     {
@@ -31,11 +32,17 @@ struct Drawer
       fonts_.emplace(std::piecewise_construct,
                      std::forward_as_tuple(name),
                      std::forward_as_tuple(path, texture_size, texture_size, initial_size));
+
+      // Signed fidle distance用のブラー値
+      fonts_.at(name).setBlur(blur);
     }
 
     {
-      auto name = params.getValueForKey<std::string>("shader.font");
+      auto p = params["shader.font"];
+      auto name = p.getValueForKey<std::string>("name");
       font_shader_ = createShader(name, name);
+      font_shader_->uniform("u_buffer", p.getValueForKey<float>("u_buffer"));
+      font_shader_->uniform("u_gamma",  p.getValueForKey<float>("u_gamma"));
     }
     {
       auto color = ci::gl::ShaderDef().color();

@@ -14,7 +14,8 @@ out vec2 TexCoord0;
 out vec4 Color;
 
 
-void main(void) {
+void main(void)
+{
   gl_Position = ciModelViewProjection * ciPosition;
   TexCoord0   = ciTexCoord0;
   Color       = ciColor;
