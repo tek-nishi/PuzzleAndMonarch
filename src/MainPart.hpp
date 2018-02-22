@@ -307,6 +307,43 @@ public:
                                                 });
                               });
 
+    // 得点時の演出
+    holder_ += event.connect("Game:completed_forests",
+                             [this](const Connection&, const Arguments& args) noexcept
+                             {
+                               auto completed = boost::any_cast<std::vector<std::vector<glm::ivec2>>>(args.at("completed"));
+                               for (const auto& cc : completed)
+                               {
+                                 for (const auto& p : cc)
+                                 {
+                                   view_.startEffect(timeline_, p);
+                                 }
+                               }
+                             });
+
+    holder_ += event.connect("Game:completed_path",
+                             [this](const Connection&, const Arguments& args) noexcept
+                             {
+                               auto completed = boost::any_cast<std::vector<std::vector<glm::ivec2>>>(args.at("completed"));
+                               for (const auto& cc : completed)
+                               {
+                                 for (const auto& p : cc)
+                                 {
+                                   view_.startEffect(timeline_, p);
+                                 }
+                               }
+                             });
+    
+    holder_ += event.connect("Game:completed_church",
+                             [this](const Connection&, const Arguments& args) noexcept
+                             {
+                               auto completed = boost::any_cast<std::vector<glm::ivec2>>(args.at("completed"));
+                               for (const auto& p : completed)
+                               {
+                                 view_.startEffect(timeline_, p);
+                               }
+                             });
+
     // Result→Title
     holder_ += event.connect("Result:Finished",
                               [this](const Connection&, const Arguments&) noexcept
@@ -517,6 +554,8 @@ private:
     }
     auto bg_pos = calcBgPosition();
     view_.drawFieldBg(bg_pos);
+
+    view_.drawEffect();
 
 
 #if 0

@@ -141,13 +141,53 @@ public:
   }
 
   // 得点した時の演出
-  void startEffect(const ci::TimelineRef& timeline, const glm::vec3& pos) noexcept
+  void startEffect(const ci::TimelineRef& timeline, const glm::ivec2& pos) noexcept
   {
-    // ランダムに落下する立方体
+    glm::vec3 gpos{ pos.x * PANEL_SIZE, 0, pos.y * PANEL_SIZE };
 
+    for (int i = 0; i < 10; ++i)
+    {
+      glm::vec3 ofs{
+        ci::randFloat(-PANEL_SIZE / 2, PANEL_SIZE / 2),
+        0,
+        ci::randFloat(-PANEL_SIZE / 2, PANEL_SIZE / 2)
+      };
 
+      // ランダムに落下する立方体
+      effects_.push_back({ true, gpos + ofs, glm::vec3() });
+      auto& effect = effects_.back();
+
+      auto end_pos = gpos + ofs + glm::vec3(0, ci::randFloat(15.0f, 30.0f), 0);
+
+      float duration = ci::randFloat(1.25f, 1.75f);
+      auto options = timeline->applyPtr(&effect.pos, end_pos, duration);
+      options.finishFn([&effect]() noexcept
+                       {
+                         effect.active = false;
+                       });
+    }
   }
-  
+
+  // 演出表示
+  void drawEffect() noexcept
+  {
+    for (auto it = std::begin(effects_); it != std::end(effects_); )
+    {
+      if (!it->active)
+      {
+        it = effects_.erase(it);
+        continue;
+      }
+
+      ci::gl::ScopedModelMatrix m;
+      ci::gl::translate(it->pos);
+      ci::gl::rotate(it->rot);
+      ci::gl::draw(effect_model);
+
+      ++it;
+    }
+  }
+
 
   const ci::AxisAlignedBox& panelAabb(int number) const noexcept
   {
