@@ -51,6 +51,17 @@ public:
   {
     return has_event_;
   }
+  
+  const std::string& getSe() const noexcept
+  {
+    return se_;
+  }
+
+  bool hasSe() const noexcept
+  {
+    return has_se_;
+  }
+
 
   bool hasChild() const noexcept
   {
@@ -278,6 +289,11 @@ public:
       widget->event_     = params.getValueForKey<std::string>("event");
       widget->has_event_ = true;
     }
+    if (params.hasChild("se"))
+    {
+      widget->se_     = params.getValueForKey<std::string>("se");
+      widget->has_se_ = true;
+    }
 
     return widget;
   }
@@ -351,6 +367,9 @@ private:
 
   bool has_event_ = false;
   std::string event_;
+
+  bool has_se_ = false;
+  std::string se_;
 
   float alpha_ = 1.0;
 

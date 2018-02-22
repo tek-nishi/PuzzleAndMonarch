@@ -280,11 +280,21 @@ private:
     {
       // DOUT << "widget touch ended in: " << widget->getIdentifier() << std::endl;
       // イベント送信
-      std::string event = widget->getEvent() + ":touch_ended";
-      Arguments args = {
-        { "widget", widget->getIdentifier() }
-      };
-      event_.signal(event, args);
+      {
+        std::string event = widget->getEvent() + ":touch_ended";
+        Arguments args = {
+          { "widget", widget->getIdentifier() }
+        };
+        event_.signal(event, args);
+      }
+
+      if (widget->hasSe())
+      {
+        Arguments args = {
+          { "name", widget->getSe() }
+        };
+        event_.signal("UI:sound", args);
+      }
     }
     else
     {

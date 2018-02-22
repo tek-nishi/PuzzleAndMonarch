@@ -14,6 +14,29 @@
     ]
   },
 
+  "sound": [
+    {
+      "name": "title",
+      "path": "title.m4a",
+      "type": "bgm"
+    },
+    {
+      "name": "time-up",
+      "path": "stageclear.m4a",
+      "type": "bgm"
+    },
+    {
+      "name": "agree",
+      "path": "agree.m4a",
+      "type": "se"
+    },
+    {
+      "name": "panel-put",
+      "path": "panel-set.m4a",
+      "type": "se"
+    }
+  ],
+
   "game": {
     "play_time": 180,
 
