@@ -39,7 +39,6 @@ public:
     DOUT << "Resolution:  " << ci::app::toPixels(getWindowSize()) << std::endl;
 
     ci::Rand::randomize();
-    prev_time_ = getElapsedSeconds();
 
 #if defined (DEBUG)
     debug_events_ = Debug::keyEvent(params_["app.debug"]);
@@ -56,6 +55,8 @@ public:
       return ci::app::InterfaceOrientation::All;
     });
 #endif
+    
+    prev_time_ = getElapsedSeconds();
   }
 
 #if defined (CINDER_COCOA_TOUCH)

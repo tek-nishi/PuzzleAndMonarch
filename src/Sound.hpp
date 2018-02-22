@@ -8,6 +8,7 @@
 #include "Task.hpp"
 #include "Asset.hpp"
 #include "CountExec.hpp"
+#include "AudioSession.h"
 
 
 namespace ngs {
@@ -62,7 +63,10 @@ class Sound
       return;
     }
 
-    details_.at(name)->start();
+    auto ctx = ci::audio::Context::master();
+    const auto& node = details_.at(name);
+    node >> ctx->getOutput();
+    node->start();
   }
 
   void stop(const std::string& name) noexcept
@@ -97,24 +101,21 @@ public:
         }},
     };
 
-
-
     for (const auto& p : params)
     {
       const auto& path = p.getValueForKey<std::string>("path");
-      auto source = ci::audio::load(Asset::load(path));
+      auto source = ci::audio::load(Asset::load(path), ctx->getSampleRate());
       
       const auto& type = p.getValueForKey<std::string>("type");
       auto node = funcs.at(type)(ctx, source);
-      node >> ctx->getOutput();
-      
       const auto& name = p.getValueForKey<std::string>("name");
       details_.emplace(name, node);
 
       DOUT << "Sound: " << name << " path: " << path << std::endl;
     }
-
     ctx->enable();
+    // TIPS ヘッドホンプラグの抜き差しに対応
+    AudioSession::begin();
 
     holder_ += event.connect("UI:sound",
                              [this](const Connection&, const Arguments& args) noexcept
