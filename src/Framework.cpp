@@ -21,3 +21,6 @@
 
 #define NGS_EASEFUNC_IMPLEMENTATION
 #include "EaseFunc.hpp"
+
+#define NGS_GL_IMPLEMENTATION
+#include "gl.hpp"

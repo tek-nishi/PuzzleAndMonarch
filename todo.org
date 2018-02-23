@@ -32,8 +32,6 @@
 * TODO いい感じに画面全体に街が映るように
 * TODO ゲーム開始時にプレイ時間を決めたい
 * TODO 被写界深度の浅い表現
-* TODO ngs-0012
-* TODO 正式名称決め
 * TODO iOS:share機能
 * TODO 無限に置けるモードが欲しい
 * TODO Panelのデータをテキストに
@@ -53,6 +51,10 @@
 * TODO iOS:GameCenter対応
 * TODO iOS:実績を実装
 * TODO iOS:他のアプリで再生中のBGMがそのまま再生されるように
+* DONE ngs-0012
+CLOSED: [2018-02-23 金 18:03]
+* DONE 正式名称決め
+CLOSED: [2018-02-23 金 17:51]
 * DONE サウンド周りの再設計
 CLOSED: [2018-02-23 金 11:30]
 * DONE fontの選定

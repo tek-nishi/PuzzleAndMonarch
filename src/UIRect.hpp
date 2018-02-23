@@ -6,6 +6,7 @@
 
 #include "UIWidgetBase.hpp"
 #include "UIDrawer.hpp"
+#include "gl.hpp"
 
 
 namespace ngs { namespace UI {
@@ -47,7 +48,7 @@ private:
     }
     else
     {
-      ci::gl::drawStrokedRect(rect, line_width_);
+      drawStrokedRect(rect, line_width_);
     }
   }
 
