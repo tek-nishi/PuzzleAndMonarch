@@ -199,6 +199,26 @@ public:
                                                  });
                                }
                              });
+
+    holder_ += event.connect("Game:Event",
+                             [this](const Connection&, const Arguments& args) noexcept
+                             {
+                               // ゲーム内のイベントに応じて再生
+                               static const std::map<std::string, std::string> sound_list {
+                                 { "Panel:rotate", "panel-rotate" },
+                                 { "Panel:put",    "panel-put" },
+                                 { "Game:finish",  "timeup" },
+                               };
+
+                               const auto& events = boost::any_cast<const std::set<std::string>&>(args.at("event"));
+                               for (const auto& e : events)
+                               {
+                                 if (sound_list.count(e))
+                                 {
+                                   play(sound_list.at(e));
+                                 }
+                               }
+                             });
   }
 
   ~Sound()

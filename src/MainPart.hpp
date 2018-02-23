@@ -155,8 +155,9 @@ public:
                                   // パネルを回転
                                   game_->rotationHandPanel();
                                   startRotatePanelEase();
-                                  can_put_ = game_->canPutToBlank(field_pos_);
+                                  can_put_   = game_->canPutToBlank(field_pos_);
                                   touch_put_ = false;
+                                  game_event_.insert("Panel:rotate");
                                   return;
                                 }
 
@@ -257,6 +258,7 @@ public:
                                 force_camera_ = true;
                                 prohibited_   = true;
                                 manipulated_  = false;
+                                game_event_.insert("Game:finish");
 
                                 calcViewRange(false);
 
@@ -319,6 +321,7 @@ public:
                                    view_.startEffect(timeline_, p);
                                  }
                                }
+                               game_event_.insert("Comp:forests");
                              });
 
     holder_ += event.connect("Game:completed_path",
@@ -332,6 +335,7 @@ public:
                                    view_.startEffect(timeline_, p);
                                  }
                                }
+                               game_event_.insert("Comp:path");
                              });
     
     holder_ += event.connect("Game:completed_church",
@@ -342,6 +346,7 @@ public:
                                {
                                  view_.startEffect(timeline_, p);
                                }
+                               game_event_.insert("Comp:church");
                              });
 
     // Result→Title
@@ -459,6 +464,7 @@ private:
         {
           game_->putHandPanel(field_pos_);
           event_.signal("Game:PutEnd", Arguments());
+          game_event_.insert("Panel:put");
 
           // 次のパネルの準備
           rotate_offset_.stop();
@@ -481,6 +487,16 @@ private:
     put_gauge_timer_ += delta_time;
 
     timeline_->step(delta_time);
+
+    // ゲーム内で起こったイベントをSoundに丸投げする
+    if (!game_event_.empty())
+    {
+      Arguments args {
+        { "event", game_event_ }
+      };
+      event_.signal("Game:Event", args);
+      game_event_.clear();
+    }
 
     return true;
   }
@@ -626,6 +642,7 @@ private:
       // 少し宙に浮いた状態
       cursor_pos_ = glm::vec3(field_pos_.x * PANEL_SIZE, panel_height_, field_pos_.y * PANEL_SIZE);
       startMoveEase();
+      game_event_.insert("Panel:move");
     }
   }
 
@@ -895,6 +912,9 @@ private:
   View view_;
   
   ci::TimelineRef timeline_;
+
+  // ゲーム内で発生したイベント
+  std::set<std::string> game_event_;
 
 
 #ifdef DEBUG
