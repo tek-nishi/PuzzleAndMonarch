@@ -201,7 +201,15 @@ public:
                              });
   }
 
-  ~Sound() = default;
+  ~Sound()
+  {
+    auto ctx = ci::audio::Context::master();
+    ctx->disable();
+
+    AudioSession::end();
+
+    DOUT << "~Sound()" << std::endl;
+  }
 };
 
 }
