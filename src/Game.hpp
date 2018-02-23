@@ -103,6 +103,11 @@ struct Game
     return 1.0 - glm::clamp(play_time_ / initial_play_time_, 0.0, 1.0); 
   }
 
+  double getPlayTime() const noexcept
+  {
+    return play_time_;
+  }
+
   // 本編準備
   void preparationPlay(std::mt19937& engine) noexcept
   {

@@ -226,6 +226,12 @@ public:
                               });
 
     // 各種イベント
+    holder_ += event_.connect("Title:finished",
+                              [this](const Connection&, const Arguments&) noexcept
+                              {
+                                game_event_.insert("Game:ready");
+                              });
+
     holder_ += event_.connect("Game:Start",
                               [this](const Connection&, const Arguments&) noexcept
                               {
@@ -444,6 +450,16 @@ private:
 
     if (game_->isPlaying())
     {
+      // 10秒切った時のカウントダウン判定
+      auto play_time = game_->getPlayTime();
+      u_int prev    = std::ceil(play_time + delta_time);
+      u_int current = std::ceil(play_time);
+
+      if ((current <= 10) && (prev != current))
+      {
+        game_event_.insert("Game:countdown");
+      }
+
       // パネル設置操作
       if (touch_put_)
       {

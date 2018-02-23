@@ -21,6 +21,11 @@
       "type": "bgm"
     },
     {
+      "name": "start",
+      "path": "menu-jingle.m4a",
+      "type": "bgm"
+    },
+    {
       "name": "result",
       "path": "stageclear.m4a",
       "type": "bgm"
@@ -37,6 +42,12 @@
       "type": "se"
     },
     {
+      "name": "play",
+      "path": "switch.m4a",
+      "type": "se"
+    },
+
+    {
       "name": "panel-put",
       "path": "panel-set.m4a",
       "type": "se"
@@ -47,11 +58,21 @@
       "type": "se"
     },
     {
+      "name": "countdown",
+      "path": "count-down.m4a",
+      "type": "se"
+    },
+    {
       "name": "timeup",
       "path": "timeup.m4a",
       "type": "se"
     },
 
+    {
+      "name": "pause",
+      "path": "pause.m4a",
+      "type": "se"
+    },
     {
       "name": "bgm-test",
       "path": "toggle-se.m4a",
@@ -65,13 +86,15 @@
   ],
 
   "game-sound": {
-    "Panel:rotate": "panel-rotate",
-    "Panel:put":    "panel-put",
-    "Game:finish":  "timeup"
+    "Panel:rotate":   "panel-rotate",
+    "Panel:put":      "panel-put",
+    "Game:ready":     "start",
+    "Game:finish":    "timeup",
+    "Game:countdown": "countdown"
   },
 
   "game": {
-    "play_time": 10,
+    "play_time": 180,
 
     "score_rates": [
       3,
