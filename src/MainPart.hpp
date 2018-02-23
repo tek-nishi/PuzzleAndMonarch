@@ -373,6 +373,15 @@ public:
                                 view_.clear();
                                 game_->load();
                                 calcViewRange(false);
+                                
+                                fixed_exec_.add(3.0, -1.0,
+                                                [this](double delta_time) noexcept
+                                                {
+                                                  camera_rotation_.y += M_PI * 0.025 * delta_time;
+                                                  calcCamera(camera_.body());
+
+                                                  return !manipulated_;
+                                                });
                               });
     
     holder_ += event_.connect("Ranking:Finished",
@@ -388,6 +397,7 @@ public:
 
                                 field_center_   = glm::vec3();
                                 field_distance_ = params_.getValueForKey<float>("field.camera.distance");
+                                fixed_exec_.clear();
                               });
 
 
@@ -820,6 +830,7 @@ private:
 
                       paused_ = false;
                       count_exec_.pause(false);
+                      fixed_exec_.clear();
 
                       // Game再生成
                       game_ = std::make_unique<Game>(params_["game"], event_, panels_);

@@ -71,6 +71,11 @@ public:
   {
     callbacks_.emplace_back(delay_time, time_remain, func);
   }
+
+  void clear() noexcept
+  {
+    callbacks_.clear();
+  }
 };
 
 }
