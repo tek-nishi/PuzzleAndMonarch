@@ -60,7 +60,7 @@ class DebugTask
       
       const auto& fonts = drawer_.getFonts();
       std::vector<const Font*> f;
-      for(const auto& it : fonts)
+      for (const auto& it : fonts)
       {
         f.push_back(&(it.second));
       }

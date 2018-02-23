@@ -70,6 +70,12 @@ public:
                                 auto text = bgm_enable_ ? u8"" : u8"";
                                 const auto& widget = canvas_.at("BGM");
                                 widget->setParam("text", std::string(text));
+
+                                Arguments args = {
+                                  { "bgm-enable", bgm_enable_ },
+                                  { "se-enable",  se_enable_ }
+                                };
+                                event_.signal("Settings:Changed", args);
                               });
 
     holder_ += event_.connect("SE:touch_ended",
@@ -79,6 +85,12 @@ public:
                                 auto text = se_enable_ ? u8"" : u8"";
                                 const auto& widget = canvas_.at("SE");
                                 widget->setParam("text", std::string(text));
+
+                                Arguments args = {
+                                  { "bgm-enable", bgm_enable_ },
+                                  { "se-enable",  se_enable_ }
+                                };
+                                event_.signal("Settings:Changed", args);
                               });
 
     setupCommonTweens(event_, holder_, canvas_, "agree");

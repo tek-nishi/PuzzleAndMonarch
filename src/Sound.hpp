@@ -21,16 +21,26 @@ class Sound
 
   CountExec count_exec_;
 
-  bool bgm_ = true;
-  bool se_  = true;
-
   bool active_ = true;
 
-  // struct Detail {
-  //   ci::audio::SamplePlayerNodeRef node;
-  // };
 
-  std::map<std::string, ci::audio::SamplePlayerNodeRef> details_;
+  struct Detail
+  {
+    Detail(const std::string& c, const ci::audio::SamplePlayerNodeRef& n) noexcept
+      : category(c),
+        node(n)
+    {}
+    ~Detail() = default;
+
+    std::string category;
+    ci::audio::SamplePlayerNodeRef node;
+  };
+
+  std::map<std::string, Detail> details_;
+
+  // カテゴリ用
+  std::map<std::string, std::vector<ci::audio::SamplePlayerNodeRef>> category_;
+  std::map<std::string, bool> enable_category_;
 
 
   
@@ -44,14 +54,25 @@ class Sound
 
   void stopAll() noexcept
   {
+    for (auto& it : details_)
+    {
+      it.second.node->stop();
+    }
   }
 
-  void stopBgm() noexcept
+  void stopCategory(const std::string& category) noexcept
   {
-  }
+    if (!category_.count(category))
+    {
+      DOUT << "Sound::stopCategory No category: " << category << std::endl;
+      return;
+    }
 
-  void seopSe() noexcept
-  {
+    const auto& details = category_.at(category);
+    for (const auto& node : details)
+    {
+      node->stop();
+    }
   }
 
 
@@ -63,10 +84,12 @@ class Sound
       return;
     }
 
+    const auto& detail = details_.at(name);
+    if (!enable_category_[detail.category]) return;
+
     auto ctx = ci::audio::Context::master();
-    const auto& node = details_.at(name);
-    node >> ctx->getOutput();
-    node->start();
+    detail.node >> ctx->getOutput();
+    detail.node->start();
   }
 
   void stop(const std::string& name) noexcept
@@ -77,8 +100,19 @@ class Sound
       return;
     }
 
-    details_.at(name)->stop();
+    details_.at(name).node->stop();
   }
+
+  
+  void enableCategory(const std::string& category, bool enable) noexcept
+  {
+    enable_category_[category] = enable;
+    if (!enable)
+    {
+      stopCategory(category);
+    }
+  }
+
 
 
 public:
@@ -87,15 +121,19 @@ public:
   {
     auto ctx = ci::audio::Context::master();
 
-    std::map<std::string, std::function<ci::audio::SamplePlayerNodeRef (ci::audio::Context* ctx, const ci::audio::SourceFileRef&)>> funcs {
+    // カテゴリ別のNode生成
+    std::map<std::string,
+             std::function<ci::audio::SamplePlayerNodeRef (ci::audio::Context* ctx, const ci::audio::SourceFileRef&)>> funcs {
       { "bgm",
         [](ci::audio::Context* ctx, const ci::audio::SourceFileRef& source) noexcept
         {
+          // Streaming
           return ctx->makeNode(new ci::audio::FilePlayerNode(source));
         }},
       { "se",
         [](ci::audio::Context* ctx, const ci::audio::SourceFileRef& source) noexcept
         {
+          // あらかじめBufferに読み込む
           auto buffer = source->loadBuffer();
           return ctx->makeNode(new ci::audio::BufferPlayerNode(buffer));
         }},
@@ -108,14 +146,34 @@ public:
       
       const auto& type = p.getValueForKey<std::string>("type");
       auto node = funcs.at(type)(ctx, source);
-      const auto& name = p.getValueForKey<std::string>("name");
-      details_.emplace(name, node);
 
-      DOUT << "Sound: " << name << " path: " << path << std::endl;
+      const auto& name = p.getValueForKey<std::string>("name");
+      details_.emplace(std::piecewise_construct,
+                       std::forward_as_tuple(name),
+                       std::forward_as_tuple(type, node));
+      category_[type].push_back(node);
+      enable_category_[type] = true;
+
+      DOUT << "Sound: " << name
+           << " type: " << type
+           << " path: " << path
+           << std::endl;
     }
+
     ctx->enable();
-    // TIPS ヘッドホンプラグの抜き差しに対応
+    // TIPS iOS:ヘッドホンプラグの抜き差しに対応
     AudioSession::begin();
+
+    holder_ += event.connect("Settings:Changed",
+                             [this](const Connection&, const Arguments& args) noexcept
+                             {
+                               // ON/OFF
+                               auto bgm_enable = boost::any_cast<bool>(args.at("bgm-enable"));
+                               enableCategory("bgm", bgm_enable);
+
+                               auto se_enable  = boost::any_cast<bool>(args.at("se-enable"));
+                               enableCategory("se", se_enable);
+                             });
 
     holder_ += event.connect("UI:sound",
                              [this](const Connection&, const Arguments& args) noexcept

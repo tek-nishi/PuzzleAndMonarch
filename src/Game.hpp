@@ -382,7 +382,7 @@ struct Game
 
     auto panels = field.enumeratePanels();
     double at_time = 0.5;
-    for (const auto status : panels)
+    for (const auto& status : panels)
     {
       count_exec_.add(at_time,
                       [status, this]()

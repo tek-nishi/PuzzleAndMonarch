@@ -533,7 +533,7 @@ private:
           auto around = game_->enumerateAroundPanels(field_pos_);
           if (!around.empty())
           {
-            for (auto it : around)
+            for (auto& it : around)
             {
               auto p = it.first * int(PANEL_SIZE);
               glm::vec3 disp_pos(p.x, 0.0f, p.y);

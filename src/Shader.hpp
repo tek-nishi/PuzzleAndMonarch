@@ -69,7 +69,7 @@ Shader readShader(const std::string& vertex_path,
   auto fragment_shader = readFile(getAssetPath(fragment_path + ".fsh").string());
   fragment_shader      = replaceText(fragment_shader);
 
-  return std::make_pair(vertex_shader, fragment_shader);
+  return { vertex_shader, fragment_shader };
 }
 
 // 生成

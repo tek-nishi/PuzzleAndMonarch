@@ -230,7 +230,7 @@ std::vector<std::vector<T>> getVecVecArray(const ci::JsonTree& json) noexcept
 {
   std::vector<std::vector<T>> array;
 
-  for (const auto aa : json)
+  for (const auto& aa : json)
   {
     std::vector<T> ar;
     for (const auto& obj : aa)

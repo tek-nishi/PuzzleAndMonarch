@@ -1,6 +1,7 @@
 * TODO チュートリアル
 * TODO iPhone7でヘッドフォンの抜き差しをすると音が乱れる
 * TODO iOS:ヘッドフォンの抜き差しでノイズが乗る
+* TODO macOS:ヘッドフォンの抜き差しでノイズが乗る
 * TODO fontstashのリファクタリング
 * TODO VisualStudioでDEBUGが定義されていない疑惑
 * TODO 「再生開始」アイコンでゲームを始められるのが伝わっていない
