@@ -64,6 +64,12 @@
     }
   ],
 
+  "game-sound": {
+    "Panel:rotate": "panel-rotate",
+    "Panel:put":    "panel-put",
+    "Game:finish":  "timeup"
+  },
+
   "game": {
     "play_time": 10,
 

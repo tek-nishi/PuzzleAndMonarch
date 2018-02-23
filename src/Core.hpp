@@ -153,7 +153,7 @@ public:
                                         this, std::placeholders::_1, std::placeholders::_2));
 
     // 最初のタスクを登録
-    tasks_.pushBack<Sound>(params_["sound"], event_);
+    tasks_.pushBack<Sound>(params_, event_);
     tasks_.pushBack<MainPart>(params_, event_, archive_);
     tasks_.pushBack<Title>(params_, event_, drawer_, tween_common_);
 

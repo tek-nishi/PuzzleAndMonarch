@@ -42,6 +42,9 @@ class Sound
   std::map<std::string, std::vector<ci::audio::SamplePlayerNodeRef>> category_;
   std::map<std::string, bool> enable_category_;
 
+  // Game内サウンド用
+  std::map<std::string, std::string> game_sound_;
+
 
   
   bool update(double current_time, double delta_time) noexcept override
@@ -139,7 +142,7 @@ public:
         }},
     };
 
-    for (const auto& p : params)
+    for (const auto& p : params["sound"])
     {
       const auto& path = p.getValueForKey<std::string>("path");
       auto source = ci::audio::load(Asset::load(path), ctx->getSampleRate());
@@ -163,6 +166,13 @@ public:
     ctx->enable();
     // TIPS iOS:ヘッドホンプラグの抜き差しに対応
     AudioSession::begin();
+
+    // Game内サウンドリスト読み込み
+    for (const auto& p : params["game-sound"])
+    {
+      game_sound_.insert({ p.getKey(), p.getValue<std::string>() });
+    }
+
 
     holder_ += event.connect("Settings:Changed",
                              [this](const Connection&, const Arguments& args) noexcept
@@ -203,19 +213,12 @@ public:
     holder_ += event.connect("Game:Event",
                              [this](const Connection&, const Arguments& args) noexcept
                              {
-                               // ゲーム内のイベントに応じて再生
-                               static const std::map<std::string, std::string> sound_list {
-                                 { "Panel:rotate", "panel-rotate" },
-                                 { "Panel:put",    "panel-put" },
-                                 { "Game:finish",  "timeup" },
-                               };
-
                                const auto& events = boost::any_cast<const std::set<std::string>&>(args.at("event"));
                                for (const auto& e : events)
                                {
-                                 if (sound_list.count(e))
+                                 if (game_sound_.count(e))
                                  {
-                                   play(sound_list.at(e));
+                                   play(game_sound_.at(e));
                                  }
                                }
                              });
@@ -223,6 +226,8 @@ public:
 
   ~Sound()
   {
+    stopAll();
+
     auto ctx = ci::audio::Context::master();
     ctx->disable();
 
