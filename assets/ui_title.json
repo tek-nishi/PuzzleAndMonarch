@@ -10,8 +10,7 @@
   
   "childlen": [
     {
-      "identifier": "title_1",
-      "rect": [ 20, 0, 20, 32 ],
+      "rect": [ -55, 2, 20, 35 ],
       "anchor": [
         [ 0.5, 0.8 ],
         [ 0.5, 0.8 ]
@@ -19,14 +18,92 @@
       "scale": [ 1, 1 ],
       "pivot": [ 0.5, 0.5 ],
 
-      "font": "en",
-      "text": "Apprentice",
-      "layout": [ 1, 0 ],
-      "color": [ 1, 1, 1 ]
+      "childlen": [
+        {
+          "rect": [ 0, 0, 0, 0 ],
+          "anchor": [
+            [ 0, 0 ],
+            [ 0.5, 1 ]
+          ],
+          "scale": [ 1, 1 ],
+          "pivot": [ 0.5, 0.5 ],
+          "color": [ 1, 1, 1 ],
+          "line_width": 1.25,
+
+          "childlen": [
+            {
+              "rect": [ 2, 0, 0, 0 ],
+              "anchor": [
+                [ 0, 0 ],
+                [ 1, 1 ]
+              ],
+              "scale": [ 1, 1 ],
+              "pivot": [ 0.5, 0.5 ],
+
+              "font": "jp",
+              "text": "君",
+              "color": [ 1, 1, 1 ]
+            }
+          ]
+        },
+        {
+          "rect": [ 0, 0, 0, 0 ],
+          "anchor": [
+            [ 0.5, 0 ],
+            [ 1, 1 ]
+          ],
+          "scale": [ 1, 1 ],
+          "pivot": [ 0.5, 0.5 ],
+          "color": [ 1, 1, 1 ],
+          "line_width": 1.25,
+
+          "childlen": [
+            {
+              "rect": [ 2, 0, 0, 0 ],
+              "anchor": [
+                [ 0, 0 ],
+                [ 1, 1 ]
+              ],
+              "scale": [ 1, 1 ],
+              "pivot": [ 0.5, 0.5 ],
+
+              "font": "jp",
+              "text": "主",
+              "color": [ 1, 1, 1 ]
+            }
+          ]
+        }
+      ]
     },
     {
-      "identifier": "title_2",
-      "rect": [ 0, -35, 0, -3 ],
+      "rect": [ -11.5, -21, 11.5, 0 ],
+      "anchor": [
+        [ 0.5, 0.8 ],
+        [ 0.5, 0.8 ]
+      ],
+      "scale": [ 1, 1 ],
+      "pivot": [ 0.5, 0.5 ],
+      "color": [ 1, 1, 1 ],
+      "line_width": 0.5,
+
+      "childlen": [
+        {
+          "rect": [ 0, -1, 0, -1 ],
+          "anchor": [
+            [ 0, 0 ],
+            [ 1, 1 ]
+          ],
+          "scale": [ 1, 1 ],
+          "pivot": [ 0.5, 0.5 ],
+
+          "font": "jp",
+          "text": "の",
+          "color": [ 1, 1, 1 ]
+        }
+      ]
+    },
+    {
+      "rect": [ -18, -56, 57, -23 ],
       "anchor": [
         [ 0.5, 0.8 ],
         [ 0.5, 0.8 ]
@@ -34,14 +111,66 @@
       "scale": [ 1, 1 ],
       "pivot": [ 0.5, 0.5 ],
 
-      "font": "en",
-      "text": "Monarch",
-      "layout": [ 0, 0 ],
-      "color": [ 1, 1, 1 ]
+      "childlen": [
+        {
+          "rect": [ 0, 0, 0, 0 ],
+          "anchor": [
+            [ 0, 0 ],
+            [ 0.5, 1 ]
+          ],
+          "scale": [ 1, 1 ],
+          "pivot": [ 0.5, 0.5 ],
+          "color": [ 1, 1, 1 ],
+          "line_width": 1.25,
+
+          "childlen": [
+            {
+              "rect": [ 2, 0, 0, 0 ],
+              "anchor": [
+                [ 0, 0 ],
+                [ 1, 1 ]
+              ],
+              "scale": [ 1, 1 ],
+              "pivot": [ 0.5, 0.5 ],
+
+              "font": "jp",
+              "text": "箱",
+              "color": [ 1, 1, 1 ]
+            }
+          ]
+        },
+        {
+          "rect": [ 0, 0, 0, 0 ],
+          "anchor": [
+            [ 0.5, 0 ],
+            [ 1, 1 ]
+          ],
+          "scale": [ 1, 1 ],
+          "pivot": [ 0.5, 0.5 ],
+          "color": [ 1, 1, 1 ],
+          "line_width": 1.25,
+
+          "childlen": [
+            {
+              "rect": [ 2, 0, 0, 0 ],
+              "anchor": [
+                [ 0, 0 ],
+                [ 1, 1 ]
+              ],
+              "scale": [ 1, 1 ],
+              "pivot": [ 0.5, 0.5 ],
+
+              "font": "jp",
+              "text": "庭",
+              "color": [ 1, 1, 1 ]
+            }
+          ]
+        }
+      ]
     },
     {
       "identifier": "play",
-      "rect": [ -15, -15, 15, 15 ],
+      "rect": [ -18, -18, 18, 18 ],
       "anchor": [
         [ 0.5, 0.3 ],
         [ 0.5, 0.3 ]

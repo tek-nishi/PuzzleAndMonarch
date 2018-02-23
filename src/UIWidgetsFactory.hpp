@@ -9,6 +9,7 @@
 #include "UIText.hpp"
 #include "UIRoundRect.hpp"
 #include "UICircle.hpp"
+#include "UIRect.hpp"
 
 
 namespace ngs { namespace UI {
@@ -35,6 +36,11 @@ class WidgetsFactory
     else if (params.hasChild("radius"))
     {
       auto base = std::make_unique<UI::Circle>(params);
+      widget->setWidgetBase(std::move(base));
+    }
+    else if (params.hasChild("color"))
+    {
+      auto base = std::make_unique<UI::Rect>(params);
       widget->setWidgetBase(std::move(base));
     }
     else
