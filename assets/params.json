@@ -130,6 +130,8 @@
     "target_rate":   [ 0.01, 0.1 ],
     "distance_rate": [ 1.0, 1.35 ],
 
+    "draged_max_length": 20, 
+
     "panel_path": [
       "pa00.ply",
       "pa01.ply",

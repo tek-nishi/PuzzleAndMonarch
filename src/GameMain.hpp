@@ -120,6 +120,11 @@ public:
                                   color = ci::Color(1, 0, 0);
                                 }
                                 widget->setParam("color", color);
+
+                                {
+                                  const auto& w = canvas_.at("time_remain_icon");
+                                  w->setParam("color", color);
+                                }
                               });
 
     holder_ += event_.connect("Game:UpdateScores",

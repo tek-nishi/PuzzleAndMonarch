@@ -32,6 +32,7 @@
           
           "childlen": [
             {
+              "identifier": "time_remain_icon",
               "rect": [ -3, 5, -3, -2 ],
               "anchor": [
                 [ 0.5, 0 ],

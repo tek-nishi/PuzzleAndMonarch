@@ -1,6 +1,9 @@
 * TODO チュートリアル
+* TODO Rankingでも回転
+* TODO 結果画面終わりで回転終了
+* TODO iOS:長押しの時に指がブレて配置できない
+* TODO Play中断時に若干カメラ演出が乱れる
 * TODO Titleのジングルが毎回鳴るのでうっとおしい
-* TODO 時間が少ない時に時計アイコンも赤くする
 * TODO iPhone7でヘッドフォンの抜き差しをすると音が乱れる
 * TODO iOS:ヘッドフォンの抜き差しでノイズが乗る
 * TODO macOS:ヘッドフォンの抜き差しでノイズが乗る
@@ -51,6 +54,8 @@
 * TODO iOS:GameCenter対応
 * TODO iOS:実績を実装
 * TODO iOS:他のアプリで再生中のBGMがそのまま再生されるように
+* DONE 時間が少ない時に時計アイコンも赤くする
+CLOSED: [2018-02-23 金 23:35]
 * DONE ngs-0012
 CLOSED: [2018-02-23 金 18:03]
 * DONE 正式名称決め

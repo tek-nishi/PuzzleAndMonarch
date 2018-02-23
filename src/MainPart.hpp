@@ -42,6 +42,7 @@ public:
       archive_(archive),
       panels_(createPanels()),
       game_(std::make_unique<Game>(params["game"], event, panels_)),
+      draged_max_length_(params.getValueForKey<float>("field.draged_max_length")),
       disp_ease_duration_(Json::getVec<glm::vec2>(params["field.disp_ease_duration"])),
       disp_ease_name_(params.getValueForKey<std::string>("field.disp_ease_name")),
       rotate_ease_duration_(Json::getVec<glm::vec2>(params["field.rotate_ease_duration"])),
@@ -117,7 +118,7 @@ public:
 
                                 // ドラッグの距離を調べて、タップかドラッグか判定
                                 draged_length_ += glm::distance(touch.pos, touch.prev_pos);
-                                if (touch_put_ && (draged_length_ > 5.0f))
+                                if (touch_put_ && (draged_length_ > draged_max_length_))
                                 {
                                   touch_put_ = false;
                                   event_.signal("Game:PutEnd", Arguments());
@@ -136,7 +137,7 @@ public:
                                 if (!game_->isPlaying() || paused_ || prohibited_) return;
 
                                 // 画面回転操作をした場合、パネル操作は全て無効
-                                if (draged_length_ > 5.0f)
+                                if (draged_length_ > draged_max_length_)
                                 {
                                   DOUT << "draged_length: " << draged_length_ << std::endl;
                                   return;
@@ -868,6 +869,7 @@ private:
 
   // パネル操作
   float draged_length_;
+  float draged_max_length_;
   bool touch_put_;
   double put_remaining_;
 
