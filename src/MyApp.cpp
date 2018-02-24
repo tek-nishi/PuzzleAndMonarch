@@ -56,6 +56,27 @@ public:
     });
 #endif
     
+    // アクティブになった時にタッチ情報を初期化
+    getSignalDidBecomeActive().connect([this]() noexcept
+                                       {
+                                         DOUT << "SignalDidBecomeActive" << std::endl;
+                                       });
+
+    // 非アクティブ時
+    getSignalWillResignActive().connect([this]() noexcept
+                                        {
+                                          event_.signal("pause:touch_ended", Arguments());
+                                          DOUT << "SignalWillResignActive" << std::endl;
+                                        });
+    
+#if defined (CINDER_COCOA_TOUCH)
+    // バックグラウンド移行
+    getSignalDidEnterBackground().connect([this]() noexcept
+                                          {
+                                            DOUT << "SignalDidEnterBackground" << std::endl;
+                                          });
+#endif
+    
     prev_time_ = getElapsedSeconds();
   }
 

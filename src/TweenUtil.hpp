@@ -38,6 +38,8 @@ void setupCommonTweens(Event<Arguments>& event, ConnectionHolder& holder, UI::Ca
     holder += event.connect(event_name + id,
                             [&canvas, &tn](const Connection&, const Arguments& arg) noexcept
                             {
+                              if (!arg.count("widget")) return;
+
                               const auto& widget = boost::any_cast<const std::string&>(arg.at("widget"));
                               canvas.startCommonTween(widget, tn);
                             });

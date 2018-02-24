@@ -10,6 +10,7 @@
   
   "childlen": [
     {
+      "identifier": "puzzle",
       "rect": [ -22.5, 0, -22.5, 35 ],
       "anchor": [
         [ 0.5, 0.75 ],
@@ -24,6 +25,7 @@
       "color": [ 1, 1, 1 ]
     },
     {
+      "identifier": "monarch",
       "rect": [ -6.5, 0, -6.5, 35 ],
       "anchor": [
         [ 0.5, 0.75 ],
@@ -38,6 +40,7 @@
       "color": [ 1, 1, 1 ]
     },
     {
+      "identifier": "flush",
       "rect": [ -14.5, 8, -14.5, 38 ],
       "anchor": [
         [ 0.5, 0.75 ],
