@@ -28,13 +28,24 @@ struct Drawer
       const auto& name = p.getValueForKey<std::string>("name");
       const auto& path = p.getValueForKey<std::string>("path");
       int initial_size = p.getValueForKey<int>("size");
+      int tex_size = texture_size;
+      if (p.hasChild("texture_size")) {
+        tex_size = p.getValueForKey<int>("texture_size");
+      }
 
-      fonts_.emplace(std::piecewise_construct,
-                     std::forward_as_tuple(name),
-                     std::forward_as_tuple(path, texture_size, texture_size, initial_size));
+      auto result = fonts_.emplace(std::piecewise_construct,
+                                   std::forward_as_tuple(name),
+                                   std::forward_as_tuple(path, tex_size, tex_size, initial_size));
+
+      auto it = result.first;
 
       // Signed fidle distance用のブラー値
-      fonts_.at(name).setBlur(blur);
+      it->second.setBlur(blur);
+      // 文字間隔
+      if (p.hasChild("spacing"))
+      {
+        it->second.setSpacing(p.getValueForKey<float>("spacing"));
+      }
     }
 
     {

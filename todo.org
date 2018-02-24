@@ -1,6 +1,4 @@
 * TODO チュートリアル
-* TODO Rankingでも回転
-* TODO 結果画面終わりで回転終了
 * TODO Play中断時に若干カメラ演出が乱れる
 * TODO Titleのジングルが毎回鳴るのでうっとおしい
 * TODO iPhone7でヘッドフォンの抜き差しをすると音が乱れる
@@ -53,6 +51,12 @@
 * TODO iOS:GameCenter対応
 * TODO iOS:実績を実装
 * TODO iOS:他のアプリで再生中のBGMがそのまま再生されるように
+* DONE Fontごとにテクスチャサイズを指定
+CLOSED: [2018-02-24 土 13:44]
+* DONE Rankingでも回転
+CLOSED: [2018-02-24 土 01:17]
+* DONE 結果画面終わりで回転終了
+CLOSED: [2018-02-24 土 01:17]
 * DONE iOS:長押しの時に指がブレて配置できない
 CLOSED: [2018-02-24 土 00:41]
 * DONE 時間が少ない時に時計アイコンも赤くする

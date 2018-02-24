@@ -63,6 +63,7 @@ public:
   void draw(const std::string& text, const glm::vec2& pos, const ci::ColorA& color) noexcept;
 
   void setBlur(float blur) noexcept;
+  void setSpacing(float spacing) noexcept;
 
 #if defined (DEBUG)
   const ci::gl::Texture2dRef& texture() const noexcept;
@@ -253,6 +254,11 @@ void Font::draw(const std::string& text, const glm::vec2& pos, const ci::ColorA&
 void Font::setBlur(float blur) noexcept
 {
   fonsSetBlur(context_, blur);
+}
+
+void Font::setSpacing(float spacing) noexcept
+{
+  fonsSetSpacing(context_, spacing);
 }
 
 #if defined (DEBUG)

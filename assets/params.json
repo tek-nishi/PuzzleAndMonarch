@@ -245,17 +245,26 @@
     "font": [
       {
         "name": "en",
-        "path": "MAIAN.TTF",
+        "path": "FuturaCon-Med.ttf",
+        "texture_size": 512,
         "size": 64 
       },
       {
         "name": "jp",
-        "path": "DCHLEI3001.ttf",
+        "path": "Senobi-Gothic-Regular.ttf",
+        "spacing": -10,
         "size": 64
       },
       {
         "name": "icon",
         "path": "fontawesome-webfont.ttf",
+        "texture_size": 512,
+        "size": 64
+      },
+      {
+        "name": "logo",
+        "path": "FuturaDisD.ttf",
+        "texture_size": 256,
         "size": 64
       }
     ],
