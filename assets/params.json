@@ -94,7 +94,7 @@
   },
 
   "game": {
-    "play_time": 180,
+    "play_time": 5,
 
     "score_rates": [
       3,
