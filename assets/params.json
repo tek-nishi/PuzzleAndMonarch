@@ -10,7 +10,8 @@
       [ "d", "debug-info" ],
       [ "c", "debug-canvas-draw" ],
       [ "m", "debug-main-draw" ],
-      [ "f", "debug-font" ]
+      [ "f", "debug-font" ],
+      [ "s", "debug-settings" ]
     ]
   },
 
@@ -240,7 +241,7 @@
     },
     
     "font_texture": 1024,
-    "font_blur": 5,
+    "font_blur": 6,
 
     "font": [
       {

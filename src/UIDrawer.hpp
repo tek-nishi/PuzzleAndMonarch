@@ -4,6 +4,7 @@
 // UI描画色々
 //
 
+#include <tuple>
 #include <cinder/Json.h>
 #include <cinder/gl/Shader.h>
 #include "Font.hpp"
@@ -83,6 +84,12 @@ struct Drawer
   const std::map<std::string, Font>& getFonts() const noexcept
   {
     return fonts_;
+  }
+
+  void setFontShaderParams(const std::tuple<float, float>& params) noexcept
+  {
+    font_shader_->uniform("u_buffer", std::get<0>(params));
+    font_shader_->uniform("u_gamma",  std::get<1>(params));
   }
 
 #endif

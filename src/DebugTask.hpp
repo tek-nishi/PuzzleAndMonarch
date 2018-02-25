@@ -6,8 +6,14 @@
 
 #if defined (DEBUG)
 
+#include <cinder/params/Params.h>
 #include "Task.hpp"
 #include "Camera.hpp"
+
+// TIPS AntTweakBarを直接使う
+extern "C" {
+int TwDefine(const char *def);
+}
 
 
 namespace ngs {
@@ -26,18 +32,65 @@ class DebugTask
   bool disp_   = false;
 
   u_int disp_index_ = 0;
-
   
+  
+#if !defined (CINDER_COCOA_TOUCH)
+  ci::params::InterfaceGlRef settings_;
+
+  float font_buffer_ = 0.5f;
+  float font_gamma_  = 0.03f;
+
+
+
+
+  void createSettings() noexcept
+  {
+    settings_ = ci::params::InterfaceGl::create("Settings", glm::ivec2(480, 600));
+
+    settings_->addParam("Font:buffer", &font_buffer_)
+    .precision(2)
+    .step(0.01f)
+    .updateFn([this]() noexcept
+              {
+                drawer_.setFontShaderParams({ font_buffer_, font_gamma_ });
+              });
+
+    settings_->addParam("Font:gamma",  &font_gamma_)
+    .precision(2)
+    .step(0.01f)
+    .updateFn([this]() noexcept
+              {
+                drawer_.setFontShaderParams({ font_buffer_, font_gamma_ });
+              });
+
+    settings_->show(false);
+    settings_->setOptions("TW_HELP", "visible=false");
+
+    // TIPS HELPを隠す
+    TwDefine("TW_HELP visible=false");
+  }
+
+  void drawSettings() noexcept
+  {
+    settings_->draw();
+  }
+
+#else
+
+  void createSettings() noexcept {}
+  void drawSettings() noexcept {}
+
+#endif
+
   
   bool update(double current_time, double delta_time) noexcept override
   {
     return active_;
   }
 
-  void draw(const Connection&, const Arguments&) noexcept
-  {
-    if (!disp_) return;
 
+  void previewFont() noexcept
+  {
     ci::gl::enableDepth(false);
     ci::gl::disable(GL_CULL_FACE);
     ci::gl::enableAlphaBlending(false);
@@ -75,6 +128,19 @@ class DebugTask
     }
   }
 
+
+  void draw(const Connection&, const Arguments&) noexcept
+  {
+    if (disp_)
+    {
+      previewFont();
+    }
+
+#if !defined (CINDER_COCOA_TOUCH)
+    drawSettings();
+#endif
+  }
+
   void resize(const Connection&, const Arguments&) noexcept
   {
     camera_.resize();
@@ -110,6 +176,16 @@ public:
                               {
                                 ++disp_index_;
                               });
+
+#if !defined (CINDER_COCOA_TOUCH)
+    holder_ += event_.connect("debug-settings",
+                              [this](const Connection&, const Arguments&) noexcept
+                              {
+                                settings_->show(!settings_->isVisible());
+                              });
+
+    createSettings();
+#endif
   }
 
   ~DebugTask() = default;
