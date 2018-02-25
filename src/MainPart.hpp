@@ -400,7 +400,14 @@ public:
                                 fixed_exec_.clear();
                               });
 
-
+    holder_ += event_.connect("App:ResignActive",
+                              [this](const Connection&, const Arguments&) noexcept
+                              {
+                                if (game_->isPlaying() && !paused_)
+                                {
+                                  event_.signal("pause:touch_ended", Arguments());
+                                }
+                              });
 
     holder_ += event_.connect("pause:touch_ended",
                               [this](const Connection&, const Arguments&) noexcept
