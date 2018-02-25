@@ -281,8 +281,11 @@
     "canvas": "ui_title.json",
     "tweens": "tw_title.json",
 
-    "se": [
+    "se_first": [
       [ 0.25, "title" ]
+    ],
+
+    "se": [
     ]
   },
 

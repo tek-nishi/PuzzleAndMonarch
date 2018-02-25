@@ -27,7 +27,8 @@ class Title
 
 
 public:
-  Title(const ci::JsonTree& params, Event<Arguments>& event, UI::Drawer& drawer, TweenCommon& tween_common) noexcept
+  Title(const ci::JsonTree& params, Event<Arguments>& event, UI::Drawer& drawer, TweenCommon& tween_common,
+        bool first_time) noexcept
     : event_(event),
       canvas_(event, drawer, tween_common,
               params["ui.camera"],
@@ -35,8 +36,11 @@ public:
               Params::load(params.getValueForKey<std::string>("title.tweens")))
   {
     {
-      Arguments args{
-        { "timeline", params["title.se"] }
+      auto v = first_time ? "title.se_first"
+                          : "title.se";
+
+      Arguments args {
+        { "timeline", params[v] }
       };
       event_.signal("SE:timeline", args);
     }
