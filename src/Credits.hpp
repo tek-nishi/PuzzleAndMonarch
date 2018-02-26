@@ -40,11 +40,12 @@ public:
                               [this](const Connection&, const Arguments&) noexcept
                               {
                                 canvas_.active(false);
-                                count_exec_.add(1.0, [this]() noexcept
-                                                     {
-                                                       event_.signal("Credits:Finished", Arguments());
-                                                       active_ = false;
-                                                     });
+                                count_exec_.add(1.0,
+                                                [this]() noexcept
+                                                {
+                                                  event_.signal("Credits:Finished", Arguments());
+                                                  active_ = false;
+                                                });
                                 DOUT << "Back to Title" << std::endl;
                               });
 

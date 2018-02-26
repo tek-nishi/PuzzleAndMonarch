@@ -51,15 +51,16 @@ public:
                               [this](const Connection&, const Arguments&) noexcept
                               {
                                 canvas_.active(false);
-                                count_exec_.add(1.0, [this]() noexcept
-                                                     {
-                                                       Arguments args = {
-                                                         { "bgm-enable", bgm_enable_ },
-                                                         { "se-enable",  se_enable_ }
-                                                       };
-                                                       event_.signal("Settings:Finished", args);
-                                                       active_ = false;
-                                                     });
+                                count_exec_.add(1.0,
+                                                [this]() noexcept
+                                                {
+                                                  Arguments args = {
+                                                    { "bgm-enable", bgm_enable_ },
+                                                    { "se-enable",  se_enable_ }
+                                                  };
+                                                  event_.signal("Settings:Finished", args);
+                                                  active_ = false;
+                                                });
                                 DOUT << "Back to Title" << std::endl;
                               });
 

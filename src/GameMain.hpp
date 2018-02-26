@@ -34,18 +34,19 @@ public:
               Params::load(params.getValueForKey<std::string>("gamemain.tweens")))
   {
     // ゲーム開始
-    count_exec_.add(2.0, [this]() noexcept
-                         {
-                           event_.signal("Game:Start", Arguments());
-                           {
-                             const auto& widget = canvas_.at("begin");
-                             widget->enable(false);
-                           }
-                           {
-                             const auto& widget = canvas_.at("main");
-                             widget->enable();
-                           }
-                         });
+    count_exec_.add(2.0,
+                    [this]() noexcept
+                    {
+                      event_.signal("Game:Start", Arguments());
+                      {
+                        const auto& widget = canvas_.at("begin");
+                        widget->enable(false);
+                      }
+                      {
+                        const auto& widget = canvas_.at("main");
+                        widget->enable();
+                      }
+                    });
 
     holder_ += event_.connect("pause:touch_ended",
                               [this](const Connection&, const Arguments&) noexcept
@@ -93,10 +94,11 @@ public:
                               {
                                 // ゲーム終了
                                 event_.signal("Game:Aborted", Arguments());
-                                count_exec_.add(0.5, [this]() noexcept
-                                                     {
-                                                       active_ = false;
-                                                     });
+                                count_exec_.add(0.5,
+                                                [this]() noexcept
+                                                {
+                                                  active_ = false;
+                                                });
                                 DOUT << "GameMain finished." << std::endl;
                               });
 
@@ -147,6 +149,8 @@ public:
                                   const auto& widget = canvas_.at("end");
                                   widget->enable();
                                 }
+                                canvas_.startTween("end");
+                                
                                 count_exec_.add(1.5,
                                                 [this]() noexcept
                                                 {
@@ -209,6 +213,8 @@ public:
     setupCommonTweens(event_, holder_, canvas_, "pause");
     setupCommonTweens(event_, holder_, canvas_, "resume");
     setupCommonTweens(event_, holder_, canvas_, "abort");
+
+    canvas_.startTween("start");
   }
 
   ~GameMain() = default;

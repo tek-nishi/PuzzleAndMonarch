@@ -1,19 +1,40 @@
 {
   "start": [
     {
-      "identifier": "play",
+      "identifier": "begin",
       "tween": [
         {
-          "param": "color",
-          "type": "color",
+          "param": "scale",
+          "type": "vec2",
           "body": [
             {
-              "duration": 0.8,
-              "loop": true,
+              "duration": 0.4,
               "delay": 0,
-              "pingpong": true,
-              "start": [ 1, 1, 1, 1 ],
-              "end":   [ 1, 1, 1, 0 ]
+              "copy_start": true,
+              "ease_func": "OutCubic",
+              "start": [ 4, 4 ],
+              "end":   [ 1, 1 ]
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "end": [
+    {
+      "identifier": "end",
+      "tween": [
+        {
+          "param": "scale",
+          "type": "vec2",
+          "body": [
+            {
+              "duration": 0.5,
+              "delay": 0,
+              "copy_start": true,
+              "ease_func": "OutBack",
+              "start": [ 4, 4 ],
+              "end":   [ 1, 1 ]
             }
           ]
         }

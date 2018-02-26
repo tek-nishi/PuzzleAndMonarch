@@ -49,11 +49,12 @@ public:
                               [this](const Connection&, const Arguments&) noexcept
                               {
                                 canvas_.active(false);
-                                count_exec_.add(1.0, [this]() noexcept
-                                                     {
-                                                       event_.signal("Title:finished", Arguments());
-                                                       active_ = false;
-                                                     });
+                                count_exec_.add(1.0,
+                                                [this]() noexcept
+                                                {
+                                                  event_.signal("Title:finished", Arguments());
+                                                  active_ = false;
+                                                });
                                 DOUT << "Game Start!" << std::endl;
                               });
     
@@ -61,11 +62,12 @@ public:
                               [this](const Connection&, const Arguments&) noexcept
                               {
                                 canvas_.active(false);
-                                count_exec_.add(1.0, [this]() noexcept
-                                                     {
-                                                       event_.signal("Credits:begin", Arguments());
-                                                       active_ = false;
-                                                     });
+                                count_exec_.add(1.0,
+                                                [this]() noexcept
+                                                {
+                                                  event_.signal("Credits:begin", Arguments());
+                                                  active_ = false;
+                                                });
                                 DOUT << "Credits." << std::endl;
                               });
     
@@ -73,11 +75,12 @@ public:
                               [this](const Connection&, const Arguments&) noexcept
                               {
                                 canvas_.active(false);
-                                count_exec_.add(1.0, [this]() noexcept
-                                                     {
-                                                       event_.signal("Settings:begin", Arguments());
-                                                       active_ = false;
-                                                     });
+                                count_exec_.add(1.0,
+                                                [this]() noexcept
+                                                {
+                                                  event_.signal("Settings:begin", Arguments());
+                                                  active_ = false;
+                                                });
                                 DOUT << "Settings." << std::endl;
                               });
     
@@ -85,11 +88,12 @@ public:
                               [this](const Connection&, const Arguments&) noexcept
                               {
                                 canvas_.active(false);
-                                count_exec_.add(1.0, [this]() noexcept
-                                                     {
-                                                       event_.signal("Records:begin", Arguments());
-                                                       active_ = false;
-                                                     });
+                                count_exec_.add(1.0,
+                                                [this]() noexcept
+                                                {
+                                                  event_.signal("Records:begin", Arguments());
+                                                  active_ = false;
+                                                });
                                 DOUT << "Records." << std::endl;
                               });
     
@@ -97,11 +101,12 @@ public:
                               [this](const Connection&, const Arguments&) noexcept
                               {
                                 canvas_.active(false);
-                                count_exec_.add(1.0, [this]() noexcept
-                                                     {
-                                                       event_.signal("Ranking:begin", Arguments());
-                                                       active_ = false;
-                                                     });
+                                count_exec_.add(1.0,
+                                                [this]() noexcept
+                                                {
+                                                  event_.signal("Ranking:begin", Arguments());
+                                                  active_ = false;
+                                                });
                                 DOUT << "Records." << std::endl;
                               });
 
