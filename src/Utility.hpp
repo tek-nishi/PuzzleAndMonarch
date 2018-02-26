@@ -83,4 +83,17 @@ void appendContainer(const T1& src, T2& dst) noexcept
   std::copy(std::begin(src), std::end(src), std::back_inserter(dst));
 }
 
+// キーワード置換
+std::string replaceString(std::string text, const std::string& src, const std::string& dst) noexcept
+{
+  std::string::size_type pos = 0;
+  while ((pos = text.find(src, pos)) != std::string::npos)
+  {
+    text.replace(pos, src.length(), dst);
+    pos += dst.length();
+  }
+
+  return text;
+}
+
 }

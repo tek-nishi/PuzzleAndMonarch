@@ -27,6 +27,8 @@ class Result
 
   std::vector<std::string> ranking_text_;
 
+  std::string share_text_;
+
   UI::Canvas canvas_;
   bool active_ = true;
 
@@ -37,6 +39,9 @@ public:
     : event_(event),
       high_score_(score.high_score),
       ranking_text_(Json::getArray<std::string>(params["result.ranking"])),
+      share_text_(replaceString(params.getValueForKey<std::string>("result.share"),
+                                "%1",
+                                std::to_string(score.total_score))),
       canvas_(event, drawer, tween_common,
               params["ui.camera"],
               Params::load(params.getValueForKey<std::string>("result.canvas")),
@@ -85,7 +90,7 @@ public:
                                                 {
                                                   event_.signal("App:pending-update", Arguments());
 
-                                                  Share::post(u8"ほげ", Capture::execute(),
+                                                  Share::post(share_text_, Capture::execute(),
                                                               [this]() noexcept
                                                               {
                                                                 event_.signal("App:resume-update", Arguments());

@@ -332,7 +332,9 @@
       "Viceroy",
       "King",
       "Emperor"
-    ]
+    ],
+
+    "share": "PuzzleMonarch で%1点獲得しました!!"
   },
 
   "ranking": {
