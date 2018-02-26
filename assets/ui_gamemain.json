@@ -66,16 +66,17 @@
         },
         {
           "identifier": "pause",
-          "rect": [ -30, -30, -15, -15 ],
+          "rect": [ -15, -12, 5, 12 ],
           "anchor": [
-            [ 1, 1 ],
-            [ 1, 1 ]
+            [ 0.93, 0.915 ],
+            [ 0.93, 0.915 ]
           ],
           "scale": [ 1, 1 ],
           "pivot": [ 0.5, 0.5 ],
+
           "event": "pause",
           "se": "pause",
-          
+              
           "font": "icon",
           "text": "",
           "color": [ 1, 1, 1 ]
@@ -408,35 +409,69 @@
         },
         {
           "identifier": "resume",
-          "rect": [ -50, -15, -25, 15 ],
+          "rect": [ 25, -15, 55, 15 ],
           "anchor": [
             [ 0.5, 0.5 ],
             [ 0.5, 0.5 ]
           ],
           "scale": [ 1, 1 ],
           "pivot": [ 0.5, 0.5 ],
+
+          "radius": 1,
+          "line_width": 3,
+          "color": [ 1, 1, 1 ],
+
           "event": "resume",
           "se": "agree",
+
+          "childlen": [
+            {
+              "rect": [ 6, 5, 0, -5 ],
+              "anchor": [
+                [ 0, 0 ],
+                [ 1, 1 ]
+              ],
+              "scale": [ 1, 1 ],
+              "pivot": [ 0.5, 0.5 ],
           
-          "font": "icon",
-          "text": "",
-          "color": [ 1, 1, 1 ]
+              "font": "icon",
+              "text": "",
+              "color": [ 1, 1, 1 ]
+            }
+          ]
         },
         {
           "identifier": "abort",
-          "rect": [ 25, -15, 50, 15 ],
+          "rect": [ -55, -15, -25, 15 ],
           "anchor": [
             [ 0.5, 0.5 ],
             [ 0.5, 0.5 ]
           ],
           "scale": [ 1, 1 ],
           "pivot": [ 0.5, 0.5 ],
+
+          "radius": 1,
+          "line_width": 3,
+          "color": [ 1, 1, 1 ],
+
           "event": "abort",
           "se": "agree",
+
+          "childlen": [
+            {
+              "rect": [ 4.25, 5, -1.25, -5 ],
+              "anchor": [
+                [ 0, 0 ],
+                [ 1, 1 ]
+              ],
+              "scale": [ 1, 1 ],
+              "pivot": [ 0.5, 0.5 ],
           
-          "font": "icon",
-          "text": "",
-          "color": [ 1, 1, 1 ]
+              "font": "icon",
+              "text": "",
+              "color": [ 1, 1, 1 ]
+            }
+          ]
         }
       ]
     }
