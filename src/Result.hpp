@@ -9,6 +9,8 @@
 #include "UICanvas.hpp"
 #include "TweenUtil.hpp"
 #include "Score.hpp"
+#include "Share.h"
+#include "Capture.h"
 
 
 namespace ngs {
@@ -64,16 +66,32 @@ public:
                               {
                                 DOUT << "Agree." << std::endl;
                                 canvas_.active(false);
-                                count_exec_.add(0.5, [this]() noexcept
-                                                     {
-                                                       event_.signal("Result:Finished", Arguments());
-                                                       active_ = false;
-                                                     });
+                                count_exec_.add(0.5,
+                                                [this]() noexcept
+                                                {
+                                                  event_.signal("Result:Finished", Arguments());
+                                                  active_ = false;
+                                                });
                               });
+    
     holder_ += event_.connect("share:touch_ended",
                               [this](const Connection&, const Arguments&) noexcept
                               {
                                 DOUT << "Share." << std::endl;
+
+                                canvas_.active(false);
+                                count_exec_.add(0.5,
+                                                [this]() noexcept
+                                                {
+                                                  event_.signal("App:pending-update", Arguments());
+
+                                                  Share::post(u8"ほげ", Capture::execute(),
+                                                              [this]() noexcept
+                                                              {
+                                                                event_.signal("App:resume-update", Arguments());
+                                                                canvas_.active(true);
+                                                              });
+                                                });
                               });
     
     setupCommonTweens(event_, holder_, canvas_, "agree");

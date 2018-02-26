@@ -1,13 +1,13 @@
 * TODO チュートリアル
-* TODO iOS：バックグラウンドの間も時間が経過している
 * TODO パネルを置く時間、移動回数を記録にとる
 * TODO Play中断時に若干カメラ演出が乱れる
 * TODO iPhone7でヘッドフォンの抜き差しをすると音が乱れる
 * TODO iOS:ヘッドフォンの抜き差しでノイズが乗る
+* TODO tween中止
+* TODO iOS：基本図形描画のパフォーマンス調査
 * TODO macOS:ヘッドフォンの抜き差しでノイズが乗る
 * TODO fontstashのリファクタリング
 * TODO VisualStudioでDEBUGが定義されていない疑惑
-* TODO 「再生開始」アイコンでゲームを始められるのが伝わっていない
 * TODO msaa
 * TODO ローカライズ
 * TODO pauseメニューから再開するアイコンの意味がわからん
@@ -34,7 +34,6 @@
 * TODO いい感じに画面全体に街が映るように
 * TODO ゲーム開始時にプレイ時間を決めたい
 * TODO 被写界深度の浅い表現
-* TODO iOS:share機能
 * TODO 無限に置けるモードが欲しい
 * TODO Panelのデータをテキストに
 * TODO 全く見た目の違うパネルセット
@@ -53,6 +52,12 @@
 * TODO iOS:GameCenter対応
 * TODO iOS:実績を実装
 * TODO iOS:他のアプリで再生中のBGMがそのまま再生されるように
+* DONE iOS:share機能
+CLOSED: [2018-02-26 月 15:18]
+* DONE iOS：バックグラウンドの間も時間が経過している
+CLOSED: [2018-02-26 月 15:16]
+* DONE 「再生開始」アイコンでゲームを始められるのが伝わっていない
+CLOSED: [2018-02-26 月 12:49]
 * DONE Titleのジングルが毎回鳴るのでうっとおしい
 CLOSED: [2018-02-25 日 10:37]
 * DONE 本編中でpauseすると挙動が怪しい

@@ -14,11 +14,14 @@
 		28FD15000DC6FC520079059D /* OpenGLES.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 28FD14FF0DC6FC520079059D /* OpenGLES.framework */; };
 		47E3D938203F20CD00275D6D /* AudioSession.mm in Sources */ = {isa = PBXBuildFile; fileRef = 47E3D937203F20CD00275D6D /* AudioSession.mm */; };
 		47E3D939203F210300275D6D /* AudioToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C7FB19D5124BC0D70045AFD2 /* AudioToolbox.framework */; };
-		47E3D93A203F211600275D6D /* Accelerate.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 00A66A351965AC8800B17EB3 /* Accelerate.framework */; };
 		47E3D93B203F213100275D6D /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 28FD15070DC6FC5B0079059D /* QuartzCore.framework */; };
 		47E3D93C203F214100275D6D /* MobileCoreServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DDDDDF6A1138442D0091DDDD /* MobileCoreServices.framework */; };
 		47E542862003933D0002BD5F /* Framework.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 47E542842003933D0002BD5F /* Framework.cpp */; };
 		47E542872003933D0002BD5F /* MyApp.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 47E542852003933D0002BD5F /* MyApp.cpp */; };
+		47EF72E32043BEF8002900CF /* Share.mm in Sources */ = {isa = PBXBuildFile; fileRef = 47EF72E22043BEF8002900CF /* Share.mm */; };
+		47EF72E82043C1C0002900CF /* Social.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 47EF72E72043C1C0002900CF /* Social.framework */; };
+		47EF72E92043D0AF002900CF /* Accelerate.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 00A66A351965AC8800B17EB3 /* Accelerate.framework */; };
+		47EF72EB2043D228002900CF /* Capture.mm in Sources */ = {isa = PBXBuildFile; fileRef = 47EF72EA2043D228002900CF /* Capture.mm */; };
 		4A87E5FC4BF545F684E4E5FE /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = 257B6E3315A4490FA0602ED1 /* LaunchScreen.xib */; };
 		89A048848AF74A878039EF6B /* CinderApp_ios.png in Resources */ = {isa = PBXBuildFile; fileRef = E6C27D858B5543499BB4162A /* CinderApp_ios.png */; };
 		8FA538F2FD744747970E9EF1 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = D9BFC250AE1146EB97135C4B /* Images.xcassets */; };
@@ -41,6 +44,9 @@
 		47E3D937203F20CD00275D6D /* AudioSession.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = AudioSession.mm; path = ../src/AudioSession.mm; sourceTree = "<group>"; };
 		47E542842003933D0002BD5F /* Framework.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Framework.cpp; path = ../src/Framework.cpp; sourceTree = "<group>"; };
 		47E542852003933D0002BD5F /* MyApp.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = MyApp.cpp; path = ../src/MyApp.cpp; sourceTree = "<group>"; };
+		47EF72E22043BEF8002900CF /* Share.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = Share.mm; path = ../src/Share.mm; sourceTree = "<group>"; };
+		47EF72E72043C1C0002900CF /* Social.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Social.framework; path = System/Library/Frameworks/Social.framework; sourceTree = SDKROOT; };
+		47EF72EA2043D228002900CF /* Capture.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = Capture.mm; path = ../src/Capture.mm; sourceTree = "<group>"; };
 		4F061B89F5B245658DFC98A3 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		5820392EF46148AA877B309D /* Resources.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = Resources.h; path = ../include/Resources.h; sourceTree = "<group>"; };
 		5F4060D6FC194D6D97ABF703 /* ApprenticeMonarch_Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = "\"\""; path = ApprenticeMonarch_Prefix.pch; sourceTree = "<group>"; };
@@ -58,8 +64,9 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				47EF72E82043C1C0002900CF /* Social.framework in Frameworks */,
+				47EF72E92043D0AF002900CF /* Accelerate.framework in Frameworks */,
 				C725E001121DAC8F00FA186B /* AVFoundation.framework in Frameworks */,
-				47E3D93A203F211600275D6D /* Accelerate.framework in Frameworks */,
 				C725E001121DAC8FFFFA18FF /* ImageIO.framework in Frameworks */,
 				47E3D93B203F213100275D6D /* QuartzCore.framework in Frameworks */,
 				1D60589F0D05DD5A006BFB54 /* Foundation.framework in Frameworks */,
@@ -97,6 +104,7 @@
 		00692BD214FF149000D0A05E /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				47EF72E72043C1C0002900CF /* Social.framework */,
 				C7FB19D5124BC0D70045AFD2 /* AudioToolbox.framework */,
 				00A66A351965AC8800B17EB3 /* Accelerate.framework */,
 				C727C02B121B400300192073 /* CoreMedia.framework */,
@@ -117,6 +125,8 @@
 		00692BD914FF149000D0A05E /* Source */ = {
 			isa = PBXGroup;
 			children = (
+				47EF72EA2043D228002900CF /* Capture.mm */,
+				47EF72E22043BEF8002900CF /* Share.mm */,
 				47E3D937203F20CD00275D6D /* AudioSession.mm */,
 				47E542842003933D0002BD5F /* Framework.cpp */,
 				47E542852003933D0002BD5F /* MyApp.cpp */,
@@ -227,7 +237,9 @@
 			files = (
 				47E542862003933D0002BD5F /* Framework.cpp in Sources */,
 				47E3D938203F20CD00275D6D /* AudioSession.mm in Sources */,
+				47EF72EB2043D228002900CF /* Capture.mm in Sources */,
 				47E542872003933D0002BD5F /* MyApp.cpp in Sources */,
+				47EF72E32043BEF8002900CF /* Share.mm in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -281,6 +293,7 @@
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				COPY_PHASE_STRIP = YES;
 				DEAD_CODE_STRIPPING = YES;
+				ENABLE_BITCODE = NO;
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"SRCROOT=\"$(SRCROOT)/\"",
 					"PRODUCT_NAME=\"$(PRODUCT_NAME)\"",

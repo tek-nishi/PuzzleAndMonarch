@@ -51,14 +51,21 @@ public:
 
 #if defined (CINDER_COCOA_TOUCH)
     // 縦横画面両対応
-    signal_connection_ = getSignalSupportedOrientations().connect([]() noexcept {
+    getSignalSupportedOrientations().connect([]() noexcept {
       return ci::app::InterfaceOrientation::All;
     });
+
+    getSignalDidRotate().connect([this]() noexcept
+                                 {
+                                   // TODO 1フレームだけ画面更新
+                                 });
 #endif
     
     // アクティブになった時にタッチ情報を初期化
     getSignalDidBecomeActive().connect([this]() noexcept
                                        {
+                                         // 時間経過を再初期化
+                                         prev_time_ = getElapsedSeconds();
                                          event_.signal("App:BecomeActive", Arguments());
                                          DOUT << "SignalDidBecomeActive" << std::endl;
                                        });
@@ -69,17 +76,24 @@ public:
                                           event_.signal("App:ResignActive", Arguments());
                                           DOUT << "SignalWillResignActive" << std::endl;
                                         });
-    
+
+    event_.connect("App:pending-update",
+                   [this](const Connection&, const Arguments&) noexcept
+                   {
+                     pending_update_ = true;
+                   });
+
+    event_.connect("App:resume-update",
+                   [this](const Connection&, const Arguments&) noexcept
+                   {
+                     prev_time_ = getElapsedSeconds();
+                     pending_update_ = false;
+                   });
+
     prev_time_ = getElapsedSeconds();
   }
 
-#if defined (CINDER_COCOA_TOUCH)
-  ~MyApp()
-  {
-    // FIXME デストラクタ呼ばれないっぽい
-    signal_connection_.disconnect();
-  }
-#endif
+  ~MyApp() = default;
 
 
 private:
@@ -199,6 +213,8 @@ private:
 
 	void update() noexcept override
   {
+    if (pending_update_) return;
+
     auto current_time = getElapsedSeconds();
     auto delta_time   = current_time - prev_time_;
 #if defined (DEBUG)
@@ -230,6 +246,8 @@ private:
 
 	void draw() noexcept override
   {
+    if (pending_update_) return;
+
     ci::gl::clear(ci::Color(0, 0, 0));
 
     Arguments args = {
@@ -241,13 +259,7 @@ private:
 
   // 変数定義(実験的にクラス定義の最後でまとめている)
   ci::JsonTree params_;
-
-#if defined (CINDER_COCOA_TOUCH)
-  ci::signals::Connection signal_connection_;
-#endif
-
   Event<Arguments> event_;
-
   TouchEvent touch_event_;
 
   double prev_time_;
@@ -260,6 +272,9 @@ private:
 
   std::map<int, std::string> debug_events_;
 #endif
+
+  // Share機能とかで内部更新を保留にする
+  bool pending_update_ = false;
 
 };
 
