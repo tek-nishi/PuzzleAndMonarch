@@ -1,4 +1,6 @@
 * TODO チュートリアル
+* TODO アプリ起動時にサウンドの設定が反映されていない
+* TODO iPhoneXの上端と下端を使わないようUIを調整する
 * TODO ゲームが保存されてないのにTitleでボタンが出る
 * TODO セーブデータにVersion番号入れる
 * TODO blankパネルの演出

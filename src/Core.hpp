@@ -164,6 +164,17 @@ public:
     tasks_.pushBack<Title>(params_, event_, drawer_, tween_common_,
                            true, archive_.isSaved());
 
+    {
+      // Sound初期設定
+      auto bgm_enable = archive_.getRecord<bool>("bgm-enable");
+      auto se_enable  = archive_.getRecord<bool>("se-enable");
+      Arguments args = {
+        { "bgm-enable", bgm_enable },
+        { "se-enable",  se_enable }
+      };
+      event_.signal("Settings:Changed", args);
+    }
+
 #if defined (DEBUG)
     tasks_.pushBack<DebugTask>(params_, event_, drawer_);
 #endif

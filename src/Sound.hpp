@@ -122,6 +122,9 @@ public:
   Sound(const ci::JsonTree& params, Event<Arguments>& event) noexcept
     : event_(event)
   {
+    // TIPS iOS:ヘッドホンプラグの抜き差しに対応
+    AudioSession::begin();
+
     auto ctx = ci::audio::Context::master();
 
     // カテゴリ別のNode生成
@@ -162,10 +165,6 @@ public:
            << " path: " << path
            << std::endl;
     }
-
-    ctx->enable();
-    // TIPS iOS:ヘッドホンプラグの抜き差しに対応
-    AudioSession::begin();
 
     // Game内サウンドリスト読み込み
     for (const auto& p : params["game-sound"])
@@ -222,6 +221,8 @@ public:
                                  }
                                }
                              });
+
+    ctx->enable();
   }
 
   // ~Sound()
