@@ -48,6 +48,7 @@ public:
               Params::load(params.getValueForKey<std::string>("result.tweens")))
   {
     {
+      // サウンド再生
       Arguments args{
         { "timeline", params["result.se"] }
       };
@@ -56,7 +57,9 @@ public:
 
     count_exec_.add(2.0,
                     [this]() {
+                      if (Share::canPost() && Capture::canExec())
                       {
+                        // Share機能と画面キャプチャが有効じゃないと使えない
                         const auto& widget = canvas_.at("share");
                         widget->enable();
                       }
