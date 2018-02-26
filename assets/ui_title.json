@@ -87,6 +87,22 @@
       "color": [ 1, 1, 1 ]
     },
     {
+      "identifier": "play_circle",
+      "rect": [ -20, -16, 16, 14 ],
+      "anchor": [
+        [ 0.5, 0.3 ],
+        [ 0.5, 0.3 ]
+      ],
+      "scale": [ 1, 1 ],
+      "pivot": [ 0.5, 0.5 ],
+      "alpha": 0,
+
+      "radius": 1,
+      "line_width": 2,
+      "color": [ 1, 1, 1 ]
+    },
+
+    {
       "identifier": "copyright",
       "rect": [ 0, 3, 0, 16 ],
       "anchor": [

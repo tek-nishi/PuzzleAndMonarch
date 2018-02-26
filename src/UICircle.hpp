@@ -18,7 +18,7 @@ class Circle
   int segment_ = 0;
   ci::Color color_ = { 1.0f, 1.0f, 1.0f };
   bool fill_ = false;
-  glm::vec2 alignment_ = { 0.5, 0.5 };
+  float line_width_ = 0.5;
 
   
 public:
@@ -37,9 +37,9 @@ public:
     {
       fill_ = params.getValueForKey<bool>("fill");
     }
-    if (params.hasChild("alignment"))
+    if (params.hasChild("line_width"))
     {
-      alignment_ = Json::getVec<glm::vec2>(params["alignment"]);
+      line_width_ = params.getValueForKey<float>("line_width");
     }
   }
 
@@ -52,15 +52,16 @@ private:
     ci::gl::ScopedGlslProg prog(drawer.getColorShader());
     ci::gl::color(ci::ColorA(color_, alpha));
 
-    auto center = rect.getCenter(); 
+    auto center = rect.getCenter();
+    float r = rect.getHeight() * 0.5 * radius_;
 
     if (fill_)
     {
-      ci::gl::drawSolidCircle(center, radius_, segment_);
+      ci::gl::drawSolidCircle(center, r, segment_);
     }
     else
     {
-      ci::gl::drawStrokedCircle(center, radius_, segment_);
+      ci::gl::drawStrokedCircle(center, r, line_width_, segment_);
     }
   }
 
