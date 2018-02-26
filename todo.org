@@ -1,7 +1,8 @@
 * TODO チュートリアル
+* TODO ゲームが保存されてないのにTitleでボタンが出る
+* TODO セーブデータにVersion番号入れる
 * TODO blankパネルの演出
 * TODO iPad:Shareのpopoverをボタン位置と合わせる
-* TODO iOS:Share機能利用時に画面サイズが変わると画面が真っ黒になる
 * TODO パネルを置く時間、移動回数を記録にとる
 * TODO Play中断時に若干カメラ演出が乱れる
 * TODO iPhone7でヘッドフォンの抜き差しをすると音が乱れる
@@ -55,6 +56,8 @@
 * TODO iOS:GameCenter対応
 * TODO iOS:実績を実装
 * TODO iOS:他のアプリで再生中のBGMがそのまま再生されるように
+* DONE iOS:Share機能利用時に画面サイズが変わると画面が真っ黒になる
+CLOSED: [2018-02-26 月 19:00]
 * DONE iOS:share機能
 CLOSED: [2018-02-26 月 15:18]
 * DONE iOS：バックグラウンドの間も時間が経過している

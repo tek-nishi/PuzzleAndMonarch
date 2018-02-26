@@ -51,14 +51,21 @@ public:
 
 #if defined (CINDER_COCOA_TOUCH)
     // 縦横画面両対応
-    getSignalSupportedOrientations().connect([]() noexcept {
-      return ci::app::InterfaceOrientation::All;
-    });
+    getSignalSupportedOrientations().connect([]() noexcept
+                                             {
+                                               return ci::app::InterfaceOrientation::All;
+                                             });
 
-    getSignalDidRotate().connect([this]() noexcept
-                                 {
-                                   // TODO 1フレームだけ画面更新
-                                 });
+    getSignalWillRotate().connect([this]() noexcept
+                                  {
+                                    if (pending_draw_)
+                                    {
+                                      // １回だけ更新
+                                      pending_draw_      = false;
+                                      pending_draw_next_ = true;
+                                    }
+                                    DOUT << "SignalWillRotate" << std::endl;
+                                  });
 #endif
     
     // アクティブになった時にタッチ情報を初期化
@@ -81,13 +88,16 @@ public:
                    [this](const Connection&, const Arguments&) noexcept
                    {
                      pending_update_ = true;
+                     pending_draw_   = true;
                    });
 
     event_.connect("App:resume-update",
                    [this](const Connection&, const Arguments&) noexcept
                    {
                      prev_time_ = getElapsedSeconds();
-                     pending_update_ = false;
+                     pending_update_    = false;
+                     pending_draw_      = false;
+                     pending_draw_next_ = false;
                    });
 
     prev_time_ = getElapsedSeconds();
@@ -246,7 +256,7 @@ private:
 
 	void draw() noexcept override
   {
-    if (pending_update_) return;
+    if (pending_draw_) return;
 
     ci::gl::clear(ci::Color(0, 0, 0));
 
@@ -254,6 +264,8 @@ private:
       { "window_size", ci::app::getWindowSize() },
     };
     event_.signal("draw", args);
+
+    pending_draw_ = pending_draw_next_;
   }
 
 
@@ -274,8 +286,9 @@ private:
 #endif
 
   // Share機能とかで内部更新を保留にする
-  bool pending_update_ = false;
-
+  bool pending_update_    = false;
+  bool pending_draw_      = false;
+  bool pending_draw_next_ = false;
 };
 
 
