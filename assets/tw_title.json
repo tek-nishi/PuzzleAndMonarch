@@ -149,7 +149,7 @@
             {
               "duration": 1.6,
               "loop": true,
-              "delay": 2.0,
+              "delay": 2.5,
               "ease_func": "OutCubic",
               "start": [ 1, 1 ],
               "end":   [ 1.6, 1.6 ]
@@ -163,7 +163,7 @@
             {
               "duration": 1.6,
               "loop": true,
-              "delay": 2.0,
+              "delay": 2.5,
               "ease_func": "OutCubic",
               "start": 1,
               "end":   0

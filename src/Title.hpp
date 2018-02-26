@@ -28,7 +28,7 @@ class Title
 
 public:
   Title(const ci::JsonTree& params, Event<Arguments>& event, UI::Drawer& drawer, TweenCommon& tween_common,
-        bool first_time) noexcept
+        bool first_time, bool saved) noexcept
     : event_(event),
       canvas_(event, drawer, tween_common,
               params["ui.camera"],
@@ -112,6 +112,19 @@ public:
     setupCommonTweens(event_, holder_, canvas_, "ranking");
     setupCommonTweens(event_, holder_, canvas_, "game_center");
     setupCommonTweens(event_, holder_, canvas_, "play");
+
+    if (!saved)
+    {
+      // Saveデータがない場合関連するボタンを消す
+      {
+        const auto& widget = canvas_.at("Ranking");
+        widget->enable(false);
+      }
+      {
+        const auto& widget = canvas_.at("Records");
+        widget->enable(false);
+      }
+    }
 
     canvas_.startTween("start");
   }

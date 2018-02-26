@@ -1,4 +1,5 @@
 * TODO チュートリアル
+* TODO blankパネルの演出
 * TODO iPad:Shareのpopoverをボタン位置と合わせる
 * TODO iOS:Share機能利用時に画面サイズが変わると画面が真っ黒になる
 * TODO パネルを置く時間、移動回数を記録にとる

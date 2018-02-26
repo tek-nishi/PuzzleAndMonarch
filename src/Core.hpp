@@ -65,7 +65,8 @@ public:
     holder_ += event_.connect("Credits:Finished",
                               [this](const Connection&, const Arguments&) noexcept
                               {
-                                tasks_.pushBack<Title>(params_, event_, drawer_, tween_common_, false);
+                                tasks_.pushBack<Title>(params_, event_, drawer_, tween_common_,
+                                                       false, archive_.isSaved());
                               });
     // Title→Settings
     holder_ += event_.connect("Settings:begin",
@@ -87,7 +88,8 @@ public:
                                 archive_.setRecord("se-enable",  boost::any_cast<bool>(args.at("se-enable")));
                                 archive_.save();
 
-                                tasks_.pushBack<Title>(params_, event_, drawer_, tween_common_, false);
+                                tasks_.pushBack<Title>(params_, event_, drawer_, tween_common_,
+                                                       false, archive_.isSaved());
                               });
     // Title→Records
     holder_ += event_.connect("Records:begin",
@@ -105,7 +107,8 @@ public:
     holder_ += event_.connect("Records:Finished",
                               [this](const Connection&, const Arguments&) noexcept
                               {
-                                tasks_.pushBack<Title>(params_, event_, drawer_, tween_common_, false);
+                                tasks_.pushBack<Title>(params_, event_, drawer_, tween_common_,
+                                                       false, archive_.isSaved());
                               });
     // Title→Ranking
     holder_ += event_.connect("Ranking:begin",
@@ -117,7 +120,8 @@ public:
     holder_ += event_.connect("Ranking:Finished",
                               [this](const Connection&, const Arguments&) noexcept
                               {
-                                tasks_.pushBack<Title>(params_, event_, drawer_, tween_common_, false);
+                                tasks_.pushBack<Title>(params_, event_, drawer_, tween_common_,
+                                                       false, archive_.isSaved());
                               });
     // ゲーム中断
     holder_ += event_.connect("Game:Aborted",
@@ -126,7 +130,8 @@ public:
                                 count_exec_.add(0.5,
                                                 [this]() noexcept
                                                 {
-                                                  tasks_.pushBack<Title>(params_, event_, drawer_, tween_common_, false);
+                                                  tasks_.pushBack<Title>(params_, event_, drawer_, tween_common_,
+                                                                         false, archive_.isSaved());
                                                 });
                               });
     // GameMain→Result
@@ -143,7 +148,8 @@ public:
                                 count_exec_.add(0.5,
                                                 [this]() noexcept
                                                 {
-                                                  tasks_.pushBack<Title>(params_, event_, drawer_, tween_common_, false);
+                                                  tasks_.pushBack<Title>(params_, event_, drawer_, tween_common_,
+                                                                         false, archive_.isSaved());
                                                 });
                               });
 
@@ -155,7 +161,8 @@ public:
     // 最初のタスクを登録
     tasks_.pushBack<Sound>(params_, event_);
     tasks_.pushBack<MainPart>(params_, event_, archive_);
-    tasks_.pushBack<Title>(params_, event_, drawer_, tween_common_, true);
+    tasks_.pushBack<Title>(params_, event_, drawer_, tween_common_,
+                           true, archive_.isSaved());
 
 #if defined (DEBUG)
     tasks_.pushBack<DebugTask>(params_, event_, drawer_);

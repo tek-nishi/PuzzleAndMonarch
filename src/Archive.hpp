@@ -47,6 +47,12 @@ public:
   ~Archive() = default;
 
 
+  bool isSaved() const noexcept
+  {
+    return ci::fs::is_regular_file(full_path_);
+  }
+
+
   // プレイ結果を記録
   void recordGameResults(const Score& score) noexcept
   {
