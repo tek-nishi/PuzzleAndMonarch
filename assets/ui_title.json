@@ -71,24 +71,41 @@
 
     {
       "identifier": "play",
-      "rect": [ -25, -25, 25, 25 ],
+      "rect": [ -20, -20, 20, 20 ],
       "anchor": [
         [ 0.5, 0.35 ],
         [ 0.5, 0.35 ]
       ],
       "scale": [ 1, 1 ],
       "pivot": [ 0.5, 0.5 ],
+
+      "radius": 1,
+      "line_width": 3,
+      "color": [ 1, 1, 1 ],
+
       "event": "play",
       "se":    "play",
       "alpha": 0,
-      
-      "font": "icon",
-      "text": "",
-      "color": [ 1, 1, 1 ]
+
+      "childlen": [
+        {
+          "rect": [ 6, 8, 0, -8 ],
+          "anchor": [
+            [ 0, 0 ],
+            [ 1, 1 ]
+          ],
+          "scale": [ 1, 1 ],
+          "pivot": [ 0.5, 0.5 ],
+          
+          "font": "icon",
+          "text": "",
+          "color": [ 1, 1, 1 ]
+        }
+      ]
     },
     {
       "identifier": "play_circle",
-      "rect": [ -23, -22, 18, 19 ],
+      "rect": [ -20, -20, 20, 20 ],
       "anchor": [
         [ 0.5, 0.35 ],
         [ 0.5, 0.35 ]
