@@ -224,17 +224,17 @@ public:
                              });
   }
 
-  ~Sound()
-  {
-    stopAll();
+  // ~Sound()
+  // {
+  //   stopAll();
 
-    auto ctx = ci::audio::Context::master();
-    ctx->disable();
+  //   auto ctx = ci::audio::Context::master();
+  //   ctx->disable();
 
-    AudioSession::end();
+  //   AudioSession::end();
 
-    DOUT << "~Sound()" << std::endl;
-  }
+  //   DOUT << "~Sound()" << std::endl;
+  // }
 };
 
 }

@@ -64,7 +64,6 @@ class DebugTask
               });
 
     settings_->show(false);
-    settings_->setOptions("TW_HELP", "visible=false");
 
     // TIPS HELPを隠す
     TwDefine("TW_HELP visible=false");

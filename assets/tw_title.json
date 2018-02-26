@@ -99,6 +99,25 @@
         }
       ]
     },
+    {
+      "identifier": "serial",
+      "tween": [
+        {
+          "param": "alpha",
+          "type": "float",
+          "body": [
+            {
+              "duration": 0.1,
+              "delay": 1.3,
+              "copy_start": true,
+              "ease_func": "None",
+              "start": 0,
+              "end":   1
+            }
+          ]
+        }
+      ]
+    },
 
     {
       "identifier": "play",
@@ -120,6 +139,7 @@
         }
       ]
     },
+
     {
       "identifier": "GameCenter",
       "tween": [

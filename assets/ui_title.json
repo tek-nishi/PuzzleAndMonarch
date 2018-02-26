@@ -53,6 +53,21 @@
       "text": "",
       "color": [ 1, 1, 1 ]
     },
+    {
+      "identifier": "serial",
+      "rect": [ 104, -0.5, 104, 8 ],
+      "anchor": [
+        [ 0.5, 0.75 ],
+        [ 0.5, 0.75 ]
+      ],
+      "scale": [ 1, 1 ],
+      "pivot": [ 0.5, 0.5 ],
+
+      "font": "en",
+      "text": "ngs-0012",
+      "layout": [ 1, 1 ],
+      "color": [ 1, 1, 1 ]
+    },
 
     {
       "identifier": "play",
