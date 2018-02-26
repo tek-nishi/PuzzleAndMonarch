@@ -42,11 +42,11 @@ public:
               Params::load(params.getValueForKey<std::string>("records.canvas")),
               Params::load(params.getValueForKey<std::string>("records.tweens")))
   {
-    count_exec_.add(1.0,
-                    [this]() {
-                      const auto& widget = canvas_.at("touch");
-                      widget->enable();
-                    });
+    // count_exec_.add(1.0,
+    //                 [this]() {
+    //                   const auto& widget = canvas_.at("touch");
+    //                   widget->enable();
+    //                 });
 
     holder_ += event_.connect("agree:touch_ended",
                               [this](const Connection&, const Arguments&) noexcept
@@ -64,6 +64,7 @@ public:
     setupCommonTweens(event_, holder_, canvas_, "agree");
 
     applyDetail(detail);
+    canvas_.startTween("start");
   }
 
   ~Records() = default;

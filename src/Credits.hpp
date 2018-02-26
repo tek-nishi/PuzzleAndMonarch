@@ -30,11 +30,11 @@ public:
               Params::load(params.getValueForKey<std::string>("credits.canvas")),
               Params::load(params.getValueForKey<std::string>("credits.tweens")))
   {
-    count_exec_.add(1.0,
-                    [this]() {
-                      const auto& widget = canvas_.at("touch");
-                      widget->enable();
-                    });
+    // count_exec_.add(1.0,
+    //                 [this]() {
+    //                   const auto& widget = canvas_.at("touch");
+    //                   widget->enable();
+    //                 });
 
     holder_ += event_.connect("agree:touch_ended",
                               [this](const Connection&, const Arguments&) noexcept
@@ -50,6 +50,8 @@ public:
 
     // ボタンイベント共通Tween
     setupCommonTweens(event_, holder_, canvas_, "agree");
+
+    canvas_.startTween("start");
   }
 
   ~Credits() = default;

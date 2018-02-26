@@ -63,10 +63,10 @@ public:
                         const auto& widget = canvas_.at("share");
                         widget->enable();
                       }
-                      {
-                        const auto& widget = canvas_.at("touch");
-                        widget->enable();
-                      }
+                      // {
+                      //   const auto& widget = canvas_.at("touch");
+                      //   widget->enable();
+                      // }
                     });
 
     holder_ += event_.connect("agree:touch_ended",
@@ -106,6 +106,7 @@ public:
     setupCommonTweens(event_, holder_, canvas_, "share");
 
     applyScore(score);
+    canvas_.startTween("start");
   }
 
   ~Result() = default;

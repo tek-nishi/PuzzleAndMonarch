@@ -68,7 +68,7 @@ public:
                               {
                                 bgm_enable_ = !bgm_enable_;
                                 auto text = bgm_enable_ ? u8"" : u8"";
-                                const auto& widget = canvas_.at("BGM");
+                                const auto& widget = canvas_.at("BGM-text");
                                 widget->setParam("text", std::string(text));
 
                                 Arguments args = {
@@ -83,7 +83,7 @@ public:
                               {
                                 se_enable_ = !se_enable_;
                                 auto text = se_enable_ ? u8"" : u8"";
-                                const auto& widget = canvas_.at("SE");
+                                const auto& widget = canvas_.at("SE-text");
                                 widget->setParam("text", std::string(text));
 
                                 Arguments args = {
@@ -98,6 +98,7 @@ public:
     setupCommonTweens(event_, holder_, canvas_, "SE");
 
     applyDetail(detail);
+    canvas_.startTween("start");
   }
 
   ~Settings() = default;
@@ -118,12 +119,12 @@ private:
 
     {
       auto text = bgm_enable_ ? u8"" : u8"";
-      const auto& widget = canvas_.at("BGM");
+      const auto& widget = canvas_.at("BGM-text");
       widget->setParam("text", std::string(text));
     }
     {
       auto text = se_enable_ ? u8"" : u8"";
-      const auto& widget = canvas_.at("SE");
+      const auto& widget = canvas_.at("SE-text");
       widget->setParam("text", std::string(text));
     }
   }

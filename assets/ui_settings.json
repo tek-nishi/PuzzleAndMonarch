@@ -45,13 +45,31 @@
       ],
       "scale": [ 1, 1 ],
       "pivot": [ 0.5, 0.5 ],
+      
+      "radius": 1,
+      "line_width": 1.5,
+      "color": [ 1, 1, 1 ],
+
       "event": "BGM",
       "se": "bgm-test",
 
-      "font": "icon",
-      "text": "",
-      "dynamic_layout": false,
-      "color": [ 1, 1, 1 ]
+      "childlen": [
+        {
+          "identifier": "BGM-text",
+          "rect": [ 3, 2, -1, -2 ],
+          "anchor": [
+            [ 0, 0 ],
+            [ 1, 1 ]
+          ],
+          "scale": [ 1, 1 ],
+          "pivot": [ 0.5, 0.5 ],
+
+          "font": "icon",
+          "text": "",
+          "dynamic_layout": false,
+          "color": [ 1, 1, 1 ]
+        }
+      ]
     },
     {
       "rect": [ 20, 36, 60, 54 ],
@@ -75,25 +93,42 @@
       ],
       "scale": [ 1, 1 ],
       "pivot": [ 0.5, 0.5 ],
+
+      "radius": 1,
+      "line_width": 1.5,
+      "color": [ 1, 1, 1 ],
+
       "event": "SE",
       "se": "se-test",
 
-      "font": "icon",
-      "text": "",
-      "dynamic_layout": false,
-      "color": [ 1, 1, 1 ]
+      "childlen": [
+        {
+          "identifier": "SE-text",
+          "rect": [ 3, 2, -1, -2 ],
+          "anchor": [
+            [ 0, 0 ],
+            [ 1, 1 ]
+          ],
+          "scale": [ 1, 1 ],
+          "pivot": [ 0.5, 0.5 ],
+
+          "font": "icon",
+          "text": "",
+          "dynamic_layout": false,
+          "color": [ 1, 1, 1 ]
+        }
+      ]
     },
 
     {
       "identifier": "touch",
-      "rect": [ -10, 8, 10, 28 ],
+      "rect": [ -14, 0, 14, 28 ],
       "anchor": [
-        [ 0.5, 0 ],
-        [ 0.5, 0 ]
+        [ 0.5, 0.06 ],
+        [ 0.5, 0.06 ]
       ],
       "scale": [ 1, 1 ],
       "pivot": [ 0.5, 0.5 ],
-      "enable": false,
       "event": "agree",
       "se": "agree",
       

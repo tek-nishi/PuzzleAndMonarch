@@ -36,11 +36,11 @@ public:
               Params::load(params.getValueForKey<std::string>("ranking.canvas")),
               Params::load(params.getValueForKey<std::string>("ranking.tweens")))
   {
-    count_exec_.add(1.0,
-                    [this]() {
-                      const auto& widget = canvas_.at("touch");
-                      widget->enable();
-                    });
+    // count_exec_.add(1.0,
+    //                 [this]() {
+    //                   const auto& widget = canvas_.at("touch");
+    //                   widget->enable();
+    //                 });
 
     holder_ += event_.connect("agree:touch_ended",
                               [this](const Connection&, const Arguments&) noexcept
@@ -61,11 +61,14 @@ public:
                                 
                                 const auto& widget = canvas_.at("scores");
                                 widget->enable();
-                                canvas_.startTween("start");
+                                canvas_.startTween("update_score");
+
+                                DOUT << "Ranking:UpdateScores" << std::endl;
                               });
 
     // ボタンイベント共通Tween
     setupCommonTweens(event_, holder_, canvas_, "agree");
+    canvas_.startTween("start");
   }
 
   ~Ranking() = default;

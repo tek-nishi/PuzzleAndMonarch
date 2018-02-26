@@ -333,14 +333,13 @@
     
     {
       "identifier": "touch",
-      "rect": [ -10, 8, 10, 28 ],
+      "rect": [ -14, 0, 14, 28 ],
       "anchor": [
-        [ 0.5, 0 ],
-        [ 0.5, 0 ]
+        [ 0.5, 0.06 ],
+        [ 0.5, 0.06 ]
       ],
       "scale": [ 1, 1 ],
       "pivot": [ 0.5, 0.5 ],
-      "enable": false,
       "event": "agree",
       "se": "agree",
       

@@ -232,7 +232,9 @@ public:
 
     for (const auto& child : children_)
     {
-      child->draw(disp_rect_, scale, drawer, alpha);
+      // FIXME Widgetの描画内容がRectのサイズで決まっているので、
+      //       scaleを子供に伝える意味がない
+      child->draw(disp_rect_, glm::vec2(1), drawer, alpha);
     }
   }
 

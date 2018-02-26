@@ -1,5 +1,4 @@
 * TODO チュートリアル
-* TODO アプリ起動時にサウンドの設定が反映されていない
 * TODO iPhoneXの上端と下端を使わないようUIを調整する
 * TODO ゲームが保存されてないのにTitleでボタンが出る
 * TODO セーブデータにVersion番号入れる
@@ -57,7 +56,10 @@
 * TODO アプリアイコン
 * TODO iOS:GameCenter対応
 * TODO iOS:実績を実装
-* TODO iOS:他のアプリで再生中のBGMがそのまま再生されるように
+* DONE iOS:他のアプリで再生中のBGMがそのまま再生されるように
+CLOSED: [2018-02-26 月 20:20]
+* DONE アプリ起動時にサウンドの設定が反映されていない
+CLOSED: [2018-02-26 月 20:20]
 * DONE iOS:Share機能利用時に画面サイズが変わると画面が真っ黒になる
 CLOSED: [2018-02-26 月 19:00]
 * DONE iOS:share機能
