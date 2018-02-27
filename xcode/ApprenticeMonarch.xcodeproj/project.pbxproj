@@ -15,10 +15,11 @@
 		43498AFBC90B40CEABDC634D /* MyApp.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 82A083D7206440548816D769 /* MyApp.cpp */; };
 		47559FD12003441100833AB0 /* Framework.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 47559FD02003441000833AB0 /* Framework.cpp */; };
 		476F8B9A200329D400A394F0 /* assets in Resources */ = {isa = PBXBuildFile; fileRef = 476F8B99200329D400A394F0 /* assets */; };
+		47A6E5542045C3D800AC0CA3 /* TextCodec.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 47A6E5532045C3D800AC0CA3 /* TextCodec.cpp */; };
+		47A6E5572045C58200AC0CA3 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1058C7A1FEA54F0111CA2CBB /* Cocoa.framework */; };
 		47E3D93D203F2CDF00275D6D /* CoreVideo.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5323E6B10EAFCA74003A9687 /* CoreVideo.framework */; };
 		47E3D93E203F2CEA00275D6D /* CoreAudio.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 00B784B20FF439BC000DE1D7 /* CoreAudio.framework */; };
 		47E3D940203F2CF800275D6D /* AudioToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 00B784B00FF439BC000DE1D7 /* AudioToolbox.framework */; };
-		8D11072F0486CEB800E47090 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1058C7A1FEA54F0111CA2CBB /* Cocoa.framework */; };
 		DEF6DCA10C6640E1A34580DD /* CinderApp.icns in Resources */ = {isa = PBXBuildFile; fileRef = 89197F6F9146454BA89F6920 /* CinderApp.icns */; };
 /* End PBXBuildFile section */
 
@@ -39,6 +40,7 @@
 		37ED1BFD95724281A4782197 /* ApprenticeMonarch_Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = "\"\""; path = ApprenticeMonarch_Prefix.pch; sourceTree = "<group>"; };
 		47559FD02003441000833AB0 /* Framework.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Framework.cpp; path = ../src/Framework.cpp; sourceTree = "<group>"; };
 		476F8B99200329D400A394F0 /* assets */ = {isa = PBXFileReference; lastKnownFileType = folder; name = assets; path = ../assets; sourceTree = "<group>"; };
+		47A6E5532045C3D800AC0CA3 /* TextCodec.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = TextCodec.cpp; path = ../src/TextCodec.cpp; sourceTree = "<group>"; };
 		5323E6B10EAFCA74003A9687 /* CoreVideo.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreVideo.framework; path = /System/Library/Frameworks/CoreVideo.framework; sourceTree = "<absolute>"; };
 		82A083D7206440548816D769 /* MyApp.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = MyApp.cpp; path = ../src/MyApp.cpp; sourceTree = "<group>"; };
 		89197F6F9146454BA89F6920 /* CinderApp.icns */ = {isa = PBXFileReference; lastKnownFileType = image.icns; name = CinderApp.icns; path = ../resources/CinderApp.icns; sourceTree = "<group>"; };
@@ -53,10 +55,10 @@
 			files = (
 				47E3D93E203F2CEA00275D6D /* CoreAudio.framework in Frameworks */,
 				006D720419952D00008149E2 /* AVFoundation.framework in Frameworks */,
-				8D11072F0486CEB800E47090 /* Cocoa.framework in Frameworks */,
 				0091D8F90E81B9330029341E /* OpenGL.framework in Frameworks */,
 				00B784B30FF439BC000DE1D7 /* Accelerate.framework in Frameworks */,
 				47E3D940203F2CF800275D6D /* AudioToolbox.framework in Frameworks */,
+				47A6E5572045C58200AC0CA3 /* Cocoa.framework in Frameworks */,
 				47E3D93D203F2CDF00275D6D /* CoreVideo.framework in Frameworks */,
 				00B9955A1B128DF400A5C623 /* IOKit.framework in Frameworks */,
 				00B9955B1B128DF400A5C623 /* IOSurface.framework in Frameworks */,
@@ -76,6 +78,7 @@
 		080E96DDFE201D6D7F000001 /* Source */ = {
 			isa = PBXGroup;
 			children = (
+				47A6E5532045C3D800AC0CA3 /* TextCodec.cpp */,
 				47559FD02003441000833AB0 /* Framework.cpp */,
 				82A083D7206440548816D769 /* MyApp.cpp */,
 			);
@@ -224,6 +227,7 @@
 			files = (
 				47559FD12003441100833AB0 /* Framework.cpp in Sources */,
 				43498AFBC90B40CEABDC634D /* MyApp.cpp in Sources */,
+				47A6E5542045C3D800AC0CA3 /* TextCodec.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

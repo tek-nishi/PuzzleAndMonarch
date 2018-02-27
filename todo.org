@@ -1,4 +1,5 @@
 * TODO チュートリアル
+* TODO iOS: iCloud対応
 * TODO パネルのうらが真っ暗
 * TODO 一番パネルが置けた枚数、森の規模などを記録にとっとく
 * TODO ゲームが保存されてないのにTitleでボタンが出る
@@ -24,6 +25,7 @@
 * TODO 電車(乗り物系)が欲しい
 * TODO CanvasにWidgetを追加したい
 * TODO 適当なワイプを用意
+* TODO 初回起動時に思わせぶりな演出を入れる
 * TODO drawの更新が30fpsだと演出が遅くなる
 * TODO iOS:ズーミングや平行移動のお上品さを実装
 * TODO ゲーム内の値をparams.jsonへ移す
@@ -43,6 +45,7 @@
 * TODO Windows版: イベントハンドルが微妙
 * TODO ランキング演出は「自分がどの程度か」を把握できるように
 * TODO 点光源
+* TODO セーブファイルの圧縮
 * TODO 本格的な画面設計
 * TODO 本格的に見た目を決める
 * TODO BGM作る
