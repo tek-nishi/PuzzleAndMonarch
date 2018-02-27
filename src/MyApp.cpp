@@ -88,7 +88,9 @@ public:
                    [this](const Connection&, const Arguments&) noexcept
                    {
                      pending_update_ = true;
-                     pending_draw_   = true;
+                     // pending_draw_   = true;
+                     // TIPS 画面を暗くしてから描画を止めるため、予約だけしておく
+                     pending_draw_next_ = true;
                    });
 
     event_.connect("App:resume-update",

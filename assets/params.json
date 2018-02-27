@@ -230,7 +230,9 @@
     "height_ease_name": "OutExpo",
 
     "put_duration": [ 0.6, 0.4 ],
-    "put_ease":     "OutExpo"
+    "put_ease":     "OutExpo",
+
+    "field_shader": "field"
   },
 
   "ui": {

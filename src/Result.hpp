@@ -92,9 +92,11 @@ public:
                                 count_exec_.add(0.5,
                                                 [this]() noexcept
                                                 {
+                                                  auto* image = Capture::execute();
+
                                                   event_.signal("App:pending-update", Arguments());
 
-                                                  Share::post(share_text_, Capture::execute(),
+                                                  Share::post(share_text_, image,
                                                               [this]() noexcept
                                                               {
                                                                 event_.signal("App:resume-update", Arguments());

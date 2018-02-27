@@ -9,6 +9,7 @@
 #include <cinder/TriMesh.h>
 #include <cinder/gl/Vbo.h>
 #include "PLY.hpp"
+#include "Shader.hpp"
 
 
 namespace ngs {
@@ -52,6 +53,10 @@ class View
 
   // 得点時演出用
   ci::gl::VboMeshRef effect_model;
+
+  ci::gl::GlslProgRef field_shader_;
+  ci::ColorA field_color_ = { 1, 1, 1, 1 };
+
 
   struct Effect {
     bool active;
@@ -98,6 +103,11 @@ public:
     cursor_model   = ci::gl::VboMesh::create(PLY::load(params.getValueForKey<std::string>("cursor_model")));
     bg_model       = ci::gl::VboMesh::create(PLY::load(params.getValueForKey<std::string>("bg_model")));
     effect_model   = ci::gl::VboMesh::create(PLY::load(params.getValueForKey<std::string>("effect_model")));
+
+    {
+      auto name = params.getValueForKey<std::string>("field_shader");
+      field_shader_ = createShader(name, name);
+    }
   }
 
   ~View() = default;
@@ -106,6 +116,23 @@ public:
   void clear() noexcept
   {
     field_panels_.clear();
+  }
+
+
+  void setColor(const ci::ColorA& color) noexcept
+  {
+    field_color_ = color;
+    field_shader_->uniform("u_color", color);
+  }
+
+  void setColor(const ci::TimelineRef& timeline, float duration, const ci::ColorA& color) noexcept
+  {
+    timeline->removeTarget(&field_color_);
+    auto option = timeline->applyPtr(&field_color_, color, duration);
+    option.updateFn([this]() noexcept
+                    {
+                      field_shader_->uniform("u_color", field_color_);
+                    });
   }
 
 
@@ -204,13 +231,14 @@ public:
       -180.0f,
       -180.0f * 1.5f 
     };
+    
+    ci::gl::ScopedGlslProg prog(field_shader_);
+    ci::gl::ScopedModelMatrix m;
 
-    ci::gl::pushModelView();
     ci::gl::translate(pos);
     ci::gl::rotate(toRadians(glm::vec3(0.0f, r_tbl[rotation] + rotate_offset, 0.0f)));
     const auto& model = getPanelModel(number);
     ci::gl::draw(model);
-    ci::gl::popModelView();
   }
 
   void drawPanel(int number, const glm::ivec2& pos, u_int rotation) noexcept
@@ -221,6 +249,7 @@ public:
   // NOTICE 中でViewが書き換わっているのでconstにできない
   void drawFieldPanels() noexcept
   {
+    ci::gl::ScopedGlslProg prog(field_shader_);
     ci::gl::ScopedModelMatrix m;
 
     const auto& panels = field_panels_;
@@ -238,6 +267,7 @@ public:
   // Fieldの置ける場所をすべて表示
   void drawFieldBlank(const std::vector<glm::ivec2>& blank) noexcept
   {
+    ci::gl::ScopedGlslProg prog(field_shader_);
     ci::gl::ScopedModelMatrix m;
 
     for (const auto& pos : blank)
@@ -255,6 +285,7 @@ public:
   {
     glm::ivec2 p = pos * int(PANEL_SIZE);
     
+    ci::gl::ScopedGlslProg prog(field_shader_);
     ci::gl::ScopedModelMatrix m;
 
     auto mtx = glm::translate(glm::vec3(p.x, 0.0f, p.y));
@@ -265,6 +296,7 @@ public:
 
   void drawCursor(const glm::vec3& pos, const glm::vec3& scale) noexcept
   {
+    ci::gl::ScopedGlslProg prog(field_shader_);
     ci::gl::ScopedModelMatrix m;
     
     auto mtx = glm::translate(pos);
@@ -276,11 +308,12 @@ public:
   // 背景
   void drawFieldBg(const glm::vec3& pos) noexcept
   {
-    ci::gl::pushModelView();
+    ci::gl::ScopedGlslProg prog(field_shader_);
+    ci::gl::ScopedModelMatrix m;
+
     ci::gl::translate(pos + glm::vec3(PANEL_SIZE / 2, -15.0, PANEL_SIZE / 2));
     ci::gl::scale(PANEL_SIZE, 10.0, PANEL_SIZE);
     ci::gl::draw(bg_model);
-    ci::gl::popModelView();
   }
 };
 

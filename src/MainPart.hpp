@@ -61,7 +61,8 @@ public:
       panel_height_(params.getValueForKey<float>("field.panel_height")),
       putdown_time_(Json::getVec<glm::vec2>(params["field.putdown_time"])),
       view_(params["field"]),
-      timeline_(ci::Timeline::create())
+      timeline_(ci::Timeline::create()),
+      force_timeline_(ci::Timeline::create())
   {
     // 乱数
     std::random_device seed_gen;
@@ -414,6 +415,7 @@ public:
                               {
                                 paused_ = true;
                                 count_exec_.pause();
+                                // view_.setColor(force_timeline_, 0.5, ci::ColorA(0.5, 0.5, 0.5, 1));
                               });
     
     holder_ += event_.connect("GameMain:resume",
@@ -421,6 +423,19 @@ public:
                               {
                                 paused_ = false;
                                 count_exec_.pause(false);
+                                // view_.setColor(force_timeline_, 0.25, ci::ColorA(1, 1, 1, 1));
+                              });
+
+    holder_ += event_.connect("App:pending-update",
+                              [this](const Connection&, const Arguments&) noexcept
+                              {
+                                view_.setColor(ci::ColorA(0.6, 0.6, 0.6, 1));
+                              });
+
+    holder_ += event_.connect("App:resume-update",
+                              [this](const Connection&, const Arguments&) noexcept
+                              {
+                                view_.setColor(force_timeline_, 0.3, ci::ColorA(1, 1, 1, 1));
                               });
 
 #if defined (DEBUG)
@@ -438,6 +453,7 @@ public:
 #endif
     // 本編準備
     game_->preparationPlay(engine_);
+    view_.setColor(ci::ColorA(1, 1, 1, 1));
   }
 
 
@@ -452,6 +468,7 @@ private:
     // NOTICE pause中でもカウンタだけは進める
     //        pause→タイトルへ戻る演出のため
     count_exec_.update(delta_time);
+    force_timeline_->step(delta_time);
 
     if (paused_)
     {
@@ -950,6 +967,8 @@ private:
   View view_;
   
   ci::TimelineRef timeline_;
+  // Pauseでも続行する
+  ci::TimelineRef force_timeline_;
 
   // ゲーム内で発生したイベント
   std::set<std::string> game_event_;

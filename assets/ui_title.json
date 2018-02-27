@@ -80,7 +80,7 @@
       "pivot": [ 0.5, 0.5 ],
 
       "radius": 1,
-      "line_width": 3,
+      "line_width": 3.5,
       "color": [ 1, 1, 1 ],
 
       "event": "play",
@@ -115,7 +115,7 @@
       "alpha": 0,
 
       "radius": 1,
-      "line_width": 2,
+      "line_width": 2.5,
       "color": [ 1, 1, 1 ]
     },
 
