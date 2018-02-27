@@ -74,6 +74,7 @@ public:
                               [this](const Connection&, const Arguments&) noexcept
                               {
                                 // Game続行(時間差で演出)
+                                canvas_.active(false);
                                 count_exec_.add(0.5,
                                                 [this]() noexcept
                                                 {
@@ -86,6 +87,7 @@ public:
                                                     widget->enable();
                                                   }
                                                   event_.signal("GameMain:resume", Arguments());
+                                                  canvas_.active();
                                                 });
                               });
     
@@ -93,6 +95,7 @@ public:
                               [this](const Connection&, const Arguments&) noexcept
                               {
                                 // ゲーム終了
+                                canvas_.active(false);
                                 event_.signal("Game:Aborted", Arguments());
                                 count_exec_.add(0.5,
                                                 [this]() noexcept
