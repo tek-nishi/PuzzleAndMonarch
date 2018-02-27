@@ -17,6 +17,8 @@ template <typename... Args>
 class Event
   : private boost::noncopyable
 {
+  // using dummy_mutex = boost::signals2::keywords::mutex_type<boost::signals2::dummy_mutex>;
+  // using SignalType = typename boost::signals2::signal_type<void(Args&...), dummy_mutex>::type;
   using SignalType = boost::signals2::signal<void(Args&...)>;
 
   std::map<std::string, SignalType> signals_;

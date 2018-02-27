@@ -68,30 +68,16 @@ public:
                               [this](const Connection&, const Arguments&) noexcept
                               {
                                 bgm_enable_ = !bgm_enable_;
-                                auto text = bgm_enable_ ? u8"" : u8"";
-                                const auto& widget = canvas_.at("BGM-text");
-                                widget->setParam("text", std::string(text));
-
-                                Arguments args = {
-                                  { "bgm-enable", bgm_enable_ },
-                                  { "se-enable",  se_enable_ }
-                                };
-                                event_.signal("Settings:Changed", args);
+                                setWidgetText("BGM-text", bgm_enable_, u8"", u8"");
+                                signalSettings();
                               });
 
     holder_ += event_.connect("SE:touch_ended",
                               [this](const Connection&, const Arguments&) noexcept
                               {
                                 se_enable_ = !se_enable_;
-                                auto text = se_enable_ ? u8"" : u8"";
-                                const auto& widget = canvas_.at("SE-text");
-                                widget->setParam("text", std::string(text));
-
-                                Arguments args = {
-                                  { "bgm-enable", bgm_enable_ },
-                                  { "se-enable",  se_enable_ }
-                                };
-                                event_.signal("Settings:Changed", args);
+                                setWidgetText("SE-text", se_enable_, u8"", u8"");
+                                signalSettings();
                               });
 
     setupCommonTweens(event_, holder_, canvas_, "agree");
@@ -118,17 +104,25 @@ private:
     bgm_enable_ = detail.bgm_enable;
     se_enable_  = detail.se_enable;
 
-    {
-      auto text = bgm_enable_ ? u8"" : u8"";
-      const auto& widget = canvas_.at("BGM-text");
-      widget->setParam("text", std::string(text));
-    }
-    {
-      auto text = se_enable_ ? u8"" : u8"";
-      const auto& widget = canvas_.at("SE-text");
-      widget->setParam("text", std::string(text));
-    }
+    setWidgetText("BGM-text", bgm_enable_, u8"", u8"");
+    setWidgetText("SE-text",  se_enable_,  u8"", u8"");
   }
+
+  void signalSettings() noexcept
+  {
+    Arguments args = {
+      { "bgm-enable", bgm_enable_ },
+      { "se-enable",  se_enable_ }
+    };
+    event_.signal("Settings:Changed", args);
+  }
+
+  void setWidgetText(const std::string& id, bool value, const std::string& true_text, const std::string& false_text) noexcept
+  {
+    const auto& widget = canvas_.at(id);
+    widget->setParam("text", value ? true_text : false_text);
+  }
+
 };
 
 }

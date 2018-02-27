@@ -56,7 +56,8 @@ public:
     }
 
     count_exec_.add(2.0,
-                    [this]() {
+                    [this]() noexcept
+                    {
                       if (Share::canPost() && Capture::canExec())
                       {
                         // Share機能と画面キャプチャが有効じゃないと使えない

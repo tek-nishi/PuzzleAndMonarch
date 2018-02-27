@@ -55,6 +55,10 @@
 * TODO アプリアイコン
 * TODO iOS:GameCenter対応
 * TODO iOS:実績を実装
+* DONE ボタンを拡大するとレイアウトが崩れる
+CLOSED: [2018-02-27 火 12:02]
+* DONE Shareボタンをボタンらしく
+CLOSED: [2018-02-27 火 11:18]
 * DONE iPhoneXの上端と下端を使わないようUIを調整する
 CLOSED: [2018-02-26 月 23:15]
 * DONE iOS:他のアプリで再生中のBGMがそのまま再生されるように
