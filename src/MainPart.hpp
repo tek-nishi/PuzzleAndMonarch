@@ -283,15 +283,20 @@ public:
                                   boost::any_cast<u_int>(args.at("total_panels")),
                                   get_high_score
                                 };
-                                archive_.recordGameResults(score);
 
                                 DOUT << "high: " << high_score << " total: " << total_score << std::endl;
 
-                                if (get_high_score)
+                                // if (get_high_score)
                                 {
                                   // 記録にとっとく
-                                  game_->save();
+                                  auto path = std::string("game-") + getFormattedDate() + ".json";
+                                  game_->save(path);
+                                  // pathを記録
+                                  auto json = archive_.getRecordArray("games");
+                                  json.pushBack(ci::JsonTree("", path));
+                                  archive_.setRecordArray("games", json);
                                 }
+                                archive_.recordGameResults(score);
 
                                 count_exec_.add(2.0,
                                                 [this, score]() noexcept

@@ -352,7 +352,7 @@ struct Game
 
 
   // 保存
-  void save() const noexcept
+  void save(const std::string& name) const noexcept
   {
     ci::JsonTree save_data;
 
@@ -369,9 +369,9 @@ struct Game
              .addChild(ci::JsonTree("panel_moved_times", panel_moved_times_))
              ;
 
-    save_data.write(getDocumentPath() / "game.json");
+    save_data.write(getDocumentPath() / name);
 
-    DOUT << "Game saved." << std::endl;
+    DOUT << "Game saved: " << name << std::endl;
   }
 
   void load() noexcept

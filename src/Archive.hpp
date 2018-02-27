@@ -16,10 +16,12 @@ class Archive
   void create() noexcept
   {
     records_.addChild(ci::JsonTree("play-times", uint32_t(0)))
-    .addChild(ci::JsonTree("high-score", uint32_t(0)))
-    .addChild(ci::JsonTree("total-panels", uint32_t(0)))
-    .addChild(ci::JsonTree("bgm-enable", true))
-    .addChild(ci::JsonTree("se-enable", true));
+      .addChild(ci::JsonTree("high-score", uint32_t(0)))
+      .addChild(ci::JsonTree("total-panels", uint32_t(0)))
+      .addChild(ci::JsonTree("bgm-enable", true))
+      .addChild(ci::JsonTree("se-enable", true))
+      .addChild(ci::JsonTree::makeArray("games"))
+      ;
   }
 
   void load() noexcept
@@ -72,7 +74,7 @@ public:
     save();
   }
 
-
+  
   // 記録を取得
   template <typename T>
   T getRecord(const std::string& id) const noexcept
@@ -86,7 +88,18 @@ public:
   {
     records_[id] = ci::JsonTree(id, value);
   }
-  
+
+
+  void setRecordArray(const std::string&id, const ci::JsonTree& json) noexcept
+  {
+    records_[id] = json;
+  }
+
+  const ci::JsonTree& getRecordArray(const std::string& id) const noexcept
+  {
+    return records_[id];
+  }
+
 
   void save() noexcept
   {
