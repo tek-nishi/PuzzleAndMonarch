@@ -89,7 +89,10 @@ struct Game
           { "scores",        scores_ },
           { "total_score",   total_score },
           { "total_ranking", total_ranking },
-          { "total_panels",  total_panels }
+          { "total_panels",  total_panels },
+
+          { "panel_turned_times", panel_turned_times_ },
+          { "panel_moved_times",  panel_moved_times_ },
         };
         event_.signal("Game:Finish", args);
       }
@@ -322,8 +325,13 @@ struct Game
   void rotationHandPanel() noexcept
   {
     hand_rotation = (hand_rotation + 1) % 4;
+    panel_turned_times_ += 1;
   }
 
+  void moveHandPanel(const glm::vec2& pos) noexcept
+  {
+    panel_moved_times_ += 1;
+  }
 
   // 手持ちパネル情報
   u_int getHandPanel() const noexcept
@@ -356,7 +364,10 @@ struct Game
              .addChild(Json::createVecVecArray("completed_forests", completed_forests))
              .addChild(Json::createArray("deep_forest", deep_forest))
              .addChild(Json::createVecVecArray("completed_path", completed_path))
-             .addChild(Json::createVecArray("completed_church", completed_church));
+             .addChild(Json::createVecArray("completed_church", completed_church))
+             .addChild(ci::JsonTree("panel_turned_times", panel_turned_times_))
+             .addChild(ci::JsonTree("panel_moved_times", panel_moved_times_))
+             ;
 
     save_data.write(getDocumentPath() / "game.json");
 
@@ -384,6 +395,9 @@ struct Game
     deep_forest       = Json::getArray<u_int>(json["deep_forest"]);
     completed_path    = Json::getVecVecArray<glm::ivec2>(json["completed_path"]);
     completed_church  = Json::getVecArray<glm::ivec2>(json["completed_church"]);
+
+    panel_turned_times_ = json.getValueForKey<u_int>("panel_turned_times");
+    panel_moved_times_  = json.getValueForKey<u_int>("panel_moved_times");
 
     auto panels = field.enumeratePanels();
     double at_time = 0.5;
@@ -415,7 +429,10 @@ struct Game
                           { "scores",        scores_ },
                           { "total_score",   total_score },
                           { "total_ranking", total_ranking },
-                          { "total_panels",  total_panels }
+                          { "total_panels",  total_panels },
+
+                          { "panel_turned_times", panel_turned_times_ },
+                          { "panel_moved_times",  panel_moved_times_ },
                         };
                         event_.signal("Ranking:UpdateScores", args);
                       });
@@ -643,6 +660,11 @@ private:
   std::vector<std::vector<glm::ivec2>> completed_path;
   // 完成した教会
   std::vector<glm::ivec2> completed_church;
+
+  // パネルを回した回数
+  u_int panel_turned_times_ = 0;
+  // パネルを移動した回数
+  u_int panel_moved_times_ = 0;
 
   // スコア
   std::vector<u_int> scores_;

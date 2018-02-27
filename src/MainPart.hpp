@@ -673,6 +673,8 @@ private:
     {
       field_pos_ = grid_pos;
       can_put_   = game_->canPutToBlank(field_pos_);
+      game_->moveHandPanel(grid_pos);
+
       // 少し宙に浮いた状態
       cursor_pos_ = glm::vec3(field_pos_.x * PANEL_SIZE, panel_height_, field_pos_.y * PANEL_SIZE);
       startMoveEase();
