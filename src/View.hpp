@@ -39,6 +39,7 @@ class View
   // Field上のパネル(Modelと被っている)
   struct Panel
   {
+    glm::ivec2 field_pos;
     glm::vec3 position;
     glm::vec3 rotation;
     int index;
@@ -56,6 +57,8 @@ class View
 
   ci::gl::GlslProgRef field_shader_;
   ci::ColorA field_color_ = { 1, 1, 1, 1 };
+
+  float field_rotate_offset_ = 0.0f;
 
 
   struct Effect {
@@ -135,9 +138,20 @@ public:
                     });
   }
 
+  void setPauseEffect(float angle, const ci::TimelineRef& timeline, float duration, const std::string& name) noexcept
+  {
+    timeline->removeTarget(&field_rotate_offset_);
+    auto option = timeline->applyPtr(&field_rotate_offset_, angle, duration, getEaseFunc(name));
+  }
+
+  void resetPauseEffect(const ci::TimelineRef& timeline) noexcept
+  {
+    timeline->removeTarget(&field_rotate_offset_);
+    field_rotate_offset_ = 0;
+  }
 
   // パネル追加
-  void addPanel(int index, glm::ivec2 pos, u_int rotation) noexcept
+  void addPanel(int index, const glm::ivec2& pos, u_int rotation) noexcept
   {
     glm::ivec2 p = pos * int(PANEL_SIZE);
 
@@ -149,6 +163,7 @@ public:
     };
 
     Panel panel = {
+      pos,
       { p.x, 0, p.y },
       { 0, ci::toRadians(r_tbl[rotation]), 0 }, 
       index
@@ -198,6 +213,8 @@ public:
   // 演出表示
   void drawEffect() noexcept
   {
+    ci::gl::ScopedModelMatrix m;
+
     for (auto it = std::begin(effects_); it != std::end(effects_); )
     {
       if (!it->active)
@@ -206,9 +223,8 @@ public:
         continue;
       }
 
-      ci::gl::ScopedModelMatrix m;
-      ci::gl::translate(it->pos);
-      ci::gl::rotate(it->rot);
+      auto mtx = glm::translate(it->pos) * glm::eulerAngleXYZ(it->rot.x, it->rot.y, it->rot.z);
+      ci::gl::setModelMatrix(mtx);
       ci::gl::draw(effect_model);
 
       ++it;
@@ -235,8 +251,9 @@ public:
     ci::gl::ScopedGlslProg prog(field_shader_);
     ci::gl::ScopedModelMatrix m;
 
-    ci::gl::translate(pos);
-    ci::gl::rotate(toRadians(glm::vec3(0.0f, r_tbl[rotation] + rotate_offset, 0.0f)));
+    auto mtx = glm::translate(pos) * glm::eulerAngleXYZ(0.0f, toRadians(r_tbl[rotation] + rotate_offset), 0.0f);
+    ci::gl::setModelMatrix(mtx);
+
     const auto& model = getPanelModel(number);
     ci::gl::draw(model);
   }
@@ -245,19 +262,29 @@ public:
   {
     drawPanel(number, glm::vec3(pos.x, 0.0f, pos.y), rotation, 0.0f);
   }
-  
-  // NOTICE 中でViewが書き換わっているのでconstにできない
+
+  // Fieldのパネルを全て表示
   void drawFieldPanels() noexcept
   {
     ci::gl::ScopedGlslProg prog(field_shader_);
     ci::gl::ScopedModelMatrix m;
 
+    glm::vec2 offset[] = {
+      {  field_rotate_offset_, 0.0f },
+      { -field_rotate_offset_, 0.0f },
+      { 0.0f,  field_rotate_offset_ },
+      { 0.0f, -field_rotate_offset_ },
+    };
+
     const auto& panels = field_panels_;
     for (const auto& p : panels)
     {
-      auto mtx = glm::translate(p.position);
+      int index = (p.field_pos.x + p.field_pos.y * 3) & 0b11;
+      const auto& ofs = offset[index];
+
+      auto mtx = glm::translate(p.position)
+                 * glm::eulerAngleXYZ(p.rotation.x + ofs.x, p.rotation.y, p.rotation.z + ofs.y);
       ci::gl::setModelMatrix(mtx);
-      ci::gl::rotate(p.rotation);
 
       const auto& model = getPanelModel(p.index);
       ci::gl::draw(model);
@@ -289,8 +316,8 @@ public:
     ci::gl::ScopedModelMatrix m;
 
     auto mtx = glm::translate(glm::vec3(p.x, 0.0f, p.y));
+    mtx = glm::scale(mtx, scale);
     ci::gl::setModelMatrix(mtx);
-    ci::gl::scale(scale.x, scale.y, scale.z);
     ci::gl::draw(selected_model);
   }
 
@@ -300,8 +327,8 @@ public:
     ci::gl::ScopedModelMatrix m;
     
     auto mtx = glm::translate(pos);
+    mtx = glm::scale(mtx, scale);
     ci::gl::setModelMatrix(mtx);
-    ci::gl::scale(scale);
     ci::gl::draw(cursor_model);
   }
 
@@ -311,8 +338,9 @@ public:
     ci::gl::ScopedGlslProg prog(field_shader_);
     ci::gl::ScopedModelMatrix m;
 
-    ci::gl::translate(pos + glm::vec3(PANEL_SIZE / 2, -15.0, PANEL_SIZE / 2));
-    ci::gl::scale(PANEL_SIZE, 10.0, PANEL_SIZE);
+    auto mtx = glm::translate(pos + glm::vec3(PANEL_SIZE / 2, -15.0, PANEL_SIZE / 2));
+    mtx = glm::scale(mtx, glm::vec3(PANEL_SIZE, 10.0, PANEL_SIZE));
+    ci::gl::setModelMatrix(mtx);
     ci::gl::draw(bg_model);
   }
 };

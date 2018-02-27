@@ -12,7 +12,6 @@
 #include <cinder/Rand.h>
 #include <cinder/Ray.h>
 #include <cinder/Sphere.h>
-#include <cinder/CinderMath.h>
 #include "Params.hpp"
 #include "JsonUtil.hpp"
 #include "Game.hpp"
@@ -61,6 +60,8 @@ public:
       panel_height_(params.getValueForKey<float>("field.panel_height")),
       putdown_time_(Json::getVec<glm::vec2>(params["field.putdown_time"])),
       view_(params["field"]),
+      pause_duration_(Json::getVec<glm::vec2>(params["field.pause_duration"])),
+      pause_ease_(params.getValueForKey<std::string>("field.pause_ease")),
       timeline_(ci::Timeline::create()),
       force_timeline_(ci::Timeline::create())
   {
@@ -415,15 +416,22 @@ public:
                               {
                                 paused_ = true;
                                 count_exec_.pause();
-                                // view_.setColor(force_timeline_, 0.5, ci::ColorA(0.5, 0.5, 0.5, 1));
+                                view_.setPauseEffect(toRadians(180.0f), force_timeline_,
+                                                     pause_duration_.x, pause_ease_);
                               });
-    
+
+    holder_ += event_.connect("resume:touch_ended",
+                              [this](const Connection&, const Arguments&) noexcept
+                              {
+                                view_.setPauseEffect(0.0f, force_timeline_,
+                                                     pause_duration_.y, pause_ease_);
+                              });
+
     holder_ += event_.connect("GameMain:resume",
                               [this](const Connection&, const Arguments&) noexcept
                               {
                                 paused_ = false;
                                 count_exec_.pause(false);
-                                // view_.setColor(force_timeline_, 0.25, ci::ColorA(1, 1, 1, 1));
                               });
 
     holder_ += event_.connect("App:pending-update",
@@ -552,17 +560,15 @@ private:
     return true;
   }
 
-  void draw(const Connection&, const Arguments&) noexcept
-  {
-#if defined (DEBUG)
-    if (debug_draw_) return;
-#endif
 
+  void drawField() noexcept
+  {
     // 本編
     ci::gl::enableDepth();
     ci::gl::enable(GL_CULL_FACE);
     ci::gl::disableAlphaBlending();
     ci::gl::setMatrices(camera_.body());
+    ci::gl::clear(ci::Color(0, 0, 0));
 
     // フィールド
     view_.drawFieldPanels();
@@ -623,7 +629,15 @@ private:
     view_.drawFieldBg(bg_pos);
 
     view_.drawEffect();
+  }
 
+  void draw(const Connection&, const Arguments&) noexcept
+  {
+#if defined (DEBUG)
+    if (debug_draw_) return;
+#endif
+
+    drawField();
 
 #if 0
 #if defined(DEBUG)
@@ -851,8 +865,10 @@ private:
     count_exec_.add(0.5,
                     [this]() noexcept
                     {
-                      timeline_->clear();
                       view_.clear();
+                      view_.resetPauseEffect(force_timeline_);
+                      timeline_->clear();
+                      force_timeline_->clear();
 
                       paused_ = false;
                       count_exec_.pause(false);
@@ -965,7 +981,12 @@ private:
   // 表示
   Camera camera_;
   View view_;
-  
+
+  // Pause
+  glm::vec2 pause_duration_;
+  std::string pause_ease_;
+
+  // Tween用
   ci::TimelineRef timeline_;
   // Pauseでも続行する
   ci::TimelineRef force_timeline_;

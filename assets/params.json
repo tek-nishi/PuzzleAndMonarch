@@ -95,7 +95,7 @@
   },
 
   "game": {
-    "play_time": 5,
+    "play_time": 180,
 
     "score_rates": [
       3,
@@ -231,6 +231,9 @@
 
     "put_duration": [ 0.6, 0.4 ],
     "put_ease":     "OutExpo",
+
+    "pause_duration": [ 0.4, 0.55 ],
+    "pause_ease":     "OutExpo",
 
     "field_shader": "field"
   },

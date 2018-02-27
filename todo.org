@@ -1,5 +1,4 @@
 * TODO チュートリアル
-* TODO Pause画面とかShare画面ではFieldを暗くするなりする
 * TODO 一番パネルが置けた枚数、森の規模などを記録にとっとく
 * TODO ゲームが保存されてないのにTitleでボタンが出る
 * TODO セーブデータにVersion番号入れる
@@ -22,7 +21,6 @@
 * TODO 湖と川が欲しい
 * TODO 飛行場が欲しい
 * TODO 電車(乗り物系)が欲しい
-* TODO ポーズ画面ボカす
 * TODO CanvasにWidgetを追加したい
 * TODO 適当なワイプを用意
 * TODO drawの更新が30fpsだと演出が遅くなる
@@ -55,6 +53,8 @@
 * TODO アプリアイコン
 * TODO iOS:GameCenter対応
 * TODO iOS:実績を実装
+* DONE Pause画面とかShare画面ではFieldを暗くするなりする
+CLOSED: [2018-02-27 火 16:31]
 * DONE iOS:ボタンとか大きくしないとタップしずらい
 CLOSED: [2018-02-27 火 13:29]
 * DONE pauseメニューから再開するアイコンの意味がわからん
@@ -291,6 +291,8 @@ CLOSED: [2018-01-10 Wed 23:56]
 CLOSED: [2018-01-09 火 16:27]
 * DONE ファイル読み込みパスの統一
 CLOSED: [2018-01-09 Tue 00:32]
+* ABORT ポーズ画面ボカす
+CLOSED: [2018-02-27 火 16:32]
 * ABORT 次のPanelを引くのをイベントにする
 CLOSED: [2018-02-16 金 17:01]
 * ABORT DEBUG用早送り
