@@ -8,9 +8,10 @@
           "type": "vec2",
           "body": [
             {
-              "duration": 0.7,
+              "duration": 0.8,
+              "delay": 0.1,
               "copy_start": true,
-              "ease_func": "OutQuint",
+              "ease_func": "InOutQuint",
               "start": [ 1, 0 ],
               "end":   [ 0, 0 ]
             }
@@ -21,9 +22,10 @@
           "type": "vec2",
           "body": [
             {
-              "duration": 0.7,
+              "duration": 0.8,
+              "delay": 0.1,
               "copy_start": true,
-              "ease_func": "OutQuint",
+              "ease_func": "InOutQuint",
               "start": [ 2, 1 ],
               "end":   [ 1, 1 ]
             }

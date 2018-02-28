@@ -1,4 +1,5 @@
 * TODO チュートリアル
+* TODO 画面切り替えを統一する
 * TODO Demoプレイ
 * TODO iOS: iCloud対応
 * TODO パネルのうらが真っ暗
@@ -25,7 +26,6 @@
 * TODO 飛行場が欲しい
 * TODO 電車(乗り物系)が欲しい
 * TODO CanvasにWidgetを追加したい
-* TODO 適当なワイプを用意
 * TODO 初回起動時に思わせぶりな演出を入れる
 * TODO drawの更新が30fpsだと演出が遅くなる
 * TODO iOS:ズーミングや平行移動のお上品さを実装
@@ -48,6 +48,7 @@
 * TODO 点光源
 * TODO セーブファイルの圧縮
 * TODO 本格的な画面設計
+* TODO iOS:縦画面→非アクティブ→横画面→アクティブ→画面乱れる
 * TODO 本格的に見た目を決める
 * TODO BGM作る
 * TODO SE作る
@@ -58,6 +59,8 @@
 * TODO アプリアイコン
 * TODO iOS:GameCenter対応
 * TODO iOS:実績を実装
+* DONE 適当なワイプを用意
+CLOSED: [2018-02-28 Wed 16:30]
 * DONE Pause画面とかShare画面ではFieldを暗くするなりする
 CLOSED: [2018-02-27 火 16:31]
 * DONE iOS:ボタンとか大きくしないとタップしずらい
