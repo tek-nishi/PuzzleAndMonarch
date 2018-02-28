@@ -292,8 +292,14 @@ public:
                                   auto path = std::string("game-") + getFormattedDate() + ".json";
                                   game_->save(path);
                                   // pathを記録
+                                  auto game_json = ci::JsonTree::makeObject();
+                                  game_json.addChild(ci::JsonTree("path", path))
+                                           .addChild(ci::JsonTree("score", total_score))
+                                           ;
+
+                                  // TIPS const参照からインスタンスを生成している
                                   auto json = archive_.getRecordArray("games");
-                                  json.pushBack(ci::JsonTree("", path));
+                                  json.pushBack(game_json);
                                   archive_.setRecordArray("games", json);
                                 }
                                 archive_.recordGameResults(score);

@@ -28,7 +28,8 @@ class Ranking
 
 
 public:
-  Ranking(const ci::JsonTree& params, Event<Arguments>& event, UI::Drawer& drawer, TweenCommon& tween_common) noexcept
+  Ranking(const ci::JsonTree& params, Event<Arguments>& event, UI::Drawer& drawer, TweenCommon& tween_common,
+          const ci::JsonTree& ranking) noexcept
     : event_(event),
       ranking_text_(Json::getArray<std::string>(params["result.ranking"])),
       canvas_(event, drawer, tween_common,
@@ -64,6 +65,9 @@ public:
 
     // ボタンイベント共通Tween
     setupCommonTweens(event_, holder_, canvas_, "agree");
+
+    applyRankings(ranking);
+
     canvas_.startTween("start");
   }
 
@@ -77,6 +81,23 @@ private:
     return active_;
   }
 
+
+  void applyRankings(const ci::JsonTree& rankings) noexcept
+  {
+    // NOTICE ソート済みで最大10個の配列である事
+    for (size_t i = 0; i < rankings.getNumChildren(); ++i)
+    {
+      const auto& json = rankings[i];
+      auto score = json.getValueForKey<u_int>("score");
+
+      char id[16];
+      std::sprintf(id, "%d", int(i + 1));
+
+      const auto& widget = canvas_.at(id);
+      widget->setParam("text", std::to_string(score));
+      widget->enable();
+    }
+  }
 
   void applyScore(const Arguments& args) noexcept
   {

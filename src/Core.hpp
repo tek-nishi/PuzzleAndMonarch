@@ -114,7 +114,8 @@ public:
     holder_ += event_.connect("Ranking:begin",
                               [this](const Connection&, const Arguments&) noexcept
                               {
-                                tasks_.pushBack<Ranking>(params_, event_, drawer_, tween_common_);
+                                const auto& records = archive_.getRecordArray("games");
+                                tasks_.pushBack<Ranking>(params_, event_, drawer_, tween_common_, records);
                               });
     // Ranking→Title
     holder_ += event_.connect("Ranking:Finished",

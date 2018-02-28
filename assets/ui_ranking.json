@@ -10,7 +10,6 @@
 
   "childlen": [
     {
-      "identifier": "1",
       "rect": [ -20, -12, 20, 12 ],
       "anchor": [
         [ 0.5, 0.91 ],
@@ -27,17 +26,16 @@
     {
       "identifier": "top10",
       
-      "rect": [ -20, -20, 20, 30 ],
+      "rect": [ -30, -22.5, 20, 22.5 ],
       "anchor": [
-        [ 0.3, 0.3 ],
-        [ 0.7, 0.7 ]
+        [ 0.5, 0.35 ],
+        [ 0.5, 0.65 ]
       ],
       "scale": [ 1, 1 ],
       "pivot": [ 0.5, 0.5 ],
 
       "childlen": [
         {
-          "identifier": "1",
           "rect": [ 0, 0, 0, 0 ],
           "anchor": [
             [ 0, 0.9 ],
@@ -46,13 +44,22 @@
           "scale": [ 1, 1 ],
           "pivot": [ 0.5, 0.5 ],
 
-          "font": "en",
-          "text": "9999999",
-          "color": [ 1, 1, 1 ],
-          "dynamic_layout": false,
-          "apply_width": true,
-
           "childlen": [
+            {
+              "identifier": "1",
+              "rect": [ 0, 0, 0, 0 ],
+              "anchor": [
+                [ 0, 0 ],
+                [ 1, 1 ]
+              ],
+              "scale": [ 1, 1 ],
+              "pivot": [ 0.5, 0.5 ],
+
+              "font": "en",
+              "text": "0",
+              "color": [ 1, 1, 1 ],
+              "layout": [ 1, 0.5 ]
+            },
             {
               "rect": [ 0, 0, 0, 0 ],
               "anchor": [
@@ -61,7 +68,7 @@
               ],
               "scale": [ 1, 1 ],
               "pivot": [ 0.5, 0.5 ],
-
+              
               "font": "en",
               "text": "1st",
               "layout": [ 1, 0.5 ],
@@ -76,15 +83,15 @@
               "scale": [ 1, 1 ],
               "pivot": [ 0.5, 0.5 ],
 
-              "font": "icon",
-              "text": "",
+              "font": "en",
+              "text": "Baronet",
               "layout": [ 0, 0.5 ],
               "color": [ 1, 1, 1 ]
             }
           ]
         },
+
         {
-          "identifier": "2",
           "rect": [ 0, 0, 0, 0 ],
           "anchor": [
             [ 0, 0.8 ],
@@ -93,13 +100,22 @@
           "scale": [ 1, 1 ],
           "pivot": [ 0.5, 0.5 ],
 
-          "font": "en",
-          "text": "9999999",
-          "color": [ 1, 1, 1 ],
-          "dynamic_layout": false,
-          "apply_width": true,
-
           "childlen": [
+            {
+              "identifier": "2",
+              "rect": [ 0, 0, 0, 0 ],
+              "anchor": [
+                [ 0, 0 ],
+                [ 1, 1 ]
+              ],
+              "scale": [ 1, 1 ],
+              "pivot": [ 0.5, 0.5 ],
+
+              "font": "en",
+              "text": "0",
+              "color": [ 1, 1, 1 ],
+              "layout": [ 1, 0.5 ]
+            },
             {
               "rect": [ 0, 0, 0, 0 ],
               "anchor": [
@@ -123,15 +139,15 @@
               "scale": [ 1, 1 ],
               "pivot": [ 0.5, 0.5 ],
 
-              "font": "icon",
-              "text": "",
+              "font": "en",
+              "text": "Baronet",
               "layout": [ 0, 0.5 ],
               "color": [ 1, 1, 1 ]
             }
           ]
         },
+
         {
-          "identifier": "3",
           "rect": [ 0, 0, 0, 0 ],
           "anchor": [
             [ 0, 0.7 ],
@@ -140,13 +156,22 @@
           "scale": [ 1, 1 ],
           "pivot": [ 0.5, 0.5 ],
 
-          "font": "en",
-          "text": "9999999",
-          "color": [ 1, 1, 1 ],
-          "dynamic_layout": false,
-          "apply_width": true,
-
           "childlen": [
+            {
+              "identifier": "3",
+              "rect": [ 0, 0, 0, 0 ],
+              "anchor": [
+                [ 0, 0 ],
+                [ 1, 1 ]
+              ],
+              "scale": [ 1, 1 ],
+              "pivot": [ 0.5, 0.5 ],
+
+              "font": "en",
+              "text": "0",
+              "color": [ 1, 1, 1 ],
+              "layout": [ 1, 0.5 ]
+            },
             {
               "rect": [ 0, 0, 0, 0 ],
               "anchor": [
@@ -169,16 +194,16 @@
               ],
               "scale": [ 1, 1 ],
               "pivot": [ 0.5, 0.5 ],
-
-              "font": "icon",
-              "text": "",
+              
+              "font": "en",
+              "text": "Baronet",
               "layout": [ 0, 0.5 ],
               "color": [ 1, 1, 1 ]
             }
           ]
         },
+
         {
-          "identifier": "4",
           "rect": [ 0, 0, 0, 0 ],
           "anchor": [
             [ 0, 0.6 ],
@@ -187,13 +212,22 @@
           "scale": [ 1, 1 ],
           "pivot": [ 0.5, 0.5 ],
 
-          "font": "en",
-          "text": "9999999",
-          "color": [ 1, 1, 1 ],
-          "dynamic_layout": false,
-          "apply_width": true,
-
           "childlen": [
+            {
+              "identifier": "4",
+              "rect": [ 0, 0, 0, 0 ],
+              "anchor": [
+                [ 0, 0 ],
+                [ 1, 1 ]
+              ],
+              "scale": [ 1, 1 ],
+              "pivot": [ 0.5, 0.5 ],
+
+              "font": "en",
+              "text": "0",
+              "color": [ 1, 1, 1 ],
+              "layout": [ 1, 0.5]
+            },
             {
               "rect": [ 0, 0, 0, 0 ],
               "anchor": [
@@ -202,7 +236,7 @@
               ],
               "scale": [ 1, 1 ],
               "pivot": [ 0.5, 0.5 ],
-
+              
               "font": "en",
               "text": "4th",
               "layout": [ 1, 0.5 ],
@@ -217,15 +251,15 @@
               "scale": [ 1, 1 ],
               "pivot": [ 0.5, 0.5 ],
 
-              "font": "icon",
-              "text": "",
+              "font": "en",
+              "text": "Baronet",
               "layout": [ 0, 0.5 ],
               "color": [ 1, 1, 1 ]
             }
           ]
         },
+
         {
-          "identifier": "5",
           "rect": [ 0, 0, 0, 0 ],
           "anchor": [
             [ 0, 0.5 ],
@@ -234,13 +268,22 @@
           "scale": [ 1, 1 ],
           "pivot": [ 0.5, 0.5 ],
 
-          "font": "en",
-          "text": "9999999",
-          "color": [ 1, 1, 1 ],
-          "dynamic_layout": false,
-          "apply_width": true,
-
           "childlen": [
+            {
+              "identifier": "5",
+              "rect": [ 0, 0, 0, 0 ],
+              "anchor": [
+                [ 0, 0 ],
+                [ 1, 1 ]
+              ],
+              "scale": [ 1, 1 ],
+              "pivot": [ 0.5, 0.5 ],
+
+              "font": "en",
+              "text": "0",
+              "color": [ 1, 1, 1 ],
+              "layout": [ 1, 0.5 ]
+            },
             {
               "rect": [ 0, 0, 0, 0 ],
               "anchor": [
@@ -249,7 +292,7 @@
               ],
               "scale": [ 1, 1 ],
               "pivot": [ 0.5, 0.5 ],
-
+              
               "font": "en",
               "text": "5th",
               "layout": [ 1, 0.5 ],
@@ -263,16 +306,16 @@
               ],
               "scale": [ 1, 1 ],
               "pivot": [ 0.5, 0.5 ],
-
-              "font": "icon",
-              "text": "",
+              
+              "font": "en",
+              "text": "Baronet",
               "layout": [ 0, 0.5 ],
               "color": [ 1, 1, 1 ]
             }
           ]
         },
+
         {
-          "identifier": "6",
           "rect": [ 0, 0, 0, 0 ],
           "anchor": [
             [ 0, 0.4 ],
@@ -281,13 +324,22 @@
           "scale": [ 1, 1 ],
           "pivot": [ 0.5, 0.5 ],
 
-          "font": "en",
-          "text": "9999999",
-          "color": [ 1, 1, 1 ],
-          "dynamic_layout": false,
-          "apply_width": true,
-
           "childlen": [
+            {
+              "identifier": "6",
+              "rect": [ 0, 0, 0, 0 ],
+              "anchor": [
+                [ 0, 0 ],
+                [ 1, 1 ]
+              ],
+              "scale": [ 1, 1 ],
+              "pivot": [ 0.5, 0.5 ],
+
+              "font": "en",
+              "text": "0",
+              "color": [ 1, 1, 1 ],
+              "layout": [ 1, 0.5 ]
+            },
             {
               "rect": [ 0, 0, 0, 0 ],
               "anchor": [
@@ -311,15 +363,15 @@
               "scale": [ 1, 1 ],
               "pivot": [ 0.5, 0.5 ],
 
-              "font": "icon",
-              "text": "",
+              "font": "en",
+              "text": "Baronet",
               "layout": [ 0, 0.5 ],
               "color": [ 1, 1, 1 ]
             }
           ]
         },
+
         {
-          "identifier": "7",
           "rect": [ 0, 0, 0, 0 ],
           "anchor": [
             [ 0, 0.3 ],
@@ -328,13 +380,22 @@
           "scale": [ 1, 1 ],
           "pivot": [ 0.5, 0.5 ],
 
-          "font": "en",
-          "text": "9999999",
-          "color": [ 1, 1, 1 ],
-          "dynamic_layout": false,
-          "apply_width": true,
-
           "childlen": [
+            {
+              "identifier": "7",
+              "rect": [ 0, 0, 0, 0 ],
+              "anchor": [
+                [ 0, 0 ],
+                [ 1, 1 ]
+              ],
+              "scale": [ 1, 1 ],
+              "pivot": [ 0.5, 0.5 ],
+
+              "font": "en",
+              "text": "0",
+              "color": [ 1, 1, 1 ],
+              "layout": [ 1, 0.5 ]
+            },
             {
               "rect": [ 0, 0, 0, 0 ],
               "anchor": [
@@ -358,15 +419,14 @@
               "scale": [ 1, 1 ],
               "pivot": [ 0.5, 0.5 ],
 
-              "font": "icon",
-              "text": "",
+              "font": "en",
+              "text": "Baronet",
               "layout": [ 0, 0.5 ],
               "color": [ 1, 1, 1 ]
             }
           ]
         },
         {
-          "identifier": "8",
           "rect": [ 0, 0, 0, 0 ],
           "anchor": [
             [ 0, 0.2 ],
@@ -375,13 +435,22 @@
           "scale": [ 1, 1 ],
           "pivot": [ 0.5, 0.5 ],
 
-          "font": "en",
-          "text": "9999999",
-          "color": [ 1, 1, 1 ],
-          "dynamic_layout": false,
-          "apply_width": true,
-
           "childlen": [
+            {
+              "identifier": "8",
+              "rect": [ 0, 0, 0, 0 ],
+              "anchor": [
+                [ 0, 0 ],
+                [ 1, 1 ]
+              ],
+              "scale": [ 1, 1 ],
+              "pivot": [ 0.5, 0.5 ],
+
+              "font": "en",
+              "text": "0",
+              "color": [ 1, 1, 1 ],
+              "layout": [ 1, 0.5 ]
+            },
             {
               "rect": [ 0, 0, 0, 0 ],
               "anchor": [
@@ -405,15 +474,15 @@
               "scale": [ 1, 1 ],
               "pivot": [ 0.5, 0.5 ],
 
-              "font": "icon",
-              "text": "",
+              "font": "en",
+              "text": "Baronet",
               "layout": [ 0, 0.5 ],
               "color": [ 1, 1, 1 ]
             }
           ]
         },
+
         {
-          "identifier": "9",
           "rect": [ 0, 0, 0, 0 ],
           "anchor": [
             [ 0, 0.1 ],
@@ -422,13 +491,22 @@
           "scale": [ 1, 1 ],
           "pivot": [ 0.5, 0.5 ],
 
-          "font": "en",
-          "text": "9999999",
-          "color": [ 1, 1, 1 ],
-          "dynamic_layout": false,
-          "apply_width": true,
-
           "childlen": [
+            {
+              "identifier": "9",
+              "rect": [ 0, 0, 0, 0 ],
+              "anchor": [
+                [ 0, 0 ],
+                [ 1, 1 ]
+              ],
+              "scale": [ 1, 1 ],
+              "pivot": [ 0.5, 0.5 ],
+
+              "font": "en",
+              "text": "0",
+              "color": [ 1, 1, 1 ],
+              "layout": [ 1, 0.5 ]
+            },
             {
               "rect": [ 0, 0, 0, 0 ],
               "anchor": [
@@ -452,15 +530,15 @@
               "scale": [ 1, 1 ],
               "pivot": [ 0.5, 0.5 ],
 
-              "font": "icon",
-              "text": "",
+              "font": "en",
+              "text": "Baronet",
               "layout": [ 0, 0.5 ],
               "color": [ 1, 1, 1 ]
             }
           ]
         },
+
         {
-          "identifier": "10",
           "rect": [ 0, 0, 0, 0 ],
           "anchor": [
             [ 0, 0.0 ],
@@ -469,13 +547,22 @@
           "scale": [ 1, 1 ],
           "pivot": [ 0.5, 0.5 ],
 
-          "font": "en",
-          "text": "9999999",
-          "color": [ 1, 1, 1 ],
-          "dynamic_layout": false,
-          "apply_width": true,
-
           "childlen": [
+            {
+              "identifier": "10",
+              "rect": [ 0, 0, 0, 0 ],
+              "anchor": [
+                [ 0, 0 ],
+                [ 1, 1 ]
+              ],
+              "scale": [ 1, 1 ],
+              "pivot": [ 0.5, 0.5 ],
+
+              "font": "en",
+              "text": "0",
+              "color": [ 1, 1, 1 ],
+              "layout": [ 1, 0.5 ]
+            },
             {
               "rect": [ 0, 0, 0, 0 ],
               "anchor": [
@@ -499,8 +586,8 @@
               "scale": [ 1, 1 ],
               "pivot": [ 0.5, 0.5 ],
 
-              "font": "icon",
-              "text": "",
+              "font": "en",
+              "text": "Baronet",
               "layout": [ 0, 0.5 ],
               "color": [ 1, 1, 1 ]
             }

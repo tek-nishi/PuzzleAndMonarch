@@ -228,7 +228,7 @@ public:
     auto scale = parent_scale * scale_;
     auto alpha = parent_alpha * alpha_;
     disp_rect_ = calcRect(parent_rect, scale);
-    disp_rect_ = widget_base_->draw(disp_rect_, drawer, alpha);
+    widget_base_->draw(disp_rect_, drawer, alpha);
 
     for (const auto& child : children_)
     {
