@@ -13,8 +13,9 @@ class Brank
   : public WidgetBase
 {
 
-  void draw(const ci::Rectf& rect, UI::Drawer& drawer, float alpha) noexcept override
+  ci::Rectf draw(const ci::Rectf& rect, UI::Drawer& drawer, float alpha) noexcept override
   {
+    return rect;
   }
 
   void setParam(const std::string& name, const boost::any& value) noexcept override

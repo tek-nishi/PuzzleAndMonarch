@@ -20,7 +20,11 @@ class Text
   std::string font_name_;
   glm::vec2 layout_ = { 0.5, 0.5 };
   ci::Color color_ = { 1.0f, 1.0f, 1.0f };
+
+  // 文字内容でレイアウトを決める
   bool dynamic_layout_ = true;
+  // 実際の表示幅を子供に反映
+  bool apply_width_ = false; 
 
 
 public:
@@ -41,13 +45,17 @@ public:
     {
       dynamic_layout_ = params.getValueForKey<bool>("dynamic_layout");
     }
+    if (params.hasChild("apply_width"))
+    {
+      apply_width_ = params.getValueForKey<bool>("apply_width");
+    }
   }
 
   ~Text() = default;
 
 
 private:
-  void draw(const ci::Rectf& rect, UI::Drawer& drawer, float alpha) noexcept override
+  ci::Rectf draw(const ci::Rectf& rect, UI::Drawer& drawer, float alpha) noexcept override
   {
     auto& font = drawer.getFont(font_name_);
     // rectの高さからサイズを決める
@@ -66,6 +74,11 @@ private:
     ci::gl::scale(glm::vec3(font_scale));
     ci::ColorA color(color_, alpha);
     font.draw(text_, glm::vec2(0), color);
+
+    auto new_rect = (apply_width_) ? ci::Rectf(pos.x, rect.getY1(), pos.x + size.x, rect.getY2())
+                                   : rect;
+
+    return new_rect;
   }
 
 

@@ -15,7 +15,7 @@ struct WidgetBase
 {
   virtual ~WidgetBase() = default;
 
-  virtual void draw(const ci::Rectf& rect, UI::Drawer& drawer, float alpha) noexcept = 0;
+  virtual ci::Rectf draw(const ci::Rectf& rect, UI::Drawer& drawer, float alpha) noexcept = 0;
 
   virtual void setParam(const std::string& name, const boost::any& values) noexcept = 0; 
   virtual boost::any getParam(const std::string& name) noexcept = 0; 

@@ -47,7 +47,7 @@ public:
 
 
 private:
-  void draw(const ci::Rectf& rect, UI::Drawer& drawer, float alpha) noexcept override
+  ci::Rectf draw(const ci::Rectf& rect, UI::Drawer& drawer, float alpha) noexcept override
   {
     ci::gl::ScopedGlslProg prog(drawer.getColorShader());
     ci::gl::color(ci::ColorA(color_, alpha));
@@ -63,6 +63,8 @@ private:
     {
       ci::gl::drawStrokedCircle(center, r, line_width_, segment_);
     }
+
+    return rect;
   }
 
 

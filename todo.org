@@ -1,4 +1,5 @@
 * TODO チュートリアル
+* TODO Demoプレイ
 * TODO iOS: iCloud対応
 * TODO パネルのうらが真っ暗
 * TODO 一番パネルが置けた枚数、森の規模などを記録にとっとく
