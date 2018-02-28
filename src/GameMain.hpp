@@ -96,8 +96,13 @@ public:
                               {
                                 // ゲーム終了
                                 canvas_.active(false);
-                                event_.signal("Game:Aborted", Arguments());
-                                count_exec_.add(0.5,
+                                canvas_.startTween("abort");
+                                count_exec_.add(0.6,
+                                                [this]() noexcept
+                                                {
+                                                  event_.signal("Game:Aborted", Arguments());
+                                                });
+                                count_exec_.add(1.2,
                                                 [this]() noexcept
                                                 {
                                                   active_ = false;

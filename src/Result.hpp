@@ -75,10 +75,15 @@ public:
                               {
                                 DOUT << "Agree." << std::endl;
                                 canvas_.active(false);
-                                count_exec_.add(0.5,
+                                canvas_.startTween("end");
+                                count_exec_.add(0.6,
                                                 [this]() noexcept
                                                 {
                                                   event_.signal("Result:Finished", Arguments());
+                                                });
+                                count_exec_.add(1.2,
+                                                [this]() noexcept
+                                                {
                                                   active_ = false;
                                                 });
                               });

@@ -41,17 +41,12 @@ public:
               Params::load(params.getValueForKey<std::string>("settings.canvas")),
               Params::load(params.getValueForKey<std::string>("settings.tweens")))
   {
-    count_exec_.add(1.0,
-                    [this]() {
-                      const auto& widget = canvas_.at("touch");
-                      widget->enable();
-                    });
-
     holder_ += event_.connect("agree:touch_ended",
                               [this](const Connection&, const Arguments&) noexcept
                               {
                                 canvas_.active(false);
-                                count_exec_.add(1.0,
+                                canvas_.startTween("end");
+                                count_exec_.add(1.2,
                                                 [this]() noexcept
                                                 {
                                                   Arguments args = {

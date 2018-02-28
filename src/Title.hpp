@@ -49,7 +49,8 @@ public:
                               [this](const Connection&, const Arguments&) noexcept
                               {
                                 canvas_.active(false);
-                                count_exec_.add(1.0,
+                                canvas_.startTween("begin_game");
+                                count_exec_.add(1.2,
                                                 [this]() noexcept
                                                 {
                                                   event_.signal("Title:finished", Arguments());
@@ -62,7 +63,8 @@ public:
                               [this](const Connection&, const Arguments&) noexcept
                               {
                                 canvas_.active(false);
-                                count_exec_.add(1.0,
+                                canvas_.startTween("end");
+                                count_exec_.add(1.2,
                                                 [this]() noexcept
                                                 {
                                                   event_.signal("Credits:begin", Arguments());
@@ -75,7 +77,8 @@ public:
                               [this](const Connection&, const Arguments&) noexcept
                               {
                                 canvas_.active(false);
-                                count_exec_.add(1.0,
+                                canvas_.startTween("end");
+                                count_exec_.add(1.2,
                                                 [this]() noexcept
                                                 {
                                                   event_.signal("Settings:begin", Arguments());
@@ -88,7 +91,8 @@ public:
                               [this](const Connection&, const Arguments&) noexcept
                               {
                                 canvas_.active(false);
-                                count_exec_.add(1.0,
+                                canvas_.startTween("end");
+                                count_exec_.add(1.2,
                                                 [this]() noexcept
                                                 {
                                                   event_.signal("Records:begin", Arguments());
@@ -101,7 +105,8 @@ public:
                               [this](const Connection&, const Arguments&) noexcept
                               {
                                 canvas_.active(false);
-                                count_exec_.add(1.0,
+                                canvas_.startTween("end");
+                                count_exec_.add(1.2,
                                                 [this]() noexcept
                                                 {
                                                   event_.signal("Ranking:begin", Arguments());
@@ -131,7 +136,7 @@ public:
       }
     }
 
-    canvas_.startTween("start");
+    canvas_.startTween(first_time ? "launch" : "start");
   }
 
   ~Title() = default;

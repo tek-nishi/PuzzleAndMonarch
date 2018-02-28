@@ -1,5 +1,5 @@
 {
-  "start": [
+  "launch": [
     {
       "identifier": "puzzle",
       "tween": [
@@ -289,7 +289,127 @@
     }
   ],
 
+  "start": [
+    {
+      "identifier": "root",
+      "tween": [
+        {
+          "param": "anchor_min",
+          "type": "vec2",
+          "body": [
+            {
+              "duration": 0.7,
+              "copy_start": true,
+              "ease_func": "OutQuint",
+              "start": [ -1, 0 ],
+              "end":   [ 0, 0 ]
+            }
+          ]
+        },
+        {
+          "param": "anchor_max",
+          "type": "vec2",
+          "body": [
+            {
+              "duration": 0.7,
+              "copy_start": true,
+              "ease_func": "OutQuint",
+              "start": [ 0, 1 ],
+              "end":   [ 1, 1 ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "identifier": "play",
+      "tween": [
+        {
+          "param": "alpha",
+          "type": "float",
+          "body": [
+            {
+              "duration": 0.8,
+              "loop": true,
+              "delay": 0.3,
+              "pingpong": true,
+              "ease_func": "OutCubic",
+              "start": 0,
+              "end":   1
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "identifier": "play_circle",
+      "tween": [
+        {
+          "param": "scale",
+          "type": "vec2",
+          "body": [
+            {
+              "duration": 1.6,
+              "loop": true,
+              "delay": 0.5,
+              "ease_func": "OutCubic",
+              "start": [ 1, 1 ],
+              "end":   [ 1.6, 1.6 ]
+            }
+          ]
+        },
+        {
+          "param": "alpha",
+          "type": "float",
+          "body": [
+            {
+              "duration": 1.6,
+              "loop": true,
+              "delay": 0.5,
+              "ease_func": "OutCubic",
+              "start": 1,
+              "end":   0
+            }
+          ]
+        }
+      ]
+    }
+  ],
   "end": [
+    {
+      "identifier": "root",
+      "tween": [
+        {
+          "param": "anchor_min",
+          "type": "vec2",
+          "body": [
+            {
+              "duration": 0.5,
+              "delay": 0.6,
+              "ease_func": "InQuint",
+              "start": [ 0, 0 ],
+              "end":   [ -1, 0 ]
+            }
+          ]
+        },
+        {
+          "param": "anchor_max",
+          "type": "vec2",
+          "body": [
+            {
+              "duration": 0.5,
+              "delay": 0.6,
+              "ease_func": "InQuint",
+              "start": [ 1, 1 ],
+              "end":   [ 0, 1 ]
+            }
+          ]
+        }
+      ]
+    }
+  ],
+
+  "play": [
     {
       "identifier": "play",
       "tween": [
@@ -304,6 +424,40 @@
               "pingpong": true,
               "start": 1,
               "end":   0
+            }
+          ]
+        }
+      ]
+    }
+  ],
+
+  "begin_game": [
+    {
+      "identifier": "root",
+      "tween": [
+        {
+          "param": "anchor_min",
+          "type": "vec2",
+          "body": [
+            {
+              "duration": 0.6,
+              "delay": 0.5,
+              "ease_func": "InQuint",
+              "start": [ 0, 0 ],
+              "end":   [ 1, 0 ]
+            }
+          ]
+        },
+        {
+          "param": "anchor_max",
+          "type": "vec2",
+          "body": [
+            {
+              "duration": 0.6,
+              "delay": 0.5,
+              "ease_func": "InQuint",
+              "start": [ 1, 1 ],
+              "end":   [ 2, 1 ]
             }
           ]
         }
