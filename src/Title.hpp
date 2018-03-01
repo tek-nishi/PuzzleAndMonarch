@@ -50,10 +50,14 @@ public:
                               {
                                 canvas_.active(false);
                                 canvas_.startTween("begin_game");
-                                count_exec_.add(1.2,
+                                count_exec_.add(0.5,
                                                 [this]() noexcept
                                                 {
                                                   event_.signal("Title:finished", Arguments());
+                                                });
+                                count_exec_.add(1.2,
+                                                [this]() noexcept
+                                                {
                                                   active_ = false;
                                                 });
                                 DOUT << "Game Start!" << std::endl;

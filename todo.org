@@ -1,4 +1,7 @@
 * TODO チュートリアル
+* TODO tween終わりでOFFにしたい
+* TODO tween開始時にON
+* TODO anchorの４つの値をいっぺんに変更するtween
 * TODO 画面切り替えを統一する
 * TODO Demoプレイ
 * TODO iOS: iCloud対応

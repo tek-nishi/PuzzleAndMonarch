@@ -1,5 +1,4 @@
 {
-  "identifier": "root",
   "rect": [ 0, 0, 0, 0 ],
   "anchor": [
     [ 0, 0 ],
@@ -18,7 +17,6 @@
       ],
       "scale": [ 1, 1 ],
       "pivot": [ 0.5, 0.5 ],
-      "enable": false,
 
       "childlen": [
         {
@@ -352,35 +350,59 @@
 
     {
       "identifier": "begin",
-      "rect": [ -100, -14, 100, 20 ],
+      "rect": [ 0, 0, 0, 0 ],
       "anchor": [
-        [ 0.5, 0.5 ],
-        [ 0.5, 0.5 ]
+        [ 0, 0 ],
+        [ 1, 1 ]
       ],
       "scale": [ 1, 1 ],
       "pivot": [ 0.5, 0.5 ],
-      
-      "font": "en",
-      "text": "Secure the territory!",
-      "color": [ 1, 1, 1 ]
+
+      "childlen": [
+        {
+          "rect": [ -100, -14, 100, 20 ],
+          "anchor": [
+            [ 0.5, 0.5 ],
+            [ 0.5, 0.5 ]
+          ],
+          "scale": [ 1, 1 ],
+          "pivot": [ 0.5, 0.5 ],
+
+          "font": "en",
+          "text": "Secure the territory!",
+          "color": [ 1, 1, 1 ]
+        }
+      ]
     },
 
     {
       "identifier": "end",
-      "rect": [ -100, -14, 100, 20 ],
+      "rect": [ 0, 0, 0, 0 ],
       "anchor": [
-        [ 0.5, 0.5 ],
-        [ 0.5, 0.5 ]
+        [ 0, 0 ],
+        [ 1, 1 ]
       ],
       "scale": [ 1, 1 ],
       "pivot": [ 0.5, 0.5 ],
-      "enable": false,
-      
-      "font": "en",
-      "text": "Well done!",
-      "color": [ 1, 1, 1 ]
-    },
 
+      "chilelen": [
+        {
+          "rect": [ -100, -14, 100, 20 ],
+          "anchor": [
+            [ 0.5, 0.5 ],
+            [ 0.5, 0.5 ]
+          ],
+          "scale": [ 1, 1 ],
+          "pivot": [ 0.5, 0.5 ],
+          "enable": false,
+      
+          "font": "en",
+          "text": "Well done!",
+          "color": [ 1, 1, 1 ]
+        }
+      ]
+    },
+        
     {
       "identifier": "pause_menu",
       "rect": [ 0, 0, 0, 0 ],

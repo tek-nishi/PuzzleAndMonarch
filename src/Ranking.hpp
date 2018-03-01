@@ -85,7 +85,8 @@ private:
   void applyRankings(const ci::JsonTree& rankings) noexcept
   {
     // NOTICE ソート済みで最大10個の配列である事
-    for (size_t i = 0; i < rankings.getNumChildren(); ++i)
+    size_t num = std::min(rankings.getNumChildren(), size_t(10));
+    for (size_t i = 0; i < num; ++i)
     {
       const auto& json = rankings[i];
       auto score = json.getValueForKey<u_int>("score");

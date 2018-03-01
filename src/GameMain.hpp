@@ -34,18 +34,14 @@ public:
               Params::load(params.getValueForKey<std::string>("gamemain.tweens")))
   {
     // ゲーム開始
-    count_exec_.add(2.0,
+    count_exec_.add(2.6,
                     [this]() noexcept
                     {
-                      event_.signal("Game:Start", Arguments());
                       {
                         const auto& widget = canvas_.at("begin");
                         widget->enable(false);
                       }
-                      {
-                        const auto& widget = canvas_.at("main");
-                        widget->enable();
-                      }
+                      event_.signal("Game:Start", Arguments());
                     });
 
     holder_ += event_.connect("pause:touch_ended",
@@ -54,17 +50,19 @@ public:
                                 // Pause開始
                                 canvas_.active(false);
                                 event_.signal("GameMain:pause", Arguments());
+                                {
+                                  const auto& widget = canvas_.at("pause_menu");
+                                  widget->enable();
+                                }
+                                canvas_.startTween("pause");
+
                                 // 時間差でUI演出
-                                count_exec_.add(0.5,
+                                count_exec_.add(1.2,
                                                 [this]() noexcept
                                                 {
                                                   {
                                                     const auto& widget = canvas_.at("main");
                                                     widget->enable(false);
-                                                  }
-                                                  {
-                                                    const auto& widget = canvas_.at("pause_menu");
-                                                    widget->enable();
                                                   }
                                                   canvas_.active();
                                                 });
@@ -74,17 +72,18 @@ public:
                               [this](const Connection&, const Arguments&) noexcept
                               {
                                 // Game続行(時間差で演出)
+                                {
+                                  const auto& widget = canvas_.at("main");
+                                  widget->enable();
+                                }
                                 canvas_.active(false);
-                                count_exec_.add(0.5,
+                                canvas_.startTween("resume");
+                                count_exec_.add(1.2,
                                                 [this]() noexcept
                                                 {
                                                   {
                                                     const auto& widget = canvas_.at("pause_menu");
                                                     widget->enable(false);
-                                                  }
-                                                  {
-                                                    const auto& widget = canvas_.at("main");
-                                                    widget->enable();
                                                   }
                                                   event_.signal("GameMain:resume", Arguments());
                                                   canvas_.active();
