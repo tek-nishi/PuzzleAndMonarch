@@ -384,8 +384,9 @@
       ],
       "scale": [ 1, 1 ],
       "pivot": [ 0.5, 0.5 ],
+      "enable": false,
 
-      "chilelen": [
+      "childlen": [
         {
           "rect": [ -100, -14, 100, 20 ],
           "anchor": [
@@ -394,7 +395,6 @@
           ],
           "scale": [ 1, 1 ],
           "pivot": [ 0.5, 0.5 ],
-          "enable": false,
       
           "font": "en",
           "text": "Well done!",

@@ -84,19 +84,70 @@
 
   "end": [
     {
-      "identifier": "end",
+      "identifier": "main",
       "tween": [
         {
-          "param": "scale",
+          "param": "anchor_min",
           "type": "vec2",
           "body": [
             {
-              "duration": 0.5,
-              "delay": 0,
+              "duration": 0.6,
+              "ease_func": "InOutQuint",
+              "end":   [ 1, 0 ]
+            }
+          ]
+        },
+        {
+          "param": "anchor_max",
+          "type": "vec2",
+          "body": [
+            {
+              "duration": 0.6,
+              "ease_func": "InOutQuint",
+              "end":   [ 2, 1 ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "identifier": "end",
+      "tween": [
+        {
+          "param": "anchor_min",
+          "type": "vec2",
+          "body": [
+            {
+              "duration": 0.6,
               "copy_start": true,
-              "ease_func": "OutBack",
-              "start": [ 4, 4 ],
+              "ease_func": "InOutQuint",
+              "start": [ -1, 0 ],
+              "end":   [ 0, 0 ]
+            },
+            {
+              "duration": 0.6,
+              "delay": 1.5,
+              "ease_func": "InOutQuint",
+              "end":   [ 1, 0 ]
+            }
+          ]
+        },
+        {
+          "param": "anchor_max",
+          "type": "vec2",
+          "body": [
+            {
+              "duration": 0.6,
+              "copy_start": true,
+              "ease_func": "InOutQuint",
+              "start": [ 0, 1 ],
               "end":   [ 1, 1 ]
+            },
+            {
+              "duration": 0.6,
+              "delay": 1.5,
+              "ease_func": "InOutQuint",
+              "end":   [ 2, 1 ]
             }
           ]
         }

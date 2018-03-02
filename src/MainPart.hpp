@@ -304,7 +304,7 @@ public:
                                 }
                                 archive_.recordGameResults(score);
 
-                                count_exec_.add(2.0,
+                                count_exec_.add(2.3,
                                                 [this, score]() noexcept
                                                 {
                                                   Arguments a {

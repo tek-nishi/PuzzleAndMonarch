@@ -55,20 +55,12 @@ public:
       event_.signal("SE:timeline", args);
     }
 
-    count_exec_.add(2.0,
-                    [this]() noexcept
-                    {
-                      if (Share::canPost() && Capture::canExec())
-                      {
-                        // Share機能と画面キャプチャが有効じゃないと使えない
-                        const auto& widget = canvas_.at("share");
-                        widget->enable();
-                      }
-                      // {
-                      //   const auto& widget = canvas_.at("touch");
-                      //   widget->enable();
-                      // }
-                    });
+    if (Share::canPost() && Capture::canExec())
+    {
+      // Share機能と画面キャプチャが有効ならUIも有効
+      const auto& widget = canvas_.at("share");
+      widget->enable();
+    }
 
     holder_ += event_.connect("agree:touch_ended",
                               [this](const Connection&, const Arguments&) noexcept

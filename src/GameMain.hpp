@@ -148,17 +148,18 @@ public:
     holder_ += event_.connect("Game:Finish",
                               [this](const Connection&, const Arguments&) noexcept
                               {
-                                {
-                                  const auto& widget = canvas_.at("main");
-                                  widget->enable(false);
-                                }
+                                canvas_.active(false);
+                                canvas_.startTween("end");
+                                // {
+                                //   const auto& widget = canvas_.at("main");
+                                //   widget->enable(false);
+                                // }
                                 {
                                   const auto& widget = canvas_.at("end");
                                   widget->enable();
                                 }
-                                canvas_.startTween("end");
                                 
-                                count_exec_.add(1.5,
+                                count_exec_.add(3.0,
                                                 [this]() noexcept
                                                 {
                                                   active_ = false;
