@@ -243,4 +243,22 @@ std::vector<std::vector<T>> getVecVecArray(const ci::JsonTree& json) noexcept
   return array;
 }
 
+// TIPS std::sortが使えないので自前で用意
+void sort(ci::JsonTree& json, std::function<bool (const ci::JsonTree& a, const ci::JsonTree& b)> comp) noexcept
+{
+  if (!json.hasChildren()) return;
+
+  size_t num = json.getNumChildren();
+  for (size_t i = 0; i < (num - 1); ++i)
+  {
+    for (size_t j = (i + 1); j < num; ++j)
+    {
+      if (comp(json[i], json[j]))
+      {
+        std::swap(json[i], json[j]);
+      }
+    }
+  }
+}
+
 } }

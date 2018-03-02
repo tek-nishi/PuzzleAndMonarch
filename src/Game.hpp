@@ -374,9 +374,9 @@ struct Game
     DOUT << "Game saved: " << name << std::endl;
   }
 
-  void load() noexcept
+  void load(const std::string& path) noexcept
   {
-    auto full_path = getDocumentPath() / "game.json";
+    auto full_path = getDocumentPath() / path;
     if (!ci::fs::is_regular_file(full_path))
     {
       DOUT << "No game data." << std::endl;

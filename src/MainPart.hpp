@@ -274,12 +274,13 @@ public:
                                 // ハイスコア判定
                                 auto high_score     = archive_.getRecord<u_int>("high-score");
                                 auto total_score    = boost::any_cast<u_int>(args.at("total_score"));
+                                auto total_ranking  = boost::any_cast<u_int>(args.at("total_ranking"));
                                 bool get_high_score = total_score > high_score;
 
                                 Score score = {
                                   boost::any_cast<const std::vector<u_int>&>(args.at("scores")),
                                   boost::any_cast<u_int>(args.at("total_score")),
-                                  boost::any_cast<u_int>(args.at("total_ranking")),
+                                  total_ranking,
                                   boost::any_cast<u_int>(args.at("total_panels")),
                                   get_high_score
                                 };
@@ -292,27 +293,29 @@ public:
                                   game_->save(path);
                                   // pathを記録
                                   auto game_json = ci::JsonTree::makeObject();
-                                  game_json.addChild(ci::JsonTree("path", path))
+                                  game_json.addChild(ci::JsonTree("path",  path))
                                            .addChild(ci::JsonTree("score", total_score))
+                                           .addChild(ci::JsonTree("rank",  total_ranking))
                                            ;
 
                                   // TIPS const参照からインスタンスを生成している
                                   auto json = archive_.getRecordArray("games");
                                   json.pushBack(game_json);
-
-                                  // Sort
-                                  // TIPS std::sortが使えないので自前で実装
-                                  int num = int(json.getNumChildren());
-                                  for (int i = 0; i < (num - 1); ++i)
+                                  
+                                  Json::sort(json,
+                                             [](const ci::JsonTree& a, const ci::JsonTree& b) noexcept
+                                             {
+                                               auto score_a = a.getValueForKey<u_int>("score");
+                                               auto score_b = b.getValueForKey<u_int>("score");
+                                               return score_a < score_b;
+                                             });
+                                  // 11個目以降を捨てる
+                                  if (json.getNumChildren() > 10)
                                   {
-                                    for (int j = (i + 1); j < num; ++j)
+                                    size_t count = json.getNumChildren() - size_t(10);
+                                    for (size_t i = 0; i < count; ++i)
                                     {
-                                      auto score_a = json[i].getValueForKey<u_int>("score");
-                                      auto score_b = json[j].getValueForKey<u_int>("score");
-                                      if (score_a < score_b)
-                                      {
-                                        std::swap(json[i], json[j]);
-                                      }
+                                      json.removeChild(10);
                                     }
                                   }
 
@@ -400,7 +403,16 @@ public:
 
                                 timeline_->clear();
                                 view_.clear();
-                                game_->load();
+
+                                // TOPの記録を読み込む
+                                {
+                                  const auto& json = archive_.getRecordArray("games");
+                                  if (json.hasChildren())
+                                  {
+                                    game_->load(json[0].getValueForKey("path"));
+                                  }
+                                }
+
                                 calcViewRange(false);
                                 
                                 fixed_exec_.add(3.0, -1.0,

@@ -7,7 +7,6 @@
 * TODO iOS: iCloud対応
 * TODO パネルのうらが真っ暗
 * TODO 一番パネルが置けた枚数、森の規模などを記録にとっとく
-* TODO ゲームが保存されてないのにTitleでボタンが出る
 * TODO セーブデータにVersion番号入れる
 * TODO blankパネルの演出
 * TODO iPad:Shareのpopoverをボタン位置と合わせる
@@ -23,7 +22,6 @@
 * TODO msaa
 * TODO ローカライズ
 * TODO 道がわかりずらい
-* TODO TOP10の記録を覚えるようにしてみる
 * TODO 真上から見たい
 * TODO 湖と川が欲しい
 * TODO 飛行場が欲しい
@@ -62,6 +60,10 @@
 * TODO アプリアイコン
 * TODO iOS:GameCenter対応
 * TODO iOS:実績を実装
+* DONE TOP10の記録を覚えるようにしてみる
+CLOSED: [2018-03-03 土 00:01]
+* DONE ゲームが保存されてないのにTitleでボタンが出る
+CLOSED: [2018-03-02 金 22:20]
 * DONE 適当なワイプを用意
 CLOSED: [2018-02-28 Wed 16:30]
 * DONE Pause画面とかShare画面ではFieldを暗くするなりする

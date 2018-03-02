@@ -49,11 +49,12 @@ public:
   ~Archive() = default;
 
 
+  // Gameの記録が保存されているか？
   bool isSaved() const noexcept
   {
-    return ci::fs::is_regular_file(full_path_);
+    const auto& json = getRecordArray("games");
+    return json.hasChildren();
   }
-
 
   // プレイ結果を記録
   void recordGameResults(const Score& score) noexcept

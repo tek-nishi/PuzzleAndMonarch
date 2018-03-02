@@ -89,14 +89,24 @@ private:
     for (size_t i = 0; i < num; ++i)
     {
       const auto& json = rankings[i];
-      auto score = json.getValueForKey<u_int>("score");
 
-      char id[16];
-      std::sprintf(id, "%d", int(i + 1));
+      {
+        char id[16];
+        std::sprintf(id, "%d", int(i + 1));
+        const auto& widget = canvas_.at(id);
 
-      const auto& widget = canvas_.at(id);
-      widget->setParam("text", std::to_string(score));
-      widget->enable();
+        auto score = json.getValueForKey<u_int>("score");
+        widget->setParam("text", std::to_string(score));
+        widget->enable();
+      }
+      {
+        char id[16];
+        std::sprintf(id, "r%d", int(i + 1));
+        const auto& widget = canvas_.at(id);
+
+        auto rank = json.getValueForKey<u_int>("rank");
+        widget->setParam("text", std::string(ranking_text_[rank]));
+      }
     }
   }
 
