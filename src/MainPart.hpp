@@ -286,7 +286,6 @@ public:
 
                                 DOUT << "high: " << high_score << " total: " << total_score << std::endl;
 
-                                // if (get_high_score)
                                 {
                                   // 記録にとっとく
                                   auto path = std::string("game-") + getFormattedDate() + ".json";
@@ -300,6 +299,23 @@ public:
                                   // TIPS const参照からインスタンスを生成している
                                   auto json = archive_.getRecordArray("games");
                                   json.pushBack(game_json);
+
+                                  // Sort
+                                  // TIPS std::sortが使えないので自前で実装
+                                  int num = int(json.getNumChildren());
+                                  for (int i = 0; i < (num - 1); ++i)
+                                  {
+                                    for (int j = (i + 1); j < num; ++j)
+                                    {
+                                      auto score_a = json[i].getValueForKey<u_int>("score");
+                                      auto score_b = json[j].getValueForKey<u_int>("score");
+                                      if (score_a < score_b)
+                                      {
+                                        std::swap(json[i], json[j]);
+                                      }
+                                    }
+                                  }
+
                                   archive_.setRecordArray("games", json);
                                 }
                                 archive_.recordGameResults(score);
