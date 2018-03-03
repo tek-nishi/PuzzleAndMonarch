@@ -21,6 +21,7 @@ class Archive
       .addChild(ci::JsonTree("bgm-enable", true))
       .addChild(ci::JsonTree("se-enable", true))
       .addChild(ci::JsonTree::makeArray("games"))
+      .addChild(ci::JsonTree("version", version_))
       ;
   }
 
@@ -40,8 +41,9 @@ class Archive
 
 
 public:
-  Archive(const std::string& path) noexcept
-    : full_path_(getDocumentPath() / path)
+  Archive(const std::string& path, const std::string& version) noexcept
+    : full_path_(getDocumentPath() / path),
+      version_(version)
   {
     load();
   }
@@ -110,6 +112,8 @@ public:
 
 
 private:
+  std::string version_;
+
   ci::fs::path full_path_;
 
   ci::JsonTree records_;

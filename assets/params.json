@@ -1,5 +1,6 @@
 {
   "app": {
+    "version": "0.90",
     "size":   [ 960, 640 ],
     "retina": true,
     "power_management": true,

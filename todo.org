@@ -4,11 +4,9 @@
 * TODO tween開始時にON
 * TODO 画面切り替えを統一する
 * TODO Demoプレイ
-* TODO ランク外の記録を削除
 * TODO iOS: iCloud対応
 * TODO パネルのうらが真っ暗
 * TODO 一番パネルが置けた枚数、森の規模などを記録にとっとく
-* TODO セーブデータにVersion番号入れる
 * TODO blankパネルの演出
 * TODO iPad:Shareのpopoverをボタン位置と合わせる
 * TODO 記録の削除
@@ -61,6 +59,10 @@
 * TODO アプリアイコン
 * TODO iOS:GameCenter対応
 * TODO iOS:実績を実装
+* DONE セーブデータにVersion番号入れる
+CLOSED: [2018-03-03 土 13:08]
+* DONE ランク外の記録を削除
+CLOSED: [2018-03-03 土 13:01]
 * DONE TOP10の記録を覚えるようにしてみる
 CLOSED: [2018-03-03 土 00:01]
 * DONE ゲームが保存されてないのにTitleでボタンが出る

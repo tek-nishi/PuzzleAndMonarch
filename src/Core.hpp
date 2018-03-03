@@ -44,7 +44,7 @@ public:
   Core(const ci::JsonTree& params, Event<Arguments>& event) noexcept
     : params_(params),
       event_(event),
-      archive_("records.json"),
+      archive_("records.json", params.getValueForKey<std::string>("app.version")),
       drawer_(params["ui"]),
       tween_common_(Params::load("tw_common.json"))
   {
