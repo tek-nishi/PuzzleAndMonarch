@@ -97,8 +97,18 @@ public:
                               {
                                 Records::Detail detail = {
                                   archive_.getRecord<u_int>("play-times"),
-                                  archive_.getRecord<u_int>("high-score"),
-                                  archive_.getRecord<u_int>("total-panels")
+                                  archive_.getRecord<u_int>("total-panels"),
+                                  archive_.getRecord<u_int>("panel-turned-times"),
+                                  archive_.getRecord<u_int>("panel-moved-times"),
+                                  archive_.getRecord<u_int>("share-times"),
+                                  archive_.getRecord<u_int>("startup-times"),
+                                  archive_.getRecord<u_int>("abort-times"),
+
+                                  archive_.getRecord<double>("average-score"),
+                                  archive_.getRecord<double>("average-put-panels"),
+                                  archive_.getRecord<double>("average-moved-times"),
+                                  archive_.getRecord<double>("average-turn-times"),
+                                  archive_.getRecord<double>("average-put-time"),
                                 };
 
                                 tasks_.pushBack<Records>(params_, event_, drawer_, tween_common_, detail);

@@ -29,8 +29,18 @@ public:
   // FIXME 受け渡しが冗長なのを解決したい
   struct Detail {
     u_int play_times;
-    u_int high_score;
     u_int total_panels;
+    u_int panel_turned_times;
+    u_int panel_moved_times;
+    u_int share_times;
+    u_int startup_times;
+    u_int abort_times;
+
+    double average_score;
+    double average_put_panels;
+    double average_moved_times;
+    double average_turn_times;
+    double average_put_time;
   };
 
 
@@ -76,18 +86,20 @@ private:
 
   void applyDetail(const Detail& detail) noexcept
   {
-    {
-      const auto& widget = canvas_.at("record:0");
-      widget->setParam("text", std::to_string(detail.play_times));
-    }
-    {
-      const auto& widget = canvas_.at("record:1");
-      widget->setParam("text", std::to_string(detail.high_score));
-    }
-    {
-      const auto& widget = canvas_.at("record:2");
-      widget->setParam("text", std::to_string(detail.total_panels));
-    }
+    UI::Canvas::setWidgetText(canvas_, "record:0",  std::to_string(detail.play_times));
+    UI::Canvas::setWidgetText(canvas_, "record:1",  std::to_string(detail.total_panels));
+    UI::Canvas::setWidgetText(canvas_, "record:2",  std::to_string(detail.panel_moved_times));
+    UI::Canvas::setWidgetText(canvas_, "record:3",  std::to_string(detail.panel_turned_times));
+    UI::Canvas::setWidgetText(canvas_, "record:4",  std::to_string(detail.share_times));
+    UI::Canvas::setWidgetText(canvas_, "record:5",  std::to_string(detail.startup_times));
+    UI::Canvas::setWidgetText(canvas_, "record:6",  std::to_string(detail.abort_times));
+
+
+    // double average_score;
+    // double average_put_panels;
+    // double average_moved_times;
+    // double average_turn_times;
+    // double average_put_time;
   }
 };
 

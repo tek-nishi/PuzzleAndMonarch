@@ -137,6 +137,21 @@ public:
   }
 
 
+  // 書き換え補助関数
+  static void setWidgetText(UI::Canvas& canvas, const std::string& id, const std::string& text) noexcept
+  {
+#if defined DEBUG
+    if (!canvas.isExists(id))
+    {
+      DOUT << "No widget: " << id << std::endl;
+    }
+#endif
+
+    const auto& widget = canvas.at(id);
+    widget->setParam("text", text);
+  }
+
+
 private:
   void resize(const Connection&, const Arguments&) noexcept
   {
