@@ -283,6 +283,10 @@ public:
                                   boost::any_cast<u_int>(args.at("total_score")),
                                   total_ranking,
                                   boost::any_cast<u_int>(args.at("total_panels")),
+
+                                  boost::any_cast<u_int>(args.at("panel_turned_times")),
+                                  boost::any_cast<u_int>(args.at("panel_moved_times")),
+
                                   get_high_score
                                 };
 

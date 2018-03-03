@@ -12,8 +12,10 @@ struct Score
 
   u_int total_score;
   u_int total_ranking;
-
   u_int total_panels;
+
+  u_int panel_turned_times;
+  u_int panel_moved_times;
 
   bool high_score;
 };

@@ -132,24 +132,53 @@ private:
       char id[16];
       std::sprintf(id, "score:%d", i);
 
-      const auto& widget = canvas_.at(id);
-      widget->setParam("text", std::to_string(s));
+      // const auto& widget = canvas_.at(id);
+      // widget->setParam("text", std::to_string(s));
+      setWidgetText(canvas_, id, std::to_string(s));
 
       i += 1;
     }
+
+    setWidgetText(canvas_, "score:8",  std::to_string(score.total_panels));
+    setWidgetText(canvas_, "score:9",  std::to_string(score.panel_turned_times));
+    setWidgetText(canvas_, "score:10", std::to_string(score.panel_moved_times));
+
+    setWidgetText(canvas_, "score:20", std::to_string(score.total_score));
+    setWidgetText(canvas_, "score:21", std::string(ranking_text_[score.total_ranking]));
+
+#if 0
     {
       const auto& widget = canvas_.at("score:8");
       widget->setParam("text", std::to_string(score.total_panels));
     }
     {
-      const auto& widget = canvas_.at("score:10");
+      const auto& widget = canvas_.at("score:9");
+      widget->setParam("text", std::to_string(score.total_panels));
+    }
+    {
+      const auto& widget = canvas_.at("score:20");
       widget->setParam("text", std::to_string(score.total_score));
     }
     {
-      const auto& widget = canvas_.at("score:11");
+      const auto& widget = canvas_.at("score:21");
       widget->setParam("text", std::string(ranking_text_[score.total_ranking]));
     }
+#endif
   }
+
+  static void setWidgetText(UI::Canvas& canvas, const std::string& id, const std::string& text) noexcept
+  {
+#if defined DEBUG
+    if (!canvas.isExists(id))
+    {
+      DOUT << "No widget: " << id << std::endl;
+    }
+#endif
+
+    const auto& widget = canvas.at(id);
+    widget->setParam("text", text);
+  }
+
 
 };
 

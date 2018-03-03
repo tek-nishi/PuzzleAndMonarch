@@ -89,6 +89,12 @@ public:
     return query_widgets_.at(name);
   }
 
+  bool isExists(const std::string& name) const noexcept
+  {
+    return query_widgets_.count(name);
+  }
+
+
   void active(const bool active = true) noexcept
   {
     active_ = active;

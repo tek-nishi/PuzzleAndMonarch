@@ -147,6 +147,34 @@
           "layout": [ 1, 0 ],
           "color": [ 1, 1, 1 ]
         },
+        {
+          "rect": [ -50, -120, 0, -110 ],
+          "anchor": [
+            [ 0, 1 ],
+            [ 0, 1 ]
+          ],
+          "scale": [ 1, 1 ],
+          "pivot": [ 0.5, 0.5 ],
+
+          "font": "jp",
+          "text": "回した数:",
+          "layout": [ 1, 0 ],
+          "color": [ 1, 1, 1 ]
+        },
+        {
+          "rect": [ -50, -135, 0, -125 ],
+          "anchor": [
+            [ 0, 1 ],
+            [ 0, 1 ]
+          ],
+          "scale": [ 1, 1 ],
+          "pivot": [ 0.5, 0.5 ],
+
+          "font": "jp",
+          "text": "移動回数:",
+          "layout": [ 1, 0 ],
+          "color": [ 1, 1, 1 ]
+        },
 
         {
           "identifier": "score:1",
@@ -267,6 +295,36 @@
           "text": "000",
           "layout": [ 0, 0 ],
           "color": [ 1, 1, 1 ]
+        },
+        {
+          "identifier": "score:9",
+          "rect": [ 2.5, -121, 22.5, -111 ],
+          "anchor": [
+            [ 0, 1 ],
+            [ 0, 1 ]
+          ],
+          "scale": [ 1, 1 ],
+          "pivot": [ 0.5, 0.5 ],
+
+          "font": "en",
+          "text": "000",
+          "layout": [ 0, 0 ],
+          "color": [ 1, 1, 1 ]
+        },
+        {
+          "identifier": "score:10",
+          "rect": [ 2.5, -136, 22.5, -126 ],
+          "anchor": [
+            [ 0, 1 ],
+            [ 0, 1 ]
+          ],
+          "scale": [ 1, 1 ],
+          "pivot": [ 0.5, 0.5 ],
+
+          "font": "en",
+          "text": "000",
+          "layout": [ 0, 0 ],
+          "color": [ 1, 1, 1 ]
         }
       ]
     },
@@ -298,7 +356,7 @@
           "color": [ 1, 1, 1 ]
         },
         {
-          "identifier": "score:10",
+          "identifier": "score:20",
           "rect": [ -50, -20, 18, -2 ],
           "anchor": [
             [ 0, 1 ],
@@ -328,7 +386,7 @@
           "color": [ 1, 1, 1 ]
         },
         {
-          "identifier": "score:11",
+          "identifier": "score:21",
           "rect": [ -50, -65, 18, -47 ],
           "anchor": [
             [ 0, 1 ],
