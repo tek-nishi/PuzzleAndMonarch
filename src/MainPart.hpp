@@ -63,7 +63,8 @@ public:
       pause_duration_(Json::getVec<glm::vec2>(params["field.pause_duration"])),
       pause_ease_(params.getValueForKey<std::string>("field.pause_ease")),
       timeline_(ci::Timeline::create()),
-      force_timeline_(ci::Timeline::create())
+      force_timeline_(ci::Timeline::create()),
+      ranking_records_(params.getValueForKey<u_int>("game.ranking_records"))
   {
     // 乱数
     std::random_device seed_gen;
@@ -309,13 +310,26 @@ public:
                                                auto score_b = b.getValueForKey<u_int>("score");
                                                return score_a < score_b;
                                              });
-                                  // 11個目以降を捨てる
-                                  if (json.getNumChildren() > 10)
+                                  // ランキング圏外を捨てる
+                                  if (json.getNumChildren() > ranking_records_)
                                   {
-                                    size_t count = json.getNumChildren() - size_t(10);
+                                    size_t count = json.getNumChildren() - ranking_records_;
                                     for (size_t i = 0; i < count; ++i)
                                     {
-                                      json.removeChild(10);
+                                      auto p = json[ranking_records_].getValueForKey<std::string>("path");
+                                      auto full_path = getDocumentPath() / p;
+                                      // ファイルを削除
+                                      try
+                                      {
+                                        DOUT << "remove: " << full_path << std::endl;
+                                        ci::fs::remove(full_path);
+                                      }
+                                      catch (ci::fs::filesystem_error& ex)
+                                      {
+                                        DOUT << ex.what() << std::endl;
+                                      }
+
+                                      json.removeChild(ranking_records_);
                                     }
                                   }
 
@@ -1032,6 +1046,10 @@ private:
 
   // ゲーム内で発生したイベント
   std::set<std::string> game_event_;
+
+  // Rankingで表示する数
+  u_int ranking_records_;
+
 
 
 #ifdef DEBUG
