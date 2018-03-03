@@ -24,6 +24,7 @@ struct Game
       initial_play_time_(params.getValueForKey<double>("play_time")),
       play_time_(initial_play_time_),
       scores_(7, 0),
+      play_time_rate_(params.getValueForKey<u_int>("play_time_rate")),
       total_score_rate_(params.getValueForKey<u_int>("total_score_rate")),
       ranking_num_(params.getValueForKey<u_int>("ranking_num")),
       ranking_rate_(Json::getVec<glm::vec2>(params["ranking_rate"]))
@@ -74,7 +75,7 @@ struct Game
 
       {
         Arguments args = {
-          { "remaining_time", std::max(play_time_, 0.0) }
+          { "remaining_time", getPlayTime() }
         };
         event_.signal("Game:UI", args);
       }
@@ -97,7 +98,7 @@ struct Game
 
   double getPlayTime() const noexcept
   {
-    return play_time_;
+    return std::max(play_time_, 0.0);
   }
 
   // 制限時間
@@ -165,7 +166,7 @@ struct Game
   void endPlay() noexcept
   {
     finished = true;
-    calcTotalScore();
+    calcResults();
 
     Arguments args = {
       { "scores",        scores_ },
@@ -434,7 +435,7 @@ struct Game
     {
       // スコア情報は時間差で送信
       updateScores();
-      calcTotalScore();
+      calcResults();
       
       count_exec_.add(0.1,
                       [this]()
@@ -487,18 +488,6 @@ struct Game
 
 
 #if defined (DEBUG)
-  // プレイ結果
-  void calcResult() const noexcept
-  {
-    DOUT << "Forest: " << completed_forests.size() << '\n'
-         << "  area: " << countTotalAttribute(completed_forests, field, panels_) << '\n'
-         << "  deep: " << std::count(std::begin(deep_forest), std::end(deep_forest), 1) << '\n'
-         << "  Path: " << completed_path.size() << '\n'
-         << "length: " << countTotalAttribute(completed_path, field, panels_) << '\n'
-         << "  Town: " << countTown(completed_path, field, panels_)
-         << std::endl;
-  }
-
   // 時間の進みON/OFF
   void pauseTimeCount() noexcept
   {
@@ -595,30 +584,44 @@ private:
     scores_[6] = int(completed_church.size());
   }
 
+
+  void calcResults() noexcept
+  {
+    total_score   = calcTotalScore();
+    total_ranking = calcRanking(total_score);
+  }
+
   // 最終スコア
-  void calcTotalScore() noexcept
+  u_int calcTotalScore() const noexcept
   {
     // FIXME 適当に加算しているだけ…
-    total_score = 0;
+    u_int score = 0;
     for (u_int i = 0; i < scores_.size(); ++i)
     {
-      total_score += scores_[i] * score_rates_[i];
+      score += scores_[i] * score_rates_[i];
     }
+    DOUT << "Score-1: " << score << std::endl;
 
-    total_score *= total_score_rate_;
+    // 残り時間も加える
+    score += u_int(getPlayTime() * play_time_rate_);
+    DOUT << "Score-2: " << score << std::endl;
 
-    calcRanking(total_score);
+    score *= total_score_rate_;
+    return score;
   }
 
   // ランキングを決める
   // TIPS 数値の上昇にカテナリー曲線を利用
-  void calcRanking(int score) noexcept
+  u_int calcRanking(int score) const noexcept
   {
-    for (total_ranking = (ranking_num_ - 1); total_ranking > 0; --total_ranking)
+    u_int ranking;
+    for (ranking = (ranking_num_ - 1); ranking > 0; --ranking)
     {
-      auto rank_score = (std::cosh(total_ranking * ranking_rate_.x) - 1.0) * ranking_rate_.y;
+      auto rank_score = (std::cosh(ranking * ranking_rate_.x) - 1.0) * ranking_rate_.y;
       if (score >= rank_score) break;
     }
+
+    return ranking;
   }
 
   // パネルを追加してイベント送信
@@ -688,6 +691,7 @@ private:
 
   // スコア計算用係数
   std::vector<u_int> score_rates_;
+  double play_time_rate_;
   u_int total_score_rate_;
 
   // ランキング計算用
