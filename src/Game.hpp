@@ -84,17 +84,6 @@ struct Game
         // 時間切れ
         DOUT << "Time Up." << std::endl;
         endPlay();
-
-        Arguments args = {
-          { "scores",        scores_ },
-          { "total_score",   total_score },
-          { "total_ranking", total_ranking },
-          { "total_panels",  total_panels },
-
-          { "panel_turned_times", panel_turned_times_ },
-          { "panel_moved_times",  panel_moved_times_ },
-        };
-        event_.signal("Game:Finish", args);
       }
     }
   }
@@ -138,6 +127,12 @@ struct Game
 
       std::shuffle(std::begin(waiting_panels), std::end(waiting_panels), engine);
     }
+
+#if 0
+    // パネル枚数を強制的に変更
+    waiting_panels.resize(5);
+#endif
+
     // 最初のパネルを設置
     putPanel(start_panels[0], { 0, 0 }, ci::randInt(4));
 
@@ -164,6 +159,18 @@ struct Game
   {
     finished = true;
     calcTotalScore();
+
+    Arguments args = {
+      { "scores",        scores_ },
+      { "total_score",   total_score },
+      { "total_ranking", total_ranking },
+      { "total_panels",  total_panels },
+      
+      { "panel_turned_times", panel_turned_times_ },
+      { "panel_moved_times",  panel_moved_times_ },
+    };
+    event_.signal("Game:Finish", args);
+    
     DOUT << "Game ended." << std::endl;
   }
 

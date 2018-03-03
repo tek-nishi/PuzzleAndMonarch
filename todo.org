@@ -59,6 +59,8 @@
 * TODO アプリアイコン
 * TODO iOS:GameCenter対応
 * TODO iOS:実績を実装
+* DONE 置けるパネルがなくなってもゲームが終了しない
+CLOSED: [2018-03-03 土 15:06]
 * DONE セーブデータにVersion番号入れる
 CLOSED: [2018-03-03 土 13:08]
 * DONE ランク外の記録を削除
