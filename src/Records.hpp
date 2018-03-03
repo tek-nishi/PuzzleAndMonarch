@@ -94,12 +94,31 @@ private:
     UI::Canvas::setWidgetText(canvas_, "record:5",  std::to_string(detail.startup_times));
     UI::Canvas::setWidgetText(canvas_, "record:6",  std::to_string(detail.abort_times));
 
-
-    // double average_score;
-    // double average_put_panels;
-    // double average_moved_times;
-    // double average_turn_times;
-    // double average_put_time;
+    {
+      char text[64];
+      sprintf(text, "%.0f", detail.average_score);
+      UI::Canvas::setWidgetText(canvas_, "record:10", text);
+    }
+    {
+      char text[64];
+      sprintf(text, "%.1f", detail.average_put_panels);
+      UI::Canvas::setWidgetText(canvas_, "record:11", text);
+    }
+    {
+      char text[64];
+      sprintf(text, "%.1f", detail.average_moved_times);
+      UI::Canvas::setWidgetText(canvas_, "record:12", text);
+    }
+    {
+      char text[64];
+      sprintf(text, "%.1f", detail.average_turn_times);
+      UI::Canvas::setWidgetText(canvas_, "record:13", text);
+    }
+    {
+      char text[64];
+      sprintf(text, "%.1fs", detail.average_put_time);
+      UI::Canvas::setWidgetText(canvas_, "record:14", text);
+    }
   }
 };
 
