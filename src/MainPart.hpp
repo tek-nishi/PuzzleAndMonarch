@@ -64,7 +64,9 @@ public:
       pause_ease_(params.getValueForKey<std::string>("field.pause_ease")),
       timeline_(ci::Timeline::create()),
       force_timeline_(ci::Timeline::create()),
-      ranking_records_(params.getValueForKey<u_int>("game.ranking_records"))
+      ranking_records_(params.getValueForKey<u_int>("game.ranking_records")),
+      transition_duration_(params.getValueForKey<float>("ui.transition.duration")),
+      transition_color_(Json::getColorA<float>(params["ui.transition.color"]))
   {
     // 乱数
     std::random_device seed_gen;
@@ -479,17 +481,40 @@ public:
                                 // Pause開始
                                 paused_ = true;
                                 count_exec_.pause();
-                                view_.setPauseEffect(toRadians(180.0f), force_timeline_,
-                                                     pause_duration_.x, pause_ease_);
+                                count_exec_.add(0.3,
+                                                [this]() noexcept
+                                                {
+                                                  view_.setColor(force_timeline_, transition_duration_, transition_color_);
+                                                  view_.setPauseEffect(toRadians(180.0f), force_timeline_,
+                                                                       pause_duration_.x, pause_ease_);
+                                                },
+                                                true);
                               });
 
     holder_ += event_.connect("resume:touch_ended",
                               [this](const Connection&, const Arguments&) noexcept
                               {
-                                view_.setPauseEffect(0.0f, force_timeline_,
-                                                     pause_duration_.y, pause_ease_);
+                                count_exec_.add(0.3,
+                                                [this]() noexcept
+                                                {
+                                                  view_.setColor(force_timeline_, transition_duration_, ci::ColorA(1, 1, 1, 1));
+                                                  view_.setPauseEffect(0.0f, force_timeline_,
+                                                                       pause_duration_.y, pause_ease_);
+                                                },
+                                                true);
                               });
 
+    holder_ += event_.connect("abort:touch_ended",
+                              [this](const Connection&, const Arguments&) noexcept
+                              {
+                                count_exec_.add(0.3,
+                                                [this]() noexcept
+                                                {
+                                                  view_.setColor(force_timeline_, transition_duration_, ci::ColorA(1, 1, 1, 1));
+                                                },
+                                                true);
+                              });
+    
     holder_ += event_.connect("GameMain:resume",
                               [this](const Connection&, const Arguments&) noexcept
                               {
@@ -508,6 +533,20 @@ public:
                               {
                                 view_.setColor(force_timeline_, 0.3, ci::ColorA(1, 1, 1, 1));
                               });
+
+    // Transition
+    static const std::vector<std::pair<const char*, const char*>> transition = {
+      { "Credits:begin",  "Credits:Finished" },
+      { "Settings:begin", "Settings:Finished" },
+      { "Records:begin",  "Records:Finished" },
+      { "Ranking:begin",  "Ranking:Finished" },
+    };
+
+    for (const auto& t : transition)
+    {
+      setTransitionEvent(t.first, t.second);
+    }
+
 
 #if defined (DEBUG)
     holder_ += event_.connect("debug-info",
@@ -964,6 +1003,22 @@ private:
   }
 
 
+  void setTransitionEvent(const std::string& begin, const std::string& end) noexcept
+  {
+    holder_ += event_.connect(begin,
+                              [this](const Connection&, const Arguments&) noexcept
+                              {
+                                view_.setColor(force_timeline_, transition_duration_, transition_color_);
+                              });
+    holder_ += event_.connect(end,
+                              [this](const Connection&, const Arguments&) noexcept
+                              {
+                                view_.setColor(force_timeline_, transition_duration_, ci::ColorA(1, 1, 1, 1));
+                              });
+  }
+
+
+
   // FIXME 変数を後半に定義する実験
   const ci::JsonTree& params_;
 
@@ -1060,6 +1115,9 @@ private:
   // Rankingで表示する数
   u_int ranking_records_;
 
+  // Transition
+  float transition_duration_;
+  ci::ColorA transition_color_;
 
 
 #ifdef DEBUG

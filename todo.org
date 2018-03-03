@@ -1,7 +1,6 @@
 * TODO チュートリアル
 * TODO TOP10入りした場合はResult→Ranking→Titleと画面遷移
 * TODO 残り枚数を表示
-* TODO Settings画面とかでは画面を暗く
 * TODO 縦画面の時にランキングのレイアウトが窮屈
 * TODO tween終わりでOFFにしたい
 * TODO tween開始時にON
@@ -60,6 +59,8 @@
 * TODO アプリアイコン
 * TODO iOS:GameCenter対応
 * TODO iOS:実績を実装
+* DONE Settings画面とかでは画面を暗く
+CLOSED: [2018-03-04 日 00:17]
 * DONE プレイ記録の選定
 CLOSED: [2018-03-03 土 23:30]
 * DONE 置けるパネルがなくなってもゲームが終了しない
