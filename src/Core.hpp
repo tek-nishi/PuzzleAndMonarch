@@ -164,11 +164,22 @@ public:
                                                 });
                               });
 
+    // ???
+    holder_ += event_.connect("Share:completed",
+                              [this](const Connection&, const Arguments&) noexcept
+                              {
+                                archive_.addRecord("share-times", uint32_t(1));
+                                archive_.save();
+                              });
+
     // system
     holder_ += event_.connect("update",
                               std::bind(&Core::update,
                                         this, std::placeholders::_1, std::placeholders::_2));
 
+    archive_.addRecord("startup-times", uint32_t(1));
+    archive_.save();
+    
     // 最初のタスクを登録
     tasks_.pushBack<Sound>(params_, event_);
     tasks_.pushBack<MainPart>(params_, event_, archive_);

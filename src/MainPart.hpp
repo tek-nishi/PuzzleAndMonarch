@@ -247,6 +247,9 @@ public:
     holder_ += event_.connect("Game:Aborted",
                               [this](const Connection&, const Arguments&) noexcept
                               {
+                                // 中断
+                                archive_.addRecord("abort-times", uint32_t(1));
+                                archive_.save();
                                 resetGame();
                               });
 
@@ -473,6 +476,7 @@ public:
     holder_ += event_.connect("pause:touch_ended",
                               [this](const Connection&, const Arguments&) noexcept
                               {
+                                // Pause開始
                                 paused_ = true;
                                 count_exec_.pause();
                                 view_.setPauseEffect(toRadians(180.0f), force_timeline_,

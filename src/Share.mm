@@ -7,19 +7,21 @@
 
 namespace ngs { namespace Share {
 
-bool canPost() noexcept {
+bool canPost() noexcept
+{
   bool has_class = NSClassFromString(@"UIActivityViewController") ? true : false;
   return has_class;
 }
 
 
-static NSString* createString(const std::string& text) {
+static NSString* createString(const std::string& text) noexcept
+{
   return [[[NSString alloc] initWithCString:text.c_str() encoding:NSUTF8StringEncoding] autorelease];
 }
 
   
 void post(const std::string& text, UIImage* image,
-          std::function<void()> complete_callback) noexcept {
+          std::function<void (bool completed)> complete_callback) noexcept {
 
   NSString* str = createString(text);
 
@@ -32,8 +34,8 @@ void post(const std::string& text, UIImage* image,
                                                   autorelease];
 
   void (^completion)(NSString* activity_type, BOOL completed, NSArray *returnedItems, NSError *activityError) = ^(NSString* activity_type, BOOL completed, NSArray *returnedItems, NSError *activityError) {
-    DOUT << "Share::completion." << std::endl;
-    complete_callback();
+    DOUT << "Share::post: completion." << std::endl;
+    complete_callback(activityError == nil && completed);
   };
   view_controller.completionWithItemsHandler = completion;
   

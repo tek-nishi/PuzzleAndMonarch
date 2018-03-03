@@ -90,8 +90,14 @@ public:
                                                   event_.signal("App:pending-update", Arguments());
 
                                                   Share::post(share_text_, image,
-                                                              [this]() noexcept
+                                                              [this](bool completed) noexcept
                                                               {
+                                                                if (completed)
+                                                                {
+                                                                  // 記録につけとく
+                                                                  DOUT << "Share: completed." << std::endl;
+                                                                  event_.signal("Share:completed", Arguments());
+                                                                }
                                                                 event_.signal("App:resume-update", Arguments());
                                                                 canvas_.active(true);
                                                               });
