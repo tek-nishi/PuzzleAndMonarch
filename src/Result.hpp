@@ -11,6 +11,7 @@
 #include "Score.hpp"
 #include "Share.h"
 #include "Capture.h"
+#include "EventSupport.hpp"
 
 
 namespace ngs {
@@ -47,13 +48,8 @@ public:
               Params::load(params.getValueForKey<std::string>("result.canvas")),
               Params::load(params.getValueForKey<std::string>("result.tweens")))
   {
-    {
-      // サウンド再生
-      Arguments args{
-        { "timeline", params["result.se"] }
-      };
-      event_.signal("SE:timeline", args);
-    }
+    // Sound再生
+    startTimelineSound(event_, params, "result.se");
 
     if (Share::canPost() && Capture::canExec())
     {

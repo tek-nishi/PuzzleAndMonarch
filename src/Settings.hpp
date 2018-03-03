@@ -41,6 +41,8 @@ public:
               Params::load(params.getValueForKey<std::string>("settings.canvas")),
               Params::load(params.getValueForKey<std::string>("settings.tweens")))
   {
+    startTimelineSound(event_, params, "settings.se");
+
     holder_ += event_.connect("agree:touch_ended",
                               [this](const Connection&, const Arguments&) noexcept
                               {

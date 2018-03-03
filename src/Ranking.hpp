@@ -37,6 +37,8 @@ public:
               Params::load(params.getValueForKey<std::string>("ranking.canvas")),
               Params::load(params.getValueForKey<std::string>("ranking.tweens")))
   {
+    startTimelineSound(event_, params, "ranking.se");
+
     holder_ += event_.connect("agree:touch_ended",
                               [this](const Connection&, const Arguments&) noexcept
                               {

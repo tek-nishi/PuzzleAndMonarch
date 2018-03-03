@@ -30,6 +30,8 @@ public:
               Params::load(params.getValueForKey<std::string>("credits.canvas")),
               Params::load(params.getValueForKey<std::string>("credits.tweens")))
   {
+    startTimelineSound(event_, params, "credits.se");
+
     holder_ += event_.connect("agree:touch_ended",
                               [this](const Connection&, const Arguments&) noexcept
                               {

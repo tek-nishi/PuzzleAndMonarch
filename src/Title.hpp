@@ -8,6 +8,7 @@
 #include "CountExec.hpp"
 #include "UICanvas.hpp"
 #include "TweenUtil.hpp"
+#include "EventSupport.hpp"
 
 
 namespace ngs {
@@ -38,11 +39,7 @@ public:
     {
       auto v = first_time ? "title.se_first"
                           : "title.se";
-
-      Arguments args {
-        { "timeline", params[v] }
-      };
-      event_.signal("SE:timeline", args);
+      startTimelineSound(event, params, v);
     }
 
     holder_ += event_.connect("play:touch_ended",

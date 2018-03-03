@@ -33,7 +33,9 @@ public:
               Params::load(params.getValueForKey<std::string>("gamemain.canvas")),
               Params::load(params.getValueForKey<std::string>("gamemain.tweens")))
   {
-    // ゲーム開始
+    startTimelineSound(event, params, "gamemain.se");
+    
+    // ゲーム開始演出 
     count_exec_.add(2.6,
                     [this]() noexcept
                     {
