@@ -220,21 +220,17 @@ public:
   }
 
 
-  void draw(const ci::Rectf& parent_rect, const glm::vec2& parent_scale,
-            UI::Drawer& drawer, float parent_alpha) noexcept
+  void draw(const ci::Rectf& parent_rect, UI::Drawer& drawer, float parent_alpha) noexcept
   {
     if (!enable_) return;
 
-    auto scale = parent_scale * scale_;
     auto alpha = parent_alpha * alpha_;
-    disp_rect_ = calcRect(parent_rect, scale);
+    disp_rect_ = calcRect(parent_rect, scale_);
     widget_base_->draw(disp_rect_, drawer, alpha);
 
     for (const auto& child : children_)
     {
-      // FIXME Widgetの描画内容がRectのサイズで決まっているので、
-      //       scaleを子供に伝える意味がない
-      child->draw(disp_rect_, glm::vec2(1), drawer, alpha);
+      child->draw(disp_rect_, drawer, alpha);
     }
   }
 

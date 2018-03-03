@@ -169,7 +169,7 @@ private:
     camera.getNearClipCoordinates(&top_left, &top_right, &bottom_left, &bottom_right);
     ci::Rectf rect(top_left.x, bottom_right.y, bottom_right.x, top_left.y);
 
-    widgets_->draw(rect, glm::vec2(1), drawer_, 1.0f);
+    widgets_->draw(rect, drawer_, 1.0f);
 
 #if defined (DEBUG)
     if (debug_info_)

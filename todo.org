@@ -1,4 +1,6 @@
 * TODO チュートリアル
+* TODO 残り枚数を表示
+* TODO Settings画面とかでは画面を暗く
 * TODO 縦画面の時にランキングのレイアウトが窮屈
 * TODO tween終わりでOFFにしたい
 * TODO tween開始時にON
@@ -6,7 +8,6 @@
 * TODO Demoプレイ
 * TODO iOS: iCloud対応
 * TODO パネルのうらが真っ暗
-* TODO 一番パネルが置けた枚数、森の規模などを記録にとっとく
 * TODO blankパネルの演出
 * TODO iPad:Shareのpopoverをボタン位置と合わせる
 * TODO 記録の削除
@@ -309,6 +310,8 @@ CLOSED: [2018-01-10 Wed 23:56]
 CLOSED: [2018-01-09 火 16:27]
 * DONE ファイル読み込みパスの統一
 CLOSED: [2018-01-09 Tue 00:32]
+* ABORT 一番パネルが置けた枚数、森の規模などを記録にとっとく
+CLOSED: [2018-03-03 土 15:51]
 * ABORT anchorの４つの値をいっぺんに変更するtween
 CLOSED: [2018-03-03 土 01:16]
 * ABORT ポーズ画面ボカす
