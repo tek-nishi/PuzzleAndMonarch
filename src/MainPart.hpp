@@ -287,6 +287,8 @@ public:
                                   boost::any_cast<u_int>(args.at("panel_turned_times")),
                                   boost::any_cast<u_int>(args.at("panel_moved_times")),
 
+                                  game_->getLimitTime(),
+
                                   get_high_score
                                 };
 

@@ -100,6 +100,13 @@ struct Game
     return play_time_;
   }
 
+  // 制限時間
+  double getLimitTime() const noexcept
+  {
+    return initial_play_time_;
+  }
+
+
   // 本編準備
   void preparationPlay(std::mt19937& engine) noexcept
   {

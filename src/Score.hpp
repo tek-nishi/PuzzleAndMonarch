@@ -17,6 +17,9 @@ struct Score
   u_int panel_turned_times;
   u_int panel_moved_times;
 
+  // 制限時間
+  double limit_time;
+
   bool high_score;
 };
 
