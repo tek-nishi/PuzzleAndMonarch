@@ -280,12 +280,15 @@ public:
                                 // スコア計算
                                 auto score = calcGameScore(args);
                                 recordGameScore(score);
+                                // ランクインしてるか調べる
+                                auto rank_in = isRankIn(score.total_score);
 
                                 count_exec_.add(2.3,
-                                                [this, score]() noexcept
+                                                [this, score, rank_in]() noexcept
                                                 {
                                                   Arguments a {
-                                                    { "score", score } 
+                                                    { "score",   score },
+                                                    { "rank_in", rank_in },
                                                   };
                                                   event_.signal("Result:begin", a);
                                                 });
@@ -982,14 +985,13 @@ private:
   // Gameの記録
   void recordGameScore(const Score& score) noexcept
   {
-    // 記録にとっとく
     auto path = std::string("game-") + getFormattedDate() + ".json";
     game_->save(path);
     // pathを記録
     auto game_json = ci::JsonTree::makeObject();
     game_json.addChild(ci::JsonTree("path",  path))
-    .addChild(ci::JsonTree("score", score.total_score))
-    .addChild(ci::JsonTree("rank",  score.total_ranking))
+             .addChild(ci::JsonTree("score", score.total_score))
+             .addChild(ci::JsonTree("rank",  score.total_ranking))
     ;
 
     // TIPS const参照からインスタンスを生成している
@@ -1028,6 +1030,16 @@ private:
 
     archive_.setRecordArray("games", json);
     archive_.recordGameResults(score);
+  }
+
+  bool isRankIn(u_int score) noexcept
+  {
+    const auto& ranking = archive_.getRecordArray("games");
+    for (const auto& r : ranking)
+    {
+      if (score == r.getValueForKey<u_int>("score")) return true;
+    }
+    return false;
   }
 
 

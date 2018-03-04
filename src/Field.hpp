@@ -128,9 +128,10 @@ struct Field
 
       ci::JsonTree p;
       p.addChild(Json::createFromVec("pos", status.position))
-       .addChild(ci::JsonTree("number", status.number))
-       .addChild(ci::JsonTree("rotation", status.rotation))
-       .addChild(ci::JsonTree("edge", status.edge));
+       .addChild(ci::JsonTree("number",     status.number))
+       .addChild(ci::JsonTree("rotation",   status.rotation))
+       .addChild(ci::JsonTree("edge",       status.edge))
+      ;
 
       data.pushBack(p);
     }

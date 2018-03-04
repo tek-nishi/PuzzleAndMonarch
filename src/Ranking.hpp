@@ -44,10 +44,14 @@ public:
                               {
                                 canvas_.active(false);
                                 canvas_.startTween("end");
-                                count_exec_.add(1.2,
+                                count_exec_.add(0.6,
                                                 [this]() noexcept
                                                 {
                                                   event_.signal("Ranking:Finished", Arguments());
+                                                });
+                                count_exec_.add(1.2,
+                                                [this]() noexcept
+                                                {
                                                   active_ = false;
                                                 });
                                 DOUT << "Back to Title" << std::endl;
@@ -68,9 +72,17 @@ public:
     // ボタンイベント共通Tween
     setupCommonTweens(event_, holder_, canvas_, "agree");
 
-    applyRankings(boost::any_cast<const ci::JsonTree&>(args.at("games")));
+    if (args.count("games"))
+    {
+      // NOTICE Title→Rankingの時は記録があるが、Result→Rankingの場合は記録が無い
+      applyRankings(boost::any_cast<const ci::JsonTree&>(args.at("games")));
+      canvas_.startTween("start");
+    }
+    else
+    {
+      canvas_.startTween("start-left");
+    }
 
-    canvas_.startTween("start");
   }
 
   ~Ranking() = default;

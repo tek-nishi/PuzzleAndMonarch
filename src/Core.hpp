@@ -152,19 +152,27 @@ public:
     holder_ += event_.connect("Result:begin",
                               [this](const Connection&, const Arguments& args) noexcept
                               {
-                                auto score = boost::any_cast<Score>(args.at("score"));
-                                tasks_.pushBack<Result>(params_, event_, drawer_, tween_common_, score);
+                                tasks_.pushBack<Result>(params_, event_, drawer_, tween_common_, args);
                               });
     // Result→Title
     holder_ += event_.connect("Result:Finished",
-                              [this](const Connection&, const Arguments&) noexcept
+                              [this](const Connection&, const Arguments& args) noexcept
                               {
-                                count_exec_.add(0.5,
-                                                [this]() noexcept
-                                                {
-                                                  tasks_.pushBack<Title>(params_, event_, drawer_, tween_common_,
-                                                                         false, archive_.isSaved());
-                                                });
+                                bool rank_in = boost::any_cast<bool>(args.at("rank_in"));
+                                if (rank_in)
+                                {
+                                  // TOP10に入っていたらRankingを起動
+                                  tasks_.pushBack<Ranking>(params_, event_, drawer_, tween_common_, Arguments());
+                                }
+                                else
+                                {
+                                  count_exec_.add(0.5,
+                                                  [this]() noexcept
+                                                  {
+                                                    tasks_.pushBack<Title>(params_, event_, drawer_, tween_common_,
+                                                                           false, archive_.isSaved());
+                                                  });
+                                }
                               });
 
     // ???

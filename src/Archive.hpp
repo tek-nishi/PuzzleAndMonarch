@@ -15,27 +15,27 @@ class Archive
 {
   void create() noexcept
   {
-    records_.addChild(ci::JsonTree("play-times", uint32_t(0)))
-    .addChild(ci::JsonTree("high-score", uint32_t(0)))
-    .addChild(ci::JsonTree("total-panels", uint32_t(0)))
-    .addChild(ci::JsonTree("panel-turned-times", uint32_t(0)))
-    .addChild(ci::JsonTree("panel-moved-times", uint32_t(0)))
-    .addChild(ci::JsonTree("share-times", uint32_t(0)))
-    .addChild(ci::JsonTree("startup-times", uint32_t(0)))
-    .addChild(ci::JsonTree("abort-times", uint32_t(0)))
+    records_.addChild(ci::JsonTree("play-times",         uint32_t(0)))
+            .addChild(ci::JsonTree("high-score",         uint32_t(0)))
+            .addChild(ci::JsonTree("total-panels",       uint32_t(0)))
+            .addChild(ci::JsonTree("panel-turned-times", uint32_t(0)))
+            .addChild(ci::JsonTree("panel-moved-times",  uint32_t(0)))
+            .addChild(ci::JsonTree("share-times",        uint32_t(0)))
+            .addChild(ci::JsonTree("startup-times",      uint32_t(0)))
+            .addChild(ci::JsonTree("abort-times",        uint32_t(0)))
 
-    .addChild(ci::JsonTree("average-score", 0.0))
-    .addChild(ci::JsonTree("average-put-panels", 0.0))
-    .addChild(ci::JsonTree("average-moved-times", 0.0))
-    .addChild(ci::JsonTree("average-turn-times", 0.0))
-    .addChild(ci::JsonTree("average-put-time", 0.0))
+            .addChild(ci::JsonTree("average-score",       0.0))
+            .addChild(ci::JsonTree("average-put-panels",  0.0))
+            .addChild(ci::JsonTree("average-moved-times", 0.0))
+            .addChild(ci::JsonTree("average-turn-times",  0.0))
+            .addChild(ci::JsonTree("average-put-time",    0.0))
 
-    .addChild(ci::JsonTree("bgm-enable", true))
-    .addChild(ci::JsonTree("se-enable", true))
+            .addChild(ci::JsonTree("bgm-enable", true))
+            .addChild(ci::JsonTree("se-enable",  true))
 
-    .addChild(ci::JsonTree::makeArray("games"))
+            .addChild(ci::JsonTree::makeArray("games"))
 
-    .addChild(ci::JsonTree("version", version_))
+            .addChild(ci::JsonTree("version", version_))
     ;
   }
 

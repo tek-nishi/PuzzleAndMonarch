@@ -96,7 +96,7 @@
   },
 
   "game": {
-    "play_time": 20,
+    "play_time": 10,
 
     "score_rates": [
       3,

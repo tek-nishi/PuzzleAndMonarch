@@ -41,9 +41,9 @@
           "type": "vec2",
           "body": [
             {
-              "duration": 0.5,
-              "delay": 0.6,
-              "ease_func": "InQuint",
+              "duration": 0.6,
+              "delay": 0.4,
+              "ease_func": "InOutQuint",
               "start": [ 0, 0 ],
               "end":   [ 1, 0 ]
             }
@@ -54,11 +54,47 @@
           "type": "vec2",
           "body": [
             {
-              "duration": 0.5,
-              "delay": 0.6,
-              "ease_func": "InQuint",
+              "duration": 0.6,
+              "delay": 0.4,
+              "ease_func": "InOutQuint",
               "start": [ 1, 1 ],
               "end":   [ 2, 1 ]
+            }
+          ]
+        }
+      ]
+    }
+  ],
+
+  "start-left": [
+    {
+      "identifier": "root",
+      "tween": [
+        {
+          "param": "anchor_min",
+          "type": "vec2",
+          "body": [
+            {
+              "duration": 0.7,
+              "delay": 0.6,
+              "copy_start": true,
+              "ease_func": "OutQuint",
+              "start": [ -1, 0 ],
+              "end":   [ 0, 0 ]
+            }
+          ]
+        },
+        {
+          "param": "anchor_max",
+          "type": "vec2",
+          "body": [
+            {
+              "duration": 0.7,
+              "delay": 0.6,
+              "copy_start": true,
+              "ease_func": "OutQuint",
+              "start": [ 0, 1 ],
+              "end":   [ 1, 1 ]
             }
           ]
         }

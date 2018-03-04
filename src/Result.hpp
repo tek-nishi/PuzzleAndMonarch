@@ -24,7 +24,8 @@ class Result
 
   CountExec count_exec_;
 
-  bool high_score_;
+  bool rank_in_    = false;
+  bool high_score_ = false;
 
   std::vector<std::string> ranking_text_;
 
@@ -36,20 +37,23 @@ class Result
 
 public:
   Result(const ci::JsonTree& params, Event<Arguments>& event, UI::Drawer& drawer, TweenCommon& tween_common,
-         const Score& score) noexcept
+         const Arguments& args) noexcept
     : event_(event),
-      high_score_(score.high_score),
       ranking_text_(Json::getArray<std::string>(params["result.ranking"])),
-      share_text_(replaceString(params.getValueForKey<std::string>("result.share"),
-                                "%1",
-                                std::to_string(score.total_score))),
       canvas_(event, drawer, tween_common,
               params["ui.camera"],
               Params::load(params.getValueForKey<std::string>("result.canvas")),
               Params::load(params.getValueForKey<std::string>("result.tweens")))
   {
-    // Sound再生
     startTimelineSound(event_, params, "result.se");
+
+    rank_in_ = boost::any_cast<bool>(args.at("rank_in"));
+    
+    const auto& score = boost::any_cast<const Score&>(args.at("score"));
+    high_score_ = score.high_score;
+    share_text_ = replaceString(params.getValueForKey<std::string>("result.share"),
+                                "%1",
+                                std::to_string(score.total_score));
 
     if (Share::canPost() && Capture::canExec())
     {
@@ -67,7 +71,10 @@ public:
                                 count_exec_.add(0.6,
                                                 [this]() noexcept
                                                 {
-                                                  event_.signal("Result:Finished", Arguments());
+                                                  Arguments args {
+                                                    { "rank_in", rank_in_ },
+                                                  };
+                                                  event_.signal("Result:Finished", args);
                                                 });
                                 count_exec_.add(1.2,
                                                 [this]() noexcept
