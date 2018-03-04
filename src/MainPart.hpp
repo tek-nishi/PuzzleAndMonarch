@@ -277,76 +277,9 @@ public:
 
                                 calcViewRange(false);
 
-                                // ハイスコア判定
-                                auto high_score     = archive_.getRecord<u_int>("high-score");
-                                auto total_score    = boost::any_cast<u_int>(args.at("total_score"));
-                                auto total_ranking  = boost::any_cast<u_int>(args.at("total_ranking"));
-                                bool get_high_score = total_score > high_score;
-
-                                Score score = {
-                                  boost::any_cast<const std::vector<u_int>&>(args.at("scores")),
-                                  boost::any_cast<u_int>(args.at("total_score")),
-                                  total_ranking,
-                                  boost::any_cast<u_int>(args.at("total_panels")),
-
-                                  boost::any_cast<u_int>(args.at("panel_turned_times")),
-                                  boost::any_cast<u_int>(args.at("panel_moved_times")),
-
-                                  game_->getLimitTime(),
-
-                                  get_high_score
-                                };
-
-                                DOUT << "high: " << high_score << " total: " << total_score << std::endl;
-
-                                {
-                                  // 記録にとっとく
-                                  auto path = std::string("game-") + getFormattedDate() + ".json";
-                                  game_->save(path);
-                                  // pathを記録
-                                  auto game_json = ci::JsonTree::makeObject();
-                                  game_json.addChild(ci::JsonTree("path",  path))
-                                           .addChild(ci::JsonTree("score", total_score))
-                                           .addChild(ci::JsonTree("rank",  total_ranking))
-                                           ;
-
-                                  // TIPS const参照からインスタンスを生成している
-                                  auto json = archive_.getRecordArray("games");
-                                  json.pushBack(game_json);
-                                  
-                                  Json::sort(json,
-                                             [](const ci::JsonTree& a, const ci::JsonTree& b) noexcept
-                                             {
-                                               auto score_a = a.getValueForKey<u_int>("score");
-                                               auto score_b = b.getValueForKey<u_int>("score");
-                                               return score_a < score_b;
-                                             });
-                                  // ランキング圏外を捨てる
-                                  if (json.getNumChildren() > ranking_records_)
-                                  {
-                                    size_t count = json.getNumChildren() - ranking_records_;
-                                    for (size_t i = 0; i < count; ++i)
-                                    {
-                                      auto p = json[ranking_records_].getValueForKey<std::string>("path");
-                                      auto full_path = getDocumentPath() / p;
-                                      // ファイルを削除
-                                      try
-                                      {
-                                        DOUT << "remove: " << full_path << std::endl;
-                                        ci::fs::remove(full_path);
-                                      }
-                                      catch (ci::fs::filesystem_error& ex)
-                                      {
-                                        DOUT << ex.what() << std::endl;
-                                      }
-
-                                      json.removeChild(ranking_records_);
-                                    }
-                                  }
-
-                                  archive_.setRecordArray("games", json);
-                                }
-                                archive_.recordGameResults(score);
+                                // スコア計算
+                                auto score = calcGameScore(args);
+                                recordGameScore(score);
 
                                 count_exec_.add(2.3,
                                                 [this, score]() noexcept
@@ -1003,6 +936,7 @@ private:
   }
 
 
+  // 画面遷移演出
   void setTransitionEvent(const std::string& begin, const std::string& end) noexcept
   {
     holder_ += event_.connect(begin,
@@ -1017,6 +951,84 @@ private:
                               });
   }
 
+  // 結果を計算
+  Score calcGameScore(const Arguments& args) noexcept
+  {
+    // ハイスコア判定
+    auto high_score     = archive_.getRecord<u_int>("high-score");
+    auto total_score    = boost::any_cast<u_int>(args.at("total_score"));
+    auto total_ranking  = boost::any_cast<u_int>(args.at("total_ranking"));
+    bool get_high_score = total_score > high_score;
+
+    Score score = {
+      boost::any_cast<const std::vector<u_int>&>(args.at("scores")),
+      boost::any_cast<u_int>(args.at("total_score")),
+      total_ranking,
+      boost::any_cast<u_int>(args.at("total_panels")),
+
+      boost::any_cast<u_int>(args.at("panel_turned_times")),
+      boost::any_cast<u_int>(args.at("panel_moved_times")),
+
+      game_->getLimitTime(),
+
+      get_high_score
+    };
+
+    DOUT << "high: " << high_score << " total: " << total_score << std::endl;
+
+    return score;
+  }
+
+  // Gameの記録
+  void recordGameScore(const Score& score) noexcept
+  {
+    // 記録にとっとく
+    auto path = std::string("game-") + getFormattedDate() + ".json";
+    game_->save(path);
+    // pathを記録
+    auto game_json = ci::JsonTree::makeObject();
+    game_json.addChild(ci::JsonTree("path",  path))
+    .addChild(ci::JsonTree("score", score.total_score))
+    .addChild(ci::JsonTree("rank",  score.total_ranking))
+    ;
+
+    // TIPS const参照からインスタンスを生成している
+    auto json = archive_.getRecordArray("games");
+    json.pushBack(game_json);
+                                  
+    Json::sort(json,
+               [](const ci::JsonTree& a, const ci::JsonTree& b) noexcept
+               {
+                 auto score_a = a.getValueForKey<u_int>("score");
+                 auto score_b = b.getValueForKey<u_int>("score");
+                 return score_a < score_b;
+               });
+    // ランキング圏外を捨てる
+    if (json.getNumChildren() > ranking_records_)
+    {
+      size_t count = json.getNumChildren() - ranking_records_;
+      for (size_t i = 0; i < count; ++i)
+      {
+        auto p = json[ranking_records_].getValueForKey<std::string>("path");
+        auto full_path = getDocumentPath() / p;
+        // ファイルを削除
+        try
+        {
+          DOUT << "remove: " << full_path << std::endl;
+          ci::fs::remove(full_path);
+        }
+        catch (ci::fs::filesystem_error& ex)
+        {
+          DOUT << ex.what() << std::endl;
+        }
+
+        json.removeChild(ranking_records_);
+      }
+    }
+
+    archive_.setRecordArray("games", json);
+    archive_.recordGameResults(score);
+  }
 
 
   // FIXME 変数を後半に定義する実験

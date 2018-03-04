@@ -29,7 +29,7 @@ class Ranking
 
 public:
   Ranking(const ci::JsonTree& params, Event<Arguments>& event, UI::Drawer& drawer, TweenCommon& tween_common,
-          const ci::JsonTree& ranking) noexcept
+          const Arguments& args) noexcept
     : event_(event),
       ranking_text_(Json::getArray<std::string>(params["result.ranking"])),
       canvas_(event, drawer, tween_common,
@@ -68,7 +68,7 @@ public:
     // ボタンイベント共通Tween
     setupCommonTweens(event_, holder_, canvas_, "agree");
 
-    applyRankings(ranking["games"]);
+    applyRankings(boost::any_cast<const ci::JsonTree&>(args.at("games")));
 
     canvas_.startTween("start");
   }

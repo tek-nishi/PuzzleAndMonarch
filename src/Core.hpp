@@ -124,9 +124,11 @@ public:
     holder_ += event_.connect("Ranking:begin",
                               [this](const Connection&, const Arguments& args) noexcept
                               {
-                                auto records = ci::JsonTree::makeObject();
-                                records.addChild(archive_.getRecordArray("games"));
-                                tasks_.pushBack<Ranking>(params_, event_, drawer_, tween_common_, records);
+                                Arguments ranking_args {
+                                  { "games", archive_.getRecordArray("games") }
+                                };
+
+                                tasks_.pushBack<Ranking>(params_, event_, drawer_, tween_common_, ranking_args);
                               });
     // Ranking→Title
     holder_ += event_.connect("Ranking:Finished",
