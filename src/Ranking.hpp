@@ -23,6 +23,11 @@ class Ranking
 
   std::vector<std::string> ranking_text_;
 
+  bool rank_in_  = false;
+  u_int ranking_ = 0;
+
+  std::vector<std::string> rank_effects_;
+
   UI::Canvas canvas_;
   bool active_ = true;
 
@@ -38,6 +43,12 @@ public:
               Params::load(params.getValueForKey<std::string>("ranking.tweens")))
   {
     startTimelineSound(event_, params, "ranking.se");
+
+    if (args.count("rank_in"))
+    {
+      rank_in_ = boost::any_cast<bool>(args.at("rank_in"));
+      ranking_ = boost::any_cast<u_int>(args.at("ranking"));
+    }
 
     holder_ += event_.connect("agree:touch_ended",
                               [this](const Connection&, const Arguments&) noexcept
@@ -72,17 +83,10 @@ public:
     // ボタンイベント共通Tween
     setupCommonTweens(event_, holder_, canvas_, "agree");
 
-    if (args.count("games"))
-    {
-      // NOTICE Title→Rankingの時は記録があるが、Result→Rankingの場合は記録が無い
-      applyRankings(boost::any_cast<const ci::JsonTree&>(args.at("games")));
-      canvas_.startTween("start");
-    }
-    else
-    {
-      canvas_.startTween("start-left");
-    }
-
+    // NOTICE Title→Rankingの時は記録があるが、Result→Rankingの場合は記録が無い
+    applyRankings(boost::any_cast<const ci::JsonTree&>(args.at("games")));
+    canvas_.startTween(rank_in_ ? "start-left"
+                                : "start");
   }
 
   ~Ranking() = default;
@@ -92,6 +96,17 @@ private:
   bool update(double current_time, double delta_time) noexcept override
   {
     count_exec_.update(delta_time);
+
+    if (rank_in_)
+    {
+      for (const auto& id : rank_effects_)
+      {
+        const auto& widget = canvas_.at(id);
+        auto color = ci::hsvToRgb({ std::fmod(current_time * 2.0, 1.0), 1, 1 });
+        widget->setParam("color", color);
+      }
+    }
+
     return active_;
   }
 
@@ -103,7 +118,6 @@ private:
     for (size_t i = 0; i < num; ++i)
     {
       const auto& json = rankings[i];
-
       {
         char id[16];
         std::sprintf(id, "%d", int(i + 1));
@@ -116,6 +130,20 @@ private:
         auto rank = json.getValueForKey<u_int>("rank");
         UI::Canvas::setWidgetText(canvas_, id, ranking_text_[rank]);
       }
+    }
+
+    if (ranking_ < rankings.getNumChildren())
+    {
+      char id[16];
+
+      std::sprintf(id, "%d", ranking_ + 1);
+      rank_effects_.push_back(id);
+
+      std::sprintf(id, "t%d", ranking_ + 1);
+      rank_effects_.push_back(id);
+      
+      std::sprintf(id, "r%d", ranking_ + 1);
+      rank_effects_.push_back(id);
     }
   }
 

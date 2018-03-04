@@ -6,6 +6,7 @@
 
 #include "Defines.hpp"
 #include <tuple>
+#include <limits>
 #include <glm/gtx/norm.hpp>
 #include <glm/gtx/transform.hpp>
 #include <glm/gtc/quaternion.hpp>
@@ -282,13 +283,15 @@ public:
                                 recordGameScore(score);
                                 // ランクインしてるか調べる
                                 auto rank_in = isRankIn(score.total_score);
+                                auto ranking = getRanking(score.total_score);
 
                                 count_exec_.add(2.3,
-                                                [this, score, rank_in]() noexcept
+                                                [this, score, rank_in, ranking]() noexcept
                                                 {
                                                   Arguments a {
                                                     { "score",   score },
                                                     { "rank_in", rank_in },
+                                                    { "ranking", ranking },
                                                   };
                                                   event_.signal("Result:begin", a);
                                                 });
@@ -351,9 +354,18 @@ public:
 
     // Result→Title
     holder_ += event.connect("Result:Finished",
-                              [this](const Connection&, const Arguments&) noexcept
+                              [this](const Connection&, const Arguments& args) noexcept
                               {
-                                resetGame();
+                                // NOTICE TOP10入りの時はResult→Ranking→Titleと遷移する
+                                bool rank_in = boost::any_cast<bool>(args.at("rank_in"));
+                                if (rank_in)
+                                {
+                                  view_.setColor(force_timeline_, transition_duration_, transition_color_);
+                                }
+                                else
+                                {
+                                  resetGame();
+                                }
                               });
 
     // Ranking
@@ -955,7 +967,7 @@ private:
   }
 
   // 結果を計算
-  Score calcGameScore(const Arguments& args) noexcept
+  Score calcGameScore(const Arguments& args) const noexcept
   {
     // ハイスコア判定
     auto high_score     = archive_.getRecord<u_int>("high-score");
@@ -1032,7 +1044,7 @@ private:
     archive_.recordGameResults(score);
   }
 
-  bool isRankIn(u_int score) noexcept
+  bool isRankIn(u_int score) const noexcept
   {
     const auto& ranking = archive_.getRecordArray("games");
     for (const auto& r : ranking)
@@ -1040,6 +1052,19 @@ private:
       if (score == r.getValueForKey<u_int>("score")) return true;
     }
     return false;
+  }
+
+  u_int getRanking(u_int score) const noexcept
+  {
+    const auto& ranking = archive_.getRecordArray("games");
+    u_int i;
+    for (i = 0; i < ranking.getNumChildren(); ++i)
+    {
+      if (score == ranking[i].getValueForKey<u_int>("score")) return i;
+    }
+
+    // NOTICE 見つからない場合は最大値
+    return std::numeric_limits<u_int>::max();
   }
 
 

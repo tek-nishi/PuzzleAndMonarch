@@ -162,7 +162,13 @@ public:
                                 if (rank_in)
                                 {
                                   // TOP10に入っていたらRankingを起動
-                                  tasks_.pushBack<Ranking>(params_, event_, drawer_, tween_common_, Arguments());
+                                  Arguments ranking_args {
+                                    { "games",   archive_.getRecordArray("games") },
+                                    { "rank_in", rank_in },
+                                    { "ranking", boost::any_cast<u_int>(args.at("ranking")) },
+                                  };
+
+                                  tasks_.pushBack<Ranking>(params_, event_, drawer_, tween_common_, ranking_args);
                                 }
                                 else
                                 {

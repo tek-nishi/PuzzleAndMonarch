@@ -25,6 +25,7 @@ class Result
   CountExec count_exec_;
 
   bool rank_in_    = false;
+  u_int ranking_   = 0;
   bool high_score_ = false;
 
   std::vector<std::string> ranking_text_;
@@ -48,6 +49,7 @@ public:
     startTimelineSound(event_, params, "result.se");
 
     rank_in_ = boost::any_cast<bool>(args.at("rank_in"));
+    ranking_ = boost::any_cast<u_int>(args.at("ranking"));
     
     const auto& score = boost::any_cast<const Score&>(args.at("score"));
     high_score_ = score.high_score;
@@ -73,6 +75,7 @@ public:
                                                 {
                                                   Arguments args {
                                                     { "rank_in", rank_in_ },
+                                                    { "ranking", ranking_ },
                                                   };
                                                   event_.signal("Result:Finished", args);
                                                 });
