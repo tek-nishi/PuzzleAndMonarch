@@ -131,7 +131,7 @@ private:
 
     if (high_score_)
     {
-      const auto& widget = canvas_.at("score:10");
+      const auto& widget = canvas_.at("score:20");
       auto color = ci::hsvToRgb({ std::fmod(current_time * 2.0, 1.0), 1, 1 });
       widget->setParam("color", color);
     }
