@@ -68,7 +68,7 @@ public:
     // ボタンイベント共通Tween
     setupCommonTweens(event_, holder_, canvas_, "agree");
 
-    applyRankings(ranking);
+    applyRankings(ranking["games"]);
 
     canvas_.startTween("start");
   }

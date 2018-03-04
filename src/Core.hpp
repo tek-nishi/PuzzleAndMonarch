@@ -122,9 +122,10 @@ public:
                               });
     // Title→Ranking
     holder_ += event_.connect("Ranking:begin",
-                              [this](const Connection&, const Arguments&) noexcept
+                              [this](const Connection&, const Arguments& args) noexcept
                               {
-                                const auto& records = archive_.getRecordArray("games");
+                                auto records = ci::JsonTree::makeObject();
+                                records.addChild(archive_.getRecordArray("games"));
                                 tasks_.pushBack<Ranking>(params_, event_, drawer_, tween_common_, records);
                               });
     // Ranking→Title
