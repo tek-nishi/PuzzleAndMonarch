@@ -25,6 +25,7 @@ class Ranking
 
   bool rank_in_  = false;
   u_int ranking_ = 0;
+  size_t ranking_records_;
 
   std::vector<std::string> rank_effects_;
 
@@ -37,6 +38,7 @@ public:
           const Arguments& args) noexcept
     : event_(event),
       ranking_text_(Json::getArray<std::string>(params["result.ranking"])),
+      ranking_records_(params.getValueForKey<u_int>("game.ranking_records")),
       canvas_(event, drawer, tween_common,
               params["ui.camera"],
               Params::load(params.getValueForKey<std::string>("ranking.canvas")),
@@ -113,8 +115,8 @@ private:
 
   void applyRankings(const ci::JsonTree& rankings) noexcept
   {
-    // NOTICE ソート済みで最大10個の配列である事
-    size_t num = std::min(rankings.getNumChildren(), size_t(10));
+    // NOTICE ソート済みの配列である事
+    size_t num = std::min(rankings.getNumChildren(), ranking_records_);
     for (size_t i = 0; i < num; ++i)
     {
       const auto& json = rankings[i];
