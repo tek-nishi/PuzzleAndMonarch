@@ -118,6 +118,16 @@ public:
     setupCommonTweens(event_, holder_, canvas_, "share");
 
     applyScore(score);
+
+    if (high_score_)
+    {
+      UI::Canvas::enableWidget(canvas_, "score:high-score");
+    }
+    else if (rank_in_)
+    {
+      UI::Canvas::enableWidget(canvas_, "score:rank-in");
+    }
+
     canvas_.startTween("start");
   }
 
@@ -131,9 +141,15 @@ private:
 
     if (high_score_)
     {
-      const auto& widget = canvas_.at("score:20");
       auto color = ci::hsvToRgb({ std::fmod(current_time * 2.0, 1.0), 1, 1 });
-      widget->setParam("color", color);
+      canvas_.setWidgetParam("score:20", "color", color);
+      canvas_.setWidgetParam("score:high-score", "color", color);
+    }
+    else if (rank_in_)
+    {
+      auto color = ci::hsvToRgb({ std::fmod(current_time * 2.0, 1.0), 1, 1 });
+      canvas_.setWidgetParam("score:20", "color", color);
+      canvas_.setWidgetParam("score:rank-in", "color", color);
     }
 
     return active_;

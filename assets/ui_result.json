@@ -331,10 +331,10 @@
     
     {
       "identifier": "total_score",
-      "rect": [ 45, -25, 45, 20 ],
+      "rect": [ 45, -15, 45, 30 ],
       "anchor": [
-        [ 0.65, 0.5 ],
-        [ 0.65, 0.5 ]
+        [ 0.6, 0.5 ],
+        [ 0.6, 0.5 ]
       ],
       "scale": [ 1, 1 ],
       "pivot": [ 0.5, 0.5 ],
@@ -401,8 +401,40 @@
           "color": [ 1, 1, 1 ]
         },
         {
+          "identifier": "score:high-score",
+          "rect": [ -50, -80, 18, -67 ],
+          "anchor": [
+            [ 0, 1 ],
+            [ 0, 1 ]
+          ],
+          "scale": [ 1, 1 ],
+          "pivot": [ 0.5, 0.5 ],
+          "enable": false,
+
+          "font": "en",
+          "text": "New Record!!",
+          "layout": [ 1, 0 ],
+          "color": [ 1, 1, 1 ]
+        },
+        {
+          "identifier": "score:rank-in",
+          "rect": [ -50, -80, 18, -67 ],
+          "anchor": [
+            [ 0, 1 ],
+            [ 0, 1 ]
+          ],
+          "scale": [ 1, 1 ],
+          "pivot": [ 0.5, 0.5 ],
+          "enable": false,
+
+          "font": "en",
+          "text": "Rank In!",
+          "layout": [ 1, 0 ],
+          "color": [ 1, 1, 1 ]
+        },
+        {
           "identifier": "share",
-          "rect": [ -2, -90, 18, -70 ],
+          "rect": [ -2, -105, 18, -85 ],
           "anchor": [
             [ 0, 1 ],
             [ 0, 1 ]
