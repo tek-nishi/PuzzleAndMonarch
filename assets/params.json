@@ -96,7 +96,7 @@
   },
 
   "game": {
-    "play_time": 20,
+    "play_time": 180,
 
     "score_rates": [
       3,
@@ -274,6 +274,12 @@
       {
         "name": "logo",
         "path": "FuturaDisD.ttf",
+        "texture_size": 256,
+        "size": 64
+      },
+      {
+        "name": "head",
+        "path": "FuturaCon-Bol.ttf",
         "texture_size": 256,
         "size": 64
       }

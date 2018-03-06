@@ -986,7 +986,7 @@ private:
 
       game_->getLimitTime(),
 
-      get_high_score
+      get_high_score,
     };
 
     DOUT << "high: " << high_score << " total: " << total_score << std::endl;

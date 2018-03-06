@@ -368,7 +368,7 @@
           "scale": [ 1, 1 ],
           "pivot": [ 0.5, 0.5 ],
 
-          "font": "en",
+          "font": "head",
           "text": "Secure the territory!",
           "color": [ 1, 1, 1 ]
         }
@@ -396,7 +396,7 @@
           "scale": [ 1, 1 ],
           "pivot": [ 0.5, 0.5 ],
       
-          "font": "en",
+          "font": "head",
           "text": "Well done!",
           "color": [ 1, 1, 1 ]
         }
