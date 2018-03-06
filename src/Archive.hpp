@@ -74,7 +74,7 @@ public:
 
 
   // プレイ結果を記録
-  void recordGameResults(const Score& score) noexcept
+  void recordGameResults(const Score& score, bool high_score) noexcept
   {
     // 累積記録
     addRecord("play-times",   uint32_t(1));
@@ -82,7 +82,7 @@ public:
     addRecord("panel-turned-times", uint32_t(score.panel_turned_times));
     addRecord("panel-moved-times",  uint32_t(score.panel_moved_times));
 
-    if (score.high_score)
+    if (high_score)
     {
       setRecord("high-score", uint32_t(score.total_score));
     }

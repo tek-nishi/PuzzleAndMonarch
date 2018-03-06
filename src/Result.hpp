@@ -48,11 +48,11 @@ public:
   {
     startTimelineSound(event_, params, "result.se");
 
-    rank_in_ = boost::any_cast<bool>(args.at("rank_in"));
-    ranking_ = boost::any_cast<u_int>(args.at("ranking"));
+    rank_in_    = boost::any_cast<bool>(args.at("rank_in"));
+    ranking_    = boost::any_cast<u_int>(args.at("ranking"));
+    high_score_ = boost::any_cast<bool>(args.at("high_score"));
     
     const auto& score = boost::any_cast<const Score&>(args.at("score"));
-    high_score_ = score.high_score;
     share_text_ = replaceString(params.getValueForKey<std::string>("result.share"),
                                 "%1",
                                 std::to_string(score.total_score));

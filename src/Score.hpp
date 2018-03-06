@@ -19,8 +19,6 @@ struct Score
 
   // 制限時間
   double limit_time;
-
-  bool high_score;
 };
 
 }

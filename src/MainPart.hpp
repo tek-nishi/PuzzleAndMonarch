@@ -279,19 +279,21 @@ public:
                                 calcViewRange(false);
 
                                 // スコア計算
-                                auto score = calcGameScore(args);
-                                recordGameScore(score);
+                                auto score      = calcGameScore(args);
+                                bool high_score = isHighScore(score);
+                                recordGameScore(score, high_score);
                                 // ランクインしてるか調べる
                                 auto rank_in = isRankIn(score.total_score);
                                 auto ranking = getRanking(score.total_score);
 
                                 count_exec_.add(2.3,
-                                                [this, score, rank_in, ranking]() noexcept
+                                                [this, score, rank_in, ranking, high_score]() noexcept
                                                 {
                                                   Arguments a {
-                                                    { "score",   score },
-                                                    { "rank_in", rank_in },
-                                                    { "ranking", ranking },
+                                                    { "score",      score },
+                                                    { "rank_in",    rank_in },
+                                                    { "ranking",    ranking },
+                                                    { "high_score", high_score },
                                                   };
                                                   event_.signal("Result:begin", a);
                                                 });
@@ -969,33 +971,30 @@ private:
   // 結果を計算
   Score calcGameScore(const Arguments& args) const noexcept
   {
-    // ハイスコア判定
-    auto high_score     = archive_.getRecord<u_int>("high-score");
-    auto total_score    = boost::any_cast<u_int>(args.at("total_score"));
-    auto total_ranking  = boost::any_cast<u_int>(args.at("total_ranking"));
-    bool get_high_score = total_score > high_score;
-
     Score score = {
       boost::any_cast<const std::vector<u_int>&>(args.at("scores")),
       boost::any_cast<u_int>(args.at("total_score")),
-      total_ranking,
+      boost::any_cast<u_int>(args.at("total_ranking")),
       boost::any_cast<u_int>(args.at("total_panels")),
 
       boost::any_cast<u_int>(args.at("panel_turned_times")),
       boost::any_cast<u_int>(args.at("panel_moved_times")),
 
       game_->getLimitTime(),
-
-      get_high_score,
     };
-
-    DOUT << "high: " << high_score << " total: " << total_score << std::endl;
 
     return score;
   }
 
+  bool isHighScore(const Score& score) const noexcept
+  {
+    // ハイスコア判定
+    auto high_score = archive_.getRecord<u_int>("high-score");
+    return score.total_score > high_score;
+  }
+
   // Gameの記録
-  void recordGameScore(const Score& score) noexcept
+  void recordGameScore(const Score& score, bool high_score) noexcept
   {
     auto path = std::string("game-") + getFormattedDate() + ".json";
     game_->save(path);
@@ -1039,9 +1038,9 @@ private:
         json.removeChild(ranking_records_);
       }
     }
-
     archive_.setRecordArray("games", json);
-    archive_.recordGameResults(score);
+
+    archive_.recordGameResults(score, high_score);
   }
 
   bool isRankIn(u_int score) const noexcept
