@@ -119,6 +119,7 @@ public:
   void clear() noexcept
   {
     field_panels_.clear();
+    effects_.clear();
   }
 
 
