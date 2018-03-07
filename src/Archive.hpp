@@ -15,6 +15,16 @@ class Archive
 {
   void create() noexcept
   {
+    auto games = ci::JsonTree::makeArray("games");
+    auto g = ci::JsonTree::makeObject().addChild(ci::JsonTree("score", uint32_t(50)))
+                                       .addChild(ci::JsonTree("rank",  uint32_t(0)))
+    ;
+    
+    for (int i = 0; i < 10; ++i)
+    {
+      games.pushBack(g);
+    }
+
     records_.addChild(ci::JsonTree("play-times",         uint32_t(0)))
             .addChild(ci::JsonTree("high-score",         uint32_t(0)))
             .addChild(ci::JsonTree("total-panels",       uint32_t(0)))
@@ -33,7 +43,8 @@ class Archive
             .addChild(ci::JsonTree("bgm-enable", true))
             .addChild(ci::JsonTree("se-enable",  true))
 
-            .addChild(ci::JsonTree::makeArray("games"))
+            .addChild(games)
+            .addChild(ci::JsonTree("saved", false))
 
             .addChild(ci::JsonTree("version", version_))
     ;
@@ -68,8 +79,9 @@ public:
   // Gameの記録が保存されているか？
   bool isSaved() const noexcept
   {
-    const auto& json = getRecordArray("games");
-    return json.hasChildren();
+    // const auto& json = getRecordArray("games");
+    // return json.hasChildren();
+    return getRecord<bool>("saved");
   }
 
 

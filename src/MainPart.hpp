@@ -382,8 +382,9 @@ public:
                                 // TOPの記録を読み込む
                                 {
                                   const auto& json = archive_.getRecordArray("games");
-                                  if (json.hasChildren())
+                                  if (json.hasChildren() && json[0].hasChild("path"))
                                   {
+                                    
                                     game_->load(json[0].getValueForKey("path"));
                                   }
                                 }
@@ -996,6 +997,8 @@ private:
   // Gameの記録
   void recordGameScore(const Score& score, bool high_score) noexcept
   {
+    archive_.setRecord("saved", true); 
+
     auto path = std::string("game-") + getFormattedDate() + ".json";
     game_->save(path);
     // pathを記録
@@ -1022,6 +1025,8 @@ private:
       size_t count = json.getNumChildren() - ranking_records_;
       for (size_t i = 0; i < count; ++i)
       {
+        if (!json[ranking_records_].hasChild("path")) continue;
+
         auto p = json[ranking_records_].getValueForKey<std::string>("path");
         auto full_path = getDocumentPath() / p;
         // ファイルを削除
