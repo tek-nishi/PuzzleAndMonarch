@@ -138,31 +138,30 @@ public:
 
 
   // 書き換え補助関数
-  // FIXME メンバ関数でいいかも
-  static void setWidgetText(UI::Canvas& canvas, const std::string& id, const std::string& text) noexcept
+  void setWidgetText(const std::string& id, const std::string& text) noexcept
   {
 #if defined DEBUG
-    if (!canvas.isExists(id))
+    if (!this->isExists(id))
     {
       DOUT << "No widget: " << id << std::endl;
     }
 #endif
 
-    const auto& widget = canvas.at(id);
+    const auto& widget = this->at(id);
     widget->setParam("text", text);
   }
 
   // FIXME メンバ関数でいいかも
-  static void enableWidget(UI::Canvas& canvas, const std::string& id) noexcept
+  void enableWidget(const std::string& id) noexcept
   {
 #if defined DEBUG
-    if (!canvas.isExists(id))
+    if (!this->isExists(id))
     {
       DOUT << "No widget: " << id << std::endl;
     }
 #endif
 
-    const auto& widget = canvas.at(id);
+    const auto& widget = this->at(id);
     widget->enable();
   }
 

@@ -124,13 +124,13 @@ private:
         char id[16];
         std::sprintf(id, "%d", int(i + 1));
         auto score = json.getValueForKey<u_int>("score");
-        UI::Canvas::setWidgetText(canvas_, id, std::to_string(score));
+        canvas_.setWidgetText(id, std::to_string(score));
       }
       {
         char id[16];
         std::sprintf(id, "r%d", int(i + 1));
         auto rank = json.getValueForKey<u_int>("rank");
-        UI::Canvas::setWidgetText(canvas_, id, ranking_text_[rank]);
+        canvas_.setWidgetText(id, ranking_text_[rank]);
       }
     }
 
@@ -157,14 +157,14 @@ private:
     {
       char id[16];
       std::sprintf(id, "score:%d", i);
-      UI::Canvas::setWidgetText(canvas_, id, std::to_string(s));
+      canvas_.setWidgetText(id, std::to_string(s));
 
       i += 1;
     }
       
-    UI::Canvas::setWidgetText(canvas_, "score:8",  std::to_string(boost::any_cast<u_int>(args.at("total_panels"))));
-    UI::Canvas::setWidgetText(canvas_, "score:9",  std::to_string(boost::any_cast<u_int>(args.at("total_score"))));
-    UI::Canvas::setWidgetText(canvas_, "score:10", ranking_text_[boost::any_cast<u_int>(args.at("total_ranking"))]);
+    canvas_.setWidgetText("score:8",  std::to_string(boost::any_cast<u_int>(args.at("total_panels"))));
+    canvas_.setWidgetText("score:9",  std::to_string(boost::any_cast<u_int>(args.at("total_score"))));
+    canvas_.setWidgetText("score:10", ranking_text_[boost::any_cast<u_int>(args.at("total_ranking"))]);
   }
 };
 

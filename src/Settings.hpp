@@ -65,7 +65,7 @@ public:
                               [this](const Connection&, const Arguments&) noexcept
                               {
                                 bgm_enable_ = !bgm_enable_;
-                                setWidgetText("BGM-text", bgm_enable_, u8"", u8"");
+                                canvas_.setWidgetText("BGM-text", bgm_enable_ ? u8"" : u8"");
                                 signalSettings();
                               });
 
@@ -73,7 +73,7 @@ public:
                               [this](const Connection&, const Arguments&) noexcept
                               {
                                 se_enable_ = !se_enable_;
-                                setWidgetText("SE-text", se_enable_, u8"", u8"");
+                                canvas_.setWidgetText("SE-text", se_enable_ ? u8"" : u8"");
                                 signalSettings();
                               });
 
@@ -101,8 +101,8 @@ private:
     bgm_enable_ = detail.bgm_enable;
     se_enable_  = detail.se_enable;
 
-    setWidgetText("BGM-text", bgm_enable_, u8"", u8"");
-    setWidgetText("SE-text",  se_enable_,  u8"", u8"");
+    canvas_.setWidgetText("BGM-text", bgm_enable_ ? u8"" : u8"");
+    canvas_.setWidgetText("SE-text",  se_enable_  ? u8"" : u8"");
   }
 
   void signalSettings() noexcept

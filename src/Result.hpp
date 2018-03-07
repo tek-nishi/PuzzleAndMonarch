@@ -121,11 +121,11 @@ public:
 
     if (high_score_)
     {
-      UI::Canvas::enableWidget(canvas_, "score:high-score");
+      canvas_.enableWidget("score:high-score");
     }
     else if (rank_in_)
     {
-      UI::Canvas::enableWidget(canvas_, "score:rank-in");
+      canvas_.enableWidget("score:rank-in");
     }
 
     canvas_.startTween("start");
@@ -166,17 +166,17 @@ private:
 
       // const auto& widget = canvas_.at(id);
       // widget->setParam("text", std::to_string(s));
-      UI::Canvas::setWidgetText(canvas_, id, std::to_string(s));
+      canvas_.setWidgetText(id, std::to_string(s));
 
       i += 1;
     }
 
-    UI::Canvas::setWidgetText(canvas_, "score:8",  std::to_string(score.total_panels));
-    UI::Canvas::setWidgetText(canvas_, "score:9",  std::to_string(score.panel_turned_times));
-    UI::Canvas::setWidgetText(canvas_, "score:10", std::to_string(score.panel_moved_times));
+    canvas_.setWidgetText("score:8",  std::to_string(score.total_panels));
+    canvas_.setWidgetText("score:9",  std::to_string(score.panel_turned_times));
+    canvas_.setWidgetText("score:10", std::to_string(score.panel_moved_times));
 
-    UI::Canvas::setWidgetText(canvas_, "score:20", std::to_string(score.total_score));
-    UI::Canvas::setWidgetText(canvas_, "score:21", std::string(ranking_text_[score.total_ranking]));
+    canvas_.setWidgetText("score:20", std::to_string(score.total_score));
+    canvas_.setWidgetText("score:21", std::string(ranking_text_[score.total_ranking]));
   }
 
 };
