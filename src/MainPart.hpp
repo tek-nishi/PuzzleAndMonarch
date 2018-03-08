@@ -1019,25 +1019,27 @@ private:
                  auto score_b = b.getValueForKey<u_int>("score");
                  return score_a < score_b;
                });
+
     // ランキング圏外を捨てる
     if (json.getNumChildren() > ranking_records_)
     {
       size_t count = json.getNumChildren() - ranking_records_;
       for (size_t i = 0; i < count; ++i)
       {
-        if (!json[ranking_records_].hasChild("path")) continue;
-
-        auto p = json[ranking_records_].getValueForKey<std::string>("path");
-        auto full_path = getDocumentPath() / p;
-        // ファイルを削除
-        try
+        if (json[ranking_records_].hasChild("path"))
         {
-          DOUT << "remove: " << full_path << std::endl;
-          ci::fs::remove(full_path);
-        }
-        catch (ci::fs::filesystem_error& ex)
-        {
-          DOUT << ex.what() << std::endl;
+          auto p = json[ranking_records_].getValueForKey<std::string>("path");
+          auto full_path = getDocumentPath() / p;
+          // ファイルを削除
+          try
+          {
+            DOUT << "remove: " << full_path << std::endl;
+            ci::fs::remove(full_path);
+          }
+          catch (ci::fs::filesystem_error& ex)
+          {
+            DOUT << ex.what() << std::endl;
+          }
         }
 
         json.removeChild(ranking_records_);

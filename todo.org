@@ -1,5 +1,8 @@
 * TODO チュートリアル
-* TODO 初期Rankingは最低点としておく
+* TODO 0点でランクイン→ランキング画面でエラー
+* TODO 結果画面やランキング画面で、一定時間入力がないと回転するようにならないか
+* TODO マーカーの黄色と赤が逆？
+* TODO ボタンの説明は上につけないと押す時に指で隠れる
 * TODO 残り枚数を表示
 * TODO 縦画面の時にランキングのレイアウトが窮屈
 * TODO tween終わりでOFFにしたい
@@ -59,6 +62,8 @@
 * TODO アプリアイコン
 * TODO iOS:GameCenter対応
 * TODO iOS:実績を実装
+* DONE 初期Rankingは最低点としておく
+CLOSED: [2018-03-08 木 01:41]
 * DONE エフェクトが出てる時に中断するとエフェクトが残る
 CLOSED: [2018-03-08 木 00:49]
 * DONE TOP10入りした場合はResult→Ranking→Titleと画面遷移
