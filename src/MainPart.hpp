@@ -428,11 +428,13 @@ public:
                                 fixed_exec_.clear();
                               });
 
+    // System
     holder_ += event_.connect("App:ResignActive",
                               [this](const Connection&, const Arguments&) noexcept
                               {
                                 if (game_->isPlaying() && !paused_)
                                 {
+                                  // 自動ポーズ
                                   event_.signal("pause:touch_ended", Arguments());
                                 }
                               });
@@ -496,6 +498,13 @@ public:
                                 view_.setColor(force_timeline_, 0.3, ci::ColorA(1, 1, 1, 1));
                               });
 
+    holder_ += event_.connect("Settings:Trash",
+                              [this](const Connection&, const Arguments&) noexcept
+                              {
+                                // 記録を消去
+                                eraseRecords();
+                              });
+    
     // Transition
     static const std::vector<std::pair<const char*, const char*>> transition = {
       { "Credits:begin",  "Credits:Finished" },
@@ -1082,6 +1091,34 @@ private:
 
     // NOTICE 見つからない場合は最大値
     return std::numeric_limits<u_int>::max();
+  }
+
+
+  // 記録の消去
+  void eraseRecords() noexcept
+  {
+    // 保存してあるプレイ結果を削除
+    auto game_records = archive_.getRecordArray("games");
+    for (const auto& game : game_records)
+    {
+      if (game.hasChild("path"))
+      {
+        auto p = game.getValueForKey<std::string>("path");
+        auto full_path = getDocumentPath() / p;
+        // ファイルを削除
+        try
+        {
+          DOUT << "remove: " << full_path << std::endl;
+          ci::fs::remove(full_path);
+        }
+        catch (ci::fs::filesystem_error& ex)
+        {
+          DOUT << ex.what() << std::endl;
+        }
+      }
+    }
+
+    archive_.erase();
   }
 
 

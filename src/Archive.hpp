@@ -70,7 +70,7 @@ public:
     : full_path_(getDocumentPath() / path),
       version_(version)
   {
-    load();
+    this->load();
   }
 
   ~Archive() = default;
@@ -132,7 +132,7 @@ public:
     }
 
     // 記録→保存
-    save();
+    this->save();
   }
 
   
@@ -167,12 +167,21 @@ public:
   {
     return records_[id];
   }
-
+  
 
   void save() noexcept
   {
     records_.write(full_path_);
     DOUT << "Archive:write: " << full_path_ << std::endl;
+  }
+
+  // 消去
+  void erase() noexcept
+  {
+    // 保存データの消去
+    records_.clear();
+
+    this->create();
   }
 
 

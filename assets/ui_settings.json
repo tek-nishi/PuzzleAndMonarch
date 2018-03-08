@@ -122,6 +122,39 @@
     },
 
     {
+      "identifier": "Trash",
+      "rect": [ -12, -23.0, 12, 0.0 ],
+      "anchor": [
+        [ 0.5, 0.45 ],
+        [ 0.5, 0.45 ]
+      ],
+      "scale": [ 1, 1 ],
+      "pivot": [ 0.5, 0.5 ],
+
+      "radius": 1,
+      "line_width": 1.5,
+      "color": [ 1, 1, 1 ],
+
+      "event": "Trash",
+
+      "childlen": [
+        {
+          "rect": [ 0, 0, 0, 0 ],
+          "anchor": [
+            [ 0.07, 0.15 ],
+            [ 1.0, 0.93 ]
+          ],
+          "scale": [ 1, 1 ],
+          "pivot": [ 0.5, 0.5 ],
+
+          "font": "icon",
+          "text": "",
+          "color": [ 1, 1, 1 ]
+        }
+      ]
+    },
+
+    {
       "identifier": "touch",
       "rect": [ -14, 0, 14, 28 ],
       "anchor": [

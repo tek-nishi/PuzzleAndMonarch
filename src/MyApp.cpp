@@ -23,7 +23,6 @@ class MyApp
   : public ci::app::App,
     private boost::noncopyable
 {
-
   using Worker = Core;
   // using Worker = Sandbox;
 
@@ -66,6 +65,12 @@ public:
                                     }
                                     DOUT << "SignalWillRotate" << std::endl;
                                   });
+
+    // getSignalWillEnterForeground().connect([this]() noexcept
+    //                                        {
+    //                                          DOUT << "WillEnterForeground" << std::endl;
+    //                                        });
+
 #endif
     
     // アクティブになった時にタッチ情報を初期化

@@ -77,9 +77,20 @@ public:
                                 signalSettings();
                               });
 
+
+    holder_ += event_.connect("Trash:touch_ended",
+                              [this](const Connection&, const Arguments&) noexcept
+                              {
+                                // 記録削除
+                                event_.signal("Settings:Trash", Arguments());
+                                DOUT << "Trash." << std::endl;
+                              });
+
+
     setupCommonTweens(event_, holder_, canvas_, "agree");
     setupCommonTweens(event_, holder_, canvas_, "BGM");
     setupCommonTweens(event_, holder_, canvas_, "SE");
+    setupCommonTweens(event_, holder_, canvas_, "Trash");
 
     applyDetail(detail);
     canvas_.startTween("start");
