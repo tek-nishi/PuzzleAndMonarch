@@ -52,6 +52,10 @@ public:
                               std::bind(&Canvas::touchEnded,
                                         this, std::placeholders::_1, std::placeholders::_2));
 
+    holder_ += event_.connect("multi_touch_began", 0,
+                              std::bind(&Canvas::multiTouchBegan,
+                                        this, std::placeholders::_1, std::placeholders::_2));
+
     // system
     holder_ += event_.connect("resize",
                               std::bind(&Canvas::resize,
@@ -315,7 +319,6 @@ private:
     touching_in_ = contains;
   }
 
-
   void touchEnded(const Connection&, Arguments& arg) noexcept
   {
     if (!active_) return;
@@ -355,6 +358,30 @@ private:
   }
 
 
+  void multiTouchBegan(const Connection&, Arguments& arg) noexcept
+  {
+    // タッチ操作をキャンセル
+    if (touching_widget_.expired()) return;
+
+    auto widget = touching_widget_.lock();
+    Arguments args = {
+      { "widget", widget->getIdentifier() }
+    };
+
+    if (touching_in_)
+    {
+      // DOUT << "widget touch cancel: " << widget->getIdentifier() << std::endl;
+      std::string event = widget->getEvent() + ":moved_out";
+      event_.signal(event, args);
+    }
+    else
+    {
+      // DOUT << "widget touch moved out-out: " << widget->getIdentifier() << std::endl;
+    }
+    touching_widget_.reset();
+  }
+
+  
   glm::vec2 calcUIPosition(const glm::vec2& pos) noexcept
   {
     const auto& camera = camera_.body();

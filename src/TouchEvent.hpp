@@ -123,17 +123,14 @@ struct TouchEvent
   // タッチされていない状況からの指一本タッチを「タッチ操作」と扱う
   void touchesBegan(const ci::app::TouchEvent& event) noexcept
   {
-    bool first_touch = touch_id_.empty();
-
-    auto num = touch_id_.size();
-
+    // ID登録
     const auto& touches = event.getTouches();
     for (const auto& t : touches)
     {
       touch_id_.insert(t.getId());
     }
 
-    if (first_touch)
+    if (touch_id_.size() == 1)
     {
       // イベント送信
       const auto& t = touches[0];
@@ -147,14 +144,14 @@ struct TouchEvent
         { "touch", touch }
       };
       event_.signal("single_touch_began", arg);
-
-      first_touch_    = first_touch;
-      first_touch_id_ = t.getId();
+      DOUT << "single_touch_began" << std::endl;
     }
-
-    if (num <= 1 && touch_id_.size() >= 2)
+    else if (!multi_touch_)
     {
       // マルチタッチ開始
+      event_.signal("multi_touch_began", Arguments());
+      multi_touch_ = false;
+      DOUT << "multi_touch_began" << std::endl;
     }
   }
   
@@ -175,28 +172,20 @@ struct TouchEvent
       };
       event_.signal("multi_touch_moved", arg);
     }
-    else if (first_touch_)
+    else if (touch_id_.size() == 1)
     {
-      for (const auto& t : touches)
-      {
-        auto id = t.getId();
-        if (id == first_touch_id_)
-        {
-          Touch touch = {
-            id,
-            false,
-            t.getPos(),
-            t.getPrevPos()
-          };
+      const auto& t = touches[0];
 
-          Arguments arg = {
-            { "touch", touch }
-          };
-          event_.signal("single_touch_moved", arg);
-
-          break;
-        }
-      }
+      Touch touch = {
+        t.getId(),
+        false,
+        t.getPos(),
+        t.getPrevPos()
+      };
+      Arguments arg = {
+        { "touch", touch }
+      };
+      event_.signal("single_touch_moved", arg);
     }
   }
   
@@ -207,28 +196,21 @@ struct TouchEvent
     auto num = touch_id_.size();
 
     const auto& touches = event.getTouches();
-    if (first_touch_)
+    if (touch_id_.size() == 1)
     {
-      for (const auto& t : touches)
-      {
-        if (t.getId() == first_touch_id_)
-        {
-          // イベント送信
-          Touch touch = {
-            t.getId(),
-            false,
-            t.getPos(),
-            t.getPrevPos()
-          };
-          Arguments arg = {
-            { "touch", touch }
-          };
-          event_.signal("single_touch_ended", arg);
-
-          first_touch_ = false;
-          break;
-        }
-      }
+      const auto& t = touches[0];
+      // イベント送信
+      Touch touch = {
+        t.getId(),
+        false,
+        t.getPos(),
+        t.getPrevPos()
+      };
+      Arguments arg = {
+        { "touch", touch }
+      };
+      event_.signal("single_touch_ended", arg);
+      DOUT << "single_touch_ended" << std::endl;
     }
 
     // Touch情報を削除
@@ -237,10 +219,13 @@ struct TouchEvent
       auto id = t.getId();
       touch_id_.erase(id);
     }
-    
+
     if (num >= 2 && touch_id_.size() <= 1)
     {
       // マルチタッチ終了
+      multi_touch_ = false;
+      // event_.signal("multi_touch_ended", Arguments());
+      DOUT << "multi_touch_ended" << std::endl;
     }
   }
 
@@ -254,9 +239,7 @@ private:
   glm::vec2 m_diagonal_prev_pos_;
 
   std::set<uint32_t> touch_id_;
-
-  bool first_touch_ = false;
-  uint32_t first_touch_id_;
+  bool multi_touch_ = false;
 
   Event<Arguments>& event_;
 };

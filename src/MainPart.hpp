@@ -114,6 +114,17 @@ public:
                                 }
                               });
 
+    holder_ += event_.connect("multi_touch_began",
+                              [this](const Connection&, Arguments& arg) noexcept
+                              {
+                                if (touch_put_)
+                                {
+                                  // シングルタッチ操作解除
+                                  touch_put_ = false;
+                                  event_.signal("Game:PutEnd", Arguments());
+                                }
+                              });
+
     holder_ += event_.connect("single_touch_moved",
                               [this](const Connection&, Arguments& arg) noexcept
                               {
