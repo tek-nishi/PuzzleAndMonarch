@@ -70,15 +70,9 @@ struct Game
 #endif
         )
     {
-      // UI更新
       play_time_ -= delta_time;
 
-      {
-        Arguments args = {
-          { "remaining_time", getPlayTime() }
-        };
-        event_.signal("Game:UI", args);
-      }
+      updateGameUI();
 
       if (play_time_ < 0.0) 
       {
@@ -153,12 +147,6 @@ struct Game
   void beginPlay() noexcept
   {
     started = true;
-
-    // UI更新
-    Arguments args = {
-      { "remaining_time", std::max(play_time_, 0.0) }
-    };
-    event_.signal("Game:UI", args);
     DOUT << "Game started." << std::endl;
   }
 
@@ -486,6 +474,16 @@ struct Game
     return { center, d };
   }
 
+  // UI更新
+  void updateGameUI() const noexcept
+  {
+    // UI更新
+    Arguments args = {
+      { "remaining_time", getPlayTime() }
+    };
+    event_.signal("Game:UI", args);
+  }
+
 
 #if defined (DEBUG)
   // 時間の進みON/OFF
@@ -640,6 +638,7 @@ private:
       };
       event_.signal("Game:PutPanel", args);
     }
+
   }
 
 

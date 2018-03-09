@@ -1,4 +1,5 @@
 * TODO チュートリアル
+* TODO 最後０秒になってから１秒経過でGameOverにしたい
 * TODO RankingでTOP以外の結果も閲覧したい
 * TODO 結果画面やランキング画面で、一定時間入力がないと回転するようにならないか
 * TODO マーカーの黄色と赤が逆？
@@ -58,6 +59,8 @@
 * TODO アプリアイコン
 * TODO iOS:GameCenter対応
 * TODO iOS:実績を実装
+* DONE Game開始時に残り時間の更新が一瞬遅れる
+CLOSED: [2018-03-10 土 07:38]
 * DONE ゲーム開始時はカメラをリセット
 CLOSED: [2018-03-09 金 12:03]
 * DONE Play中断時に若干カメラ演出が乱れる

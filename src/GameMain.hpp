@@ -33,6 +33,7 @@ public:
               Params::load(params.getValueForKey<std::string>("gamemain.canvas")),
               Params::load(params.getValueForKey<std::string>("gamemain.tweens")))
   {
+    DOUT << "GameMain::GameMain" << std::endl;
     startTimelineSound(event, params, "gamemain.se");
     
     // ゲーム開始演出 

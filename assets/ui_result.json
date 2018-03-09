@@ -19,7 +19,7 @@
       "scale": [ 1, 1 ],
       "pivot": [ 0.5, 0.5 ],
 
-      "font": "en",
+      "font": "head",
       "text": "Result",
       "color": [ 1, 1, 1 ]
     },

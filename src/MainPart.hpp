@@ -267,6 +267,7 @@ public:
                                                 {
                                                   prohibited_ = false;
                                                 });
+                                game_->updateGameUI();
                               });
 
     holder_ += event_.connect("Game:Start",
