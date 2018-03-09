@@ -69,6 +69,10 @@ public:
       transition_duration_(params.getValueForKey<float>("ui.transition.duration")),
       transition_color_(Json::getColorA<float>(params["ui.transition.color"]))
   {
+    initial_camera_rotation_ = camera_rotation_;
+    initial_camera_distance_ = camera_distance_;
+    initial_target_position_ = target_position_;
+
     // 乱数
     std::random_device seed_gen;
     engine_ = std::mt19937(seed_gen());
@@ -264,7 +268,13 @@ public:
                                 // 中断
                                 archive_.addRecord("abort-times", uint32_t(1));
                                 archive_.save();
-                                resetGame();
+                                count_exec_.add(0.5,
+                                                [this]() noexcept
+                                                {
+                                                  resetGame();
+                                                  resetCamera();
+                                                },
+                                                true);
                               });
 
     holder_ += event_.connect("Game:PutPanel",
@@ -377,7 +387,13 @@ public:
                                 }
                                 else
                                 {
-                                  resetGame();
+                                  count_exec_.add(0.5,
+                                                  [this]() noexcept
+                                                  {
+                                                    resetGame();
+                                                    resetCamera();
+                                                  },
+                                                  true);
                                 }
                               });
 
@@ -415,17 +431,8 @@ public:
     holder_ += event_.connect("Ranking:Finished",
                               [this](const Connection&, const Arguments&) noexcept
                               {
-                                force_camera_ = false;
-
-                                timeline_->clear();
-                                view_.clear();
-                                // Game再生成
-                                game_ = std::make_unique<Game>(params_["game"], event_, panels_);
-                                game_->preparationPlay(engine_);
-
-                                field_center_   = glm::vec3();
-                                field_distance_ = params_.getValueForKey<float>("field.camera.distance");
-                                fixed_exec_.clear();
+                                resetGame();
+                                resetCamera();
                               });
 
     // System
@@ -935,26 +942,22 @@ private:
   // Game本体初期化
   void resetGame() noexcept
   {
-    count_exec_.add(0.5,
-                    [this]() noexcept
-                    {
-                      view_.clear();
-                      view_.resetPauseEffect(force_timeline_);
-                      timeline_->clear();
-                      force_timeline_->clear();
+    view_.clear();
+    view_.resetPauseEffect(force_timeline_);
+    timeline_->clear();
+    force_timeline_->clear();
 
-                      paused_ = false;
-                      count_exec_.pause(false);
-                      fixed_exec_.clear();
+    paused_ = false;
+    count_exec_.pause(false);
+    fixed_exec_.clear();
 
-                      // Game再生成
-                      game_ = std::make_unique<Game>(params_["game"], event_, panels_);
-                      game_->preparationPlay(engine_);
+    // Game再生成
+    game_.reset();            // TIPS メモリを２重に確保したくないので先にresetする
+    game_ = std::make_unique<Game>(params_["game"], event_, panels_);
+    game_->preparationPlay(engine_);
                                                   
-                      field_center_   = glm::vec3();
-                      field_distance_ = params_.getValueForKey<float>("field.camera.distance");
-                    },
-                    true);
+    field_center_   = glm::vec3();
+    field_distance_ = params_.getValueForKey<float>("field.camera.distance");
   }
 
   // カメラから見える範囲のBGを計算
@@ -971,6 +974,16 @@ private:
     auto p = roundValue(pos.x, pos.z, PANEL_SIZE * 2);
 
     return { p.x * PANEL_SIZE * 2, 0, p.y * PANEL_SIZE * 2 };
+  }
+
+  // カメラリセット
+  void resetCamera() noexcept
+  {
+    force_camera_ = false;
+
+    camera_rotation_ = initial_camera_rotation_;
+    camera_distance_ = initial_camera_distance_;
+    target_position_ = initial_target_position_;
   }
 
 
@@ -1198,6 +1211,11 @@ private:
   // Fieldの中心座標
   glm::vec3 field_center_;
   float field_distance_ = 0.0f;
+
+  // カメラを初期状態に戻すための変数
+  glm::vec2 initial_camera_rotation_;
+  float initial_camera_distance_;
+  glm::vec3 initial_target_position_;
 
   // 表示
   Camera camera_;

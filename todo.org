@@ -2,6 +2,8 @@
 * TODO 結果画面やランキング画面で、一定時間入力がないと回転するようにならないか
 * TODO マーカーの黄色と赤が逆？
 * TODO ゲーム開始時はカメラをリセット
+* TODO 市松模様はシェーダーで実現できる
+* TODO MainPartのカメラを別クラスに
 * TODO 残り枚数を表示
 * TODO 縦画面の時にランキングのレイアウトが窮屈
 * TODO tween終わりでOFFにしたい
@@ -11,8 +13,6 @@
 * TODO パネルのうらが真っ暗
 * TODO blankパネルの演出
 * TODO iPad:Shareのpopoverをボタン位置と合わせる
-* TODO 記録の削除
-* TODO Play中断時に若干カメラ演出が乱れる
 * TODO iPhone7でヘッドフォンの抜き差しをすると音が乱れる
 * TODO iOS:ヘッドフォンの抜き差しでノイズが乗る
 * TODO tween中止
@@ -58,6 +58,10 @@
 * TODO アプリアイコン
 * TODO iOS:GameCenter対応
 * TODO iOS:実績を実装
+* DONE Play中断時に若干カメラ演出が乱れる
+CLOSED: [2018-03-09 金 11:23]
+* DONE 記録の削除
+CLOSED: [2018-03-09 金 02:00]
 * DONE iOS:ズーミングや平行移動のお上品さを実装
 CLOSED: [2018-03-09 金 00:13]
 * DONE ボタンの説明は上につけないと押す時に指で隠れる
