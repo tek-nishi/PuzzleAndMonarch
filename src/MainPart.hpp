@@ -252,6 +252,21 @@ public:
                               [this](const Connection&, const Arguments&) noexcept
                               {
                                 game_event_.insert("Game:ready");
+                                
+                                field_distance_ = initial_camera_distance_;
+                                field_center_   = initial_target_position_;
+                                // auto option = timeline_->applyPtr(&camera_rotation_,
+                                //                                   initial_camera_rotation_, 0.8, getEaseFunc("OutCubic"));
+                                // option.finishFn([this]() noexcept
+                                //                 {
+                                //                   prohibited_ = false;
+                                //                 });
+                                prohibited_ = true;
+                                count_exec_.add(1.0,
+                                                [this]() noexcept
+                                                {
+                                                  prohibited_ = false;
+                                                });
                               });
 
     holder_ += event_.connect("Game:Start",
