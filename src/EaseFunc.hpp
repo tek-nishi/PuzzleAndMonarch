@@ -74,7 +74,7 @@ ci::EaseFn getEaseFunc(const std::string& name) noexcept
 
     { "InAtan",    [](float t) noexcept { return ci::easeInAtan(t); } },
     { "OutAtan",   [](float t) noexcept { return ci::easeOutAtan(t); } },
-    { "InOutAtam", [](float t) noexcept { return ci::easeInOutAtan(t); } },
+    { "InOutAtan", [](float t) noexcept { return ci::easeInOutAtan(t); } },
   };
 
   return funcs.at(name);

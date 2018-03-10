@@ -148,6 +148,7 @@ public:
     if (!this->isExists(id))
     {
       DOUT << "No widget: " << id << std::endl;
+      return;
     }
 #endif
 
@@ -155,18 +156,18 @@ public:
     widget->setParam("text", text);
   }
 
-  // FIXME メンバ関数でいいかも
-  void enableWidget(const std::string& id) noexcept
+  void enableWidget(const std::string& id, bool enable = true) noexcept
   {
 #if defined DEBUG
     if (!this->isExists(id))
     {
       DOUT << "No widget: " << id << std::endl;
+      return;
     }
 #endif
 
     const auto& widget = this->at(id);
-    widget->enable();
+    widget->enable(enable);
   }
 
 
@@ -177,6 +178,7 @@ public:
     if (!this->isExists(id))
     {
       DOUT << "No widget: " << id << std::endl;
+      return;
     }
 #endif
 

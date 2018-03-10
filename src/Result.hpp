@@ -30,10 +30,21 @@ class Result
 
   std::vector<std::string> ranking_text_;
 
+  int total_score_;
+  int total_rank_;
+  bool effect_ = false;
+
+  ci::Anim<int> disp_score_;
+  ci::Anim<int> disp_rank_;
+
+  // Share機能用の文章
   std::string share_text_;
+
+  ci::TimelineRef timeline_;
 
   UI::Canvas canvas_;
   bool active_ = true;
+
 
 
 public:
@@ -41,6 +52,7 @@ public:
          const Arguments& args) noexcept
     : event_(event),
       ranking_text_(Json::getArray<std::string>(params["result.ranking"])),
+      timeline_(ci::Timeline::create()),
       canvas_(event, drawer, tween_common,
               params["ui.camera"],
               Params::load(params.getValueForKey<std::string>("result.canvas")),
@@ -51,18 +63,15 @@ public:
     rank_in_    = boost::any_cast<bool>(args.at("rank_in"));
     ranking_    = boost::any_cast<u_int>(args.at("ranking"));
     high_score_ = boost::any_cast<bool>(args.at("high_score"));
-    
+
     const auto& score = boost::any_cast<const Score&>(args.at("score"));
+
+    total_score_ = score.total_score;
+    total_rank_  = score.total_ranking;
+
     share_text_ = replaceString(params.getValueForKey<std::string>("result.share"),
                                 "%1",
                                 std::to_string(score.total_score));
-
-    if (Share::canPost() && Capture::canExec())
-    {
-      // Share機能と画面キャプチャが有効ならUIも有効
-      const auto& widget = canvas_.at("share");
-      widget->enable();
-    }
 
     holder_ += event_.connect("agree:touch_ended",
                               [this](const Connection&, const Arguments&) noexcept
@@ -113,20 +122,41 @@ public:
                                                               });
                                                 });
                               });
-    
+
+    // ランクインじの演出
+    auto disp_delay_2 = params.getValueForKey<float>("result.disp_delay_2");
+    if (high_score_ || rank_in_)
+    {
+      count_exec_.add(disp_delay_2,
+                      [this]() noexcept
+                      {
+                        effect_ = true;
+                        if (high_score_)
+                        {
+                          canvas_.enableWidget("score:high-score");
+                        }
+                        else if (rank_in_)
+                        {
+                          canvas_.enableWidget("score:rank-in");
+                        }
+                      });
+    }
+
+    count_exec_.add(disp_delay_2,
+                    [this]() noexcept
+                    {
+                      if (Share::canPost() && Capture::canExec())
+                      {
+                        // Share機能と画面キャプチャが有効ならUIも有効
+                        canvas_.enableWidget("share");
+                      }
+                    });
+
     setupCommonTweens(event_, holder_, canvas_, "agree");
     setupCommonTweens(event_, holder_, canvas_, "share");
 
     applyScore(score);
-
-    if (high_score_)
-    {
-      canvas_.enableWidget("score:high-score");
-    }
-    else if (rank_in_)
-    {
-      canvas_.enableWidget("score:rank-in");
-    }
+    tweenTotalScore(params);
 
     canvas_.startTween("start");
   }
@@ -138,17 +168,13 @@ private:
   bool update(double current_time, double delta_time) noexcept override
   {
     count_exec_.update(delta_time);
+    timeline_->step(delta_time);
 
-    if (high_score_)
+    if (effect_)
     {
       auto color = ci::hsvToRgb({ std::fmod(current_time * 2.0, 1.0), 1, 1 });
       canvas_.setWidgetParam("score:20", "color", color);
       canvas_.setWidgetParam("score:high-score", "color", color);
-    }
-    else if (rank_in_)
-    {
-      auto color = ci::hsvToRgb({ std::fmod(current_time * 2.0, 1.0), 1, 1 });
-      canvas_.setWidgetParam("score:20", "color", color);
       canvas_.setWidgetParam("score:rank-in", "color", color);
     }
 
@@ -174,9 +200,30 @@ private:
     canvas_.setWidgetText("score:8",  std::to_string(score.total_panels));
     canvas_.setWidgetText("score:9",  std::to_string(score.panel_turned_times));
     canvas_.setWidgetText("score:10", std::to_string(score.panel_moved_times));
+  }
 
-    canvas_.setWidgetText("score:20", std::to_string(score.total_score));
-    canvas_.setWidgetText("score:21", std::string(ranking_text_[score.total_ranking]));
+  void tweenTotalScore(const ci::JsonTree& params) noexcept
+  {
+    {
+      auto option = timeline_->apply(&disp_score_, 0, total_score_,
+                                     params.getValueForKey<float>("result.disp_duration"),
+                                     getEaseFunc(params.getValueForKey<std::string>("result.disp_ease")));
+      option.delay(params.getValueForKey<float>("result.disp_delay"));
+      option.updateFn([this]() noexcept
+                      {
+                        canvas_.setWidgetText("score:20", std::to_string(disp_score_));
+                      });
+    }
+    {
+      auto option = timeline_->apply(&disp_rank_, 0, total_rank_,
+                                     params.getValueForKey<float>("result.disp_duration"),
+                                     getEaseFunc(params.getValueForKey<std::string>("result.disp_ease")));
+      option.delay(params.getValueForKey<float>("result.disp_delay"));
+      option.updateFn([this]() noexcept
+                      {
+                        canvas_.setWidgetText("score:21", ranking_text_[disp_rank_]);
+                      });
+    }
   }
 
 };

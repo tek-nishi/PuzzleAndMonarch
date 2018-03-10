@@ -96,7 +96,7 @@
   },
 
   "game": {
-    "play_time": 180,
+    "play_time": 60,
 
     "score_rates": [
       3,
@@ -123,8 +123,8 @@
       "near_z": 2,
       "far_z":  1500,
 
-      "rotation": [ 40, 45 ],
-      "distance": 180
+      "rotation": [ 45, 45 ],
+      "distance": 190
     },
 
     "target_position": [ 0, 5, 0 ],
@@ -354,7 +354,12 @@
       "Emperor"
     ],
 
-    "share": "PuzzleMonarch で%1点獲得しました!!"
+    "share": "PuzzleMonarch で%1点獲得しました!!",
+
+    "disp_duration": 1.7,
+    "disp_delay": 0.15,
+    "disp_ease": "InCubic",
+    "disp_delay_2": 2.3
   },
 
   "ranking": {
