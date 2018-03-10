@@ -972,8 +972,8 @@ private:
     game_ = std::make_unique<Game>(params_["game"], event_, panels_);
     game_->preparationPlay(engine_);
                                                   
-    field_center_   = glm::vec3();
-    field_distance_ = params_.getValueForKey<float>("field.camera.distance");
+    field_center_   = initial_target_position_;
+    field_distance_ = initial_camera_distance_;
   }
 
   // カメラから見える範囲のBGを計算
