@@ -117,17 +117,25 @@ public:
                               [this](const Connection&, const Arguments& arg) noexcept
                               {
                                 char text[100];
-                                u_int remainig_time = std::ceil(boost::any_cast<double>(arg.at("remaining_time")));
-                                u_int minutes = remainig_time / 60;
-                                u_int seconds = remainig_time % 60;
-                                sprintf(text, "%d'%02d", minutes, seconds);
+                                auto remaining_time = boost::any_cast<double>(arg.at("remaining_time"));
+                                if (remaining_time < 10.0)
+                                {
+                                  sprintf(text, "0'%05.2f", remaining_time);
+                                }
+                                else
+                                {
+                                  int time = std::floor(remaining_time);
+                                  int minutes = time / 60;
+                                  int seconds = time % 60;
+                                  sprintf(text, "%d'%02d", minutes, seconds);
+                                }
 
                                 const auto& widget = canvas_.at("time_remain");
                                 widget->setParam("text", std::string(text));
 
                                 // 時間が10秒切ったら色を変える
                                 ci::Color color(1, 1, 1);
-                                if (remainig_time <= 10)
+                                if (remaining_time < 11.0)
                                 {
                                   color = ci::Color(1, 0, 0);
                                 }
