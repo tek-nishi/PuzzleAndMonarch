@@ -94,15 +94,18 @@ public:
     holder_ += event_.connect("single_touch_began",
                               [this](const Connection&, Arguments& arg) noexcept
                               {
-                                if (!game_->isPlaying() || paused_ || prohibited_) return;
+                                if (paused_ || prohibited_) return;
 
                                 draged_length_ = 0.0f;
                                 manipulated_   = false;
+                                touch_put_     = false;
+
+                                if (!game_->isPlaying()) return;
 
                                 const auto& touch = boost::any_cast<const Touch&>(arg.at("touch"));
+                                if (touch.handled) return;
 
                                 // 元々パネルのある位置をタップ→長押しで設置
-                                touch_put_ = false;
                                 if (can_put_ && isCursorPos(touch.pos))
                                 {
                                   touch_put_ = true;
@@ -139,13 +142,12 @@ public:
 
                                 // ドラッグの距離を調べて、タップかドラッグか判定
                                 draged_length_ += glm::distance(touch.pos, touch.prev_pos);
-                                if (touch_put_ && (draged_length_ > draged_max_length_))
+                                manipulated_ = draged_length_ > draged_max_length_;
+                                if (touch_put_ && !manipulated_)
                                 {
                                   touch_put_ = false;
                                   event_.signal("Game:PutEnd", Arguments());
                                 }
-
-                                manipulated_ = draged_length_ > 5.0f;
 
                                 // Field回転操作
                                 rotateField(touch);
@@ -418,15 +420,16 @@ public:
                               [this](const Connection&, const Arguments&) noexcept
                               {
                                 force_camera_ = true;
+                                manipulated_  = false;
 
                                 timeline_->clear();
-                                view_.clear();
 
                                 // TOPの記録を読み込む
                                 {
                                   const auto& json = archive_.getRecordArray("games");
                                   if (json.hasChildren() && json[0].hasChild("path"))
                                   {
+                                    view_.clear();
                                     game_->load(json[0].getValueForKey("path"));
                                     calcViewRange(false);
                                   }

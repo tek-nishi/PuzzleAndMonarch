@@ -1,6 +1,5 @@
 * TODO チュートリアル
 * TODO Shareボタンはカメラがいいかな
-* TODO Ranking２回目以降カメラが回転しない
 * TODO 置き切った時は残り枚数を考慮してタイムボーナスを加算する
 * TODO RankingでTOP以外の結果も閲覧したい
 * TODO 結果画面やランキング画面で、一定時間入力がないと回転するようにならないか
@@ -58,6 +57,10 @@
 * TODO アプリアイコン
 * TODO iOS:GameCenter対応
 * TODO iOS:実績を実装
+* DONE Ranking２回目以降カメラが回転しない
+CLOSED: [2018-03-11 日 23:48]
+* DONE Ranking詳細は画面を明るく
+CLOSED: [2018-03-11 日 19:04]
 * DONE 結果時にカメラが寄り過ぎる
 CLOSED: [2018-03-11 日 16:19]
 * DONE Game後のRankingでは結果表示ボタンを消す
