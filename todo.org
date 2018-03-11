@@ -1,4 +1,5 @@
 * TODO チュートリアル
+* TODO Shareボタンはカメラがいいかな
 * TODO Ranking２回目以降カメラが回転しない
 * TODO 置き切った時は残り枚数を考慮してタイムボーナスを加算する
 * TODO 結果時にカメラが寄り過ぎる
@@ -58,6 +59,8 @@
 * TODO アプリアイコン
 * TODO iOS:GameCenter対応
 * TODO iOS:実績を実装
+* DONE Game後のRankingでは結果表示ボタンを消す
+CLOSED: [2018-03-11 日 15:35]
 * DONE 縦画面の時にランキングのレイアウトが窮屈
 CLOSED: [2018-03-11 日 15:03]
 * DONE ResultとRankingで置いた枚数が１枚違う

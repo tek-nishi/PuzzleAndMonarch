@@ -51,6 +51,10 @@ public:
       rank_in_ = boost::any_cast<bool>(args.at("rank_in"));
       ranking_ = boost::any_cast<u_int>(args.at("ranking"));
     }
+    if (args.count("view"))
+    {
+      canvas_.enableWidget("view");
+    }
 
     holder_ += event_.connect("agree:touch_ended",
                               [this](const Connection&, const Arguments&) noexcept

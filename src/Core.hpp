@@ -125,7 +125,8 @@ public:
                               [this](const Connection&, const Arguments& args) noexcept
                               {
                                 Arguments ranking_args {
-                                  { "games", archive_.getRecordArray("games") }
+                                  { "games", archive_.getRecordArray("games") },
+                                  { "view", true }
                                 };
 
                                 tasks_.pushBack<Ranking>(params_, event_, drawer_, tween_common_, ranking_args);
