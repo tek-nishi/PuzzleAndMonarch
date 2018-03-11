@@ -441,7 +441,20 @@ public:
                                                   return !manipulated_;
                                                 });
                               });
+
+    // Ranking詳細開始
+    holder_ += event_.connect("view:touch_ended",
+                              [this](const Connection&, const Arguments&) noexcept
+                              {
+                                view_.setColor(force_timeline_, transition_duration_, ci::ColorA(1, 1, 1, 1), 0.8f);
+                              });
     
+    holder_ += event_.connect("back:touch_ended",
+                              [this](const Connection&, const Arguments&) noexcept
+                              {
+                                view_.setColor(force_timeline_, transition_duration_, transition_color_, 0.8f);
+                              });
+
     holder_ += event_.connect("Ranking:Finished",
                               [this](const Connection&, const Arguments&) noexcept
                               {

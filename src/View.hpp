@@ -129,7 +129,7 @@ public:
     field_shader_->uniform("u_color", color);
   }
 
-  void setColor(const ci::TimelineRef& timeline, float duration, const ci::ColorA& color) noexcept
+  void setColor(const ci::TimelineRef& timeline, float duration, const ci::ColorA& color, float delay = 0.0f) noexcept
   {
     timeline->removeTarget(&field_color_);
     auto option = timeline->applyPtr(&field_color_, color, duration);
@@ -137,6 +137,7 @@ public:
                     {
                       field_shader_->uniform("u_color", field_color_);
                     });
+    option.delay(delay);
   }
 
   void setPauseEffect(float angle, const ci::TimelineRef& timeline, float duration, const std::string& name) noexcept
