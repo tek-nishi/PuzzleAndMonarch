@@ -418,7 +418,8 @@ struct Game
                       });
       at_time += 0.1;
     }
-    total_panels = u_int(panels.size());
+    // NOTICE 最初に置かれているパネルは除く
+    total_panels = u_int(panels.size()) - 1;
 
     {
       // スコア情報は時間差で送信
