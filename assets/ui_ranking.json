@@ -25,920 +25,1009 @@
 
     {
       "identifier": "top10",
-      
-      "rect": [ -30, -22.5, 20, 22.5 ],
+      "rect": [ 0, 0, 0, 0 ],
       "anchor": [
-        [ 0.5, 0.35 ],
-        [ 0.5, 0.65 ]
+        [ 0, 0 ],
+        [ 1, 1 ]
       ],
       "scale": [ 1, 1 ],
       "pivot": [ 0.5, 0.5 ],
 
       "childlen": [
         {
-          "rect": [ 0, 0, 0, 0 ],
+          "rect": [ -30, -22.5, 20, 22.5 ],
           "anchor": [
-            [ 0, 0.9 ],
-            [ 1, 1.0 ]
+            [ 0.5, 0.35 ],
+            [ 0.5, 0.65 ]
           ],
           "scale": [ 1, 1 ],
           "pivot": [ 0.5, 0.5 ],
 
           "childlen": [
             {
-              "identifier": "1",
               "rect": [ 0, 0, 0, 0 ],
               "anchor": [
-                [ 0, 0 ],
-                [ 1, 1 ]
+                [ 0, 0.9 ],
+                [ 1, 1.0 ]
               ],
               "scale": [ 1, 1 ],
               "pivot": [ 0.5, 0.5 ],
 
-              "font": "en",
-              "text": "0",
-              "color": [ 1, 1, 1 ],
-              "layout": [ 1, 0.5 ]
+              "childlen": [
+                {
+                  "identifier": "1",
+                  "rect": [ 0, 0, 0, 0 ],
+                  "anchor": [
+                    [ 0, 0 ],
+                    [ 1, 1 ]
+                  ],
+                  "scale": [ 1, 1 ],
+                  "pivot": [ 0.5, 0.5 ],
+
+                  "font": "en",
+                  "text": "0",
+                  "color": [ 1, 1, 1 ],
+                  "layout": [ 1, 0.5 ]
+                },
+                {
+                  "identifier": "t1",
+                  "rect": [ 0, 0, 0, 0 ],
+                  "anchor": [
+                    [ -0.2, 0 ],
+                    [ -0.2, 1 ]
+                  ],
+                  "scale": [ 1, 1 ],
+                  "pivot": [ 0.5, 0.5 ],
+                  
+                  "font": "en",
+                  "text": "1st",
+                  "layout": [ 1, 0.5 ],
+                  "color": [ 1, 1, 1 ]
+                },
+                {
+                  "identifier": "r1",
+                  "rect": [ 0, 0, 0, 0 ],
+                  "anchor": [
+                    [ 1.2, 0 ],
+                    [ 1.2, 1 ]
+                  ],
+                  "scale": [ 1, 1 ],
+                  "pivot": [ 0.5, 0.5 ],
+
+                  "font": "en",
+                  "text": "Baronet",
+                  "layout": [ 0, 0.5 ],
+                  "color": [ 1, 1, 1 ]
+                }
+              ]
             },
+
             {
-              "identifier": "t1",
               "rect": [ 0, 0, 0, 0 ],
               "anchor": [
-                [ -0.2, 0 ],
-                [ -0.2, 1 ]
-              ],
-              "scale": [ 1, 1 ],
-              "pivot": [ 0.5, 0.5 ],
-              
-              "font": "en",
-              "text": "1st",
-              "layout": [ 1, 0.5 ],
-              "color": [ 1, 1, 1 ]
-            },
-            {
-              "identifier": "r1",
-              "rect": [ 0, 0, 0, 0 ],
-              "anchor": [
-                [ 1.2, 0 ],
-                [ 1.2, 1 ]
+                [ 0, 0.8 ],
+                [ 1, 0.9 ]
               ],
               "scale": [ 1, 1 ],
               "pivot": [ 0.5, 0.5 ],
 
-              "font": "en",
-              "text": "Baronet",
-              "layout": [ 0, 0.5 ],
-              "color": [ 1, 1, 1 ]
+              "childlen": [
+                {
+                  "identifier": "2",
+                  "rect": [ 0, 0, 0, 0 ],
+                  "anchor": [
+                    [ 0, 0 ],
+                    [ 1, 1 ]
+                  ],
+                  "scale": [ 1, 1 ],
+                  "pivot": [ 0.5, 0.5 ],
+
+                  "font": "en",
+                  "text": "0",
+                  "color": [ 1, 1, 1 ],
+                  "layout": [ 1, 0.5 ]
+                },
+                {
+                  "identifier": "t2",
+                  "rect": [ 0, 0, 0, 0 ],
+                  "anchor": [
+                    [ -0.2, 0 ],
+                    [ -0.2, 1 ]
+                  ],
+                  "scale": [ 1, 1 ],
+                  "pivot": [ 0.5, 0.5 ],
+
+                  "font": "en",
+                  "text": "2nd",
+                  "layout": [ 1, 0.5 ],
+                  "color": [ 1, 1, 1 ]
+                },
+                {
+                  "identifier": "r2",
+                  "rect": [ 0, 0, 0, 0 ],
+                  "anchor": [
+                    [ 1.2, 0 ],
+                    [ 1.2, 1 ]
+                  ],
+                  "scale": [ 1, 1 ],
+                  "pivot": [ 0.5, 0.5 ],
+
+                  "font": "en",
+                  "text": "Baronet",
+                  "layout": [ 0, 0.5 ],
+                  "color": [ 1, 1, 1 ]
+                }
+              ]
+            },
+
+            {
+              "rect": [ 0, 0, 0, 0 ],
+              "anchor": [
+                [ 0, 0.7 ],
+                [ 1, 0.8 ]
+              ],
+              "scale": [ 1, 1 ],
+              "pivot": [ 0.5, 0.5 ],
+
+              "childlen": [
+                {
+                  "identifier": "3",
+                  "rect": [ 0, 0, 0, 0 ],
+                  "anchor": [
+                    [ 0, 0 ],
+                    [ 1, 1 ]
+                  ],
+                  "scale": [ 1, 1 ],
+                  "pivot": [ 0.5, 0.5 ],
+
+                  "font": "en",
+                  "text": "0",
+                  "color": [ 1, 1, 1 ],
+                  "layout": [ 1, 0.5 ]
+                },
+                {
+                  "identifier": "t3",
+                  "rect": [ 0, 0, 0, 0 ],
+                  "anchor": [
+                    [ -0.2, 0 ],
+                    [ -0.2, 1 ]
+                  ],
+                  "scale": [ 1, 1 ],
+                  "pivot": [ 0.5, 0.5 ],
+
+                  "font": "en",
+                  "text": "3rd",
+                  "layout": [ 1, 0.5 ],
+                  "color": [ 1, 1, 1 ]
+                },
+                {
+                  "identifier": "r3",
+                  "rect": [ 0, 0, 0, 0 ],
+                  "anchor": [
+                    [ 1.2, 0 ],
+                    [ 1.2, 1 ]
+                  ],
+                  "scale": [ 1, 1 ],
+                  "pivot": [ 0.5, 0.5 ],
+                  
+                  "font": "en",
+                  "text": "Baronet",
+                  "layout": [ 0, 0.5 ],
+                  "color": [ 1, 1, 1 ]
+                }
+              ]
+            },
+
+            {
+              "rect": [ 0, 0, 0, 0 ],
+              "anchor": [
+                [ 0, 0.6 ],
+                [ 1, 0.7 ]
+              ],
+              "scale": [ 1, 1 ],
+              "pivot": [ 0.5, 0.5 ],
+
+              "childlen": [
+                {
+                  "identifier": "4",
+                  "rect": [ 0, 0, 0, 0 ],
+                  "anchor": [
+                    [ 0, 0 ],
+                    [ 1, 1 ]
+                  ],
+                  "scale": [ 1, 1 ],
+                  "pivot": [ 0.5, 0.5 ],
+
+                  "font": "en",
+                  "text": "0",
+                  "color": [ 1, 1, 1 ],
+                  "layout": [ 1, 0.5]
+                },
+                {
+                  "identifier": "t4",
+                  "rect": [ 0, 0, 0, 0 ],
+                  "anchor": [
+                    [ -0.2, 0 ],
+                    [ -0.2, 1 ]
+                  ],
+                  "scale": [ 1, 1 ],
+                  "pivot": [ 0.5, 0.5 ],
+                  
+                  "font": "en",
+                  "text": "4th",
+                  "layout": [ 1, 0.5 ],
+                  "color": [ 1, 1, 1 ]
+                },
+                {
+                  "identifier": "r4",
+                  "rect": [ 0, 0, 0, 0 ],
+                  "anchor": [
+                    [ 1.2, 0 ],
+                    [ 1.2, 1 ]
+                  ],
+                  "scale": [ 1, 1 ],
+                  "pivot": [ 0.5, 0.5 ],
+
+                  "font": "en",
+                  "text": "Baronet",
+                  "layout": [ 0, 0.5 ],
+                  "color": [ 1, 1, 1 ]
+                }
+              ]
+            },
+
+            {
+              "rect": [ 0, 0, 0, 0 ],
+              "anchor": [
+                [ 0, 0.5 ],
+                [ 1, 0.6 ]
+              ],
+              "scale": [ 1, 1 ],
+              "pivot": [ 0.5, 0.5 ],
+
+              "childlen": [
+                {
+                  "identifier": "5",
+                  "rect": [ 0, 0, 0, 0 ],
+                  "anchor": [
+                    [ 0, 0 ],
+                    [ 1, 1 ]
+                  ],
+                  "scale": [ 1, 1 ],
+                  "pivot": [ 0.5, 0.5 ],
+
+                  "font": "en",
+                  "text": "0",
+                  "color": [ 1, 1, 1 ],
+                  "layout": [ 1, 0.5 ]
+                },
+                {
+                  "identifier": "t5",
+                  "rect": [ 0, 0, 0, 0 ],
+                  "anchor": [
+                    [ -0.2, 0 ],
+                    [ -0.2, 1 ]
+                  ],
+                  "scale": [ 1, 1 ],
+                  "pivot": [ 0.5, 0.5 ],
+                  
+                  "font": "en",
+                  "text": "5th",
+                  "layout": [ 1, 0.5 ],
+                  "color": [ 1, 1, 1 ]
+                },
+                {
+                  "identifier": "r5",
+                  "rect": [ 0, 0, 0, 0 ],
+                  "anchor": [
+                    [ 1.2, 0 ],
+                    [ 1.2, 1 ]
+                  ],
+                  "scale": [ 1, 1 ],
+                  "pivot": [ 0.5, 0.5 ],
+                  
+                  "font": "en",
+                  "text": "Baronet",
+                  "layout": [ 0, 0.5 ],
+                  "color": [ 1, 1, 1 ]
+                }
+              ]
+            },
+
+            {
+              "rect": [ 0, 0, 0, 0 ],
+              "anchor": [
+                [ 0, 0.4 ],
+                [ 1, 0.5 ]
+              ],
+              "scale": [ 1, 1 ],
+              "pivot": [ 0.5, 0.5 ],
+
+              "childlen": [
+                {
+                  "identifier": "6",
+                  "rect": [ 0, 0, 0, 0 ],
+                  "anchor": [
+                    [ 0, 0 ],
+                    [ 1, 1 ]
+                  ],
+                  "scale": [ 1, 1 ],
+                  "pivot": [ 0.5, 0.5 ],
+
+                  "font": "en",
+                  "text": "0",
+                  "color": [ 1, 1, 1 ],
+                  "layout": [ 1, 0.5 ]
+                },
+                {
+                  "identifier": "t6",
+                  "rect": [ 0, 0, 0, 0 ],
+                  "anchor": [
+                    [ -0.2, 0 ],
+                    [ -0.2, 1 ]
+                  ],
+                  "scale": [ 1, 1 ],
+                  "pivot": [ 0.5, 0.5 ],
+
+                  "font": "en",
+                  "text": "6th",
+                  "layout": [ 1, 0.5 ],
+                  "color": [ 1, 1, 1 ]
+                },
+                {
+                  "identifier": "r6",
+                  "rect": [ 0, 0, 0, 0 ],
+                  "anchor": [
+                    [ 1.2, 0 ],
+                    [ 1.2, 1 ]
+                  ],
+                  "scale": [ 1, 1 ],
+                  "pivot": [ 0.5, 0.5 ],
+
+                  "font": "en",
+                  "text": "Baronet",
+                  "layout": [ 0, 0.5 ],
+                  "color": [ 1, 1, 1 ]
+                }
+              ]
+            },
+
+            {
+              "rect": [ 0, 0, 0, 0 ],
+              "anchor": [
+                [ 0, 0.3 ],
+                [ 1, 0.4 ]
+              ],
+              "scale": [ 1, 1 ],
+              "pivot": [ 0.5, 0.5 ],
+
+              "childlen": [
+                {
+                  "identifier": "7",
+                  "rect": [ 0, 0, 0, 0 ],
+                  "anchor": [
+                    [ 0, 0 ],
+                    [ 1, 1 ]
+                  ],
+                  "scale": [ 1, 1 ],
+                  "pivot": [ 0.5, 0.5 ],
+
+                  "font": "en",
+                  "text": "0",
+                  "color": [ 1, 1, 1 ],
+                  "layout": [ 1, 0.5 ]
+                },
+                {
+                  "identifier": "t7",
+                  "rect": [ 0, 0, 0, 0 ],
+                  "anchor": [
+                    [ -0.2, 0 ],
+                    [ -0.2, 1 ]
+                  ],
+                  "scale": [ 1, 1 ],
+                  "pivot": [ 0.5, 0.5 ],
+
+                  "font": "en",
+                  "text": "7th",
+                  "layout": [ 1, 0.5 ],
+                  "color": [ 1, 1, 1 ]
+                },
+                {
+                  "identifier": "r7",
+                  "rect": [ 0, 0, 0, 0 ],
+                  "anchor": [
+                    [ 1.2, 0 ],
+                    [ 1.2, 1 ]
+                  ],
+                  "scale": [ 1, 1 ],
+                  "pivot": [ 0.5, 0.5 ],
+
+                  "font": "en",
+                  "text": "Baronet",
+                  "layout": [ 0, 0.5 ],
+                  "color": [ 1, 1, 1 ]
+                }
+              ]
+            },
+            {
+              "rect": [ 0, 0, 0, 0 ],
+              "anchor": [
+                [ 0, 0.2 ],
+                [ 1, 0.3 ]
+              ],
+              "scale": [ 1, 1 ],
+              "pivot": [ 0.5, 0.5 ],
+
+              "childlen": [
+                {
+                  "identifier": "8",
+                  "rect": [ 0, 0, 0, 0 ],
+                  "anchor": [
+                    [ 0, 0 ],
+                    [ 1, 1 ]
+                  ],
+                  "scale": [ 1, 1 ],
+                  "pivot": [ 0.5, 0.5 ],
+
+                  "font": "en",
+                  "text": "0",
+                  "color": [ 1, 1, 1 ],
+                  "layout": [ 1, 0.5 ]
+                },
+                {
+                  "identifier": "t8",
+                  "rect": [ 0, 0, 0, 0 ],
+                  "anchor": [
+                    [ -0.2, 0 ],
+                    [ -0.2, 1 ]
+                  ],
+                  "scale": [ 1, 1 ],
+                  "pivot": [ 0.5, 0.5 ],
+
+                  "font": "en",
+                  "text": "8th",
+                  "layout": [ 1, 0.5 ],
+                  "color": [ 1, 1, 1 ]
+                },
+                {
+                  "identifier": "r8",
+                  "rect": [ 0, 0, 0, 0 ],
+                  "anchor": [
+                    [ 1.2, 0 ],
+                    [ 1.2, 1 ]
+                  ],
+                  "scale": [ 1, 1 ],
+                  "pivot": [ 0.5, 0.5 ],
+
+                  "font": "en",
+                  "text": "Baronet",
+                  "layout": [ 0, 0.5 ],
+                  "color": [ 1, 1, 1 ]
+                }
+              ]
+            },
+
+            {
+              "rect": [ 0, 0, 0, 0 ],
+              "anchor": [
+                [ 0, 0.1 ],
+                [ 1, 0.2 ]
+              ],
+              "scale": [ 1, 1 ],
+              "pivot": [ 0.5, 0.5 ],
+
+              "childlen": [
+                {
+                  "identifier": "9",
+                  "rect": [ 0, 0, 0, 0 ],
+                  "anchor": [
+                    [ 0, 0 ],
+                    [ 1, 1 ]
+                  ],
+                  "scale": [ 1, 1 ],
+                  "pivot": [ 0.5, 0.5 ],
+
+                  "font": "en",
+                  "text": "0",
+                  "color": [ 1, 1, 1 ],
+                  "layout": [ 1, 0.5 ]
+                },
+                {
+                  "identifier": "t9",
+                  "rect": [ 0, 0, 0, 0 ],
+                  "anchor": [
+                    [ -0.2, 0 ],
+                    [ -0.2, 1 ]
+                  ],
+                  "scale": [ 1, 1 ],
+                  "pivot": [ 0.5, 0.5 ],
+
+                  "font": "en",
+                  "text": "9th",
+                  "layout": [ 1, 0.5 ],
+                  "color": [ 1, 1, 1 ]
+                },
+                {
+                  "identifier": "r9",
+                  "rect": [ 0, 0, 0, 0 ],
+                  "anchor": [
+                    [ 1.2, 0 ],
+                    [ 1.2, 1 ]
+                  ],
+                  "scale": [ 1, 1 ],
+                  "pivot": [ 0.5, 0.5 ],
+
+                  "font": "en",
+                  "text": "Baronet",
+                  "layout": [ 0, 0.5 ],
+                  "color": [ 1, 1, 1 ]
+                }
+              ]
+            },
+
+            {
+              "rect": [ 0, 0, 0, 0 ],
+              "anchor": [
+                [ 0, 0.0 ],
+                [ 1, 0.1 ]
+              ],
+              "scale": [ 1, 1 ],
+              "pivot": [ 0.5, 0.5 ],
+
+              "childlen": [
+                {
+                  "identifier": "10",
+                  "rect": [ 0, 0, 0, 0 ],
+                  "anchor": [
+                    [ 0, 0 ],
+                    [ 1, 1 ]
+                  ],
+                  "scale": [ 1, 1 ],
+                  "pivot": [ 0.5, 0.5 ],
+
+                  "font": "en",
+                  "text": "0",
+                  "color": [ 1, 1, 1 ],
+                  "layout": [ 1, 0.5 ]
+                },
+                {
+                  "identifier": "t10",
+                  "rect": [ 0, 0, 0, 0 ],
+                  "anchor": [
+                    [ -0.2, 0 ],
+                    [ -0.2, 1 ]
+                  ],
+                  "scale": [ 1, 1 ],
+                  "pivot": [ 0.5, 0.5 ],
+
+                  "font": "en",
+                  "text": "10th",
+                  "layout": [ 1, 0.5 ],
+                  "color": [ 1, 1, 1 ]
+                },
+                {
+                  "identifier": "r10",
+                  "rect": [ 0, 0, 0, 0 ],
+                  "anchor": [
+                    [ 1.2, 0 ],
+                    [ 1.2, 1 ]
+                  ],
+                  "scale": [ 1, 1 ],
+                  "pivot": [ 0.5, 0.5 ],
+
+                  "font": "en",
+                  "text": "Baronet",
+                  "layout": [ 0, 0.5 ],
+                  "color": [ 1, 1, 1 ]
+                }
+              ]
             }
           ]
         },
 
         {
-          "rect": [ 0, 0, 0, 0 ],
+          "identifier": "view",
+          "rect": [ -15, -20, 5, 0 ],
           "anchor": [
-            [ 0, 0.8 ],
-            [ 1, 0.9 ]
+            [ 0.93, 0.28 ],
+            [ 0.93, 0.28 ]
           ],
           "scale": [ 1, 1 ],
           "pivot": [ 0.5, 0.5 ],
 
+          "radius": 1,
+          "line_width": 1.5,
+          "color": [ 1, 1, 1 ],
+
+          "event": "view",
+          "se":    "selected",
+
           "childlen": [
             {
-              "identifier": "2",
-              "rect": [ 0, 0, 0, 0 ],
+              "rect": [ 1, 0, 1, 0 ],
               "anchor": [
-                [ 0, 0 ],
-                [ 1, 1 ]
+                [ 0.1, 0.2 ],
+                [ 0.8, 0.9 ]
               ],
               "scale": [ 1, 1 ],
               "pivot": [ 0.5, 0.5 ],
-
-              "font": "en",
-              "text": "0",
-              "color": [ 1, 1, 1 ],
-              "layout": [ 1, 0.5 ]
-            },
-            {
-              "identifier": "t2",
-              "rect": [ 0, 0, 0, 0 ],
-              "anchor": [
-                [ -0.2, 0 ],
-                [ -0.2, 1 ]
-              ],
-              "scale": [ 1, 1 ],
-              "pivot": [ 0.5, 0.5 ],
-
-              "font": "en",
-              "text": "2nd",
-              "layout": [ 1, 0.5 ],
-              "color": [ 1, 1, 1 ]
-            },
-           {
-              "identifier": "r2",
-              "rect": [ 0, 0, 0, 0 ],
-              "anchor": [
-                [ 1.2, 0 ],
-                [ 1.2, 1 ]
-              ],
-              "scale": [ 1, 1 ],
-              "pivot": [ 0.5, 0.5 ],
-
-              "font": "en",
-              "text": "Baronet",
-              "layout": [ 0, 0.5 ],
+              "font": "icon",
+              "text": "",
               "color": [ 1, 1, 1 ]
             }
           ]
         },
-
+    
         {
-          "rect": [ 0, 0, 0, 0 ],
+          "identifier": "touch",
+          "rect": [ -14, 0, 14, 28 ],
           "anchor": [
-            [ 0, 0.7 ],
-            [ 1, 0.8 ]
+            [ 0.5, 0.06 ],
+            [ 0.5, 0.06 ]
           ],
           "scale": [ 1, 1 ],
           "pivot": [ 0.5, 0.5 ],
-
-          "childlen": [
-            {
-              "identifier": "3",
-              "rect": [ 0, 0, 0, 0 ],
-              "anchor": [
-                [ 0, 0 ],
-                [ 1, 1 ]
-              ],
-              "scale": [ 1, 1 ],
-              "pivot": [ 0.5, 0.5 ],
-
-              "font": "en",
-              "text": "0",
-              "color": [ 1, 1, 1 ],
-              "layout": [ 1, 0.5 ]
-            },
-            {
-              "identifier": "t3",
-              "rect": [ 0, 0, 0, 0 ],
-              "anchor": [
-                [ -0.2, 0 ],
-                [ -0.2, 1 ]
-              ],
-              "scale": [ 1, 1 ],
-              "pivot": [ 0.5, 0.5 ],
-
-              "font": "en",
-              "text": "3rd",
-              "layout": [ 1, 0.5 ],
-              "color": [ 1, 1, 1 ]
-            },
-            {
-              "identifier": "r3",
-              "rect": [ 0, 0, 0, 0 ],
-              "anchor": [
-                [ 1.2, 0 ],
-                [ 1.2, 1 ]
-              ],
-              "scale": [ 1, 1 ],
-              "pivot": [ 0.5, 0.5 ],
-              
-              "font": "en",
-              "text": "Baronet",
-              "layout": [ 0, 0.5 ],
-              "color": [ 1, 1, 1 ]
-            }
-          ]
-        },
-
-        {
-          "rect": [ 0, 0, 0, 0 ],
-          "anchor": [
-            [ 0, 0.6 ],
-            [ 1, 0.7 ]
-          ],
-          "scale": [ 1, 1 ],
-          "pivot": [ 0.5, 0.5 ],
-
-          "childlen": [
-            {
-              "identifier": "4",
-              "rect": [ 0, 0, 0, 0 ],
-              "anchor": [
-                [ 0, 0 ],
-                [ 1, 1 ]
-              ],
-              "scale": [ 1, 1 ],
-              "pivot": [ 0.5, 0.5 ],
-
-              "font": "en",
-              "text": "0",
-              "color": [ 1, 1, 1 ],
-              "layout": [ 1, 0.5]
-            },
-            {
-              "identifier": "t4",
-              "rect": [ 0, 0, 0, 0 ],
-              "anchor": [
-                [ -0.2, 0 ],
-                [ -0.2, 1 ]
-              ],
-              "scale": [ 1, 1 ],
-              "pivot": [ 0.5, 0.5 ],
-              
-              "font": "en",
-              "text": "4th",
-              "layout": [ 1, 0.5 ],
-              "color": [ 1, 1, 1 ]
-            },
-            {
-              "identifier": "r4",
-              "rect": [ 0, 0, 0, 0 ],
-              "anchor": [
-                [ 1.2, 0 ],
-                [ 1.2, 1 ]
-              ],
-              "scale": [ 1, 1 ],
-              "pivot": [ 0.5, 0.5 ],
-
-              "font": "en",
-              "text": "Baronet",
-              "layout": [ 0, 0.5 ],
-              "color": [ 1, 1, 1 ]
-            }
-          ]
-        },
-
-        {
-          "rect": [ 0, 0, 0, 0 ],
-          "anchor": [
-            [ 0, 0.5 ],
-            [ 1, 0.6 ]
-          ],
-          "scale": [ 1, 1 ],
-          "pivot": [ 0.5, 0.5 ],
-
-          "childlen": [
-            {
-              "identifier": "5",
-              "rect": [ 0, 0, 0, 0 ],
-              "anchor": [
-                [ 0, 0 ],
-                [ 1, 1 ]
-              ],
-              "scale": [ 1, 1 ],
-              "pivot": [ 0.5, 0.5 ],
-
-              "font": "en",
-              "text": "0",
-              "color": [ 1, 1, 1 ],
-              "layout": [ 1, 0.5 ]
-            },
-            {
-              "identifier": "t5",
-              "rect": [ 0, 0, 0, 0 ],
-              "anchor": [
-                [ -0.2, 0 ],
-                [ -0.2, 1 ]
-              ],
-              "scale": [ 1, 1 ],
-              "pivot": [ 0.5, 0.5 ],
-              
-              "font": "en",
-              "text": "5th",
-              "layout": [ 1, 0.5 ],
-              "color": [ 1, 1, 1 ]
-            },
-            {
-              "identifier": "r5",
-              "rect": [ 0, 0, 0, 0 ],
-              "anchor": [
-                [ 1.2, 0 ],
-                [ 1.2, 1 ]
-              ],
-              "scale": [ 1, 1 ],
-              "pivot": [ 0.5, 0.5 ],
-              
-              "font": "en",
-              "text": "Baronet",
-              "layout": [ 0, 0.5 ],
-              "color": [ 1, 1, 1 ]
-            }
-          ]
-        },
-
-        {
-          "rect": [ 0, 0, 0, 0 ],
-          "anchor": [
-            [ 0, 0.4 ],
-            [ 1, 0.5 ]
-          ],
-          "scale": [ 1, 1 ],
-          "pivot": [ 0.5, 0.5 ],
-
-          "childlen": [
-            {
-              "identifier": "6",
-              "rect": [ 0, 0, 0, 0 ],
-              "anchor": [
-                [ 0, 0 ],
-                [ 1, 1 ]
-              ],
-              "scale": [ 1, 1 ],
-              "pivot": [ 0.5, 0.5 ],
-
-              "font": "en",
-              "text": "0",
-              "color": [ 1, 1, 1 ],
-              "layout": [ 1, 0.5 ]
-            },
-            {
-              "identifier": "t6",
-              "rect": [ 0, 0, 0, 0 ],
-              "anchor": [
-                [ -0.2, 0 ],
-                [ -0.2, 1 ]
-              ],
-              "scale": [ 1, 1 ],
-              "pivot": [ 0.5, 0.5 ],
-
-              "font": "en",
-              "text": "6th",
-              "layout": [ 1, 0.5 ],
-              "color": [ 1, 1, 1 ]
-            },
-            {
-              "identifier": "r6",
-              "rect": [ 0, 0, 0, 0 ],
-              "anchor": [
-                [ 1.2, 0 ],
-                [ 1.2, 1 ]
-              ],
-              "scale": [ 1, 1 ],
-              "pivot": [ 0.5, 0.5 ],
-
-              "font": "en",
-              "text": "Baronet",
-              "layout": [ 0, 0.5 ],
-              "color": [ 1, 1, 1 ]
-            }
-          ]
-        },
-
-        {
-          "rect": [ 0, 0, 0, 0 ],
-          "anchor": [
-            [ 0, 0.3 ],
-            [ 1, 0.4 ]
-          ],
-          "scale": [ 1, 1 ],
-          "pivot": [ 0.5, 0.5 ],
-
-          "childlen": [
-            {
-              "identifier": "7",
-              "rect": [ 0, 0, 0, 0 ],
-              "anchor": [
-                [ 0, 0 ],
-                [ 1, 1 ]
-              ],
-              "scale": [ 1, 1 ],
-              "pivot": [ 0.5, 0.5 ],
-
-              "font": "en",
-              "text": "0",
-              "color": [ 1, 1, 1 ],
-              "layout": [ 1, 0.5 ]
-            },
-            {
-              "identifier": "t7",
-              "rect": [ 0, 0, 0, 0 ],
-              "anchor": [
-                [ -0.2, 0 ],
-                [ -0.2, 1 ]
-              ],
-              "scale": [ 1, 1 ],
-              "pivot": [ 0.5, 0.5 ],
-
-              "font": "en",
-              "text": "7th",
-              "layout": [ 1, 0.5 ],
-              "color": [ 1, 1, 1 ]
-            },
-            {
-              "identifier": "r7",
-              "rect": [ 0, 0, 0, 0 ],
-              "anchor": [
-                [ 1.2, 0 ],
-                [ 1.2, 1 ]
-              ],
-              "scale": [ 1, 1 ],
-              "pivot": [ 0.5, 0.5 ],
-
-              "font": "en",
-              "text": "Baronet",
-              "layout": [ 0, 0.5 ],
-              "color": [ 1, 1, 1 ]
-            }
-          ]
-        },
-        {
-          "rect": [ 0, 0, 0, 0 ],
-          "anchor": [
-            [ 0, 0.2 ],
-            [ 1, 0.3 ]
-          ],
-          "scale": [ 1, 1 ],
-          "pivot": [ 0.5, 0.5 ],
-
-          "childlen": [
-            {
-              "identifier": "8",
-              "rect": [ 0, 0, 0, 0 ],
-              "anchor": [
-                [ 0, 0 ],
-                [ 1, 1 ]
-              ],
-              "scale": [ 1, 1 ],
-              "pivot": [ 0.5, 0.5 ],
-
-              "font": "en",
-              "text": "0",
-              "color": [ 1, 1, 1 ],
-              "layout": [ 1, 0.5 ]
-            },
-            {
-              "identifier": "t8",
-              "rect": [ 0, 0, 0, 0 ],
-              "anchor": [
-                [ -0.2, 0 ],
-                [ -0.2, 1 ]
-              ],
-              "scale": [ 1, 1 ],
-              "pivot": [ 0.5, 0.5 ],
-
-              "font": "en",
-              "text": "8th",
-              "layout": [ 1, 0.5 ],
-              "color": [ 1, 1, 1 ]
-            },
-            {
-              "identifier": "r8",
-              "rect": [ 0, 0, 0, 0 ],
-              "anchor": [
-                [ 1.2, 0 ],
-                [ 1.2, 1 ]
-              ],
-              "scale": [ 1, 1 ],
-              "pivot": [ 0.5, 0.5 ],
-
-              "font": "en",
-              "text": "Baronet",
-              "layout": [ 0, 0.5 ],
-              "color": [ 1, 1, 1 ]
-            }
-          ]
-        },
-
-        {
-          "rect": [ 0, 0, 0, 0 ],
-          "anchor": [
-            [ 0, 0.1 ],
-            [ 1, 0.2 ]
-          ],
-          "scale": [ 1, 1 ],
-          "pivot": [ 0.5, 0.5 ],
-
-          "childlen": [
-            {
-              "identifier": "9",
-              "rect": [ 0, 0, 0, 0 ],
-              "anchor": [
-                [ 0, 0 ],
-                [ 1, 1 ]
-              ],
-              "scale": [ 1, 1 ],
-              "pivot": [ 0.5, 0.5 ],
-
-              "font": "en",
-              "text": "0",
-              "color": [ 1, 1, 1 ],
-              "layout": [ 1, 0.5 ]
-            },
-            {
-              "identifier": "t9",
-              "rect": [ 0, 0, 0, 0 ],
-              "anchor": [
-                [ -0.2, 0 ],
-                [ -0.2, 1 ]
-              ],
-              "scale": [ 1, 1 ],
-              "pivot": [ 0.5, 0.5 ],
-
-              "font": "en",
-              "text": "9th",
-              "layout": [ 1, 0.5 ],
-              "color": [ 1, 1, 1 ]
-            },
-            {
-              "identifier": "r9",
-              "rect": [ 0, 0, 0, 0 ],
-              "anchor": [
-                [ 1.2, 0 ],
-                [ 1.2, 1 ]
-              ],
-              "scale": [ 1, 1 ],
-              "pivot": [ 0.5, 0.5 ],
-
-              "font": "en",
-              "text": "Baronet",
-              "layout": [ 0, 0.5 ],
-              "color": [ 1, 1, 1 ]
-            }
-          ]
-        },
-
-        {
-          "rect": [ 0, 0, 0, 0 ],
-          "anchor": [
-            [ 0, 0.0 ],
-            [ 1, 0.1 ]
-          ],
-          "scale": [ 1, 1 ],
-          "pivot": [ 0.5, 0.5 ],
-
-          "childlen": [
-            {
-              "identifier": "10",
-              "rect": [ 0, 0, 0, 0 ],
-              "anchor": [
-                [ 0, 0 ],
-                [ 1, 1 ]
-              ],
-              "scale": [ 1, 1 ],
-              "pivot": [ 0.5, 0.5 ],
-
-              "font": "en",
-              "text": "0",
-              "color": [ 1, 1, 1 ],
-              "layout": [ 1, 0.5 ]
-            },
-            {
-              "identifier": "t10",
-              "rect": [ 0, 0, 0, 0 ],
-              "anchor": [
-                [ -0.2, 0 ],
-                [ -0.2, 1 ]
-              ],
-              "scale": [ 1, 1 ],
-              "pivot": [ 0.5, 0.5 ],
-
-              "font": "en",
-              "text": "10th",
-              "layout": [ 1, 0.5 ],
-              "color": [ 1, 1, 1 ]
-            },
-            {
-              "identifier": "r10",
-              "rect": [ 0, 0, 0, 0 ],
-              "anchor": [
-                [ 1.2, 0 ],
-                [ 1.2, 1 ]
-              ],
-              "scale": [ 1, 1 ],
-              "pivot": [ 0.5, 0.5 ],
-
-              "font": "en",
-              "text": "Baronet",
-              "layout": [ 0, 0.5 ],
-              "color": [ 1, 1, 1 ]
-            }
-          ]
+          "event": "agree",
+          "se": "agree",
+      
+          "font": "icon",
+          "text": "",
+          "layout": [ 0.5, 0 ],
+          "color": [ 1, 1, 1 ]
         }
       ]
     },
 
     {
-      "identifier": "scores",
-      "rect": [ 25, 20, 25, 140 ],
+      "identifier": "result",
+      "rect": [ 0, 0, 0, 0 ],
       "anchor": [
-        [ 0.05, 0.1 ],
-        [ 0.05, 0.1 ]
+        [ 0, 0 ],
+        [ 1, 1 ]
       ],
       "scale": [ 1, 1 ],
       "pivot": [ 0.5, 0.5 ],
       "enable": false,
-      "alpha": 0,
 
       "childlen": [
         {
-          "rect": [ 0, 0, 0, 0 ],
+          "identifier": "scores",
+          "rect": [ 25, 20, 25, 140 ],
           "anchor": [
-            [ 0, 0.92 ],
-            [ 0, 1.0 ]
+            [ 0.75, 0.1 ],
+            [ 0.75, 0.1 ]
           ],
           "scale": [ 1, 1 ],
-          "pivot": [ 1, 0.5 ],
+          "pivot": [ 0.5, 0.5 ],
+          "alpha": 0,
 
-          "font": "jp",
-          "text": "道:",
-          "layout": [ 1, 0 ],
-          "color": [ 1, 1, 1 ]
+          "childlen": [
+            {
+              "rect": [ 0, 0, 0, 0 ],
+              "anchor": [
+                [ 0, 0.92 ],
+                [ 0, 1.0 ]
+              ],
+              "scale": [ 1, 1 ],
+              "pivot": [ 1, 0.5 ],
+
+              "font": "jp",
+              "text": "道:",
+              "layout": [ 1, 0 ],
+              "color": [ 1, 1, 1 ]
+            },
+            {
+              "rect": [ 0, 0, 0, 0 ],
+              "anchor": [
+                [ 0, 0.82 ],
+                [ 0, 0.9 ]
+              ],
+              "scale": [ 1, 1 ],
+              "pivot": [ 1, 0.5 ],
+
+              "font": "jp",
+              "text": "道の長さ:",
+              "layout": [ 1, 0 ],
+              "color": [ 1, 1, 1 ]
+            },
+            {
+              "rect": [ 0, 0, 0, 0 ],
+              "anchor": [
+                [ 0, 0.72 ],
+                [ 0, 0.8 ]
+              ],
+              "scale": [ 1, 1 ],
+              "pivot": [ 1, 0.5 ],
+
+              "font": "jp",
+              "text": "森:",
+              "layout": [ 1, 0 ],
+              "color": [ 1, 1, 1 ]
+            },
+            {
+              "rect": [ 0, 0, 0, 0 ],
+              "anchor": [
+                [ 0, 0.62 ],
+                [ 0, 0.7 ]
+              ],
+              "scale": [ 1, 1 ],
+              "pivot": [ 1, 0.5 ],
+
+              "font": "jp",
+              "text": "森の広さ:",
+              "layout": [ 1, 0 ],
+              "color": [ 1, 1, 1 ]
+            },
+            {
+              "rect": [ 0, 0, 0, 0 ],
+              "anchor": [
+                [ 0, 0.52 ],
+                [ 0, 0.6 ]
+              ],
+              "scale": [ 1, 1 ],
+              "pivot": [ 1, 0.5 ],
+
+              "font": "jp",
+              "text": "深い森:",
+              "layout": [ 1, 0 ],
+              "color": [ 1, 1, 1 ]
+            },
+            {
+              "rect": [ 0, 0, 0, 0 ],
+              "anchor": [
+                [ 0, 0.42 ],
+                [ 0, 0.5 ]
+              ],
+              "scale": [ 1, 1 ],
+              "pivot": [ 1, 0.5 ],
+
+              "font": "jp",
+              "text": "街:",
+              "layout": [ 1, 0 ],
+              "color": [ 1, 1, 1 ]
+            },
+            {
+              "rect": [ 0, 0, 0, 0 ],
+              "anchor": [
+                [ 0, 0.32 ],
+                [ 0, 0.4 ]
+              ],
+              "scale": [ 1, 1 ],
+              "pivot": [ 1, 0.5 ],
+
+              "font": "jp",
+              "text": "教会:",
+              "layout": [ 1, 0 ],
+              "color": [ 1, 1, 1 ]
+            },
+            {
+              "rect": [ 0, 0, 0, 0 ],
+              "anchor": [
+                [ 0, 0.22 ],
+                [ 0, 0.3 ]
+              ],
+              "scale": [ 1, 1 ],
+              "pivot": [ 1, 0.5 ],
+
+              "font": "jp",
+              "text": "置いた数:",
+              "layout": [ 1, 0 ],
+              "color": [ 1, 1, 1 ]
+            },
+            {
+              "rect": [ 0, 0, 0, 0 ],
+              "anchor": [
+                [ 0, 0.12 ],
+                [ 0, 0.2 ]
+              ],
+              "scale": [ 1, 1 ],
+              "pivot": [ 1, 0.5 ],
+
+              "font": "en",
+              "text": "Score:",
+              "layout": [ 1, 0 ],
+              "color": [ 1, 1, 1 ]
+            },
+            {
+              "rect": [ 0, 0, 0, 0 ],
+              "anchor": [
+                [ 0, 0.02 ],
+                [ 0, 0.1 ]
+              ],
+              "scale": [ 1, 1 ],
+              "pivot": [ 1, 0.5 ],
+
+              "font": "en",
+              "text": "Rank:",
+              "layout": [ 1, 0 ],
+              "color": [ 1, 1, 1 ]
+            },
+
+            {
+              "identifier": "score:1",
+              "rect": [ 3, -1, 3, -1 ],
+              "anchor": [
+                [ 0, 0.92 ],
+                [ 0, 1.0 ]
+              ],
+              "scale": [ 1, 1 ],
+              "pivot": [ 0, 0.5 ],
+
+              "font": "en",
+              "text": "000",
+              "layout": [ 0, 0 ],
+              "color": [ 1, 1, 1 ]
+            },
+            {
+              "identifier": "score:2",
+              "rect": [ 3, -1, 3, -1 ],
+              "anchor": [
+                [ 0, 0.82 ],
+                [ 0, 0.9 ]
+              ],
+              "scale": [ 1, 1 ],
+              "pivot": [ 0, 0.5 ],
+
+              "font": "en",
+              "text": "000",
+              "layout": [ 0, 0 ],
+              "color": [ 1, 1, 1 ]
+            },
+            {
+              "identifier": "score:3",
+              "rect": [ 3, -1, 3, -1 ],
+              "anchor": [
+                [ 0, 0.72 ],
+                [ 0, 0.8 ]
+              ],
+              "scale": [ 1, 1 ],
+              "pivot": [ 0, 0.5 ],
+
+              "font": "en",
+              "text": "000",
+              "layout": [ 0, 0 ],
+              "color": [ 1, 1, 1 ]
+            },
+            {
+              "identifier": "score:4",
+              "rect": [ 3, -1, 3, -1 ],
+              "anchor": [
+                [ 0, 0.62 ],
+                [ 0, 0.7 ]
+              ],
+              "scale": [ 1, 1 ],
+              "pivot": [ 0, 0.5 ],
+
+              "font": "en",
+              "text": "000",
+              "layout": [ 0, 0 ],
+              "color": [ 1, 1, 1 ]
+            },
+            {
+              "identifier": "score:5",
+              "rect": [ 3, -1, 3, -1 ],
+              "anchor": [
+                [ 0, 0.52 ],
+                [ 0, 0.6 ]
+              ],
+              "scale": [ 1, 1 ],
+              "pivot": [ 0, 0.5 ],
+
+              "font": "en",
+              "text": "000",
+              "layout": [ 0, 0 ],
+              "color": [ 1, 1, 1 ]
+            },
+            {
+              "identifier": "score:6",
+              "rect": [ 3, -1, 3, -1 ],
+              "anchor": [
+                [ 0, 0.42 ],
+                [ 0, 0.5 ]
+              ],
+              "scale": [ 1, 1 ],
+              "pivot": [ 0, 0.5 ],
+
+              "font": "en",
+              "text": "000",
+              "layout": [ 0, 0 ],
+              "color": [ 1, 1, 1 ]
+            },
+            {
+              "identifier": "score:7",
+              "rect": [ 3, -1, 3, -1 ],
+              "anchor": [
+                [ 0, 0.32 ],
+                [ 0, 0.4 ]
+              ],
+              "scale": [ 1, 1 ],
+              "pivot": [ 0, 0.5 ],
+
+              "font": "en",
+              "text": "000",
+              "layout": [ 0, 0 ],
+              "color": [ 1, 1, 1 ]
+            },
+            {
+              "identifier": "score:8",
+              "rect": [ 3, -1, 3, -1 ],
+              "anchor": [
+                [ 0, 0.22 ],
+                [ 0, 0.3 ]
+              ],
+              "scale": [ 1, 1 ],
+              "pivot": [ 0, 0.5 ],
+
+              "font": "en",
+              "text": "000",
+              "layout": [ 0, 0 ],
+              "color": [ 1, 1, 1 ]
+            },
+            {
+              "identifier": "score:9",
+              "rect": [ 3, 0, 3, 0 ],
+              "anchor": [
+                [ 0, 0.12 ],
+                [ 0, 0.2 ]
+              ],
+              "scale": [ 1, 1 ],
+              "pivot": [ 0, 0.5 ],
+
+              "font": "en",
+              "text": "000",
+              "layout": [ 0, 0 ],
+              "color": [ 1, 1, 1 ]
+            },
+            {
+              "identifier": "score:10",
+              "rect": [ 3, 0, 3, 0 ],
+              "anchor": [
+                [ 0, 0.02 ],
+                [ 0, 0.1 ]
+              ],
+              "scale": [ 1, 1 ],
+              "pivot": [ 0, 0.5 ],
+
+              "font": "en",
+              "text": "000",
+              "layout": [ 0, 0 ],
+              "color": [ 1, 1, 1 ]
+            }
+          ]
         },
-        {
-          "rect": [ 0, 0, 0, 0 ],
-          "anchor": [
-            [ 0, 0.82 ],
-            [ 0, 0.9 ]
-          ],
-          "scale": [ 1, 1 ],
-          "pivot": [ 1, 0.5 ],
-
-          "font": "jp",
-          "text": "道の長さ:",
-          "layout": [ 1, 0 ],
-          "color": [ 1, 1, 1 ]
-        },
-        {
-          "rect": [ 0, 0, 0, 0 ],
-          "anchor": [
-            [ 0, 0.72 ],
-            [ 0, 0.8 ]
-          ],
-          "scale": [ 1, 1 ],
-          "pivot": [ 1, 0.5 ],
-
-          "font": "jp",
-          "text": "森:",
-          "layout": [ 1, 0 ],
-          "color": [ 1, 1, 1 ]
-        },
-        {
-          "rect": [ 0, 0, 0, 0 ],
-          "anchor": [
-            [ 0, 0.62 ],
-            [ 0, 0.7 ]
-          ],
-          "scale": [ 1, 1 ],
-          "pivot": [ 1, 0.5 ],
-
-          "font": "jp",
-          "text": "森の広さ:",
-          "layout": [ 1, 0 ],
-          "color": [ 1, 1, 1 ]
-        },
-        {
-          "rect": [ 0, 0, 0, 0 ],
-          "anchor": [
-            [ 0, 0.52 ],
-            [ 0, 0.6 ]
-          ],
-          "scale": [ 1, 1 ],
-          "pivot": [ 1, 0.5 ],
-
-          "font": "jp",
-          "text": "深い森:",
-          "layout": [ 1, 0 ],
-          "color": [ 1, 1, 1 ]
-        },
-        {
-          "rect": [ 0, 0, 0, 0 ],
-          "anchor": [
-            [ 0, 0.42 ],
-            [ 0, 0.5 ]
-          ],
-          "scale": [ 1, 1 ],
-          "pivot": [ 1, 0.5 ],
-
-          "font": "jp",
-          "text": "街:",
-          "layout": [ 1, 0 ],
-          "color": [ 1, 1, 1 ]
-        },
-        {
-          "rect": [ 0, 0, 0, 0 ],
-          "anchor": [
-            [ 0, 0.32 ],
-            [ 0, 0.4 ]
-          ],
-          "scale": [ 1, 1 ],
-          "pivot": [ 1, 0.5 ],
-
-          "font": "jp",
-          "text": "教会:",
-          "layout": [ 1, 0 ],
-          "color": [ 1, 1, 1 ]
-        },
-        {
-          "rect": [ 0, 0, 0, 0 ],
-          "anchor": [
-            [ 0, 0.22 ],
-            [ 0, 0.3 ]
-          ],
-          "scale": [ 1, 1 ],
-          "pivot": [ 1, 0.5 ],
-
-          "font": "jp",
-          "text": "置いた数:",
-          "layout": [ 1, 0 ],
-          "color": [ 1, 1, 1 ]
-        },
-        {
-          "rect": [ 0, 0, 0, 0 ],
-          "anchor": [
-            [ 0, 0.12 ],
-            [ 0, 0.2 ]
-          ],
-          "scale": [ 1, 1 ],
-          "pivot": [ 1, 0.5 ],
-
-          "font": "en",
-          "text": "Score:",
-          "layout": [ 1, 0 ],
-          "color": [ 1, 1, 1 ]
-        },
-        {
-          "rect": [ 0, 0, 0, 0 ],
-          "anchor": [
-            [ 0, 0.02 ],
-            [ 0, 0.1 ]
-          ],
-          "scale": [ 1, 1 ],
-          "pivot": [ 1, 0.5 ],
-
-          "font": "en",
-          "text": "Rank:",
-          "layout": [ 1, 0 ],
-          "color": [ 1, 1, 1 ]
-        },
 
         {
-          "identifier": "score:1",
-          "rect": [ 3, -1, 3, -1 ],
+          "identifier": "back",
+          "rect": [ -10, 0, 10, 20 ],
           "anchor": [
-            [ 0, 0.92 ],
-            [ 0, 1.0 ]
+            [ 0.5, 0.06 ],
+            [ 0.5, 0.06 ]
           ],
           "scale": [ 1, 1 ],
-          "pivot": [ 0, 0.5 ],
+          "pivot": [ 0.5, 0.5 ],
+          "event": "back",
+          "se": "agree",
 
-          "font": "en",
-          "text": "000",
-          "layout": [ 0, 0 ],
-          "color": [ 1, 1, 1 ]
-        },
-        {
-          "identifier": "score:2",
-          "rect": [ 3, -1, 3, -1 ],
-          "anchor": [
-            [ 0, 0.82 ],
-            [ 0, 0.9 ]
-          ],
-          "scale": [ 1, 1 ],
-          "pivot": [ 0, 0.5 ],
+          "radius": 1,
+          "line_width": 1.5,
+          "color": [ 1, 1, 1 ],
 
-          "font": "en",
-          "text": "000",
-          "layout": [ 0, 0 ],
-          "color": [ 1, 1, 1 ]
-        },
-        {
-          "identifier": "score:3",
-          "rect": [ 3, -1, 3, -1 ],
-          "anchor": [
-            [ 0, 0.72 ],
-            [ 0, 0.8 ]
-          ],
-          "scale": [ 1, 1 ],
-          "pivot": [ 0, 0.5 ],
-
-          "font": "en",
-          "text": "000",
-          "layout": [ 0, 0 ],
-          "color": [ 1, 1, 1 ]
-        },
-        {
-          "identifier": "score:4",
-          "rect": [ 3, -1, 3, -1 ],
-          "anchor": [
-            [ 0, 0.62 ],
-            [ 0, 0.7 ]
-          ],
-          "scale": [ 1, 1 ],
-          "pivot": [ 0, 0.5 ],
-
-          "font": "en",
-          "text": "000",
-          "layout": [ 0, 0 ],
-          "color": [ 1, 1, 1 ]
-        },
-        {
-          "identifier": "score:5",
-          "rect": [ 3, -1, 3, -1 ],
-          "anchor": [
-            [ 0, 0.52 ],
-            [ 0, 0.6 ]
-          ],
-          "scale": [ 1, 1 ],
-          "pivot": [ 0, 0.5 ],
-
-          "font": "en",
-          "text": "000",
-          "layout": [ 0, 0 ],
-          "color": [ 1, 1, 1 ]
-        },
-        {
-          "identifier": "score:6",
-          "rect": [ 3, -1, 3, -1 ],
-          "anchor": [
-            [ 0, 0.42 ],
-            [ 0, 0.5 ]
-          ],
-          "scale": [ 1, 1 ],
-          "pivot": [ 0, 0.5 ],
-
-          "font": "en",
-          "text": "000",
-          "layout": [ 0, 0 ],
-          "color": [ 1, 1, 1 ]
-        },
-        {
-          "identifier": "score:7",
-          "rect": [ 3, -1, 3, -1 ],
-          "anchor": [
-            [ 0, 0.32 ],
-            [ 0, 0.4 ]
-          ],
-          "scale": [ 1, 1 ],
-          "pivot": [ 0, 0.5 ],
-
-          "font": "en",
-          "text": "000",
-          "layout": [ 0, 0 ],
-          "color": [ 1, 1, 1 ]
-        },
-        {
-          "identifier": "score:8",
-          "rect": [ 3, -1, 3, -1 ],
-          "anchor": [
-            [ 0, 0.22 ],
-            [ 0, 0.3 ]
-          ],
-          "scale": [ 1, 1 ],
-          "pivot": [ 0, 0.5 ],
-
-          "font": "en",
-          "text": "000",
-          "layout": [ 0, 0 ],
-          "color": [ 1, 1, 1 ]
-        },
-        {
-          "identifier": "score:9",
-          "rect": [ 3, 0, 3, 0 ],
-          "anchor": [
-            [ 0, 0.12 ],
-            [ 0, 0.2 ]
-          ],
-          "scale": [ 1, 1 ],
-          "pivot": [ 0, 0.5 ],
-
-          "font": "en",
-          "text": "000",
-          "layout": [ 0, 0 ],
-          "color": [ 1, 1, 1 ]
-        },
-        {
-          "identifier": "score:10",
-          "rect": [ 3, 0, 3, 0 ],
-          "anchor": [
-            [ 0, 0.02 ],
-            [ 0, 0.1 ]
-          ],
-          "scale": [ 1, 1 ],
-          "pivot": [ 0, 0.5 ],
-
-          "font": "en",
-          "text": "000",
-          "layout": [ 0, 0 ],
-          "color": [ 1, 1, 1 ]
+          "childlen": [
+            {
+              "rect": [ 1, 0, 1, 0 ],
+              "anchor": [
+                [ 0.12, 0.14 ],
+                [ 0.82, 0.92 ]
+              ],
+              "scale": [ 1, 1 ],
+              "pivot": [ 0.5, 0.5 ],
+              "font": "icon",
+              "text": "",
+              "color": [ 1, 1, 1 ]
+            }
+          ]
         }
       ]
-    },
-    
-    {
-      "identifier": "touch",
-      "rect": [ -14, 0, 14, 28 ],
-      "anchor": [
-        [ 0.5, 0.06 ],
-        [ 0.5, 0.06 ]
-      ],
-      "scale": [ 1, 1 ],
-      "pivot": [ 0.5, 0.5 ],
-      "event": "agree",
-      "se": "agree",
-      
-      "font": "icon",
-      "text": "",
-      "layout": [ 0.5, 0 ],
-      "color": [ 1, 1, 1 ]
     }
   ]
 }

@@ -70,20 +70,53 @@ public:
                                 DOUT << "Back to Title" << std::endl;
                               });
 
+    holder_ += event_.connect("view:touch_ended",
+                              [this](const Connection&, const Arguments&) noexcept
+                              {
+                                canvas_.active(false);
+                                canvas_.startTween("view-start");
+                                canvas_.enableWidget("result");
+
+                                count_exec_.add(1.4,
+                                                [this]() noexcept
+                                                {
+                                                  canvas_.active(true);
+                                                  canvas_.enableWidget("top10", false);
+                                                });
+
+                                DOUT << "View start." << std::endl;
+                              });
+    
+    holder_ += event_.connect("back:touch_ended",
+                              [this](const Connection&, const Arguments&) noexcept
+                              {
+                                canvas_.active(false);
+                                canvas_.startTween("view-end");
+                                canvas_.enableWidget("top10");
+
+                                count_exec_.add(1.4,
+                                                [this]() noexcept
+                                                {
+                                                  canvas_.active(true);
+                                                  canvas_.enableWidget("result", false);
+                                                });
+
+                                DOUT << "View end." << std::endl;
+                              });
+
     holder_ += event_.connect("Ranking:UpdateScores",
                               [this](const Connection&, const Arguments& args) noexcept
                               {
                                 applyScore(args);
-                                
-                                const auto& widget = canvas_.at("scores");
-                                widget->enable();
+                                // const auto& widget = canvas_.at("scores");
+                                // widget->enable();
                                 canvas_.startTween("update_score");
-
-                                DOUT << "Ranking:UpdateScores" << std::endl;
                               });
 
     // ボタンイベント共通Tween
     setupCommonTweens(event_, holder_, canvas_, "agree");
+    setupCommonTweens(event_, holder_, canvas_, "view");
+    setupCommonTweens(event_, holder_, canvas_, "back");
 
     // NOTICE Title→Rankingの時は記録があるが、Result→Rankingの場合は記録が無い
     applyRankings(boost::any_cast<const ci::JsonTree&>(args.at("games")));

@@ -1,12 +1,13 @@
 * TODO チュートリアル
+* TODO Ranking２回目以降カメラが回転しない
 * TODO 置き切った時は残り枚数を考慮してタイムボーナスを加算する
+* TODO 結果時にカメラが寄り過ぎる
 * TODO RankingでTOP以外の結果も閲覧したい
 * TODO 結果画面やランキング画面で、一定時間入力がないと回転するようにならないか
 * TODO マーカーの黄色と赤が逆？
 * TODO 市松模様はシェーダーで実現できる
 * TODO MainPartのカメラを別クラスに
 * TODO 残り枚数を表示
-* TODO 縦画面の時にランキングのレイアウトが窮屈
 * TODO tween終わりでOFFにしたい
 * TODO tween開始時にON
 * TODO 画面切り替えを統一する
@@ -57,6 +58,10 @@
 * TODO アプリアイコン
 * TODO iOS:GameCenter対応
 * TODO iOS:実績を実装
+* DONE 縦画面の時にランキングのレイアウトが窮屈
+CLOSED: [2018-03-11 日 15:03]
+* DONE ResultとRankingで置いた枚数が１枚違う
+CLOSED: [2018-03-11 日 12:46]
 * DONE ゲーム開始時のカメラの挙動が怪しい
 CLOSED: [2018-03-10 土 16:55]
 * DONE 結果画面、スコアのイージング
