@@ -51,7 +51,9 @@ public:
       rank_in_ = boost::any_cast<bool>(args.at("rank_in"));
       ranking_ = boost::any_cast<u_int>(args.at("ranking"));
     }
-    if (args.count("view"))
+
+    auto records = args.count("records") && boost::any_cast<bool>(args.at("records"));
+    if (args.count("view") && records)
     {
       canvas_.enableWidget("view");
     }

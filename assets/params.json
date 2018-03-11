@@ -96,7 +96,7 @@
   },
 
   "game": {
-    "play_time": 180,
+    "play_time": 5,
 
     "score_rates": [
       3,
@@ -131,7 +131,7 @@
     "panel_height": 10,
     "putdown_time": [ 0.5, 0.25 ],
 
-    "camera_distance_range": [ 80, 1000 ],
+    "camera_distance_range": [ 120, 1000 ],
     "target_rate":   [ 0.01, 0.1 ],
     "distance_rate": [ 1.0, 1.35 ],
 

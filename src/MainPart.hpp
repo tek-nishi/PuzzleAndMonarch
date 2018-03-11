@@ -427,12 +427,10 @@ public:
                                   const auto& json = archive_.getRecordArray("games");
                                   if (json.hasChildren() && json[0].hasChild("path"))
                                   {
-                                    
                                     game_->load(json[0].getValueForKey("path"));
+                                    calcViewRange(false);
                                   }
                                 }
-
-                                calcViewRange(false);
                                 
                                 fixed_exec_.add(3.0, -1.0,
                                                 [this](double delta_time) noexcept
@@ -860,7 +858,8 @@ private:
     {
       field_center_.x = center.x;
       field_center_.z = center.z;
-      field_distance_ = distance;
+      field_distance_ = ci::clamp(distance, 
+                                  camera_distance_range_.x, camera_distance_range_.y);
     }
   }
 
@@ -1047,7 +1046,7 @@ private:
   void recordGameScore(const Score& score, bool high_score) noexcept
   {
     archive_.setRecord("saved", true); 
-
+    
     auto path = std::string("game-") + getFormattedDate() + ".json";
     game_->save(path);
     // pathを記録

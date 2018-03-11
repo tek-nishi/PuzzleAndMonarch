@@ -84,6 +84,19 @@ public:
     return getRecord<bool>("saved");
   }
 
+  // ランキングデータがあるか
+  bool existsRanking() const noexcept
+  {
+    const auto& games = records_["games"];
+
+    for (const auto& g : games)
+    {
+      if (g.hasChild("path")) return true;
+    }
+
+    return false;
+  }
+
 
   // プレイ結果を記録
   void recordGameResults(const Score& score, bool high_score) noexcept
