@@ -107,8 +107,16 @@ public:
   template <typename T>
   void set(const ci::TimelineRef& timeline, const T& widget) const noexcept
   {
-    auto enable_func  = [widget]() { widget->enable(); };
-    auto disable_func = [widget]() { widget->enable(false); };
+    auto enable_func  = [widget]() noexcept
+                        {
+                          widget->enable();
+                          DOUT << "enable: " << widget->getIdentifier() << std::endl;
+                        };
+    auto disable_func = [widget]() noexcept
+                        {
+                          widget->enable(false);
+                          DOUT << "disable: " << widget->getIdentifier() << std::endl;
+                        };
 
     for (const auto& c : components_)
     {

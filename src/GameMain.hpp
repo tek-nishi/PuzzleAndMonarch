@@ -40,10 +40,6 @@ public:
     count_exec_.add(2.6,
                     [this]() noexcept
                     {
-                      {
-                        const auto& widget = canvas_.at("begin");
-                        widget->enable(false);
-                      }
                       event_.signal("Game:Start", Arguments());
                     });
 
@@ -53,20 +49,11 @@ public:
                                 // Pause開始
                                 canvas_.active(false);
                                 event_.signal("GameMain:pause", Arguments());
-                                {
-                                  const auto& widget = canvas_.at("pause_menu");
-                                  widget->enable();
-                                }
                                 canvas_.startTween("pause");
 
-                                // 時間差でUI演出
                                 count_exec_.add(1.2,
                                                 [this]() noexcept
                                                 {
-                                                  {
-                                                    const auto& widget = canvas_.at("main");
-                                                    widget->enable(false);
-                                                  }
                                                   canvas_.active();
                                                 });
                               });
@@ -75,21 +62,13 @@ public:
                               [this](const Connection&, const Arguments&) noexcept
                               {
                                 // Game続行(時間差で演出)
-                                {
-                                  const auto& widget = canvas_.at("main");
-                                  widget->enable();
-                                }
                                 canvas_.active(false);
                                 canvas_.startTween("resume");
                                 count_exec_.add(1.2,
                                                 [this]() noexcept
                                                 {
-                                                  {
-                                                    const auto& widget = canvas_.at("pause_menu");
-                                                    widget->enable(false);
-                                                  }
-                                                  event_.signal("GameMain:resume", Arguments());
                                                   canvas_.active();
+                                                  event_.signal("GameMain:resume", Arguments());
                                                 });
                               });
     
@@ -120,6 +99,7 @@ public:
                                 auto remaining_time = boost::any_cast<double>(arg.at("remaining_time"));
                                 if (remaining_time < 10.0)
                                 {
+                                  // 残り時間10秒切ったら焦らす
                                   sprintf(text, "0'%05.2f", remaining_time);
                                 }
                                 else
@@ -129,22 +109,13 @@ public:
                                   int seconds = time % 60;
                                   sprintf(text, "%d'%02d", minutes, seconds);
                                 }
+                                canvas_.setWidgetText("time_remain", text);
 
-                                const auto& widget = canvas_.at("time_remain");
-                                widget->setParam("text", std::string(text));
-
-                                // 時間が10秒切ったら色を変える
-                                ci::Color color(1, 1, 1);
-                                if (remaining_time < 11.0)
-                                {
-                                  color = ci::Color(1, 0, 0);
-                                }
-                                widget->setParam("color", color);
-
-                                {
-                                  const auto& w = canvas_.at("time_remain_icon");
-                                  w->setParam("color", color);
-                                }
+                                // 時間が11秒切ったら色を変える
+                                auto color = (remaining_time < 11.0) ? ci::Color(1, 0, 0)
+                                                                     : ci::Color(1, 1, 1);
+                                canvas_.setWidgetParam("time_remain",      "color", color);
+                                canvas_.setWidgetParam("time_remain_icon", "color", color);
                               });
 
     holder_ += event_.connect("Game:UpdateScores",
@@ -161,15 +132,6 @@ public:
                               {
                                 canvas_.active(false);
                                 canvas_.startTween("end");
-                                // {
-                                //   const auto& widget = canvas_.at("main");
-                                //   widget->enable(false);
-                                // }
-                                {
-                                  const auto& widget = canvas_.at("end");
-                                  widget->enable();
-                                }
-                                
                                 count_exec_.add(3.0,
                                                 [this]() noexcept
                                                 {
@@ -189,21 +151,12 @@ public:
                                   widget->setParam("offset", offset);
                                   widget->enable();
                                 }
-                                {
-                                  const auto& widget = canvas_.at("put_timer:fringe");
-                                  widget->setParam("color", ci::Color(1, 1, 1));
-                                }
-                                {
-                                  const auto& widget = canvas_.at("put_timer:body");
-                                  widget->setParam("scale", glm::vec2());
-                                  widget->setParam("color", ci::Color(1, 1, 1));
-                                }
+                                canvas_.setWidgetParam("put_timer:body", "scale", glm::vec2());
                               });
     holder_ += event_.connect("Game:PutEnd",
                               [this](const Connection&, const Arguments&) noexcept
                               {
-                                const auto& widget = canvas_.at("put_timer");
-                                widget->enable(false);
+                                canvas_.enableWidget("put_timer", false);
                               });
     holder_ += event_.connect("Game:PutHold",
                               [this](const Connection&, const Arguments& args) noexcept
@@ -211,22 +164,13 @@ public:
                                 {
                                   const auto& pos = boost::any_cast<glm::vec3>(args.at("pos"));
                                   auto offset = canvas_.ndcToPos(pos);
-
-                                  const auto& widget = canvas_.at("put_timer");
-                                  widget->setParam("offset", offset);
-                                  widget->enable();
+                                  canvas_.setWidgetParam("put_timer", "offset", offset);
                                 }
                                 auto scale = boost::any_cast<float>(args.at("scale"));
                                 auto alpha = getEaseFunc("OutExpo")(scale);
-                                {
-                                  const auto& widget = canvas_.at("put_timer:fringe");
-                                  widget->setParam("alpha", alpha);
-                                }
-                                {
-                                  const auto& widget = canvas_.at("put_timer:body");
-                                  widget->setParam("scale", glm::vec2(scale, scale));
-                                  widget->setParam("alpha", alpha);
-                                }
+                                canvas_.setWidgetParam("put_timer:fringe", "alpha", alpha);
+                                canvas_.setWidgetParam("put_timer:body", "scale", glm::vec2(scale));
+                                canvas_.setWidgetParam("put_timer:body", "alpha", alpha);
                               });
 
     setupCommonTweens(event_, holder_, canvas_, "pause");
@@ -253,9 +197,7 @@ private:
     {
       char id[16];
       std::sprintf(id, "score:%d", i);
-
-      const auto& widget = canvas_.at(id);
-      widget->setParam("text", std::to_string(score));
+      canvas_.setWidgetParam(id, "text", std::to_string(score));
 
       i += 1;
     }
