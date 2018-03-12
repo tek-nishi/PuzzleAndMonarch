@@ -1,4 +1,5 @@
 * TODO チュートリアル
+* TODO Ranking画面にもShare機能を
 * TODO Shareボタンはカメラがいいかな
 * TODO 置き切った時は残り枚数を考慮してタイムボーナスを加算する
 * TODO RankingでTOP以外の結果も閲覧したい
@@ -6,7 +7,7 @@
 * TODO マーカーの黄色と赤が逆？
 * TODO 市松模様はシェーダーで実現できる
 * TODO MainPartのカメラを別クラスに
-* TODO 残り枚数を表示
+* TODO BlockをタッチでPanelが移動する操作、演出がないのでわかりづらい
 * TODO tween終わりでOFFにしたい
 * TODO tween開始時にON
 * TODO 画面切り替えを統一する
@@ -38,7 +39,6 @@
 * TODO いい感じに画面全体に街が映るように
 * TODO ゲーム開始時にプレイ時間を決めたい
 * TODO 被写界深度の浅い表現
-* TODO 無限に置けるモードが欲しい
 * TODO Panelのデータをテキストに
 * TODO 全く見た目の違うパネルセット
 * TODO Windows版: イベントハンドルが微妙
@@ -353,6 +353,10 @@ CLOSED: [2018-01-10 Wed 23:56]
 CLOSED: [2018-01-09 火 16:27]
 * DONE ファイル読み込みパスの統一
 CLOSED: [2018-01-09 Tue 00:32]
+* ABORT 無限に置けるモードが欲しい
+CLOSED: [2018-03-12 月 16:32]
+* ABORT 残り枚数を表示
+CLOSED: [2018-03-12 月 16:31]
 * ABORT ランクを日本語にしてみる
 CLOSED: [2018-03-10 土 16:48]
 * ABORT UI演出の早送り操作が欲しい
