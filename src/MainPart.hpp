@@ -140,10 +140,15 @@ public:
                                 const auto& touch = boost::any_cast<const Touch&>(arg.at("touch"));
                                 if (touch.handled) return;
 
+                                // NOTICE iOSはtouchと同時にmoveも呼ばれる
+                                //        glm::distanceは距離０の時にinfを返すので、期待した結果にならない
+                                float e = std::numeric_limits<float>::epsilon();
+                                if (glm::distance2(touch.pos, touch.prev_pos) < e) return;
+
                                 // ドラッグの距離を調べて、タップかドラッグか判定
                                 draged_length_ += glm::distance(touch.pos, touch.prev_pos);
                                 manipulated_ = draged_length_ > draged_max_length_;
-                                if (touch_put_ && !manipulated_)
+                                if (touch_put_ && manipulated_)
                                 {
                                   touch_put_ = false;
                                   event_.signal("Game:PutEnd", Arguments());
@@ -159,28 +164,29 @@ public:
                               {
                                 if (!game_->isPlaying() || paused_ || prohibited_) return;
 
+                                const auto& touch = boost::any_cast<const Touch&>(arg.at("touch"));
+                                if (touch.handled) return;
+
                                 // 画面回転操作をした場合、パネル操作は全て無効
-                                if (draged_length_ > draged_max_length_)
+                                if (manipulated_)
                                 {
                                   DOUT << "draged_length: " << draged_length_ << std::endl;
                                   return;
                                 }
 
+                                // 設置操作無効
                                 if (touch_put_)
                                 {
                                   event_.signal("Game:PutEnd", Arguments());
+                                  touch_put_ = false;
                                 }
-
-                                const auto& touch = boost::any_cast<const Touch&>(arg.at("touch"));
-                                if (touch.handled) return;
                                 
                                 if (isCursorPos(touch.pos))
                                 {
                                   // パネルを回転
                                   game_->rotationHandPanel();
                                   startRotatePanelEase();
-                                  can_put_   = game_->canPutToBlank(field_pos_);
-                                  touch_put_ = false;
+                                  can_put_ = game_->canPutToBlank(field_pos_);
                                   game_event_.insert("Panel:rotate");
                                   return;
                                 }
@@ -644,7 +650,7 @@ private:
 
           touch_put_ = false;
           // 次のパネルを操作できないようにしとく
-          draged_length_ = 100.0f;
+          manipulated_ = true;
             
           // Fieldの中心を再計算
           calcViewRange(true);
