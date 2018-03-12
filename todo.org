@@ -8,8 +8,6 @@
 * TODO 市松模様はシェーダーで実現できる
 * TODO MainPartのカメラを別クラスに
 * TODO BlockをタッチでPanelが移動する操作、演出がないのでわかりづらい
-* TODO tween終わりでOFFにしたい
-* TODO tween開始時にON
 * TODO 画面切り替えを統一する
 * TODO Demoプレイ
 * TODO パネルのうらが真っ暗
@@ -57,6 +55,10 @@
 * TODO アプリアイコン
 * TODO iOS:GameCenter対応
 * TODO iOS:実績を実装
+* DONE tween終わりでOFFにしたい
+CLOSED: [2018-03-12 月 21:26]
+* DONE tween開始時にON
+CLOSED: [2018-03-12 月 21:26]
 * DONE Ranking２回目以降カメラが回転しない
 CLOSED: [2018-03-11 日 23:48]
 * DONE Ranking詳細は画面を明るく

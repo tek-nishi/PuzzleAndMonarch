@@ -35,7 +35,10 @@ class Tween
 
     bool has_start;
     bool copy_start;
-    
+
+    bool enable_start;
+    bool disable_end;
+
     boost::any start;
     boost::any end;
   };
@@ -68,11 +71,13 @@ public:
         const auto& b = body[j];
         float duration = b.getValueForKey<float>("duration");
 
-        bool loop       = Json::getValue(b, "loop", false);
-        bool pingpong   = Json::getValue(b, "pingpong", false);
-        float delay     = Json::getValue(b, "delay", 0.0f);
-        auto ease_func  = Json::getValue(b, "ease_func", std::string("None"));
-        bool copy_start = Json::getValue(b, "copy_start", false);
+        bool loop         = Json::getValue(b, "loop", false);
+        bool pingpong     = Json::getValue(b, "pingpong", false);
+        float delay       = Json::getValue(b, "delay", 0.0f);
+        auto ease_func    = Json::getValue(b, "ease_func", std::string("None"));
+        bool copy_start   = Json::getValue(b, "copy_start", false);
+        bool enable_start = Json::getValue(b, "enable_start", false);
+        bool disable_end  = Json::getValue(b, "disable_end", false);
 
         bool has_start = false;
         boost::any start;
@@ -84,7 +89,11 @@ public:
         }
         end = getValueForType(b["end"], type);
 
-        bodies.push_back({ duration, loop, pingpong, delay, getEaseFunc(ease_func), has_start, copy_start, start, end });
+        bodies.push_back({ duration, loop, pingpong, delay, getEaseFunc(ease_func),
+                           has_start, copy_start,
+                           enable_start,
+                           disable_end,
+                           start, end });
       }
 
       // TODO 構造体のコピーを無くす
@@ -98,6 +107,9 @@ public:
   template <typename T>
   void set(const ci::TimelineRef& timeline, const T& widget) const noexcept
   {
+    auto enable_func  = [widget]() { widget->enable(); };
+    auto disable_func = [widget]() { widget->enable(false); };
+
     for (const auto& c : components_)
     {
       const auto& param_name = c.name;
@@ -105,7 +117,8 @@ public:
 
       {
         const auto& b = c.bodies[0];
-        applyTween(type, timeline, widget->getParam(param_name), b);
+        applyTween(type, timeline, widget->getParam(param_name), b,
+                   enable_func, disable_func);
         if (b.copy_start)
         {
           widget->setParam(param_name, b.start);
@@ -115,7 +128,8 @@ public:
       for (u_int i = 1; i < c.bodies.size(); ++i)
       {
         const auto& b = c.bodies[i];
-        appendToTween(type, timeline, widget->getParam(param_name), b);
+        appendToTween(type, timeline, widget->getParam(param_name), b,
+                      enable_func, disable_func);
       }
     }
   }
@@ -163,7 +177,9 @@ private:
   template <typename T>
   static void applyTweenParams(const ci::TimelineRef& timeline,
                                const boost::any& target,
-                               const Body& body) noexcept
+                               const Body& body,
+                               const std::function<void ()>& enable_func,
+                               const std::function<void ()>& disable_func) noexcept
   {
       if (body.has_start)
       {
@@ -173,6 +189,8 @@ private:
         if (body.loop)         options.loop();
         if (body.pingpong)     options.pingPong();
         if (body.delay > 0.0f) options.delay(body.delay);
+        if (body.enable_start) options.startFn(enable_func);
+        if (body.disable_end)  options.finishFn(disable_func);
       }
       else
       {
@@ -182,13 +200,17 @@ private:
         if (body.loop)         options.loop();
         if (body.pingpong)     options.pingPong();
         if (body.delay > 0.0f) options.delay(body.delay);
+        if (body.enable_start) options.startFn(enable_func);
+        if (body.disable_end)  options.finishFn(disable_func);
       }
   }
 
   template <typename T>
   static void appendTweenParams(const ci::TimelineRef& timeline,
                                 const boost::any& target,
-                                const Body& body) noexcept
+                                const Body& body,
+                                const std::function<void ()>& enable_func,
+                                const std::function<void ()>& disable_func) noexcept
   {
       if (body.has_start)
       {
@@ -198,6 +220,8 @@ private:
         if (body.loop)         options.loop();
         if (body.pingpong)     options.pingPong();
         if (body.delay > 0.0f) options.delay(body.delay);
+        if (body.enable_start) options.startFn(enable_func);
+        if (body.disable_end)  options.finishFn(disable_func);
       }
       else
       {
@@ -207,6 +231,8 @@ private:
         if (body.loop)         options.loop();
         if (body.pingpong)     options.pingPong();
         if (body.delay > 0.0f) options.delay(body.delay);
+        if (body.enable_start) options.startFn(enable_func);
+        if (body.disable_end)  options.finishFn(disable_func);
       }
   }
 
@@ -215,28 +241,30 @@ private:
   static void applyTween(int type,
                          const ci::TimelineRef& timeline,
                          const boost::any& target,
-                         const Body& body) noexcept
+                         const Body& body,
+                         const std::function<void ()>& enable_func,
+                         const std::function<void ()>& disable_func) noexcept
   {
     switch (type)
     {
     case Type::FLOAT:
-      applyTweenParams<float>(timeline, target, body);
+      applyTweenParams<float>(timeline, target, body, enable_func, disable_func);
       break;
 
     case Type::VEC2:
-      applyTweenParams<glm::vec2>(timeline, target, body);
+      applyTweenParams<glm::vec2>(timeline, target, body, enable_func, disable_func);
       break;
 
     case Type::VEC3:
-      applyTweenParams<glm::vec3>(timeline, target, body);
+      applyTweenParams<glm::vec3>(timeline, target, body, enable_func, disable_func);
       break;
 
     case Type::COLOR:
-      applyTweenParams<ci::Color>(timeline, target, body);
+      applyTweenParams<ci::Color>(timeline, target, body, enable_func, disable_func);
       break;
 
     case Type::RECT:
-      applyTweenParams<ci::Rectf>(timeline, target, body);
+      applyTweenParams<ci::Rectf>(timeline, target, body, enable_func, disable_func);
       break;
     }
   }
@@ -244,28 +272,30 @@ private:
   static void appendToTween(int type,
                             const ci::TimelineRef& timeline,
                             const boost::any& target,
-                            const Body& body) noexcept
+                            const Body& body,
+                            const std::function<void ()>& enable_func,
+                            const std::function<void ()>& disable_func) noexcept
   {
     switch (type)
     {
     case Type::FLOAT:
-      appendTweenParams<float>(timeline, target, body);
+      appendTweenParams<float>(timeline, target, body, enable_func, disable_func);
       break;
 
     case Type::VEC2:
-      appendTweenParams<glm::vec2>(timeline, target, body);
+      appendTweenParams<glm::vec2>(timeline, target, body, enable_func, disable_func);
       break;
 
     case Type::VEC3:
-      appendTweenParams<glm::vec3>(timeline, target, body);
+      appendTweenParams<glm::vec3>(timeline, target, body, enable_func, disable_func);
       break;
 
     case Type::COLOR:
-      appendTweenParams<ci::Color>(timeline, target, body);
+      appendTweenParams<ci::Color>(timeline, target, body, enable_func, disable_func);
       break;
 
     case Type::RECT:
-      appendTweenParams<ci::Rectf>(timeline, target, body);
+      appendTweenParams<ci::Rectf>(timeline, target, body, enable_func, disable_func);
       break;
     }
   }
