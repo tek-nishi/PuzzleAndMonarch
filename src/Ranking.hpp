@@ -81,13 +81,11 @@ public:
                               {
                                 canvas_.active(false);
                                 canvas_.startTween("view-start");
-                                canvas_.enableWidget("result");
 
                                 count_exec_.add(1.4,
                                                 [this]() noexcept
                                                 {
                                                   canvas_.active(true);
-                                                  canvas_.enableWidget("top10", false);
                                                 });
 
                                 DOUT << "View start." << std::endl;
@@ -98,13 +96,11 @@ public:
                               {
                                 canvas_.active(false);
                                 canvas_.startTween("view-end");
-                                canvas_.enableWidget("top10");
 
                                 count_exec_.add(1.4,
                                                 [this]() noexcept
                                                 {
                                                   canvas_.active(true);
-                                                  canvas_.enableWidget("result", false);
                                                 });
 
                                 DOUT << "View end." << std::endl;
@@ -114,8 +110,6 @@ public:
                               [this](const Connection&, const Arguments& args) noexcept
                               {
                                 applyScore(args);
-                                // const auto& widget = canvas_.at("scores");
-                                // widget->enable();
                                 canvas_.startTween("update_score");
                               });
 
@@ -142,9 +136,8 @@ private:
     {
       for (const auto& id : rank_effects_)
       {
-        const auto& widget = canvas_.at(id);
         auto color = ci::hsvToRgb({ std::fmod(current_time * 2.0, 1.0), 1, 1 });
-        widget->setParam("color", color);
+        canvas_.setWidgetParam(id, "color", color);
       }
     }
 
