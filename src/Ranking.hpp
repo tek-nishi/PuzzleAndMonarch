@@ -9,6 +9,8 @@
 #include "UICanvas.hpp"
 #include "TweenUtil.hpp"
 #include "Score.hpp"
+#include "Share.h"
+#include "Capture.h"
 
 
 namespace ngs {
@@ -26,6 +28,9 @@ class Ranking
   bool rank_in_  = false;
   u_int ranking_ = 0;
   size_t ranking_records_;
+
+  // Share機能用の文章
+  std::string share_text_;
 
   std::vector<std::string> rank_effects_;
 
@@ -45,6 +50,8 @@ public:
               Params::load(params.getValueForKey<std::string>("ranking.tweens")))
   {
     startTimelineSound(event_, params, "ranking.se");
+    
+    share_text_ = params.getValueForKey<std::string>("ranking.share");
 
     if (args.count("rank_in"))
     {
@@ -112,12 +119,47 @@ public:
                                 applyScore(args);
                                 canvas_.startTween("update_score");
                               });
+    
+    holder_ += event_.connect("share:touch_ended",
+                              [this](const Connection&, const Arguments&) noexcept
+                              {
+                                DOUT << "Share." << std::endl;
+
+                                canvas_.active(false);
+                                count_exec_.add(0.5,
+                                                [this]() noexcept
+                                                {
+                                                  auto* image = Capture::execute();
+
+                                                  event_.signal("App:pending-update", Arguments());
+
+                                                  Share::post(share_text_, image,
+                                                              [this](bool completed) noexcept
+                                                              {
+                                                                if (completed)
+                                                                {
+                                                                  // 記録につけとく
+                                                                  DOUT << "Share: completed." << std::endl;
+                                                                  event_.signal("Share:completed", Arguments());
+                                                                }
+                                                                event_.signal("App:resume-update", Arguments());
+                                                                canvas_.active(true);
+                                                              });
+                                                });
+                              });
 
     // ボタンイベント共通Tween
     setupCommonTweens(event_, holder_, canvas_, "agree");
     setupCommonTweens(event_, holder_, canvas_, "view");
     setupCommonTweens(event_, holder_, canvas_, "back");
+    setupCommonTweens(event_, holder_, canvas_, "share");
 
+    if (Share::canPost() && Capture::canExec())
+    {
+      // Share機能と画面キャプチャが有効ならUIも有効
+      canvas_.enableWidget("share");
+    }
+    
     // NOTICE Title→Rankingの時は記録があるが、Result→Rankingの場合は記録が無い
     applyRankings(boost::any_cast<const ci::JsonTree&>(args.at("games")));
     canvas_.startTween(rank_in_ ? "start-left"

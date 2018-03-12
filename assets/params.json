@@ -364,6 +364,8 @@
 
   "ranking": {
     "canvas": "ui_ranking.json",
-    "tweens": "tw_ranking.json"
+    "tweens": "tw_ranking.json",
+
+    "share": "PuzzleMonarch でのハイスコアです!!"
   }
 }

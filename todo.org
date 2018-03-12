@@ -1,5 +1,4 @@
 * TODO チュートリアル
-* TODO Ranking画面にもShare機能を
 * TODO Shareボタンはカメラがいいかな
 * TODO 置き切った時は残り枚数を考慮してタイムボーナスを加算する
 * TODO RankingでTOP以外の結果も閲覧したい
@@ -54,6 +53,8 @@
 * TODO アプリアイコン
 * TODO iOS:GameCenter対応
 * TODO iOS:実績を実装
+* DONE Ranking画面にもShare機能を
+CLOSED: [2018-03-13 火 01:27]
 * DONE tween終わりでOFFにしたい
 CLOSED: [2018-03-12 月 21:26]
 * DONE tween開始時にON
