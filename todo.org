@@ -1,5 +1,4 @@
 * TODO チュートリアル
-* TODO Shareボタンはカメラがいいかな
 * TODO 置き切った時は残り枚数を考慮してタイムボーナスを加算する
 * TODO RankingでTOP以外の結果も閲覧したい
 * TODO 結果画面やランキング画面で、一定時間入力がないと回転するようにならないか
@@ -53,6 +52,8 @@
 * TODO アプリアイコン
 * TODO iOS:GameCenter対応
 * TODO iOS:実績を実装
+* DONE Shareボタンはカメラがいいかな
+CLOSED: [2018-03-14 水 00:12]
 * DONE Ranking画面にもShare機能を
 CLOSED: [2018-03-13 火 01:27]
 * DONE tween終わりでOFFにしたい

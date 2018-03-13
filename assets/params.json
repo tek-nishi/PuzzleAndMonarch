@@ -280,7 +280,7 @@
       {
         "name": "head",
         "path": "FuturaCon-Bol.ttf",
-        "texture_size": 256,
+        "texture_size": 512,
         "size": 64
       }
     ],
