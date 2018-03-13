@@ -186,6 +186,20 @@ public:
     widget->setParam(param_id, param);
   }
 
+  boost::any getWidgetParam(const std::string& id, const std::string& param_id) noexcept
+  {
+#if defined DEBUG
+    if (!this->isExists(id))
+    {
+      DOUT << "No widget: " << id << std::endl;
+      return { };
+    }
+#endif
+
+    const auto& widget = this->at(id);
+    return widget->getParam(param_id);
+  }
+
 
 private:
   void resize(const Connection&, const Arguments&) noexcept

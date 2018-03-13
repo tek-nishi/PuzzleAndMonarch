@@ -142,15 +142,27 @@ public:
                       });
     }
 
-    count_exec_.add(disp_delay_2,
-                    [this]() noexcept
-                    {
-                      if (Share::canPost() && Capture::canExec())
-                      {
-                        // Share機能と画面キャプチャが有効ならUIも有効
-                        canvas_.enableWidget("share");
-                      }
-                    });
+    // count_exec_.add(disp_delay_2,
+    //                 [this]() noexcept
+    //                 {
+    //                   if (Share::canPost() && Capture::canExec())
+    //                   {
+    //                     // Share機能と画面キャプチャが有効ならUIも有効
+    //                     canvas_.enableWidget("share");
+    //                   }
+    //                 });
+
+    if (Share::canPost() && Capture::canExec())
+    {
+      // Share機能と画面キャプチャが有効ならUIも有効
+      canvas_.enableWidget("share");
+      
+      // ボタンのレイアウト変更
+      auto p = canvas_.getWidgetParam("share", "offset");
+      glm::vec2 ofs = *(boost::any_cast<glm::vec2*>(p));
+      ofs.x = -ofs.x;
+      canvas_.setWidgetParam("touch", "offset", ofs);
+    }
 
     setupCommonTweens(event_, holder_, canvas_, "agree");
     setupCommonTweens(event_, holder_, canvas_, "share");

@@ -44,25 +44,35 @@ public:
     : event_(event),
       ranking_text_(Json::getArray<std::string>(params["result.ranking"])),
       ranking_records_(params.getValueForKey<u_int>("game.ranking_records")),
+      share_text_(params.getValueForKey<std::string>("ranking.share")),
       canvas_(event, drawer, tween_common,
               params["ui.camera"],
               Params::load(params.getValueForKey<std::string>("ranking.canvas")),
               Params::load(params.getValueForKey<std::string>("ranking.tweens")))
   {
     startTimelineSound(event_, params, "ranking.se");
-    
-    share_text_ = params.getValueForKey<std::string>("ranking.share");
 
     if (args.count("rank_in"))
     {
+      // Result画面の後にランクインした
       rank_in_ = boost::any_cast<bool>(args.at("rank_in"));
       ranking_ = boost::any_cast<u_int>(args.at("ranking"));
+
+      canvas_.enableWidget("touch_back", false);
+      canvas_.enableWidget("touch_agree");
     }
 
     auto records = args.count("records") && boost::any_cast<bool>(args.at("records"));
     if (args.count("view") && records)
     {
+      // Title→Ranking で、ランクインした記録がある
       canvas_.enableWidget("view");
+
+      // ボタンのレイアウト変更
+      auto p = canvas_.getWidgetParam("view", "offset");
+      glm::vec2 ofs = *(boost::any_cast<glm::vec2*>(p));
+      ofs.x = -ofs.x;
+      canvas_.setWidgetParam("touch", "offset", ofs);
     }
 
     holder_ += event_.connect("agree:touch_ended",
@@ -158,6 +168,12 @@ public:
     {
       // Share機能と画面キャプチャが有効ならUIも有効
       canvas_.enableWidget("share");
+
+      // ボタンのレイアウト変更
+      auto p = canvas_.getWidgetParam("share", "offset");
+      glm::vec2 ofs = *(boost::any_cast<glm::vec2*>(p));
+      ofs.x = -ofs.x;
+      canvas_.setWidgetParam("back", "offset", ofs);
     }
     
     // NOTICE Title→Rankingの時は記録があるが、Result→Rankingの場合は記録が無い

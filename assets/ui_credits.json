@@ -168,7 +168,7 @@
 
     {
       "identifier": "touch",
-      "rect": [ -14, 0, 14, 28 ],
+      "rect": [ -10, 0, 10, 20 ],
       "anchor": [
         [ 0.5, 0.06 ],
         [ 0.5, 0.06 ]
@@ -177,11 +177,25 @@
       "pivot": [ 0.5, 0.5 ],
       "event": "agree",
       "se": "agree",
-      
-      "font": "icon",
-      "text": "",
-      "layout": [ 0.5, 0 ],
-      "color": [ 1, 1, 1 ]
+
+      "radius": 1,
+      "line_width": 1.5,
+      "color": [ 1, 1, 1 ],
+
+      "childlen": [
+        {
+          "rect": [ 0, 0, 0, 0 ],
+          "anchor": [
+            [ 0.14, 0.14 ],
+            [ 0.85, 0.93 ]
+          ],
+          "scale": [ 1, 1 ],
+          "pivot": [ 0.5, 0.5 ],
+          "font": "icon",
+          "text": "",
+          "color": [ 1, 1, 1 ]
+        }
+      ]
     }
   ]
 }

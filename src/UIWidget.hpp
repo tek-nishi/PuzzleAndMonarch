@@ -282,6 +282,10 @@ public:
     {
       widget->pivot_ = Json::getVec<glm::vec2>(params["pivot"]);
     }
+    if (params.hasChild("offset"))
+    {
+      widget->offset_ = Json::getVec<glm::vec2>(params["offset"]);
+    }
     if (params.hasChild("event"))
     {
       widget->event_     = params.getValueForKey<std::string>("event");
@@ -352,7 +356,7 @@ private:
   bool parent_enable_ = true;
 
   ci::Rectf rect_;
-  glm::vec2 offset_ = { 0.0f, 0.0f };
+  glm::vec2 offset_;
 
   // スケーリングの中心(normalized)
   glm::vec2 pivot_ = { 0.5f, 0.5f };
