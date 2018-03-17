@@ -46,6 +46,7 @@ public:
     if (!isFrameRateEnabled())
     {
       ci::gl::enableVerticalSync();
+      DOUT << "enableVerticalSync." << std::endl;
     }
 
 #if defined (CINDER_COCOA_TOUCH)

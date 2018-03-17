@@ -44,7 +44,7 @@ public:
     // TIPS for文中でitを更新している
     for (auto it = std::begin(callbacks_); it != std::end(callbacks_); )
     {
-      if (it->delay_time <= 0.0)
+      if (it->delay_time < 0.0)
       {
         auto result = it->func(delta_time);
         if (result && it->infinit)
@@ -54,14 +54,17 @@ public:
         }
 
         it->time_remain -= delta_time;
-        if (it->time_remain <= 0.0)
+        if (it->time_remain < 0.0)
         {
           // TIPS eraseは次のイテレーターを返す
           it = callbacks_.erase(it);
           continue;
         }
       }
-      it->delay_time -= delta_time;
+      else
+      {
+        it->delay_time -= delta_time;
+      }
       ++it;
     }
   }

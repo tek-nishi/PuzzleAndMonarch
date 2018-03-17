@@ -254,6 +254,10 @@
     "pending_update_color": [ 0.6, 0.6, 0.6, 1 ],
     "pending_update_duration": 0.3,
 
+    "pause_exec_delay": 0.35,
+    "pause_transition_delay": 0.45,
+    "game_abort_delay": 0.35,
+
     "field_shader": "field"
   },
 
@@ -309,7 +313,10 @@
 
     "transition": {
       "duration": 0.4,
-      "color": [ 0.65, 0.65, 0.65, 1 ]
+      "color": [ 0.65, 0.65, 0.65, 1 ],
+
+      "game_begin_delay": 0.4,
+      "game_begin_duration": 2.1
     }
   },
   

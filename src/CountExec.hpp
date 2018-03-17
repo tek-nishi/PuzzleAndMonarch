@@ -54,7 +54,7 @@ public:
       }
 
       it->time_remain -= delta_time;
-      if (it->time_remain <= 0.0)
+      if (it->time_remain < 0.0)
       {
         it->func();
         // TIPS eraseは次のイテレーターを返す

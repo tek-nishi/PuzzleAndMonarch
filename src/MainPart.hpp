@@ -266,7 +266,15 @@ public:
                               [this](const Connection&, const Arguments&) noexcept
                               {
                                 game_event_.insert("Game:ready");
-                                
+
+                                auto delay = params_.getValueForKey<float>("ui.transition.game_begin_delay");
+                                view_.setColor(force_timeline_, transition_duration_, transition_color_, delay);
+                                count_exec_.add(params_.getValueForKey<float>("ui.transition.game_begin_duration"),
+                                                [this]() noexcept
+                                                {
+                                                  view_.setColor(force_timeline_, transition_duration_, ci::ColorA(1, 1, 1, 1));
+                                                });
+
                                 field_distance_ = initial_camera_distance_;
                                 field_center_   = initial_target_position_;
                                 // auto option = timeline_->applyPtr(&camera_rotation_,
@@ -298,7 +306,7 @@ public:
                                 // 中断
                                 archive_.addRecord("abort-times", uint32_t(1));
                                 archive_.save();
-                                count_exec_.add(0.5,
+                                count_exec_.add(params_.getValueForKey<double>("field.game_abort_delay"),
                                                 [this]() noexcept
                                                 {
                                                   resetGame();
@@ -328,6 +336,7 @@ public:
                                 game_event_.insert("Game:finish");
 
                                 calcViewRange(false);
+                                view_.setColor(force_timeline_, transition_duration_, transition_color_);
 
                                 // スコア計算
                                 auto score      = calcGameScore(args);
@@ -347,6 +356,7 @@ public:
                                                     { "high_score", high_score },
                                                   };
                                                   event_.signal("Result:begin", a);
+                                                  view_.setColor(force_timeline_, transition_duration_, ci::ColorA(1, 1, 1, 1));
                                                 });
 
                                 count_exec_.add(params_.getValueForKey<double>("field.auto_camera_duration"),
@@ -505,38 +515,40 @@ public:
                                 // Pause開始
                                 paused_ = true;
                                 count_exec_.pause();
-                                count_exec_.add(0.3,
+                                count_exec_.add(params_.getValueForKey<double>("field.pause_exec_delay"),
                                                 [this]() noexcept
                                                 {
-                                                  view_.setColor(force_timeline_, transition_duration_, transition_color_);
                                                   view_.setPauseEffect(toRadians(180.0f), force_timeline_,
                                                                        pause_duration_.x, pause_ease_);
                                                 },
                                                 true);
+
+                                view_.setColor(force_timeline_, transition_duration_, transition_color_,
+                                               params_.getValueForKey<double>("field.pause_transition_delay"));
                               });
 
     holder_ += event_.connect("resume:touch_ended",
                               [this](const Connection&, const Arguments&) noexcept
                               {
-                                count_exec_.add(0.3,
+                                // ゲーム続行
+                                count_exec_.add(params_.getValueForKey<double>("field.pause_exec_delay"),
                                                 [this]() noexcept
                                                 {
-                                                  view_.setColor(force_timeline_, transition_duration_, ci::ColorA(1, 1, 1, 1));
                                                   view_.setPauseEffect(0.0f, force_timeline_,
                                                                        pause_duration_.y, pause_ease_);
                                                 },
                                                 true);
+
+                                view_.setColor(force_timeline_, transition_duration_, ci::ColorA(1, 1, 1, 1),
+                                               params_.getValueForKey<double>("field.pause_transition_delay"));
                               });
 
     holder_ += event_.connect("abort:touch_ended",
                               [this](const Connection&, const Arguments&) noexcept
                               {
-                                count_exec_.add(0.3,
-                                                [this]() noexcept
-                                                {
-                                                  view_.setColor(force_timeline_, transition_duration_, ci::ColorA(1, 1, 1, 1));
-                                                },
-                                                true);
+                                // ゲーム終了
+                                view_.setColor(force_timeline_, transition_duration_, ci::ColorA(1, 1, 1, 1),
+                                               params_.getValueForKey<double>("field.pause_transition_delay"));
                               });
     
     holder_ += event_.connect("GameMain:resume",
@@ -654,7 +666,7 @@ private:
           event_.signal("Game:PutHold", args);
         }
 
-        if (put_remaining_ <= 0.0)
+        if (put_remaining_ < 0.0)
         {
           game_->putHandPanel(field_pos_);
           event_.signal("Game:PutEnd", Arguments());
