@@ -651,6 +651,8 @@ private:
           touch_put_ = false;
           // 次のパネルを操作できないようにしとく
           manipulated_ = true;
+          // 適当に大きな値
+          draged_length_ = draged_max_length_ * 2;
             
           // Fieldの中心を再計算
           calcViewRange(true);

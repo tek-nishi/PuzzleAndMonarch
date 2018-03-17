@@ -639,7 +639,6 @@ private:
       };
       event_.signal("Game:PutPanel", args);
     }
-
   }
 
 
