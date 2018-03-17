@@ -216,42 +216,48 @@ public:
                                 auto dot = glm::dot(d0, d1);
                                 
                                 // ２つのタッチ位置の距離変化→ズーミング
-                                float l0 = glm::distance(touches[0].pos, touches[1].pos);
-                                float l1 = glm::distance(touches[0].prev_pos, touches[1].prev_pos);
-                                auto dl = l0 - l1;
-                                if ((std::abs(dl) > 1.0f) && (l0 != 0.0f) && (l1 != 0.0f))
+                                auto l0 = glm::distance2(touches[0].pos, touches[1].pos);
+                                auto l1 = glm::distance2(touches[0].prev_pos, touches[1].prev_pos);
+                                if (l0 > 0.0f && l1 > 0.0f)
                                 {
-                                  // ピンチング
-                                  float n = l0 / l1;
-                                  camera_distance_ = ci::clamp(camera_distance_ / n,
-                                                               camera_distance_range_.x, camera_distance_range_.y);
-                                  calcCamera(camera);
-                                  field_distance_ = camera_distance_;
-                                }
-                                if (dot > 0.0f)
-                                {
-                                  // 平行移動
-                                  // TIPS ２点をRay castでworld positionに変換して
-                                  //      差分→移動量
-                                  auto pos = (touches[0].pos + touches[1].pos) * 0.5f;
-                                  auto ray1 = camera.generateRay(pos, ci::app::getWindowSize());
-                                  float z1;
-                                  ray1.calcPlaneIntersection(glm::vec3(0), glm::vec3(0, 1, 0), &z1);
-                                  auto p1 = ray1.calcPosition(z1);
+                                  l0 = std::sqrt(l0);
+                                  l1 = std::sqrt(l1);
 
-                                  auto prev_pos = (touches[0].prev_pos + touches[1].prev_pos) * 0.5f;
-                                  auto ray2 = camera.generateRay(prev_pos, ci::app::getWindowSize());
-                                  float z2;
-                                  ray2.calcPlaneIntersection(glm::vec3(0), glm::vec3(0, 1, 0), &z2);
-                                  auto p2 = ray2.calcPosition(z2);
+                                  auto dl = l0 - l1;
+                                  if (std::abs(dl) > 1.0f)
+                                  {
+                                    // ピンチング
+                                    float n = l0 / l1;
+                                    camera_distance_ = ci::clamp(camera_distance_ / n,
+                                                                 camera_distance_range_.x, camera_distance_range_.y);
+                                    calcCamera(camera);
+                                    field_distance_ = camera_distance_;
+                                  }
+                                  if (dot > 0.0f)
+                                  {
+                                    // 平行移動
+                                    // TIPS ２点をRay castでworld positionに変換して
+                                    //      差分→移動量
+                                    auto pos = (touches[0].pos + touches[1].pos) * 0.5f;
+                                    auto ray1 = camera.generateRay(pos, ci::app::getWindowSize());
+                                    float z1;
+                                    ray1.calcPlaneIntersection(glm::vec3(0), glm::vec3(0, 1, 0), &z1);
+                                    auto p1 = ray1.calcPosition(z1);
 
-                                  auto v = p2 - p1;
-                                  v.y = 0;
+                                    auto prev_pos = (touches[0].prev_pos + touches[1].prev_pos) * 0.5f;
+                                    auto ray2 = camera.generateRay(prev_pos, ci::app::getWindowSize());
+                                    float z2;
+                                    ray2.calcPlaneIntersection(glm::vec3(0), glm::vec3(0, 1, 0), &z2);
+                                    auto p2 = ray2.calcPosition(z2);
 
-                                  target_position_ += v;
-                                  field_center_ = target_position_;
-                                  eye_position_ += v;
-                                  camera.setEyePoint(eye_position_);
+                                    auto v = p2 - p1;
+                                    v.y = 0;
+
+                                    target_position_ += v;
+                                    field_center_ = target_position_;
+                                    eye_position_ += v;
+                                    camera.setEyePoint(eye_position_);
+                                  }
                                 }
                               });
 
@@ -331,7 +337,7 @@ public:
                                 auto rank_in = isRankIn(score.total_score);
                                 auto ranking = getRanking(score.total_score);
 
-                                count_exec_.add(2.3,
+                                count_exec_.add(params_.getValueForKey<double>("field.result_begin_delay"),
                                                 [this, score, rank_in, ranking, high_score]() noexcept
                                                 {
                                                   Arguments a {
@@ -343,16 +349,19 @@ public:
                                                   event_.signal("Result:begin", a);
                                                 });
 
-                                count_exec_.add(3.0,
+                                count_exec_.add(params_.getValueForKey<double>("field.auto_camera_duration"),
                                                 [this]() noexcept
                                                 {
                                                   force_camera_ = false;
                                                   prohibited_   = false;
                                                 });
-                                fixed_exec_.add(1.5, -1.0,
-                                                [this](double delta_time) noexcept
+
+                                auto speed = params_.getValueForKey<double>("field.auto_camera_rotation_speed");
+                                fixed_exec_.add(params_.getValueForKey<double>("field.auto_camera_delay"),
+                                                -1.0,
+                                                [this, speed](double delta_time) noexcept
                                                 {
-                                                  camera_rotation_.y += M_PI * 0.025 * delta_time;
+                                                  camera_rotation_.y += M_PI * speed * delta_time;
                                                   calcCamera(camera_.body());
 
                                                   return !manipulated_;
@@ -440,11 +449,19 @@ public:
                                     calcViewRange(false);
                                   }
                                 }
-                                
-                                fixed_exec_.add(3.0, -1.0,
-                                                [this](double delta_time) noexcept
+
+                                count_exec_.add(params_.getValueForKey<double>("field.auto_camera_duration"),
+                                                [this]() noexcept
                                                 {
-                                                  camera_rotation_.y += M_PI * 0.025 * delta_time;
+                                                  force_camera_ = false;
+                                                });
+
+                                auto speed = params_.getValueForKey<double>("field.auto_camera_rotation_speed");
+                                fixed_exec_.add(params_.getValueForKey<double>("field.auto_camera_delay"),
+                                                -1.0,
+                                                [this, speed](double delta_time) noexcept
+                                                {
+                                                  camera_rotation_.y += M_PI * speed * delta_time;
                                                   calcCamera(camera_.body());
 
                                                   return !manipulated_;
@@ -532,13 +549,15 @@ public:
     holder_ += event_.connect("App:pending-update",
                               [this](const Connection&, const Arguments&) noexcept
                               {
-                                view_.setColor(ci::ColorA(0.6, 0.6, 0.6, 1));
+                                auto color = Json::getColorA<float>(params_["field.pending_update_color"]);
+                                view_.setColor(color);
                               });
 
     holder_ += event_.connect("App:resume-update",
                               [this](const Connection&, const Arguments&) noexcept
                               {
-                                view_.setColor(force_timeline_, 0.3, ci::ColorA(1, 1, 1, 1));
+                                auto duration = params_.getValueForKey<float>("field.pending_update_duration");
+                                view_.setColor(force_timeline_, duration, ci::ColorA(1, 1, 1, 1));
                               });
 
     holder_ += event_.connect("Settings:Trash",
@@ -1188,6 +1207,7 @@ private:
   std::mt19937 engine_;
 
   bool paused_ = false;
+  // true: カメラ操作不可
   bool prohibited_ = false;
 
   std::vector<Panel> panels_;
