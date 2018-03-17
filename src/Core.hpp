@@ -143,12 +143,8 @@ public:
     holder_ += event_.connect("Game:Aborted",
                               [this](const Connection&, const Arguments&) noexcept
                               {
-                                count_exec_.add(0.5,
-                                                [this]() noexcept
-                                                {
-                                                  tasks_.pushBack<Title>(params_, event_, drawer_, tween_common_,
-                                                                         false, archive_.isSaved());
-                                                });
+                                tasks_.pushBack<Title>(params_, event_, drawer_, tween_common_,
+                                                       false, archive_.isSaved());
                               });
     // GameMain→Result
     holder_ += event_.connect("Result:begin",
@@ -174,12 +170,8 @@ public:
                                 }
                                 else
                                 {
-                                  count_exec_.add(0.5,
-                                                  [this]() noexcept
-                                                  {
-                                                    tasks_.pushBack<Title>(params_, event_, drawer_, tween_common_,
+                                  tasks_.pushBack<Title>(params_, event_, drawer_, tween_common_,
                                                                            false, archive_.isSaved());
-                                                  });
                                 }
                               });
 

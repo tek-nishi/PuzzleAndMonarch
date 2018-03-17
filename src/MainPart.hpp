@@ -430,7 +430,7 @@ public:
                                 }
                                 else
                                 {
-                                  count_exec_.add(0.5,
+                                  count_exec_.add(params_.getValueForKey<double>("field.reset_delay"),
                                                   [this]() noexcept
                                                   {
                                                     resetGame();
@@ -444,40 +444,44 @@ public:
     holder_ += event_.connect("Ranking:begin",
                               [this](const Connection&, const Arguments&) noexcept
                               {
-                                force_camera_ = true;
-                                manipulated_  = false;
-
-                                timeline_->clear();
-
-                                // TOPの記録を読み込む
-                                {
-                                  const auto& json = archive_.getRecordArray("games");
-                                  if (json.hasChildren() && json[0].hasChild("path"))
-                                  {
-                                    view_.clear();
-                                    game_->load(json[0].getValueForKey("path"));
-                                    calcViewRange(false);
-                                  }
-                                }
-
-                                count_exec_.add(params_.getValueForKey<double>("field.auto_camera_duration"),
+                                count_exec_.add(params_.getValueForKey<double>("field.reset_delay"),
                                                 [this]() noexcept
                                                 {
-                                                  force_camera_ = false;
-                                                });
+                                                  force_camera_ = true;
+                                                  manipulated_  = false;
 
-                                auto speed = params_.getValueForKey<double>("field.auto_camera_rotation_speed");
-                                fixed_exec_.add(params_.getValueForKey<double>("field.auto_camera_delay"),
-                                                -1.0,
-                                                [this, speed](double delta_time) noexcept
-                                                {
-                                                  camera_rotation_.y += M_PI * speed * delta_time;
-                                                  calcCamera(camera_.body());
+                                                  timeline_->clear();
 
-                                                  return !manipulated_;
+                                                  // TOPの記録を読み込む
+                                                  {
+                                                    const auto& json = archive_.getRecordArray("games");
+                                                    if (json.hasChildren() && json[0].hasChild("path"))
+                                                    {
+                                                      view_.clear();
+                                                      game_->load(json[0].getValueForKey("path"));
+                                                      calcViewRange(false);
+                                                    }
+                                                  }
+
+                                                  count_exec_.add(params_.getValueForKey<double>("field.auto_camera_duration"),
+                                                                  [this]() noexcept
+                                                                  {
+                                                                    force_camera_ = false;
+                                                                  });
+
+                                                  auto speed = params_.getValueForKey<double>("field.auto_camera_rotation_speed");
+                                                  fixed_exec_.add(params_.getValueForKey<double>("field.auto_camera_delay"),
+                                                                  -1.0,
+                                                                  [this, speed](double delta_time) noexcept
+                                                                  {
+                                                                    camera_rotation_.y += M_PI * speed * delta_time;
+                                                                    calcCamera(camera_.body());
+
+                                                                    return !manipulated_;
+                                                                  });
                                                 });
                               });
-
+    
     // Ranking詳細開始
     holder_ += event_.connect("view:touch_ended",
                               [this](const Connection&, const Arguments&) noexcept
@@ -494,8 +498,12 @@ public:
     holder_ += event_.connect("Ranking:Finished",
                               [this](const Connection&, const Arguments&) noexcept
                               {
-                                resetGame();
-                                resetCamera();
+                                count_exec_.add(params_.getValueForKey<double>("field.reset_delay"),
+                                                [this]() noexcept
+                                                {
+                                                  resetGame();
+                                                  resetCamera();
+                                                });
                               });
 
     // System

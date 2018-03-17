@@ -52,6 +52,9 @@ public:
   {
     startTimelineSound(event_, params, "ranking.se");
 
+    auto wipe_delay    = params.getValueForKey<double>("ui.wipe.delay");
+    auto wipe_duration = params.getValueForKey<double>("ui.wipe.duration");
+
     if (args.count("rank_in"))
     {
       // Result画面の後にランクインした
@@ -76,16 +79,16 @@ public:
     }
 
     holder_ += event_.connect("agree:touch_ended",
-                              [this](const Connection&, const Arguments&) noexcept
+                              [this, wipe_delay, wipe_duration](const Connection&, const Arguments&) noexcept
                               {
                                 canvas_.active(false);
-                                canvas_.startTween("end");
-                                count_exec_.add(0.6,
+                                canvas_.startCommonTween("root", "out-to-right");
+                                count_exec_.add(wipe_delay,
                                                 [this]() noexcept
                                                 {
                                                   event_.signal("Ranking:Finished", Arguments());
                                                 });
-                                count_exec_.add(1.2,
+                                count_exec_.add(wipe_duration,
                                                 [this]() noexcept
                                                 {
                                                   active_ = false;
@@ -94,12 +97,16 @@ public:
                               });
 
     holder_ += event_.connect("view:touch_ended",
-                              [this](const Connection&, const Arguments&) noexcept
+                              [this, wipe_delay, wipe_duration](const Connection&, const Arguments&) noexcept
                               {
                                 canvas_.active(false);
-                                canvas_.startTween("view-start");
-
-                                count_exec_.add(1.4,
+                                canvas_.startCommonTween("top10", "out-to-left");
+                                count_exec_.add(wipe_delay,
+                                                [this]() noexcept
+                                                {
+                                                  canvas_.startCommonTween("result", "in-from-right");
+                                                });
+                                count_exec_.add(wipe_duration,
                                                 [this]() noexcept
                                                 {
                                                   canvas_.active(true);
@@ -109,12 +116,16 @@ public:
                               });
     
     holder_ += event_.connect("back:touch_ended",
-                              [this](const Connection&, const Arguments&) noexcept
+                              [this, wipe_delay, wipe_duration](const Connection&, const Arguments&) noexcept
                               {
                                 canvas_.active(false);
-                                canvas_.startTween("view-end");
-
-                                count_exec_.add(1.4,
+                                canvas_.startCommonTween("result", "out-to-right");
+                                count_exec_.add(wipe_delay,
+                                                [this]() noexcept
+                                                {
+                                                  canvas_.startCommonTween("top10", "in-from-left");
+                                                });
+                                count_exec_.add(wipe_duration,
                                                 [this]() noexcept
                                                 {
                                                   canvas_.active(true);
@@ -131,12 +142,12 @@ public:
                               });
     
     holder_ += event_.connect("share:touch_ended",
-                              [this](const Connection&, const Arguments&) noexcept
+                              [this, wipe_delay](const Connection&, const Arguments&) noexcept
                               {
                                 DOUT << "Share." << std::endl;
 
                                 canvas_.active(false);
-                                count_exec_.add(0.5,
+                                count_exec_.add(wipe_delay,
                                                 [this]() noexcept
                                                 {
                                                   auto* image = Capture::execute();
@@ -178,8 +189,10 @@ public:
     
     // NOTICE Title→Rankingの時は記録があるが、Result→Rankingの場合は記録が無い
     applyRankings(boost::any_cast<const ci::JsonTree&>(args.at("games")));
-    canvas_.startTween(rank_in_ ? "start-left"
-                                : "start");
+
+    canvas_.startCommonTween("root",
+                             rank_in_ ? "in-from-left"
+                                      : "in-from-right");
   }
 
   ~Ranking() = default;

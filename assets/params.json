@@ -96,7 +96,7 @@
   },
 
   "game": {
-    "play_time": 180,
+    "play_time": 10,
 
     "score_rates": [
       3,
@@ -247,6 +247,8 @@
 
     "result_begin_delay": 2.3,
 
+    "reset_delay": 0.35,
+
     "auto_camera_delay": 1.5,
     "auto_camera_duration": 3.0,
     "auto_camera_rotation_speed": 0.025,
@@ -303,12 +305,18 @@
         "size": 64
       }
     ],
+    
     "shader": {
       "font": {
         "name": "font2",
         "u_buffer": 0.5,
         "u_gamma": 0.03
       }
+    },
+
+    "wipe": {
+      "delay": 0.5,
+      "duration": 1.5
     },
 
     "transition": {

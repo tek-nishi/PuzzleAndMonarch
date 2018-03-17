@@ -32,15 +32,22 @@ public:
   {
     startTimelineSound(event_, params, "credits.se");
 
+    auto wipe_delay    = params.getValueForKey<double>("ui.wipe.delay");
+    auto wipe_duration = params.getValueForKey<double>("ui.wipe.duration");
+
     holder_ += event_.connect("agree:touch_ended",
-                              [this](const Connection&, const Arguments&) noexcept
+                              [this, wipe_delay, wipe_duration](const Connection&, const Arguments&) noexcept
                               {
                                 canvas_.active(false);
-                                canvas_.startTween("end");
-                                count_exec_.add(1.2,
+                                canvas_.startCommonTween("root", "out-to-right");
+                                count_exec_.add(wipe_delay,
                                                 [this]() noexcept
                                                 {
                                                   event_.signal("Credits:Finished", Arguments());
+                                                });
+                                count_exec_.add(wipe_duration,
+                                                [this]() noexcept
+                                                {
                                                   active_ = false;
                                                 });
                                 DOUT << "Back to Title" << std::endl;
@@ -49,7 +56,7 @@ public:
     // ボタンイベント共通Tween
     setupCommonTweens(event_, holder_, canvas_, "agree");
 
-    canvas_.startTween("start");
+    canvas_.startCommonTween("root", "in-from-right");
   }
 
   ~Credits() = default;

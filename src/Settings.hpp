@@ -43,12 +43,15 @@ public:
   {
     startTimelineSound(event_, params, "settings.se");
 
+    auto wipe_delay    = params.getValueForKey<double>("ui.wipe.delay");
+    auto wipe_duration = params.getValueForKey<double>("ui.wipe.duration");
+
     holder_ += event_.connect("agree:touch_ended",
-                              [this](const Connection&, const Arguments&) noexcept
+                              [this, wipe_delay, wipe_duration](const Connection&, const Arguments&) noexcept
                               {
                                 canvas_.active(false);
-                                canvas_.startTween("end");
-                                count_exec_.add(1.2,
+                                canvas_.startCommonTween("root", "out-to-right");
+                                count_exec_.add(wipe_delay,
                                                 [this]() noexcept
                                                 {
                                                   Arguments args = {
@@ -56,6 +59,10 @@ public:
                                                     { "se-enable",  se_enable_ }
                                                   };
                                                   event_.signal("Settings:Finished", args);
+                                                });
+                                count_exec_.add(wipe_duration,
+                                                [this]() noexcept
+                                                {
                                                   active_ = false;
                                                 });
                                 DOUT << "Back to Title" << std::endl;
@@ -93,7 +100,7 @@ public:
     setupCommonTweens(event_, holder_, canvas_, "Trash");
 
     applyDetail(detail);
-    canvas_.startTween("start");
+    canvas_.startCommonTween("root", "in-from-right");
   }
 
   ~Settings() = default;

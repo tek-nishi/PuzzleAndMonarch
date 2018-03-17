@@ -73,13 +73,16 @@ public:
                                 "%1",
                                 std::to_string(score.total_score));
 
+    auto wipe_delay    = params.getValueForKey<double>("ui.wipe.delay");
+    auto wipe_duration = params.getValueForKey<double>("ui.wipe.duration");
+
     holder_ += event_.connect("agree:touch_ended",
-                              [this](const Connection&, const Arguments&) noexcept
+                              [this, wipe_delay, wipe_duration](const Connection&, const Arguments&) noexcept
                               {
                                 DOUT << "Agree." << std::endl;
                                 canvas_.active(false);
-                                canvas_.startTween("end");
-                                count_exec_.add(0.6,
+                                canvas_.startCommonTween("root", "out-to-right");
+                                count_exec_.add(wipe_delay,
                                                 [this]() noexcept
                                                 {
                                                   Arguments args {
@@ -88,7 +91,7 @@ public:
                                                   };
                                                   event_.signal("Result:Finished", args);
                                                 });
-                                count_exec_.add(1.2,
+                                count_exec_.add(wipe_duration,
                                                 [this]() noexcept
                                                 {
                                                   active_ = false;
@@ -96,12 +99,12 @@ public:
                               });
     
     holder_ += event_.connect("share:touch_ended",
-                              [this](const Connection&, const Arguments&) noexcept
+                              [this, wipe_delay](const Connection&, const Arguments&) noexcept
                               {
                                 DOUT << "Share." << std::endl;
 
                                 canvas_.active(false);
-                                count_exec_.add(0.5,
+                                count_exec_.add(wipe_delay,
                                                 [this]() noexcept
                                                 {
                                                   auto* image = Capture::execute();
@@ -142,16 +145,6 @@ public:
                       });
     }
 
-    // count_exec_.add(disp_delay_2,
-    //                 [this]() noexcept
-    //                 {
-    //                   if (Share::canPost() && Capture::canExec())
-    //                   {
-    //                     // Share機能と画面キャプチャが有効ならUIも有効
-    //                     canvas_.enableWidget("share");
-    //                   }
-    //                 });
-
     if (Share::canPost() && Capture::canExec())
     {
       // Share機能と画面キャプチャが有効ならUIも有効
@@ -170,7 +163,7 @@ public:
     applyScore(score);
     tweenTotalScore(params);
 
-    canvas_.startTween("start");
+    canvas_.startCommonTween("root", "in-from-left");
   }
 
   ~Result() = default;

@@ -42,17 +42,20 @@ public:
       startTimelineSound(event, params, v);
     }
 
+    auto wipe_delay    = params.getValueForKey<double>("ui.wipe.delay");
+    auto wipe_duration = params.getValueForKey<double>("ui.wipe.duration");
+
     holder_ += event_.connect("play:touch_ended",
-                              [this](const Connection&, const Arguments&) noexcept
+                              [this, wipe_delay, wipe_duration](const Connection&, const Arguments&) noexcept
                               {
                                 canvas_.active(false);
-                                canvas_.startTween("begin_game");
-                                count_exec_.add(0.5,
+                                canvas_.startCommonTween("root", "out-to-right");
+                                count_exec_.add(wipe_delay,
                                                 [this]() noexcept
                                                 {
                                                   event_.signal("Title:finished", Arguments());
                                                 });
-                                count_exec_.add(1.2,
+                                count_exec_.add(wipe_duration,
                                                 [this]() noexcept
                                                 {
                                                   active_ = false;
@@ -61,30 +64,34 @@ public:
                               });
     
     holder_ += event_.connect("credits:touch_ended",
-                              [this](const Connection&, const Arguments&) noexcept
+                              [this, wipe_delay, wipe_duration](const Connection&, const Arguments&) noexcept
                               {
                                 canvas_.active(false);
-                                canvas_.startTween("end");
-                                count_exec_.add(1.2,
+                                canvas_.startCommonTween("root", "out-to-left");
+                                count_exec_.add(wipe_delay,
                                                 [this]() noexcept
                                                 {
                                                   event_.signal("Credits:begin", Arguments());
+                                                });
+                                count_exec_.add(wipe_duration,
+                                                [this]() noexcept
+                                                {
                                                   active_ = false;
                                                 });
                                 DOUT << "Credits." << std::endl;
                               });
     
     holder_ += event_.connect("settings:touch_ended",
-                              [this](const Connection&, const Arguments&) noexcept
+                              [this, wipe_delay, wipe_duration](const Connection&, const Arguments&) noexcept
                               {
                                 canvas_.active(false);
-                                canvas_.startTween("end");
-                                count_exec_.add(0.6,
+                                canvas_.startCommonTween("root", "out-to-left");
+                                count_exec_.add(wipe_delay,
                                                 [this]() noexcept
                                                 {
                                                   event_.signal("Settings:begin", Arguments());
                                                 });
-                                count_exec_.add(1.2,
+                                count_exec_.add(wipe_duration,
                                                 [this]() noexcept
                                                 {
                                                   active_ = false;
@@ -93,28 +100,36 @@ public:
                               });
     
     holder_ += event_.connect("records:touch_ended",
-                              [this](const Connection&, const Arguments&) noexcept
+                              [this, wipe_delay, wipe_duration](const Connection&, const Arguments&) noexcept
                               {
                                 canvas_.active(false);
-                                canvas_.startTween("end");
-                                count_exec_.add(1.2,
+                                canvas_.startCommonTween("root", "out-to-left");
+                                count_exec_.add(wipe_delay,
                                                 [this]() noexcept
                                                 {
                                                   event_.signal("Records:begin", Arguments());
+                                                });
+                                count_exec_.add(wipe_duration,
+                                                [this]() noexcept
+                                                {
                                                   active_ = false;
                                                 });
                                 DOUT << "Records." << std::endl;
                               });
     
     holder_ += event_.connect("ranking:touch_ended",
-                              [this](const Connection&, const Arguments&) noexcept
+                              [this, wipe_delay, wipe_duration](const Connection&, const Arguments&) noexcept
                               {
                                 canvas_.active(false);
-                                canvas_.startTween("end");
-                                count_exec_.add(1.2,
+                                canvas_.startCommonTween("root", "out-to-left");
+                                count_exec_.add(wipe_delay,
                                                 [this]() noexcept
                                                 {
                                                   event_.signal("Ranking:begin", Arguments());
+                                                });
+                                count_exec_.add(wipe_duration,
+                                                [this]() noexcept
+                                                {
                                                   active_ = false;
                                                 });
                                 DOUT << "Records." << std::endl;
@@ -141,7 +156,16 @@ public:
       }
     }
 
-    canvas_.startTween(first_time ? "launch" : "start");
+    if (first_time)
+    {
+      // 起動時は特別
+      canvas_.startTween("launch");
+    }
+    else
+    {
+      canvas_.startCommonTween("root", "in-from-left");
+      canvas_.startTween("start");
+    }
   }
 
   ~Title() = default;

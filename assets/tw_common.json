@@ -70,5 +70,129 @@
         ]
       }
     ]
+  },
+
+  "in-from-left": {
+    "tween": [
+      {
+        "param": "anchor_min",
+        "type": "vec2",
+        "body": [
+          {
+            "duration": 0.6,
+            "ease_func": "InOutQuint",
+            "copy_start": true,
+            "enable_start": true,
+            "start": [ -1, 0 ],
+            "end":   [  0, 0 ]
+          }
+        ]
+      },
+      {
+        "param": "anchor_max",
+        "type": "vec2",
+        "body": [
+          {
+            "duration": 0.6,
+            "ease_func": "InOutQuint",
+            "copy_start": true,
+            "start": [ 0, 1 ],
+            "end":   [ 1, 1 ]
+          }
+        ]
+      }
+    ]
+  },
+
+  "out-to-right": {
+    "tween": [
+      {
+        "param": "anchor_min",
+        "type": "vec2",
+        "body": [
+          {
+            "duration": 0.6,
+            "delay": 0.5,
+            "disable_end": true,
+            "ease_func": "InOutQuint",
+            "end":   [ 1, 0 ]
+          }
+        ]
+      },
+      {
+        "param": "anchor_max",
+        "type": "vec2",
+        "body": [
+          {
+            "duration": 0.6,
+            "delay": 0.5,
+            "ease_func": "InOutQuint",
+            "end":   [ 2, 1 ]
+          }
+        ]
+      }
+    ]
+  },
+
+  "in-from-right": {
+    "tween": [
+      {
+        "param": "anchor_min",
+        "type": "vec2",
+        "body": [
+          {
+            "duration": 0.6,
+            "ease_func": "InOutQuint",
+            "copy_start": true,
+            "enable_start": true,
+            "start": [ 1, 0 ],
+            "end":   [ 0, 0 ]
+          }
+        ]
+      },
+      {
+        "param": "anchor_max",
+        "type": "vec2",
+        "body": [
+          {
+            "duration": 0.6,
+            "ease_func": "InOutQuint",
+            "copy_start": true,
+            "start": [ 2, 1 ],
+            "end":   [ 1, 1 ]
+          }
+        ]
+      }
+    ]
+  },
+
+  "out-to-left": {
+    "tween": [
+      {
+        "param": "anchor_min",
+        "type": "vec2",
+        "body": [
+          {
+            "duration": 0.6,
+            "delay": 0.5,
+            "ease_func": "InOutQuint",
+            "disable_end": true,
+            "end":   [ -1, 0 ]
+          }
+        ]
+      },
+      {
+        "param": "anchor_max",
+        "type": "vec2",
+        "body": [
+          {
+            "duration": 0.6,
+            "delay": 0.5,
+            "ease_func": "InOutQuint",
+            "end":   [ 0, 1 ]
+          }
+        ]
+      }
+    ]
   }
 }
