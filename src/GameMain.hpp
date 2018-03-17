@@ -37,21 +37,29 @@ public:
     startTimelineSound(event, params, "gamemain.se");
     
     // ゲーム開始演出 
-    count_exec_.add(2.6,
+    count_exec_.add(params.getValueForKey<double>("gamemain.start_delay"),
                     [this]() noexcept
                     {
                       event_.signal("Game:Start", Arguments());
                     });
 
+    auto wipe_delay    = params.getValueForKey<double>("ui.wipe.delay");
+    auto wipe_duration = params.getValueForKey<double>("ui.wipe.duration");
+
     holder_ += event_.connect("pause:touch_ended",
-                              [this](const Connection&, const Arguments&) noexcept
+                              [this, wipe_delay, wipe_duration](const Connection&, const Arguments&) noexcept
                               {
                                 // Pause開始
                                 canvas_.active(false);
                                 event_.signal("GameMain:pause", Arguments());
-                                canvas_.startTween("pause");
+                                canvas_.startCommonTween("main", "out-to-right");
 
-                                count_exec_.add(1.2,
+                                count_exec_.add(wipe_delay,
+                                                [this]() noexcept
+                                                {
+                                                  canvas_.startCommonTween("pause_menu", "in-from-left");
+                                                });
+                                count_exec_.add(wipe_duration,
                                                 [this]() noexcept
                                                 {
                                                   canvas_.active();
@@ -59,12 +67,18 @@ public:
                               });
     
     holder_ += event_.connect("resume:touch_ended",
-                              [this](const Connection&, const Arguments&) noexcept
+                              [this, wipe_delay, wipe_duration](const Connection&, const Arguments&) noexcept
                               {
                                 // Game続行(時間差で演出)
                                 canvas_.active(false);
-                                canvas_.startTween("resume");
-                                count_exec_.add(1.2,
+                                canvas_.startCommonTween("pause_menu", "out-to-left");
+
+                                count_exec_.add(wipe_delay,
+                                                [this]() noexcept
+                                                {
+                                                  canvas_.startCommonTween("main", "in-from-right");
+                                                });
+                                count_exec_.add(wipe_duration,
                                                 [this]() noexcept
                                                 {
                                                   canvas_.active();
@@ -73,17 +87,18 @@ public:
                               });
     
     holder_ += event_.connect("abort:touch_ended",
-                              [this](const Connection&, const Arguments&) noexcept
+                              [this, wipe_delay, wipe_duration](const Connection&, const Arguments&) noexcept
                               {
                                 // ゲーム終了
                                 canvas_.active(false);
-                                canvas_.startTween("abort");
-                                count_exec_.add(0.6,
+                                canvas_.startCommonTween("pause_menu", "out-to-right");
+
+                                count_exec_.add(wipe_delay,
                                                 [this]() noexcept
                                                 {
                                                   event_.signal("Game:Aborted", Arguments());
                                                 });
-                                count_exec_.add(1.2,
+                                count_exec_.add(wipe_duration,
                                                 [this]() noexcept
                                                 {
                                                   active_ = false;
@@ -95,7 +110,7 @@ public:
     holder_ += event_.connect("Game:UI",
                               [this](const Connection&, const Arguments& arg) noexcept
                               {
-                                char text[100];
+                                char text[64];
                                 auto remaining_time = boost::any_cast<double>(arg.at("remaining_time"));
                                 if (remaining_time < 10.0)
                                 {
@@ -127,15 +142,17 @@ public:
 
 
     // ゲーム完了
+    auto end_delay = params.getValueForKey<double>("gamemain.end_delay");
     holder_ += event_.connect("Game:Finish",
-                              [this](const Connection&, const Arguments&) noexcept
+                              [this, end_delay](const Connection&, const Arguments&) noexcept
                               {
                                 canvas_.active(false);
                                 canvas_.startTween("end");
-                                count_exec_.add(3.0,
+                                count_exec_.add(end_delay,
                                                 [this]() noexcept
                                                 {
                                                   active_ = false;
+                                                  DOUT << "GameMain:end" << std::endl;
                                                 });
                               });
 

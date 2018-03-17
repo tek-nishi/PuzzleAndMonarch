@@ -9,7 +9,6 @@
           "body": [
             {
               "duration": 0.8,
-              "delay": 0.2,
               "copy_start": true,
               "enable_start": true,
               "ease_func": "InOutQuint",
@@ -31,15 +30,14 @@
           "body": [
             {
               "duration": 0.8,
-              "delay": 0.2,
               "copy_start": true,
               "ease_func": "InOutQuint",
               "start": [ 0, 1 ],
               "end":   [ 1, 1 ]
             },
             {
-              "duration": 0.6,
-              "delay": 1.0,
+              "duration": 0.5,
+              "delay": 1.1,
               "copy_start": true,
               "ease_func": "InOutQuint",
               "end":   [ 2, 1 ]
@@ -57,8 +55,8 @@
           "type": "vec2",
           "body": [
             {
-              "duration": 0.7,
-              "delay": 2.0,
+              "duration": 0.5,
+              "delay": 1.9,
               "copy_start": true,
               "ease_func": "InOutQuint",
               "start": [ -1, 0 ],
@@ -71,8 +69,8 @@
           "type": "vec2",
           "body": [
             {
-              "duration": 0.7,
-              "delay": 2.0,
+              "duration": 0.5,
+              "delay": 1.9,
               "copy_start": true,
               "ease_func": "InOutQuint",
               "start": [ 0, 1 ],
@@ -152,168 +150,6 @@
               "delay": 1.5,
               "ease_func": "InOutQuint",
               "end":   [ 2, 1 ]
-            }
-          ]
-        }
-      ]
-    }
-  ],
-
-  "pause": [
-    {
-      "identifier": "pause_menu",
-      "tween": [
-        {
-          "param": "anchor_min",
-          "type": "vec2",
-          "body": [
-            {
-              "duration": 0.6,
-              "delay": 0.5,
-              "copy_start": true,
-              "enable_start": true,
-              "ease_func": "InOutQuint",
-              "start": [ -1, 0 ],
-              "end":   [  0, 0 ]
-            }
-          ]
-        },
-        {
-          "param": "anchor_max",
-          "type": "vec2",
-          "body": [
-            {
-              "duration": 0.6,
-              "delay": 0.5,
-              "copy_start": true,
-              "ease_func": "InOutQuint",
-              "start": [ 0, 1 ],
-              "end":   [ 1, 1 ]
-            }
-          ]
-        }
-      ]
-    },
-    {
-      "identifier": "main",
-      "tween": [
-        {
-          "param": "anchor_min",
-          "type": "vec2",
-          "body": [
-            {
-              "duration": 0.6,
-              "delay": 0.5,
-              "disable_end": true,
-              "ease_func": "InOutQuint",
-              "end": [ 1, 0 ]
-            }
-          ]
-        },
-        {
-          "param": "anchor_max",
-          "type": "vec2",
-          "body": [
-            {
-              "duration": 0.6,
-              "delay": 0.5,
-              "ease_func": "InOutQuint",
-              "end": [ 2, 1 ]
-            }
-          ]
-        }
-      ]
-    }
-  ],
-
-  "resume": [
-    {
-      "identifier": "pause_menu",
-      "tween": [
-        {
-          "param": "anchor_min",
-          "type": "vec2",
-          "body": [
-            {
-              "duration": 0.6,
-              "delay": 0.5,
-              "disable_end": true,
-              "ease_func": "InOutQuint",
-              "end":   [ -1, 0 ]
-            }
-          ]
-        },
-        {
-          "param": "anchor_max",
-          "type": "vec2",
-          "body": [
-            {
-              "duration": 0.6,
-              "delay": 0.5,
-              "ease_func": "InOutQuint",
-              "end":   [ 0, 1 ]
-            }
-          ]
-        }
-      ]
-    },
-    {
-      "identifier": "main",
-      "tween": [
-        {
-          "param": "anchor_min",
-          "type": "vec2",
-          "body": [
-            {
-              "duration": 0.6,
-              "delay": 0.5,
-              "enable_start": true,
-              "ease_func": "InOutQuint",
-              "end":   [ 0, 0 ]
-            }
-          ]
-        },
-        {
-          "param": "anchor_max",
-          "type": "vec2",
-          "body": [
-            {
-              "duration": 0.6,
-              "delay": 0.5,
-              "ease_func": "InOutQuint",
-              "end":   [ 1, 1 ]
-            }
-          ]
-        }
-      ]
-    }
-  ],
-
-  "abort": [
-    {
-      "identifier": "pause_menu",
-      "tween": [
-        {
-          "param": "anchor_min",
-          "type": "vec2",
-          "body": [
-            {
-              "duration": 0.6,
-              "delay": 0.5,
-              "ease_func": "InOutQuint",
-              "end": [ 1, 0 ]
-            }
-          ]
-        },
-        {
-          "param": "anchor_max",
-          "type": "vec2",
-          "body": [
-            {
-              "duration": 0.6,
-              "delay": 0.5,
-              "ease_func": "InOutQuint",
-              "end": [ 2, 1 ]
             }
           ]
         }
