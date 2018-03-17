@@ -403,11 +403,12 @@ struct Game
     panel_moved_times_  = json.getValueForKey<u_int>("panel_moved_times");
 
     auto panels = field.enumeratePanels();
-    double at_time = 0.5;
+    double at_time       = params_.getValueForKey<double>("replay.delay");
+    double interval_time = params_.getValueForKey<double>("replay.interval");
     for (const auto& status : panels)
     {
       count_exec_.add(at_time,
-                      [status, this]()
+                      [status, this]() noexcept
                       {
                         Arguments args = {
                           { "panel",     status.number },
@@ -416,7 +417,7 @@ struct Game
                         };
                         event_.signal("Game:PutPanel", args);
                       });
-      at_time += 0.1;
+      at_time += interval_time;;
     }
     // NOTICE 最初に置かれているパネルは除く
     total_panels = u_int(panels.size()) - 1;
@@ -425,9 +426,10 @@ struct Game
       // スコア情報は時間差で送信
       updateScores();
       calcResults();
-      
-      count_exec_.add(0.1,
-                      [this]()
+
+      double delay_time = params_.getValueForKey<double>("replay.score_delay");
+      count_exec_.add(delay_time,
+                      [this]() noexcept
                       {
                         Arguments args = {
                           { "scores",        scores_ },
@@ -441,7 +443,6 @@ struct Game
                         event_.signal("Ranking:UpdateScores", args);
                       });
     }
-    // fieldUpdate();
   }
 
 

@@ -114,7 +114,13 @@
     "ranking_num": 13,
     "ranking_rate": [ 0.16, 40261.2148 ],
 
-    "ranking_records": 10
+    "ranking_records": 10,
+
+    "replay": {
+      "delay": 0.5,
+      "interval": 0.1,
+      "score_delay": 0.1
+    }
   },
 
   "field": {
