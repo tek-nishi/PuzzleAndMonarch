@@ -79,7 +79,7 @@
         "type": "vec2",
         "body": [
           {
-            "duration": 0.6,
+            "duration": 0.65,
             "ease_func": "InOutQuint",
             "copy_start": true,
             "enable_start": true,
@@ -93,7 +93,7 @@
         "type": "vec2",
         "body": [
           {
-            "duration": 0.6,
+            "duration": 0.65,
             "ease_func": "InOutQuint",
             "copy_start": true,
             "start": [ 0, 1 ],
@@ -111,7 +111,7 @@
         "type": "vec2",
         "body": [
           {
-            "duration": 0.6,
+            "duration": 0.65,
             "delay": 0.5,
             "disable_end": true,
             "ease_func": "InOutQuint",
@@ -124,7 +124,7 @@
         "type": "vec2",
         "body": [
           {
-            "duration": 0.6,
+            "duration": 0.65,
             "delay": 0.5,
             "ease_func": "InOutQuint",
             "end":   [ 2, 1 ]
@@ -141,7 +141,7 @@
         "type": "vec2",
         "body": [
           {
-            "duration": 0.6,
+            "duration": 0.65,
             "ease_func": "InOutQuint",
             "copy_start": true,
             "enable_start": true,
@@ -155,7 +155,7 @@
         "type": "vec2",
         "body": [
           {
-            "duration": 0.6,
+            "duration": 0.65,
             "ease_func": "InOutQuint",
             "copy_start": true,
             "start": [ 2, 1 ],
@@ -173,7 +173,7 @@
         "type": "vec2",
         "body": [
           {
-            "duration": 0.6,
+            "duration": 0.65,
             "delay": 0.5,
             "ease_func": "InOutQuint",
             "disable_end": true,
@@ -186,7 +186,7 @@
         "type": "vec2",
         "body": [
           {
-            "duration": 0.6,
+            "duration": 0.65,
             "delay": 0.5,
             "ease_func": "InOutQuint",
             "end":   [ 0, 1 ]

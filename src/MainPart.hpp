@@ -595,9 +595,10 @@ public:
       { "Ranking:begin",  "Ranking:Finished" },
     };
 
+    auto transition_delay = params.getValueForKey<double>("ui.transition.delay");
     for (const auto& t : transition)
     {
-      setTransitionEvent(t.first, t.second);
+      setTransitionEvent(t.first, t.second, transition_delay);
     }
 
 
@@ -1023,7 +1024,6 @@ private:
     view_.clear();
     view_.resetPauseEffect(force_timeline_);
     timeline_->clear();
-    force_timeline_->clear();
 
     paused_ = false;
     count_exec_.pause(false);
@@ -1066,17 +1066,17 @@ private:
 
 
   // 画面遷移演出
-  void setTransitionEvent(const std::string& begin, const std::string& end) noexcept
+  void setTransitionEvent(const std::string& begin, const std::string& end, double delay) noexcept
   {
     holder_ += event_.connect(begin,
-                              [this](const Connection&, const Arguments&) noexcept
+                              [this, delay](const Connection&, const Arguments&) noexcept
                               {
-                                view_.setColor(force_timeline_, transition_duration_, transition_color_);
+                                view_.setColor(force_timeline_, transition_duration_, transition_color_, delay);
                               });
     holder_ += event_.connect(end,
-                              [this](const Connection&, const Arguments&) noexcept
+                              [this, delay](const Connection&, const Arguments&) noexcept
                               {
-                                view_.setColor(force_timeline_, transition_duration_, ci::ColorA(1, 1, 1, 1));
+                                view_.setColor(force_timeline_, transition_duration_, ci::ColorA(1, 1, 1, 1), delay);
                               });
   }
 
