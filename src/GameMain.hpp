@@ -21,6 +21,11 @@ class GameMain
   CountExec count_exec_;
 
   UI::Canvas canvas_;
+  ci::TimelineRef timeline_;
+
+  std::vector<u_int> scores_;
+  std::vector<ci::Color> scores_color_;
+  
 
   bool active_ = true;
 
@@ -31,7 +36,8 @@ public:
       canvas_(event, drawer, tween_common,
               params["ui.camera"],
               Params::load(params.getValueForKey<std::string>("gamemain.canvas")),
-              Params::load(params.getValueForKey<std::string>("gamemain.tweens")))
+              Params::load(params.getValueForKey<std::string>("gamemain.tweens"))),
+      timeline_(ci::Timeline::create())
   {
     DOUT << "GameMain::GameMain" << std::endl;
     startTimelineSound(event, params, "gamemain.se");
@@ -194,6 +200,8 @@ public:
     setupCommonTweens(event_, holder_, canvas_, "resume");
     setupCommonTweens(event_, holder_, canvas_, "abort");
 
+    setupScores(params);
+
     canvas_.startTween("start");
   }
 
@@ -204,18 +212,46 @@ private:
   bool update(double current_time, double delta_time) noexcept override
   {
     count_exec_.update(delta_time);
+    timeline_->step(delta_time);
+
     return active_;
+  }
+
+
+  // 得点時の演出準備
+  void setupScores(const ci::JsonTree& params) noexcept
+  {
+    const auto& score_rates = params["game.score_rates"];
+    auto num = score_rates.getNumChildren();
+    scores_.resize(num);
+    std::fill(std::begin(scores_), std::end(scores_), u_int(0));
+
+    scores_color_.resize(num);
+    std::fill(std::begin(scores_color_), std::end(scores_color_), ci::Color(1, 1, 1));
   }
 
   void updateScores(const std::vector<u_int>& scores) noexcept
   {
-    int i = 1;
+    int i = 0;
     for (auto score : scores)
     {
-      char id[16];
-      std::sprintf(id, "score:%d", i);
-      canvas_.setWidgetParam(id, "text", std::to_string(score));
+      if (score != scores_[i])
+      {
+        scores_[i] = score;
 
+        char id[16];
+        std::sprintf(id, "score:%d", i + 1);
+        canvas_.setWidgetParam(id, "text", std::to_string(score));
+
+        timeline_->removeTarget(&scores_color_[i]);
+        auto option = timeline_->applyPtr(&scores_color_[i],
+                                          ci::Color(1, 0, 0), ci::Color(1, 1, 1),
+                                          0.8);
+        option.updateFn([this, id, i]() noexcept
+                        {
+                          canvas_.setWidgetParam(id, "color", scores_color_[i]);
+                        });
+      }
       i += 1;
     }
   }

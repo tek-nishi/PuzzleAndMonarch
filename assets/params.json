@@ -96,7 +96,7 @@
   },
 
   "game": {
-    "play_time": 10,
+    "play_time": 180,
 
     "score_rates": [
       3,
@@ -108,7 +108,7 @@
       20
     ],
 
-    "play_time_rate": 100,
+    "perfect_score_rate": 1.1,
     "total_score_rate": 50,
 
     "ranking_num": 13,

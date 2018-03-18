@@ -24,8 +24,7 @@ struct Game
       initial_play_time_(params.getValueForKey<double>("play_time")),
       play_time_(initial_play_time_),
       scores_(7, 0),
-      play_time_rate_(params.getValueForKey<u_int>("play_time_rate")),
-      total_score_rate_(params.getValueForKey<u_int>("total_score_rate")),
+      score_rates_(Json::getArray<u_int>(params["score_rates"])),
       ranking_num_(params.getValueForKey<u_int>("ranking_num")),
       ranking_rate_(Json::getVec<glm::vec2>(params["ranking_rate"]))
   {
@@ -37,10 +36,10 @@ struct Game
       waiting_panels.push_back(i);
     }
 
-    for (const auto& p : params["score_rates"])
-    {
-      score_rates_.push_back(p.getValue<u_int>());
-    }
+    // for (const auto& p : params["score_rates"])
+    // {
+    //   score_rates_.push_back(p.getValue<u_int>());
+    // }
 
 #if defined (DEBUG)
     // ランキング計算テスト
@@ -602,11 +601,13 @@ private:
     }
     DOUT << "Score-1: " << score << std::endl;
 
-    // 残り時間も加える
-    score += u_int(getPlayTime() * play_time_rate_);
-    DOUT << "Score-2: " << score << std::endl;
+    // Perfect
+    if (waiting_panels.empty())
+    {
+      score *= params_.getValueForKey<float>("perfect_score_rate");
+    }
 
-    score *= total_score_rate_;
+    score *= params_.getValueForKey<u_int>("total_score_rate");
     return score;
   }
 
@@ -691,8 +692,6 @@ private:
 
   // スコア計算用係数
   std::vector<u_int> score_rates_;
-  double play_time_rate_;
-  u_int total_score_rate_;
 
   // ランキング計算用
   u_int ranking_num_;
