@@ -1,4 +1,5 @@
 * TODO チュートリアル
+* TODO ソフトリセットでBG描画が乱れる
 * TODO パネルを置き切った時のタイムボーナスが大き過ぎる
 * TODO 置き切った時は残り枚数を考慮してタイムボーナスを加算する
 * TODO RankingでTOP以外の結果も閲覧したい
@@ -7,7 +8,6 @@
 * TODO 市松模様はシェーダーで実現できる
 * TODO MainPartのカメラを別クラスに
 * TODO BlockをタッチでPanelが移動する操作、演出がないのでわかりづらい
-* TODO 画面切り替えを統一する
 * TODO Demoプレイ
 * TODO パネルのうらが真っ暗
 * TODO blankパネルの演出
@@ -50,6 +50,8 @@
 * TODO アプリアイコン
 * TODO iOS:GameCenter対応
 * TODO iOS:実績を実装
+* DONE 画面切り替えを統一する
+CLOSED: [2018-03-18 日 01:12]
 * DONE ゲーム内の値をparams.jsonへ移す
 CLOSED: [2018-03-17 土 16:04]
 * DONE 本格的な画面設計

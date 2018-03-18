@@ -8,6 +8,9 @@
 #include <deque>
 #include <cinder/TriMesh.h>
 #include <cinder/gl/Vbo.h>
+#include <cinder/gl/Texture.h>
+#include <cinder/ObjLoader.h>
+#include <cinder/ImageIo.h>
 #include "PLY.hpp"
 #include "Shader.hpp"
 
@@ -34,7 +37,8 @@ class View
   ci::gl::VboMeshRef cursor_model;
 
   // 背景
-  ci::gl::VboMeshRef bg_model; 
+  ci::gl::VboMeshRef bg_model;
+  glm::vec3 bg_scale_;
 
   // Field上のパネル(Modelと被っている)
   struct Panel
@@ -58,6 +62,11 @@ class View
   ci::gl::GlslProgRef field_shader_;
   ci::ColorA field_color_ = { 1, 1, 1, 1 };
 
+  ci::gl::GlslProgRef bg_shader_;
+  ci::gl::Texture2dRef bg_texture_;
+  
+
+  // PAUSE時にくるっと回す用
   float field_rotate_offset_ = 0.0f;
 
 
@@ -85,9 +94,21 @@ class View
   }
 
 
+  // OBJ形式を読み込む
+  static ci::gl::VboMeshRef loadObj(const std::string& path) noexcept
+  {
+    ci::ObjLoader loader(Asset::load(path));
+    auto mesh = ci::gl::VboMesh::create(ci::TriMesh(loader));
+
+    return mesh;
+  }
+
+
 public:
   View(const ci::JsonTree& params) noexcept
     : panel_height_(params.getValueForKey<float>("panel_height")),
+      bg_scale_(Json::getVec<glm::vec3>(params["bg_scale"])),
+      bg_texture_(ci::gl::Texture2d::create(ci::loadImage(Asset::load(params.getValueForKey<std::string>("bg_texture"))))),
       put_duration_(Json::getVec<glm::vec2>(params["put_duration"])),
       put_ease_(params.getValueForKey<std::string>("put_ease"))
   {
@@ -104,12 +125,22 @@ public:
     blank_model    = ci::gl::VboMesh::create(PLY::load(params.getValueForKey<std::string>("blank_model")));
     selected_model = ci::gl::VboMesh::create(PLY::load(params.getValueForKey<std::string>("selected_model")));
     cursor_model   = ci::gl::VboMesh::create(PLY::load(params.getValueForKey<std::string>("cursor_model")));
-    bg_model       = ci::gl::VboMesh::create(PLY::load(params.getValueForKey<std::string>("bg_model")));
+    bg_model       = loadObj(params.getValueForKey<std::string>("bg_model"));
     effect_model   = ci::gl::VboMesh::create(PLY::load(params.getValueForKey<std::string>("effect_model")));
 
     {
       auto name = params.getValueForKey<std::string>("field_shader");
       field_shader_ = createShader(name, name);
+    }
+    {
+      auto name = params.getValueForKey<std::string>("bg_shader");
+      bg_shader_ = createShader(name, name);
+
+      float checker_size = bg_scale_.x / (PANEL_SIZE / 2);
+      bg_shader_->uniform("u_checker_size", checker_size);
+      
+      bg_shader_->uniform("u_bright", Json::getVec<glm::vec4>(params["bg_bright"]));
+      bg_shader_->uniform("u_dark",   Json::getVec<glm::vec4>(params["bg_dark"]));
     }
   }
 
@@ -127,6 +158,7 @@ public:
   {
     field_color_ = color;
     field_shader_->uniform("u_color", color);
+    bg_shader_->uniform("u_color", color);
   }
 
   void setColor(const ci::TimelineRef& timeline, float duration, const ci::ColorA& color, float delay = 0.0f) noexcept
@@ -136,6 +168,7 @@ public:
     option.updateFn([this]() noexcept
                     {
                       field_shader_->uniform("u_color", field_color_);
+                      bg_shader_->uniform("u_color", field_color_);
                     });
     option.delay(delay);
   }
@@ -337,11 +370,15 @@ public:
   // 背景
   void drawFieldBg(const glm::vec3& pos) noexcept
   {
-    ci::gl::ScopedGlslProg prog(field_shader_);
+    ci::gl::ScopedGlslProg prog(bg_shader_);
+    ci::gl::ScopedTextureBind tex(bg_texture_);
     ci::gl::ScopedModelMatrix m;
 
-    auto mtx = glm::translate(pos + glm::vec3(PANEL_SIZE / 2, -15.0, PANEL_SIZE / 2));
-    mtx = glm::scale(mtx, glm::vec3(PANEL_SIZE, 10.0, PANEL_SIZE));
+    glm::vec2 offset { pos.x * (1.0f / PANEL_SIZE), -pos.z * (1.0f / PANEL_SIZE) };
+    bg_shader_->uniform("u_pos", offset);
+
+    auto mtx = glm::translate(pos);
+    mtx = glm::scale(mtx, bg_scale_);
     ci::gl::setModelMatrix(mtx);
     ci::gl::draw(bg_model);
   }

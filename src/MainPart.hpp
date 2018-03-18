@@ -1049,9 +1049,11 @@ private:
     ray.calcPlaneIntersection(glm::vec3(0, -5, 0), glm::vec3(0, 1, 0), &z);
     auto pos = ray.calcPosition(z);
     // World position→升目座標
-    auto p = roundValue(pos.x, pos.z, PANEL_SIZE * 2);
+    // auto p = roundValue(pos.x, pos.z, PANEL_SIZE * 2);
 
-    return { p.x * PANEL_SIZE * 2, 0, p.y * PANEL_SIZE * 2 };
+    // return { p.x * PANEL_SIZE * 2, 0, p.y * PANEL_SIZE * 2 };
+
+    return pos;
   }
 
   // カメラリセット

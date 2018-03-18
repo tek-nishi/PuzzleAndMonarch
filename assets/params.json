@@ -226,7 +226,7 @@
     "blank_model":    "blank.ply",
     "selected_model": "selected.ply",
     "cursor_model":   "cursor.ply",
-    "bg_model":       "bg.ply",
+    "bg_model":       "ground.obj",
     "effect_model":   "effect.ply",
 
     "disp_ease_duration": [ 0.3, 0.2 ],
@@ -260,7 +260,13 @@
     "pause_transition_delay": 0.5,
     "game_abort_delay": 0.35,
 
-    "field_shader": "field"
+    "field_shader": "field",
+
+    "bg_shader":  "bg",
+    "bg_scale":   [ 250, 1, 250 ],
+    "bg_texture": "ground.png",
+    "bg_bright": [ 0.5, 0.5, 0.5, 1 ],
+    "bg_dark":   [ 0.25, 0.25, 0.25, 1 ]
   },
 
   "ui": {
