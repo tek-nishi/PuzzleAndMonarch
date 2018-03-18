@@ -40,7 +40,8 @@ namespace ngs { namespace AudioSession {
 // FIXME:グローバル変数にしたくない...
 static id observer = nullptr;
 
-void begin() noexcept {
+void begin() noexcept
+{
   // AVFoundationのインスタンス
   AVAudioSession* audioSession = [AVAudioSession sharedInstance];
 
@@ -60,24 +61,28 @@ void begin() noexcept {
       auto output = ctx->getOutput();
       auto device = ci::audio::Device::getDefaultOutput();
 
-      if (device->getNumOutputChannels() != output->getNumChannels()) {
+      // if (device->getNumOutputChannels() != output->getNumChannels())
+      {
+        output->disable();
+
         ci::audio::Node::Format format;
-        format.channelMode(ci::audio::Node::ChannelMode::MATCHES_OUTPUT);
-        
+        format.channelMode(ci::audio::Node::ChannelMode::SPECIFIED);
         auto new_output = ctx->createOutputDeviceNode(device, format);
-        ctx->setOutput(new_output);
 
         // 再生中のNodeを繋ぎ直す
-        for (auto node : output->getInputs()) {
+        for (auto node : output->getInputs())
+        {
           if (node->isEnabled()) node >> new_output;
         }
-        
+
+        ctx->setOutput(new_output);
         new_output->enable();
       }
     }];
 }
 
-void end() noexcept {
+void end() noexcept
+{
   AVAudioSession* audioSession = [AVAudioSession sharedInstance];
   [audioSession setActive:NO error:nil];
 

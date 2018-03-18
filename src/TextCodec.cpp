@@ -36,11 +36,13 @@ std::string encode(const std::string& input) noexcept
   z.avail_out = OUTBUFSIZ;
 
   std::string output;
-  while (1) {
+  while (1)
+  {
     int status = deflate(&z, Z_FINISH);
     assert(status != Z_STREAM_ERROR);
     
-    if ((z.avail_out == 0) || (status == Z_STREAM_END)) {
+    if ((z.avail_out == 0) || (status == Z_STREAM_END))
+    {
       u_int count = OUTBUFSIZ - z.avail_out;
       output.insert(output.end(), &outbuf[0], &outbuf[count]);
 
@@ -74,7 +76,8 @@ std::string decode(const std::string& input) noexcept
   std::string output;
   while (1) {
     int status = inflate(&z, Z_NO_FLUSH);
-    if ((status == Z_STREAM_ERROR) || (status == Z_DATA_ERROR)) {
+    if ((status == Z_STREAM_ERROR) || (status == Z_DATA_ERROR))
+    {
       // エラーが起こった場合は空の文字列を返す
       DOUT << "decode error!!" << std::endl;
       
@@ -82,7 +85,8 @@ std::string decode(const std::string& input) noexcept
       return std::string();
     }
 
-    if ((z.avail_out == 0) || (status == Z_STREAM_END)) {
+    if ((z.avail_out == 0) || (status == Z_STREAM_END))
+    {
       u_int count = OUTBUFSIZ - z.avail_out;
       output.insert(output.end(), &outbuf[0], &outbuf[count]);
 

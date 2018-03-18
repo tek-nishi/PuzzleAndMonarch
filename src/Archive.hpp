@@ -6,6 +6,7 @@
 
 #include <boost/noncopyable.hpp>
 #include "Score.hpp"
+#include "TextCodec.hpp"
 
 
 namespace ngs {
@@ -50,7 +51,7 @@ class Archive
     ;
   }
 
-  void load() noexcept
+  void load()
   {
     if (!ci::fs::is_regular_file(full_path_))
     {
@@ -60,7 +61,28 @@ class Archive
       return;
     }
 
-    records_ = ci::JsonTree(ci::loadFile(full_path_));
+#if defined(OBFUSCATION_ARCHIVE)
+    auto text = TextCodec::load(full_path_.string());
+    try
+    {
+      records_ = ci::JsonTree(text);
+    }
+    catch (ci::JsonTree::ExcJsonParserError& exc)
+    {
+      DOUT << "Archive broken." << std::endl;
+      create();
+    }
+#else
+    try
+    {
+      records_ = ci::JsonTree(ci::loadFile(full_path_));
+    }
+    catch (ci::JsonTree::ExcJsonParserError& exc)
+    {
+      DOUT << "Archive broken." << std::endl;
+      create();
+    }
+#endif
     DOUT << "Archive:load: " << full_path_ << std::endl;
   }
 
@@ -182,9 +204,13 @@ public:
   }
   
 
-  void save() noexcept
+  void save()
   {
+#if defined(OBFUSCATION_ARCHIVE)
+    TextCodec::write(full_path_.string(), records_.serialize());
+#else
     records_.write(full_path_);
+#endif
     DOUT << "Archive:write: " << full_path_ << std::endl;
   }
 

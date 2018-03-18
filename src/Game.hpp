@@ -9,6 +9,7 @@
 #include <cinder/Rand.h>
 #include "Logic.hpp"
 #include "CountExec.hpp"
+#include "TextCodec.hpp"
 
 
 namespace ngs {
@@ -371,12 +372,17 @@ struct Game
              .addChild(ci::JsonTree("panel_moved_times", panel_moved_times_))
              ;
 
+
+#if defined(OBFUSCATION_ARCHIVE)
+    TextCodec::write((getDocumentPath() / name).string(), save_data.serialize());
+#else
     save_data.write(getDocumentPath() / name);
+#endif
 
     DOUT << "Game saved: " << name << std::endl;
   }
 
-  void load(const std::string& path) noexcept
+  void load(const std::string& path)
   {
     auto full_path = getDocumentPath() / path;
     if (!ci::fs::is_regular_file(full_path))
@@ -385,7 +391,29 @@ struct Game
       return;
     }
 
-    auto json = ci::JsonTree(ci::loadFile(full_path));
+    ci::JsonTree json;
+#if defined(OBFUSCATION_ARCHIVE)
+    auto text = TextCodec::load(full_path.string());
+    try
+    {
+      json = ci::JsonTree(text);
+    }
+    catch (ci::JsonTree::ExcJsonParserError& exc)
+    {
+      DOUT << "Game record broken." << std::endl;
+      return;
+    }
+#else
+    try
+    {
+      json = ci::JsonTree(ci::loadFile(full_path));
+    }
+    catch (ci::JsonTree::ExcJsonParserError& exc)
+    {
+      DOUT << "Game record broken." << std::endl;
+      return;
+    }
+#endif
 
     hand_panel     = json.getValueForKey<int>("hand_panel");
     hand_rotation  = json.getValueForKey<u_int>("hand_rotation");

@@ -25,6 +25,8 @@
 #define PREPRO_TO_STR(value) PREPRO_STR(value)
 #define PREPRO_STR(value)    #value
 
+// セーブファイルの難読化
+#define OBFUSCATION_ARCHIVE
 
 #if defined(CINDER_COCOA_TOUCH)
 
