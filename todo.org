@@ -10,8 +10,6 @@
 * TODO パネルのうらが真っ暗
 * TODO blankパネルの演出
 * TODO iPad:Shareのpopoverをボタン位置と合わせる
-* TODO iPhone7でヘッドフォンの抜き差しをすると音が乱れる
-* TODO iOS:ヘッドフォンの抜き差しでノイズが乗る
 * TODO tween中止
 * TODO iOS：基本図形描画のパフォーマンス調査
 * TODO VisualStudioでDEBUGが定義されていない疑惑
@@ -45,6 +43,10 @@
 * TODO アプリアイコン
 * TODO iOS:GameCenter対応
 * TODO iOS:実績を実装
+* DONE iPhone7でヘッドフォンの抜き差しをすると音が乱れる
+CLOSED: [2018-03-19 月 23:30]
+* DONE iOS:ヘッドフォンの抜き差しでノイズが乗る
+CLOSED: [2018-03-18 Sun 18:49]
 * DONE セーブファイルの圧縮
 CLOSED: [2018-03-18 Sun 17:41]
 * DONE 森や道が完成した時の演出

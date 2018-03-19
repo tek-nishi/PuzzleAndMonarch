@@ -56,25 +56,43 @@ void begin() noexcept
                  object: nil
                  queue: nil
                  usingBlock: ^(NSNotification* note) {
-      // ヘッドフォンの抜き差しでMONO/STEREOを切り替える
       auto ctx    = ci::audio::master();
       auto output = ctx->getOutput();
       auto device = ci::audio::Device::getDefaultOutput();
-
-      // if (device->getNumOutputChannels() != output->getNumChannels())
+      
       {
         output->disable();
 
         ci::audio::Node::Format format;
-        format.channelMode(ci::audio::Node::ChannelMode::SPECIFIED);
+        format.channelMode(ci::audio::Node::ChannelMode::MATCHES_OUTPUT);
         auto new_output = ctx->createOutputDeviceNode(device, format);
+
+        DOUT << "prev:"
+             << output->getName() << ","
+             << output->getOutputSampleRate() << ","
+             << output->getOutputFramesPerBlock() << ","
+             << output->getSampleRate() << ","
+             << output->getFramesPerBlock() << ","
+             << output->getNumChannels() 
+             << std::endl;
+
+        DOUT << "new: "
+             << new_output->getName() << ","
+             << new_output->getOutputSampleRate() << ","
+             << new_output->getOutputFramesPerBlock() << ","
+             << new_output->getSampleRate() << ","
+             << new_output->getFramesPerBlock() << ","
+             << new_output->getNumChannels() 
+             << std::endl;
 
         // 再生中のNodeを繋ぎ直す
         for (auto node : output->getInputs())
         {
           if (node->isEnabled()) node >> new_output;
         }
+        output->disconnectAll();
 
+        // 新しく生成したDeviceOutputでの再生を開始
         ctx->setOutput(new_output);
         new_output->enable();
       }

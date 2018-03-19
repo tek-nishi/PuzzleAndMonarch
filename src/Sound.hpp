@@ -127,21 +127,24 @@ public:
 
     auto ctx = ci::audio::Context::master();
 
+    ci::audio::Node::Format format;
+    format.channelMode(ci::audio::Node::ChannelMode::SPECIFIED);
+
     // カテゴリ別のNode生成
     std::map<std::string,
              std::function<ci::audio::SamplePlayerNodeRef (ci::audio::Context* ctx, const ci::audio::SourceFileRef&)>> funcs {
       { "bgm",
-        [](ci::audio::Context* ctx, const ci::audio::SourceFileRef& source) noexcept
+        [format](ci::audio::Context* ctx, const ci::audio::SourceFileRef& source) noexcept
         {
           // Streaming
-          return ctx->makeNode(new ci::audio::FilePlayerNode(source));
+          return ctx->makeNode(new ci::audio::FilePlayerNode(source, true, format));
         }},
       { "se",
-        [](ci::audio::Context* ctx, const ci::audio::SourceFileRef& source) noexcept
+        [format](ci::audio::Context* ctx, const ci::audio::SourceFileRef& source) noexcept
         {
           // あらかじめBufferに読み込む
           auto buffer = source->loadBuffer();
-          return ctx->makeNode(new ci::audio::BufferPlayerNode(buffer));
+          return ctx->makeNode(new ci::audio::BufferPlayerNode(buffer, format));
         }},
     };
 
@@ -149,7 +152,8 @@ public:
     {
       const auto& path = p.getValueForKey<std::string>("path");
       auto source = ci::audio::load(Asset::load(path), ctx->getSampleRate());
-      
+      source->setMaxFramesPerRead(8192);
+
       const auto& type = p.getValueForKey<std::string>("type");
       auto node = funcs.at(type)(ctx, source);
 
