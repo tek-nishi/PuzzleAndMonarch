@@ -17,9 +17,9 @@ void main(void)
 	vec4 ShadowCoord	= vShadowCoord / vShadowCoord.w;
 	float Shadow = 1.0;
 	
-	if ( ShadowCoord.z > -1 && ShadowCoord.z < 1 )
+	// if ( ShadowCoord.z > -1 && ShadowCoord.z < 1 )
   {
-		Shadow = textureProj( uShadowMap, ShadowCoord, -0.00005 );
+		Shadow = max(textureProj(uShadowMap, ShadowCoord, -0.00005), 0.8);
 	}
 
 	Color = vColor * Shadow;

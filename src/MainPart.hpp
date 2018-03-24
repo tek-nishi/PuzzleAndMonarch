@@ -775,7 +775,7 @@ private:
     ci::gl::clear(ci::Color::black());
     ci::gl::setMatrices(light_camera_);
 
-    ci::gl::ScopedGlslProg(view_.setupShadowShader());
+    ci::gl::ScopedGlslProg prog(view_.setupShadowShader());
 
     view_.drawFieldPanels();
 
@@ -811,8 +811,8 @@ private:
     ci::gl::clear(ci::Color::black());
 
     // フィールド
-    ci::gl::ScopedGlslProg(view_.setupFieldShader(light_camera_));
-    ci::gl::ScopedTextureBind texScope(shadow_map_, uint8_t(0));
+    ci::gl::ScopedGlslProg prog(view_.setupFieldShader(light_camera_));
+    ci::gl::ScopedTextureBind texScope(shadow_map_, 0);
     view_.drawFieldPanels();
 
     if (game_->isPlaying())

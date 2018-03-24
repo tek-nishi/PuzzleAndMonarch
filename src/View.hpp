@@ -133,6 +133,7 @@ public:
     {
       auto name = params.getValueForKey<std::string>("field_shader");
       field_shader_ = createShader(name, name);
+
       field_shader_->uniform("uShadowMap", 0);
     }
     {

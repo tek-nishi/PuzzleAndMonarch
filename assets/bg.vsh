@@ -5,6 +5,7 @@ $version$
 
 uniform mat4 ciModelViewProjection;
 uniform mat4 ciModelMatrix;
+
 uniform mat4 uShadowMatrix;
 
 in vec4 ciPosition;
