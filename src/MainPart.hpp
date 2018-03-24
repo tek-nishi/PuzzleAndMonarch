@@ -35,8 +35,8 @@ class MainPart
   : public Task
 {
   enum {
-    FBO_WIDTH  = 2048,
-    FBO_HEIGHT = 2048,
+    FBO_WIDTH  = 4096,
+    FBO_HEIGHT = 4096,
   };
 
 
@@ -626,27 +626,21 @@ public:
 
     // Shadow mapping fbo
     ci::gl::Texture2d::Format depthFormat;
-#if defined( CINDER_GL_ES )
     depthFormat.setInternalFormat(GL_DEPTH_COMPONENT16);
-    depthFormat.setDataType(GL_UNSIGNED_INT);
-    depthFormat.setMagFilter(GL_NEAREST);
-    depthFormat.setMinFilter(GL_NEAREST);
-#else
-    depthFormat.setInternalFormat(GL_DEPTH_COMPONENT32F);
     depthFormat.setCompareMode(GL_COMPARE_REF_TO_TEXTURE);
     depthFormat.setMagFilter(GL_LINEAR);
     depthFormat.setMinFilter(GL_LINEAR);
     depthFormat.setWrap(GL_CLAMP_TO_EDGE, GL_CLAMP_TO_EDGE);	
-#endif
     depthFormat.setCompareFunc(GL_LEQUAL);
-	
-    shadow_map_ = ci::gl::Texture2d::create(FBO_WIDTH, FBO_HEIGHT, depthFormat);
+
+    auto fbo_size = Json::getVec<glm::ivec2>(params["field.shadow_map"]);
+    shadow_map_ = ci::gl::Texture2d::create(fbo_size.x, fbo_size.y, depthFormat);
 
     try
     {
       ci::gl::Fbo::Format fboFormat;
       fboFormat.attachment(GL_DEPTH_ATTACHMENT, shadow_map_);
-      shadow_fbo_ = ci::gl::Fbo::create( FBO_WIDTH, FBO_HEIGHT, fboFormat);
+      shadow_fbo_ = ci::gl::Fbo::create(fbo_size.x, fbo_size.y, fboFormat);
     }
     catch (const std::exception& e)
     {
@@ -767,7 +761,7 @@ private:
   {
     // Set polygon offset to battle shadow acne
     ci::gl::enable(GL_POLYGON_OFFSET_FILL);
-    glPolygonOffset(2.0f, 2.0f);
+    glPolygonOffset(1.0f, 1.0f);
 
     // Render scene to fbo from the view of the light
     ci::gl::ScopedFramebuffer fbo(shadow_fbo_);

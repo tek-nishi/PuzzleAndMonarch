@@ -7,10 +7,12 @@ $precision$
 
 uniform sampler2DShadow uShadowMap;
 uniform sampler2D	uTex;
+
+uniform float uShadowIntensity;
+
 uniform vec4 u_color;
 uniform float u_checker_size;
 uniform vec2 u_pos;
-
 uniform vec4 u_bright;
 uniform vec4 u_dark;
                                                           
@@ -22,12 +24,12 @@ out vec4 oColor;
 
 void main(void)
 {
-	vec4 ShadowCoord	= vShadowCoord / vShadowCoord.w;
+	vec4 ShadowCoord = vShadowCoord / vShadowCoord.w;
 	float Shadow = 1.0;
 	
 	// if ( ShadowCoord.z > -1 && ShadowCoord.z < 1 )
   {
-		Shadow = max(textureProj(uShadowMap, ShadowCoord, -0.00005), 0.8);
+		Shadow = mix(uShadowIntensity, 1.0, textureProj(uShadowMap, ShadowCoord, -0.0005));
 	}
 
   vec2 pos = floor(u_pos + TexCoord0 * u_checker_size);

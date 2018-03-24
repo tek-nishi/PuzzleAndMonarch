@@ -135,6 +135,7 @@ public:
       field_shader_ = createShader(name, name);
 
       field_shader_->uniform("uShadowMap", 0);
+      field_shader_->uniform("uShadowIntensity", params.getValueForKey<float>("shadow_intensity"));
     }
     {
       auto name = params.getValueForKey<std::string>("bg_shader");
@@ -147,6 +148,7 @@ public:
       bg_shader_->uniform("u_dark",   Json::getVec<glm::vec4>(params["bg_dark"]));
       bg_shader_->uniform("uShadowMap", 0);
       bg_shader_->uniform("uTex", 1);
+      bg_shader_->uniform("uShadowIntensity", params.getValueForKey<float>("shadow_intensity"));
     }
     {
       auto name = params.getValueForKey<std::string>("shadow_shader");

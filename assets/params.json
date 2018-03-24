@@ -134,10 +134,10 @@
     },
 
     "light": {
-      "pos": [ 0, 150, 0 ],
-      "fov": 100.0,
-      "near_z": 2,
-      "far_z":  1500
+      "pos": [ -10, 200, -10 ],
+      "fov": 90.0,
+      "near_z": 50,
+      "far_z":  1000
     },
 
     "target_position": [ 0, 5, 0 ],
@@ -269,6 +269,8 @@
 
     "field_shader": "field",
     "shadow_shader": "shadow",
+    "shadow_map": [ 2048, 2048 ],
+    "shadow_intensity": 0.6,
 
     "bg_shader":  "bg",
     "bg_scale":   [ 250, 1, 250 ],

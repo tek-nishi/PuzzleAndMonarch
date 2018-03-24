@@ -42,7 +42,7 @@ std::string replaceText(std::string text) noexcept
   std::vector<std::pair<std::regex, std::string>> replace {
 #if defined (CINDER_COCOA_TOUCH)
     { std::regex("\\$version\\$"), "#version 300 es" },
-    { std::regex("\\$precision\\$"), "precision mediump float;" },
+    { std::regex("\\$precision\\$"), "precision highp float; precision mediump sampler2DShadow;" },
 #else
     { std::regex("\\$version\\$"), "#version 330" },
     { std::regex("\\$precision\\$"), "" },
