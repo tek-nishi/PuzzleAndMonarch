@@ -133,6 +133,13 @@
       "distance": 190
     },
 
+    "light": {
+      "pos": [ 0, 150, 0 ],
+      "fov": 100.0,
+      "near_z": 2,
+      "far_z":  1500
+    },
+
     "target_position": [ 0, 5, 0 ],
     "panel_height": 10,
     "putdown_time": [ 0.5, 0.25 ],
@@ -261,6 +268,7 @@
     "game_abort_delay": 0.35,
 
     "field_shader": "field",
+    "shadow_shader": "shadow",
 
     "bg_shader":  "bg",
     "bg_scale":   [ 250, 1, 250 ],

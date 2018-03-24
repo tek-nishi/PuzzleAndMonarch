@@ -4,16 +4,25 @@
 $version$
 
 uniform mat4 ciModelViewProjection;
-uniform vec4 u_color;
+uniform mat4 ciModelMatrix;
+uniform mat4 uShadowMatrix;
+uniform vec4 u_color; 
 
-in vec4 ciPosition;
-in vec4 ciColor;
+in vec4	ciColor;
+in vec4	ciPosition;
 
-out vec4 Color;
+out vec4 vColor;
+out vec4 vShadowCoord;
+
+const mat4 biasMatrix = mat4( 0.5, 0.0, 0.0, 0.0,
+                              0.0, 0.5, 0.0, 0.0,
+                              0.0, 0.0, 0.5, 0.0,
+                              0.5, 0.5, 0.5, 1.0 );
 
 
 void main(void)
 {
-  gl_Position = ciModelViewProjection * ciPosition;
-  Color       = ciColor * u_color;
+	vColor			 = ciColor * u_color;
+	vShadowCoord = (biasMatrix * uShadowMatrix * ciModelMatrix) * ciPosition;
+	gl_Position	 = ciModelViewProjection * ciPosition;
 }

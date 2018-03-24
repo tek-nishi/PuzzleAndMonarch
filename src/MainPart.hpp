@@ -34,6 +34,11 @@ namespace ngs {
 class MainPart
   : public Task
 {
+  enum {
+    FBO_WIDTH  = 2048,
+    FBO_HEIGHT = 2048,
+  };
+
 
 public:
   MainPart(const ci::JsonTree& params, Event<Arguments>& event, Archive& archive) noexcept
@@ -618,6 +623,44 @@ public:
     // 本編準備
     game_->preparationPlay(engine_);
     view_.setColor(ci::ColorA(1, 1, 1, 1));
+
+    // Shadow mapping fbo
+    ci::gl::Texture2d::Format depthFormat;
+#if defined( CINDER_GL_ES )
+    depthFormat.setInternalFormat(GL_DEPTH_COMPONENT16);
+    depthFormat.setDataType(GL_UNSIGNED_INT);
+    depthFormat.setMagFilter(GL_NEAREST);
+    depthFormat.setMinFilter(GL_NEAREST);
+#else
+    depthFormat.setInternalFormat(GL_DEPTH_COMPONENT32F);
+    depthFormat.setCompareMode(GL_COMPARE_REF_TO_TEXTURE);
+    depthFormat.setMagFilter(GL_LINEAR);
+    depthFormat.setMinFilter(GL_LINEAR);
+    depthFormat.setWrap(GL_CLAMP_TO_EDGE, GL_CLAMP_TO_EDGE);	
+#endif
+    depthFormat.setCompareFunc(GL_LEQUAL);
+	
+    shadow_map_ = ci::gl::Texture2d::create(FBO_WIDTH, FBO_HEIGHT, depthFormat);
+
+    try
+    {
+      ci::gl::Fbo::Format fboFormat;
+      fboFormat.attachment(GL_DEPTH_ATTACHMENT, shadow_map_);
+      shadow_fbo_ = ci::gl::Fbo::create( FBO_WIDTH, FBO_HEIGHT, fboFormat);
+    }
+    catch (const std::exception& e)
+    {
+      DOUT << "FBO ERROR: " << e.what() << std::endl;
+    }
+
+    {
+      light_pos_ = Json::getVec<glm::vec3>(params["field.light.pos"]);
+    
+      float fov    = params.getValueForKey<float>("field.light.fov"); 
+      float near_z = params.getValueForKey<float>("field.light.near_z"); 
+      float far_z  = params.getValueForKey<float>("field.light.far_z"); 
+      light_camera_.setPerspective(fov, shadow_fbo_->getAspectRatio(), near_z, far_z);
+    }
   }
 
 
@@ -719,16 +762,57 @@ private:
   }
 
 
+
+  void drawShadow() noexcept
+  {
+    // Set polygon offset to battle shadow acne
+    ci::gl::enable(GL_POLYGON_OFFSET_FILL);
+    glPolygonOffset(2.0f, 2.0f);
+
+    // Render scene to fbo from the view of the light
+    ci::gl::ScopedFramebuffer fbo(shadow_fbo_);
+    ci::gl::ScopedViewport viewport(glm::vec2(0), shadow_fbo_->getSize());
+    ci::gl::clear(ci::Color::black());
+    ci::gl::setMatrices(light_camera_);
+
+    ci::gl::ScopedGlslProg(view_.setupShadowShader());
+
+    view_.drawFieldPanels();
+
+    if (game_->isPlaying())
+    {
+      // 置ける場所
+      const auto& blank = game_->getBlankPositions();
+      view_.drawFieldBlank(blank);
+      
+      // 手持ちパネル
+      glm::vec3 pos(panel_disp_pos_().x, panel_disp_pos_().y + height_offset_, panel_disp_pos_().z);
+      view_.drawPanel(game_->getHandPanel(), pos, game_->getHandRotation(), rotate_offset_);
+    }
+
+    // auto bg_pos = calcBgPosition();
+    // view_.drawFieldBg(bg_pos);
+
+    // Disable polygon offset for final render
+    ci::gl::disable(GL_POLYGON_OFFSET_FILL);
+  }
+
+
   void drawField() noexcept
   {
     // 本編
     ci::gl::enableDepth();
     ci::gl::enable(GL_CULL_FACE);
     ci::gl::disableAlphaBlending();
+
+    drawShadow();
+
     ci::gl::setMatrices(camera_.body());
-    ci::gl::clear(ci::Color(0, 0, 0));
+    ci::gl::clear(ci::Color::black());
 
     // フィールド
+    ci::gl::ScopedGlslProg(view_.setupFieldShader(light_camera_));
+    ci::gl::ScopedTextureBind texScope(shadow_map_, uint8_t(0));
     view_.drawFieldPanels();
 
     if (game_->isPlaying())
@@ -798,6 +882,14 @@ private:
     drawField();
 
 #if 0
+    // Uncomment for debug
+    ci::gl::setMatricesWindow( ci::app::getWindowSize() );
+    ci::gl::color( 1.0f, 1.0f, 1.0f );
+    float size = 0.5f * std::min( ci::app::getWindowWidth(), ci::app::getWindowHeight() );
+    ci::gl::draw( shadow_map_, ci::Rectf( 0, 0, size, size ) );
+#endif
+
+#if 0
 #if defined(DEBUG)
     // 外接球の表示
     ci::gl::enableDepth(false);
@@ -817,6 +909,8 @@ private:
     glm::vec3 p = q * glm::vec3{ 0, 0, -camera_distance_ };
     camera.lookAt(p + target_position_, target_position_);
     eye_position_ = camera.getEyePoint();
+
+    light_camera_.lookAt(target_position_ + light_pos_, target_position_);
   }
 
 
@@ -1320,6 +1414,14 @@ private:
   // Transition
   float transition_duration_;
   ci::ColorA transition_color_;
+
+
+  // 影レンダリング用
+  ci::gl::Texture2dRef shadow_map_;
+  ci::gl::FboRef shadow_fbo_;
+
+  ci::CameraPersp light_camera_;
+  glm::vec3				light_pos_;
 
 
 #ifdef DEBUG

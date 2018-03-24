@@ -64,7 +64,9 @@ class View
 
   ci::gl::GlslProgRef bg_shader_;
   ci::gl::Texture2dRef bg_texture_;
-  
+
+  ci::gl::GlslProgRef shadow_shader_;
+
 
   // PAUSE時にくるっと回す用
   float field_rotate_offset_ = 0.0f;
@@ -131,6 +133,7 @@ public:
     {
       auto name = params.getValueForKey<std::string>("field_shader");
       field_shader_ = createShader(name, name);
+      field_shader_->uniform("uShadowMap", 0);
     }
     {
       auto name = params.getValueForKey<std::string>("bg_shader");
@@ -141,6 +144,12 @@ public:
       
       bg_shader_->uniform("u_bright", Json::getVec<glm::vec4>(params["bg_bright"]));
       bg_shader_->uniform("u_dark",   Json::getVec<glm::vec4>(params["bg_dark"]));
+      bg_shader_->uniform("uShadowMap", 0);
+      bg_shader_->uniform("uTex", 1);
+    }
+    {
+      auto name = params.getValueForKey<std::string>("shadow_shader");
+      shadow_shader_ = createShader(name, name);
     }
   }
 
@@ -272,6 +281,23 @@ public:
     return panel_aabb_;
   }
 
+
+  // 影シェーダー
+  const ci::gl::GlslProgRef& setupShadowShader() noexcept
+  {
+    return shadow_shader_;
+  }
+
+  // 通常のシェーダー
+  const ci::gl::GlslProgRef& setupFieldShader(const ci::CameraPersp& light_camera) noexcept
+  {
+    auto mat = light_camera.getProjectionMatrix() * light_camera.getViewMatrix();
+    field_shader_->uniform("uShadowMatrix", mat);
+    bg_shader_->uniform("uShadowMatrix", mat);
+
+    return field_shader_;
+  }
+
   
   // パネルを１枚表示
   void drawPanel(int number, const glm::vec3& pos, u_int rotation, float rotate_offset) noexcept
@@ -283,7 +309,6 @@ public:
       -180.0f * 1.5f 
     };
     
-    ci::gl::ScopedGlslProg prog(field_shader_);
     ci::gl::ScopedModelMatrix m;
 
     auto mtx = glm::translate(pos) * glm::eulerAngleXYZ(0.0f, toRadians(r_tbl[rotation] + rotate_offset), 0.0f);
@@ -293,15 +318,17 @@ public:
     ci::gl::draw(model);
   }
 
+#if 0
   void drawPanel(int number, const glm::ivec2& pos, u_int rotation) noexcept
   {
     drawPanel(number, glm::vec3(pos.x, 0.0f, pos.y), rotation, 0.0f);
   }
+#endif
+
 
   // Fieldのパネルを全て表示
   void drawFieldPanels() noexcept
   {
-    ci::gl::ScopedGlslProg prog(field_shader_);
     ci::gl::ScopedModelMatrix m;
 
     glm::vec2 offset[] = {
@@ -329,7 +356,6 @@ public:
   // Fieldの置ける場所をすべて表示
   void drawFieldBlank(const std::vector<glm::ivec2>& blank) noexcept
   {
-    ci::gl::ScopedGlslProg prog(field_shader_);
     ci::gl::ScopedModelMatrix m;
 
     for (const auto& pos : blank)
@@ -347,7 +373,6 @@ public:
   {
     glm::ivec2 p = pos * int(PANEL_SIZE);
     
-    ci::gl::ScopedGlslProg prog(field_shader_);
     ci::gl::ScopedModelMatrix m;
 
     auto mtx = glm::translate(glm::vec3(p.x, 0.0f, p.y));
@@ -358,7 +383,6 @@ public:
 
   void drawCursor(const glm::vec3& pos, const glm::vec3& scale) noexcept
   {
-    ci::gl::ScopedGlslProg prog(field_shader_);
     ci::gl::ScopedModelMatrix m;
     
     auto mtx = glm::translate(pos);
@@ -371,7 +395,7 @@ public:
   void drawFieldBg(const glm::vec3& pos) noexcept
   {
     ci::gl::ScopedGlslProg prog(bg_shader_);
-    ci::gl::ScopedTextureBind tex(bg_texture_);
+    ci::gl::ScopedTextureBind tex(bg_texture_, 1);
     ci::gl::ScopedModelMatrix m;
 
     glm::vec2 offset { pos.x * (1.0f / PANEL_SIZE), -pos.z * (1.0f / PANEL_SIZE) };
