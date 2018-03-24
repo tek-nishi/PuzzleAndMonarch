@@ -270,12 +270,12 @@
     "field_shader": "field",
     "shadow_shader": "shadow",
     "shadow_map": [ 2048, 2048 ],
-    "shadow_intensity": 0.6,
+    "shadow_intensity": 0.7,
 
     "bg_shader":  "bg",
     "bg_scale":   [ 250, 1, 250 ],
     "bg_texture": "ground.png",
-    "bg_bright": [ 0.5, 0.5, 0.5, 1 ],
+    "bg_bright": [ 0.6, 0.6, 0.6, 1 ],
     "bg_dark":   [ 0.25, 0.25, 0.25, 1 ]
   },
 
