@@ -110,6 +110,9 @@ class View
   ci::TimelineRef timeline_;
   // Pause中でも動作
   ci::TimelineRef force_timeline_;
+  // リセットされたくない
+  ci::TimelineRef transition_timeline_;
+
 
   // 読まれてないパネルを読み込む
   const ci::gl::VboMeshRef& getPanelModel(int number) noexcept
@@ -198,7 +201,8 @@ public:
       height_ease_duration_(params.getValueForKey<float>("height_ease_duration")),
       height_ease_name_(params.getValueForKey<std::string>("height_ease_name")),
       timeline_(ci::Timeline::create()),
-      force_timeline_(ci::Timeline::create())
+      force_timeline_(ci::Timeline::create()),
+      transition_timeline_(ci::Timeline::create())
   {
     const auto& path = params["panel_path"];
     for (const auto p : path)
@@ -263,6 +267,7 @@ public:
   {
     put_gauge_timer_ += delta_time;
     force_timeline_->step(delta_time);
+    transition_timeline_->step(delta_time);
 
     if (game_paused) return;
 
@@ -291,7 +296,7 @@ public:
 
   void setColor(float duration, const ci::ColorA& color, float delay = 0.0f) noexcept
   {
-    auto option = force_timeline_->apply(&field_color_, color, duration);
+    auto option = transition_timeline_->apply(&field_color_, color, duration);
     option.updateFn([this]() noexcept
                     {
                       field_shader_->uniform("u_color", field_color_());
