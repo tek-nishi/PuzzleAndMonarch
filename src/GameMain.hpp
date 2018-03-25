@@ -134,7 +134,7 @@ public:
 
                                 // 時間が11秒切ったら色を変える
                                 auto color = (remaining_time < 11.0) ? ci::Color(1, 0, 0)
-                                                                     : ci::Color(1, 1, 1);
+                                                                     : ci::Color::white();
                                 canvas_.setWidgetParam("time_remain",      "color", color);
                                 canvas_.setWidgetParam("time_remain_icon", "color", color);
                               });
@@ -227,7 +227,7 @@ private:
     std::fill(std::begin(scores_), std::end(scores_), u_int(0));
 
     scores_color_.resize(num);
-    std::fill(std::begin(scores_color_), std::end(scores_color_), ci::Color(1, 1, 1));
+    std::fill(std::begin(scores_color_), std::end(scores_color_), ci::Color::white());
   }
 
   void updateScores(const std::vector<u_int>& scores) noexcept
@@ -245,7 +245,7 @@ private:
 
         timeline_->removeTarget(&scores_color_[i]);
         auto option = timeline_->applyPtr(&scores_color_[i],
-                                          ci::Color(1, 0, 0), ci::Color(1, 1, 1),
+                                          ci::Color(1, 0, 0), ci::Color::white(),
                                           0.8);
         option.updateFn([this, id, i]() noexcept
                         {

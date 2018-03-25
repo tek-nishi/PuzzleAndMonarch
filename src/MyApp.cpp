@@ -266,7 +266,7 @@ private:
   {
     if (pending_draw_) return;
 
-    ci::gl::clear(ci::Color(0, 0, 0));
+    ci::gl::clear(ci::Color::black());
 
     Arguments args = {
       { "window_size", ci::app::getWindowSize() },

@@ -15,7 +15,7 @@ class RoundRect
 {
   float corner_radius_;
   int corner_segment_ = 0;
-  ci::Color color_ = { 1.0f, 1.0f, 1.0f };
+  ci::Color color_ = ci::Color::white();
   bool fill_ = false;
 
   

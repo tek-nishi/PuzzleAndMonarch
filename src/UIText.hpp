@@ -19,7 +19,7 @@ class Text
 
   std::string font_name_;
   glm::vec2 layout_ = { 0.5, 0.5 };
-  ci::Color color_ = { 1.0f, 1.0f, 1.0f };
+  ci::Color color_ = ci::Color::white();
 
   // 文字内容で動的にレイアウトを決める
   bool dynamic_layout_ = true;

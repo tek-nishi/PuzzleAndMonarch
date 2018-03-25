@@ -262,7 +262,7 @@ public:
                                 count_exec_.add(params_.getValueForKey<float>("ui.transition.game_begin_duration"),
                                                 [this]() noexcept
                                                 {
-                                                  view_.setColor(transition_duration_, ci::ColorA(1, 1, 1, 1));
+                                                  view_.setColor(transition_duration_, ci::ColorA::white());
                                                 });
 
                                 field_distance_ = initial_camera_distance_;
@@ -345,7 +345,7 @@ public:
                                                     { "high_score", high_score },
                                                   };
                                                   event_.signal("Result:begin", a);
-                                                  view_.setColor(transition_duration_, ci::ColorA(1, 1, 1, 1));
+                                                  view_.setColor(transition_duration_, ci::ColorA::white());
                                                 });
 
                                 count_exec_.add(params_.getValueForKey<double>("field.auto_camera_duration"),
@@ -473,7 +473,7 @@ public:
     holder_ += event_.connect("view:touch_ended",
                               [this](const Connection&, const Arguments&) noexcept
                               {
-                                view_.setColor(transition_duration_, ci::ColorA(1, 1, 1, 1), 0.8f);
+                                view_.setColor(transition_duration_, ci::ColorA::white(), 0.8f);
                               });
     
     holder_ += event_.connect("back:touch_ended",
@@ -532,7 +532,7 @@ public:
                                                 },
                                                 true);
 
-                                view_.setColor(transition_duration_, ci::ColorA(1, 1, 1, 1),
+                                view_.setColor(transition_duration_, ci::ColorA::white(),
                                                params_.getValueForKey<double>("field.pause_transition_delay"));
                               });
 
@@ -540,7 +540,7 @@ public:
                               [this](const Connection&, const Arguments&) noexcept
                               {
                                 // ゲーム終了
-                                view_.setColor(transition_duration_, ci::ColorA(1, 1, 1, 1),
+                                view_.setColor(transition_duration_, ci::ColorA::white(),
                                                params_.getValueForKey<double>("field.pause_transition_delay"));
                               });
     
@@ -562,7 +562,7 @@ public:
                               [this](const Connection&, const Arguments&) noexcept
                               {
                                 auto duration = params_.getValueForKey<float>("field.pending_update_duration");
-                                view_.setColor(duration, ci::ColorA(1, 1, 1, 1));
+                                view_.setColor(duration, ci::ColorA::white());
                               });
 
     holder_ += event_.connect("Settings:Trash",
@@ -602,7 +602,7 @@ public:
 #endif
     // 本編準備
     game_->preparationPlay(engine_);
-    view_.setColor(ci::ColorA(1, 1, 1, 1));
+    view_.setColor(ci::ColorA::white());
   }
 
 
@@ -1066,7 +1066,7 @@ private:
     holder_ += event_.connect(end,
                               [this, delay](const Connection&, const Arguments&) noexcept
                               {
-                                view_.setColor(transition_duration_, ci::ColorA(1, 1, 1, 1), delay);
+                                view_.setColor(transition_duration_, ci::ColorA::white(), delay);
                               });
   }
 

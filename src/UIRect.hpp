@@ -14,7 +14,7 @@ namespace ngs { namespace UI {
 class Rect
   : public UI::WidgetBase
 {
-  ci::Color color_ = { 1.0f, 1.0f, 1.0f };
+  ci::Color color_ = ci::Color::white();
   bool fill_ = false;
   float line_width_ = 0.5;
 
