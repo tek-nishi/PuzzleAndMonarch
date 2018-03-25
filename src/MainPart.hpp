@@ -599,6 +599,12 @@ public:
                               {
                                 debug_draw_ = !debug_draw_;
                               });
+    
+    holder_ += event_.connect("debug-shadowmap",
+                              [this](const Connection&, Arguments& arg) noexcept
+                              {
+                                disp_shadowmap_ = !disp_shadowmap_;
+                              });
 #endif
     // 本編準備
     game_->preparationPlay(engine_);
@@ -798,16 +804,13 @@ private:
 
     view_.drawField(info);
 
-#if 0
-    // Uncomment for debug
-    ci::gl::setMatricesWindow( ci::app::getWindowSize() );
-    ci::gl::color( 1.0f, 1.0f, 1.0f );
-    float size = 0.5f * std::min( ci::app::getWindowWidth(), ci::app::getWindowHeight() );
-    ci::gl::draw( shadow_map_, ci::Rectf( 0, 0, size, size ) );
-#endif
+#if defined(DEBUG)
+    if (disp_shadowmap_)
+    {
+      view_.drawShadowMap();
+    }
 
 #if 0
-#if defined(DEBUG)
     // 外接球の表示
     ci::gl::enableDepth(false);
     ci::gl::enableAlphaBlending();
@@ -817,6 +820,7 @@ private:
     ci::gl::drawSphere(framing_sphere_);
     ci::gl::popModelView();
 #endif
+
 #endif
   }
   
@@ -1288,7 +1292,8 @@ private:
 
 #ifdef DEBUG
   bool disp_debug_info_ = false;
-  bool debug_draw_ = false;
+  bool debug_draw_      = false;
+  bool disp_shadowmap_  = false;
 
   // Fieldの外接球
   ci::Sphere framing_sphere_;

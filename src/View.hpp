@@ -634,10 +634,23 @@ public:
     ci::gl::setModelMatrix(mtx);
     ci::gl::draw(bg_model);
   }
+
+#if defined (DEBUG)
+
+void drawShadowMap() noexcept
+{
+  ci::gl::setMatricesWindow(ci::app::getWindowSize());
+  ci::gl::color(1.0f, 1.0f, 1.0f);
+  float size = 0.5f * std::min(ci::app::getWindowWidth(), ci::app::getWindowHeight());
+  ci::gl::draw(shadow_map_, ci::Rectf(0, 0, size, size));
+}
+
+#endif
+
 };
 
 
-#ifdef DEBUG
+#if defined (DEBUG)
 
 // パネルのエッジを表示
 void drawPanelEdge(const Panel& panel, const glm::vec3& pos, u_int rotation) noexcept

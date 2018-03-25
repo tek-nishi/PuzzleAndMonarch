@@ -186,8 +186,8 @@ private:
     case ci::app::KeyEvent::KEY_r:
       {
         // Soft Reset
-        params_ = Params::load("params.json");
         worker_.reset();
+        params_ = Params::load("params.json");
         worker_ = std::make_unique<Worker>(params_, event_);
       }
       break;

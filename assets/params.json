@@ -12,7 +12,8 @@
       [ "c", "debug-canvas-draw" ],
       [ "m", "debug-main-draw" ],
       [ "f", "debug-font" ],
-      [ "s", "debug-settings" ]
+      [ "s", "debug-settings" ],
+      [ "k", "debug-shadowmap" ]
     ]
   },
 
@@ -271,7 +272,7 @@
     "shadow_shader": "shadow",
     "shadow_map": [ 1024, 1024 ],
     "shadow_intensity": 0.7,
-    "polygon_offset": [ 4, 4 ],
+    "polygon_offset": [ 1, 2 ],
 
     "bg_shader":  "bg",
     "bg_height":  -7,
