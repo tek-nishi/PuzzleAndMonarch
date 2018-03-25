@@ -65,6 +65,7 @@ public:
       field_center_(target_position_),
       panel_height_(params.getValueForKey<float>("field.panel_height")),
       putdown_time_(Json::getVec<glm::vec2>(params["field.putdown_time"])),
+      bg_height_(params_.getValueForKey<float>("field.bg_height")),
       view_(params["field"]),
       pause_duration_(Json::getVec<glm::vec2>(params["field.pause_duration"])),
       pause_ease_(params.getValueForKey<std::string>("field.pause_ease")),
@@ -649,7 +650,7 @@ public:
 
     {
       light_pos_ = Json::getVec<glm::vec3>(params["field.light.pos"]);
-    
+      
       float fov    = params.getValueForKey<float>("field.light.fov"); 
       float near_z = params.getValueForKey<float>("field.light.near_z"); 
       float far_z  = params.getValueForKey<float>("field.light.far_z"); 
@@ -784,9 +785,6 @@ private:
       view_.drawPanel(game_->getHandPanel(), pos, game_->getHandRotation(), rotate_offset_);
     }
 
-    // auto bg_pos = calcBgPosition();
-    // view_.drawFieldBg(bg_pos);
-
     // Disable polygon offset for final render
     ci::gl::disable(GL_POLYGON_OFFSET_FILL);
   }
@@ -904,7 +902,7 @@ private:
     camera.lookAt(p + target_position_, target_position_);
     eye_position_ = camera.getEyePoint();
 
-    light_camera_.lookAt(target_position_ + light_pos_, target_position_);
+    light_camera_.lookAt(map_center_ + light_pos_, map_center_);
   }
 
 
@@ -965,18 +963,18 @@ private:
   {
     auto result = game_->getFieldCenterAndDistance(blank);
 
-    auto center = result.first * float(PANEL_SIZE);
+    map_center_ = result.first * float(PANEL_SIZE);
 
     {
       // ある程度の範囲が変更対象
-      auto d = glm::distance(center, target_position_);
+      auto d = glm::distance(map_center_, target_position_);
       // 見た目の距離に変換
       auto dd = d / camera_distance_;
       DOUT << "target_rate: " << dd << std::endl;
       if ((dd > target_rate_.x) && (dd < target_rate_.y))
       {
-        field_center_.x = center.x;
-        field_center_.z = center.z;
+        field_center_.x = map_center_.x;
+        field_center_.z = map_center_.z;
       }
     }
     
@@ -1008,8 +1006,8 @@ private:
     // 強制モード
     if (force_camera_)
     {
-      field_center_.x = center.x;
-      field_center_.z = center.z;
+      field_center_.x = map_center_.x;
+      field_center_.z = map_center_.z;
       field_distance_ = ci::clamp(distance, 
                                   camera_distance_range_.x, camera_distance_range_.y);
     }
@@ -1134,14 +1132,8 @@ private:
     auto ray = camera.generateRay(0.5, 0.5, aspect);
     // 地面との交差位置を計算
     float z;
-    ray.calcPlaneIntersection(glm::vec3(0, -5, 0), glm::vec3(0, 1, 0), &z);
-    auto pos = ray.calcPosition(z);
-    // World position→升目座標
-    // auto p = roundValue(pos.x, pos.z, PANEL_SIZE * 2);
-
-    // return { p.x * PANEL_SIZE * 2, 0, p.y * PANEL_SIZE * 2 };
-
-    return pos;
+    ray.calcPlaneIntersection(glm::vec3(0, bg_height_, 0), glm::vec3(0, 1, 0), &z);
+    return ray.calcPosition(z);
   }
 
   // カメラリセット
@@ -1378,6 +1370,7 @@ private:
   bool force_camera_ = false;
 
   // Fieldの中心座標
+  glm::vec3 map_center_;
   glm::vec3 field_center_;
   float field_distance_ = 0.0f;
 
@@ -1385,6 +1378,9 @@ private:
   glm::vec2 initial_camera_rotation_;
   float initial_camera_distance_;
   glm::vec3 initial_target_position_;
+
+  // 地面の高さ 
+  float bg_height_;
 
   // 表示
   Camera camera_;
@@ -1409,13 +1405,13 @@ private:
   float transition_duration_;
   ci::ColorA transition_color_;
 
-
   // 影レンダリング用
   ci::gl::Texture2dRef shadow_map_;
   ci::gl::FboRef shadow_fbo_;
 
   ci::CameraPersp light_camera_;
-  glm::vec3				light_pos_;
+  glm::vec3	light_pos_;
+  glm::vec2 light_fov_;
 
 
 #ifdef DEBUG

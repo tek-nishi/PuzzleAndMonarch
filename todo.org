@@ -1,4 +1,6 @@
 * TODO チュートリアル
+* TODO 影の調整
+* TODO 横一列に並べると、カメラが引きすぎてfar-clipされる
 * TODO パーフェクト時の演出
 * TODO ソフトリセットでBG描画が乱れる
 * TODO RankingでTOP以外の結果も閲覧したい
