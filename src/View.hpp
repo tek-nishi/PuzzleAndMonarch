@@ -66,6 +66,8 @@ class View
   ci::gl::Texture2dRef shadow_map_;
   ci::gl::FboRef shadow_fbo_;
 
+  glm::vec2 polygon_offset_;
+
   ci::CameraPersp light_camera_;
   glm::vec3 light_pos_;
 
@@ -186,7 +188,8 @@ public:
 
 
   View(const ci::JsonTree& params) noexcept
-    : panel_height_(params.getValueForKey<float>("panel_height")),
+    : polygon_offset_(Json::getVec<glm::vec2>(params["polygon_offset"])),
+      panel_height_(params.getValueForKey<float>("panel_height")),
       bg_scale_(Json::getVec<glm::vec3>(params["bg_scale"])),
       bg_texture_(ci::gl::Texture2d::create(ci::loadImage(Asset::load(params.getValueForKey<std::string>("bg_texture"))))),
       put_duration_(Json::getVec<glm::vec2>(params["put_duration"])),
@@ -452,7 +455,7 @@ public:
   {
     // Set polygon offset to battle shadow acne
     ci::gl::enable(GL_POLYGON_OFFSET_FILL);
-    glPolygonOffset(1.0f, 1.0f);
+    glPolygonOffset(polygon_offset_.x, polygon_offset_.y);
 
     // Render scene to fbo from the view of the light
     ci::gl::ScopedFramebuffer fbo(shadow_fbo_);
