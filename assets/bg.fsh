@@ -6,7 +6,7 @@ $version$
 $precision$
 
 uniform sampler2DShadow uShadowMap;
-uniform sampler2D	uTex;
+uniform sampler2D	uTex1;
 
 uniform float uShadowIntensity;
 
@@ -34,5 +34,5 @@ void main(void)
 
   vec2 pos = floor(u_pos + TexCoord0 * u_checker_size);
   float mask = mod(pos.x + mod(pos.y, 2.0), 2.0);
-  oColor = (texture(uTex, TexCoord0) * u_color * mix(u_dark, u_bright, mask)) * Shadow;
+  oColor = (texture(uTex1, TexCoord0) * u_color * mix(u_dark, u_bright, mask)) * Shadow;
 }

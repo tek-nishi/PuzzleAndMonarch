@@ -143,12 +143,14 @@ class View
   void setupShadowMap(const glm::ivec2& fbo_size) noexcept
   {
     ci::gl::Texture2d::Format depthFormat;
-    depthFormat.setInternalFormat(GL_DEPTH_COMPONENT16);
-    depthFormat.setCompareMode(GL_COMPARE_REF_TO_TEXTURE);
-    depthFormat.setMagFilter(GL_LINEAR);
-    depthFormat.setMinFilter(GL_LINEAR);
-    depthFormat.setWrap(GL_CLAMP_TO_EDGE, GL_CLAMP_TO_EDGE);	
-    depthFormat.setCompareFunc(GL_LEQUAL);
+
+    depthFormat.internalFormat(GL_DEPTH_COMPONENT16)
+               .compareMode(GL_COMPARE_REF_TO_TEXTURE)
+               .magFilter(GL_LINEAR)
+               .minFilter(GL_LINEAR)
+               .wrap(GL_CLAMP_TO_EDGE)	
+               .compareFunc(GL_LEQUAL)
+    ;
 
     shadow_map_ = ci::gl::Texture2d::create(fbo_size.x, fbo_size.y, depthFormat);
 
@@ -185,7 +187,6 @@ public:
 
     const ci::CameraPersp* main_camera;
   };
-
 
   View(const ci::JsonTree& params) noexcept
     : polygon_offset_(Json::getVec<glm::vec2>(params["polygon_offset"])),
@@ -245,7 +246,7 @@ public:
       bg_shader_->uniform("u_bright", Json::getVec<glm::vec4>(params["bg_bright"]));
       bg_shader_->uniform("u_dark",   Json::getVec<glm::vec4>(params["bg_dark"]));
       bg_shader_->uniform("uShadowMap", 0);
-      bg_shader_->uniform("uTex", 1);
+      bg_shader_->uniform("uTex1", 1);
       bg_shader_->uniform("uShadowIntensity", params.getValueForKey<float>("shadow_intensity"));
     }
     {
@@ -491,7 +492,7 @@ public:
     bg_shader_->uniform("uShadowMatrix", mat);
 
     ci::gl::ScopedGlslProg prog(field_shader_);
-    ci::gl::ScopedTextureBind texScope(shadow_map_, 0);
+    ci::gl::ScopedTextureBind texScope(shadow_map_);
     drawFieldPanels();
 
     if (info.playing)
@@ -625,7 +626,6 @@ public:
     ci::gl::ScopedGlslProg prog(bg_shader_);
     ci::gl::ScopedTextureBind tex(bg_texture_, 1);
     ci::gl::ScopedModelMatrix m;
-
     glm::vec2 offset { pos.x * (1.0f / PANEL_SIZE), -pos.z * (1.0f / PANEL_SIZE) };
     bg_shader_->uniform("u_pos", offset);
 
