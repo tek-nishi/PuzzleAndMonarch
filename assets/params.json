@@ -133,7 +133,7 @@
       "distance": 190
     },
 
-    "light": {oa
+    "light": {
       "pos": [ 0, 300, 0 ],
       "fov": 60,
       "near_z": 5,

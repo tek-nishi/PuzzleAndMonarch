@@ -51,26 +51,52 @@ class View
   // NOTICE 追加時にメモリ上で再配置されるのを避けるためstd::vectorではない
   std::deque<Panel> field_panels_;
 
-  // 画面演出用情報
-  float panel_height_;
-  glm::vec2 put_duration_;
-  std::string put_ease_;
-
   // 得点時演出用
   ci::gl::VboMeshRef effect_model;
 
   ci::gl::GlslProgRef field_shader_;
-  ci::ColorA field_color_ = { 1, 1, 1, 1 };
+  ci::Anim<ci::ColorA> field_color_ = ci::ColorA::white();
 
   ci::gl::GlslProgRef bg_shader_;
   ci::gl::Texture2dRef bg_texture_;
 
   ci::gl::GlslProgRef shadow_shader_;
 
+  // 影レンダリング用
+  ci::gl::Texture2dRef shadow_map_;
+  ci::gl::FboRef shadow_fbo_;
+
+  ci::CameraPersp light_camera_;
+  glm::vec3 light_pos_;
+
+  // 画面演出用情報
+  float panel_height_;
+  glm::vec2 put_duration_;
+  std::string put_ease_;
 
   // PAUSE時にくるっと回す用
-  float field_rotate_offset_ = 0.0f;
+  ci::Anim<float> field_rotate_offset_ = 0.0f;
+  glm::vec2 pause_duration_;
+  std::string pause_ease_;
 
+  // パネル位置
+  ci::Anim<glm::vec3> panel_disp_pos_;
+  glm::vec2 disp_ease_duration_;
+  std::string disp_ease_name_;
+
+  // パネルの回転
+  ci::Anim<float> rotate_offset_;
+  glm::vec2 rotate_ease_duration_;
+  std::string rotate_ease_name_;
+
+  // 次のパネルを引いた時の演出
+  ci::Anim<float> height_offset_;
+  float height_ease_start_;
+  float height_ease_duration_;
+  std::string height_ease_name_;
+
+  // パネルを置くゲージ演出
+  float put_gauge_timer_ = 0.0f;
 
   struct Effect {
     bool active;
@@ -80,6 +106,10 @@ class View
   // FIXME 途中の削除が多いのでvectorは向いていない??
   std::list<Effect> effects_;
 
+  // Tween用
+  ci::TimelineRef timeline_;
+  // Pause中でも動作
+  ci::TimelineRef force_timeline_;
 
   // 読まれてないパネルを読み込む
   const ci::gl::VboMeshRef& getPanelModel(int number) noexcept
@@ -95,7 +125,6 @@ class View
     return panel_models[number];
   }
 
-
   // OBJ形式を読み込む
   static ci::gl::VboMeshRef loadObj(const std::string& path) noexcept
   {
@@ -105,14 +134,71 @@ class View
     return mesh;
   }
 
+  // 影レンダリング用の設定
+  void setupShadowMap(const glm::ivec2& fbo_size) noexcept
+  {
+    ci::gl::Texture2d::Format depthFormat;
+    depthFormat.setInternalFormat(GL_DEPTH_COMPONENT16);
+    depthFormat.setCompareMode(GL_COMPARE_REF_TO_TEXTURE);
+    depthFormat.setMagFilter(GL_LINEAR);
+    depthFormat.setMinFilter(GL_LINEAR);
+    depthFormat.setWrap(GL_CLAMP_TO_EDGE, GL_CLAMP_TO_EDGE);	
+    depthFormat.setCompareFunc(GL_LEQUAL);
+
+    shadow_map_ = ci::gl::Texture2d::create(fbo_size.x, fbo_size.y, depthFormat);
+
+    try
+    {
+      ci::gl::Fbo::Format fboFormat;
+      fboFormat.attachment(GL_DEPTH_ATTACHMENT, shadow_map_);
+      shadow_fbo_ = ci::gl::Fbo::create(fbo_size.x, fbo_size.y, fboFormat);
+    }
+    catch (const std::exception& e)
+    {
+      DOUT << "FBO ERROR: " << e.what() << std::endl;
+    }
+  }
+
 
 public:
+  // 表示用の情報
+  struct Info {
+    bool playing;
+    bool can_put;
+
+    // 手持ちのパネル
+    u_int panel_index;
+    // 向き
+    u_int panel_rotation;
+
+    // 選択位置
+    glm::ivec2 field_pos;
+    // 背景位置
+    glm::vec3 bg_pos;
+
+    const std::vector<glm::ivec2>* blank;
+
+    const ci::CameraPersp* main_camera;
+  };
+
+
   View(const ci::JsonTree& params) noexcept
     : panel_height_(params.getValueForKey<float>("panel_height")),
       bg_scale_(Json::getVec<glm::vec3>(params["bg_scale"])),
       bg_texture_(ci::gl::Texture2d::create(ci::loadImage(Asset::load(params.getValueForKey<std::string>("bg_texture"))))),
       put_duration_(Json::getVec<glm::vec2>(params["put_duration"])),
-      put_ease_(params.getValueForKey<std::string>("put_ease"))
+      put_ease_(params.getValueForKey<std::string>("put_ease")),
+      pause_duration_(Json::getVec<glm::vec2>(params["pause_duration"])),
+      pause_ease_(params.getValueForKey<std::string>("pause_ease")),
+      disp_ease_duration_(Json::getVec<glm::vec2>(params["disp_ease_duration"])),
+      disp_ease_name_(params.getValueForKey<std::string>("disp_ease_name")),
+      rotate_ease_duration_(Json::getVec<glm::vec2>(params["rotate_ease_duration"])),
+      rotate_ease_name_(params.getValueForKey<std::string>("rotate_ease_name")),
+      height_ease_start_(params.getValueForKey<float>("height_ease_start")),
+      height_ease_duration_(params.getValueForKey<float>("height_ease_duration")),
+      height_ease_name_(params.getValueForKey<std::string>("height_ease_name")),
+      timeline_(ci::Timeline::create()),
+      force_timeline_(ci::Timeline::create())
   {
     const auto& path = params["panel_path"];
     for (const auto p : path)
@@ -129,6 +215,11 @@ public:
     cursor_model   = ci::gl::VboMesh::create(PLY::load(params.getValueForKey<std::string>("cursor_model")));
     bg_model       = loadObj(params.getValueForKey<std::string>("bg_model"));
     effect_model   = ci::gl::VboMesh::create(PLY::load(params.getValueForKey<std::string>("effect_model")));
+
+    {
+      auto size = Json::getVec<glm::ivec2>(params["shadow_map"]);
+      setupShadowMap(size);
+    }
 
     {
       auto name = params.getValueForKey<std::string>("field_shader");
@@ -154,47 +245,70 @@ public:
       auto name = params.getValueForKey<std::string>("shadow_shader");
       shadow_shader_ = createShader(name, name);
     }
+    {
+      light_pos_ = Json::getVec<glm::vec3>(params["light.pos"]);
+      
+      float fov    = params.getValueForKey<float>("light.fov"); 
+      float near_z = params.getValueForKey<float>("light.near_z"); 
+      float far_z  = params.getValueForKey<float>("light.far_z"); 
+      light_camera_.setPerspective(fov, shadow_fbo_->getAspectRatio(), near_z, far_z);
+    }
   }
 
   ~View() = default;
 
 
+  // Timelineとかの更新
+  void update(double delta_time, bool game_paused) noexcept
+  {
+    put_gauge_timer_ += delta_time;
+    force_timeline_->step(delta_time);
+
+    if (game_paused) return;
+
+    timeline_->step(delta_time);
+  }
+
+
   void clear() noexcept
   {
+    timeline_->clear();
     field_panels_.clear();
     effects_.clear();
+
+    field_rotate_offset_ = 0.0f;
   }
 
 
   void setColor(const ci::ColorA& color) noexcept
   {
+    field_color_.stop();
     field_color_ = color;
     field_shader_->uniform("u_color", color);
     bg_shader_->uniform("u_color", color);
   }
 
-  void setColor(const ci::TimelineRef& timeline, float duration, const ci::ColorA& color, float delay = 0.0f) noexcept
+  void setColor(float duration, const ci::ColorA& color, float delay = 0.0f) noexcept
   {
-    timeline->removeTarget(&field_color_);
-    auto option = timeline->applyPtr(&field_color_, color, duration);
+    auto option = timeline_->apply(&field_color_, color, duration);
     option.updateFn([this]() noexcept
                     {
-                      field_shader_->uniform("u_color", field_color_);
-                      bg_shader_->uniform("u_color", field_color_);
+                      field_shader_->uniform("u_color", field_color_());
+                      bg_shader_->uniform("u_color", field_color_());
                     });
     option.delay(delay);
   }
 
-  void setPauseEffect(float angle, const ci::TimelineRef& timeline, float duration, const std::string& name) noexcept
+  // Pause演出開始
+  void pauseGame() noexcept
   {
-    timeline->removeTarget(&field_rotate_offset_);
-    auto option = timeline->applyPtr(&field_rotate_offset_, angle, duration, getEaseFunc(name));
+    timeline_->apply(&field_rotate_offset_, toRadians(180.0f), pause_duration_.x, getEaseFunc(pause_ease_));
   }
 
-  void resetPauseEffect(const ci::TimelineRef& timeline) noexcept
+  // Pause演出解除
+  void resumeGame() noexcept
   {
-    timeline->removeTarget(&field_rotate_offset_);
-    field_rotate_offset_ = 0;
+    timeline_->apply(&field_rotate_offset_, 0.0f, pause_duration_.y, getEaseFunc(pause_ease_));
   }
 
   // パネル追加
@@ -219,18 +333,54 @@ public:
     field_panels_.push_back(panel);
   }
 
+  // パネル位置決め
+  void setPanelPosition(const glm::vec3& pos) noexcept
+  {
+    panel_disp_pos_.stop();
+    panel_disp_pos_ = pos;
+  }
+
+  // パネル移動
+  void startMovePanelEase(const glm::vec3& target_pos, float rate) noexcept
+  {
+    // panel_disp_pos_.stop();
+    auto duration = glm::mix(disp_ease_duration_.x, disp_ease_duration_.y, rate);
+    timeline_->apply(&panel_disp_pos_, target_pos, duration, getEaseFunc(disp_ease_name_));
+  }
+
+  // パネル回転
+  void startRotatePanelEase(float rate) noexcept
+  {
+    // rotate_offset_.stop();
+    rotate_offset_ = 90.0f;
+    auto duration = glm::mix(rotate_ease_duration_.x, rotate_ease_duration_.y, rate);
+    timeline_->apply(&rotate_offset_, 0.0f, duration, getEaseFunc(rotate_ease_name_));
+  }
+
   // パネルを置く時の演出
-  void startPutEase(const ci::TimelineRef& timeline, double time_rate) noexcept
+  void startPutEase(double time_rate) noexcept
   {
     auto duration = glm::mix(put_duration_.x, put_duration_.y, time_rate);
 
     auto& p = field_panels_.back();
-    timeline->applyPtr(&p.position.y, panel_height_, 0.0f,
-                       duration, getEaseFunc(put_ease_));
+    p.position.y = panel_height_;
+    timeline_->applyPtr(&p.position.y, 0.0f,
+                        duration, getEaseFunc(put_ease_));
   }
 
+  // 次のパネルの出現演出
+  void startNextPanelEase() noexcept
+  {
+    rotate_offset_.stop();
+    rotate_offset_ = 0.0f;
+
+    height_offset_ = height_ease_start_;
+    timeline_->apply(&height_offset_, 0.0f, height_ease_duration_, getEaseFunc(height_ease_name_));
+  }
+
+
   // 得点した時の演出
-  void startEffect(const ci::TimelineRef& timeline, const glm::ivec2& pos) noexcept
+  void startEffect(const glm::ivec2& pos) noexcept
   {
     glm::vec3 gpos{ pos.x * PANEL_SIZE, 0, pos.y * PANEL_SIZE };
 
@@ -249,7 +399,7 @@ public:
       auto end_pos = gpos + ofs + glm::vec3(0, ci::randFloat(15.0f, 30.0f), 0);
 
       float duration = ci::randFloat(1.25f, 1.75f);
-      auto options = timeline->applyPtr(&effect.pos, end_pos, duration);
+      auto options = timeline_->applyPtr(&effect.pos, end_pos, duration);
       options.finishFn([&effect]() noexcept
                        {
                          effect.active = false;
@@ -285,20 +435,93 @@ public:
   }
 
 
-  // 影シェーダー
-  const ci::gl::GlslProgRef& setupShadowShader() noexcept
+  void setupShadowCamera(const glm::vec3& map_center) noexcept
   {
-    return shadow_shader_;
+    light_camera_.lookAt(map_center + light_pos_, map_center);
   }
 
-  // 通常のシェーダー
-  const ci::gl::GlslProgRef& setupFieldShader(const ci::CameraPersp& light_camera) noexcept
+
+  // 影のレンダリング
+  void renderShadow(const Info& info) noexcept
   {
-    auto mat = light_camera.getProjectionMatrix() * light_camera.getViewMatrix();
+    // Set polygon offset to battle shadow acne
+    ci::gl::enable(GL_POLYGON_OFFSET_FILL);
+    glPolygonOffset(1.0f, 1.0f);
+
+    // Render scene to fbo from the view of the light
+    ci::gl::ScopedFramebuffer fbo(shadow_fbo_);
+    ci::gl::ScopedViewport viewport(glm::vec2(0), shadow_fbo_->getSize());
+    ci::gl::clear(ci::Color::black());
+    ci::gl::setMatrices(light_camera_);
+
+    ci::gl::ScopedGlslProg prog(shadow_shader_);
+
+    drawFieldPanels();
+
+    if (info.playing)
+    {
+      // 置ける場所
+      drawFieldBlank(*info.blank);
+      
+      // 手持ちパネル
+      auto pos = panel_disp_pos_() + glm::vec3(0, height_offset_, 0);
+      drawPanel(info.panel_index, pos, info.panel_rotation, rotate_offset_);
+    }
+
+    // Disable polygon offset for final render
+    ci::gl::disable(GL_POLYGON_OFFSET_FILL);
+  }
+
+  void renderField(const Info& info) noexcept
+  {
+    ci::gl::setMatrices(*info.main_camera);
+    ci::gl::clear(ci::Color::black());
+
+    auto mat = light_camera_.getProjectionMatrix() * light_camera_.getViewMatrix();
     field_shader_->uniform("uShadowMatrix", mat);
     bg_shader_->uniform("uShadowMatrix", mat);
 
-    return field_shader_;
+    ci::gl::ScopedGlslProg prog(field_shader_);
+    ci::gl::ScopedTextureBind texScope(shadow_map_, 0);
+    drawFieldPanels();
+
+    if (info.playing)
+    {
+      // 置ける場所
+      drawFieldBlank(*info.blank);
+      
+      // 手持ちパネル
+      auto pos = panel_disp_pos_() + glm::vec3(0, height_offset_, 0);
+      drawPanel(info.panel_index, pos, info.panel_rotation, rotate_offset_);
+
+      // 選択箇所
+      float s = std::abs(std::sin(put_gauge_timer_ * 6.0f)) * 0.1;
+      glm::vec3 scale(0.9 + s, 1, 0.9 + s);
+      drawFieldSelected(info.field_pos, scale);
+
+      // 「置けますよ」アピール
+      if (info.can_put)
+      {
+        scale.x = 1.0 + s;
+        scale.z = 1.0 + s;
+        drawCursor(pos, scale);
+      }
+    }
+
+    drawFieldBg(info.bg_pos);
+    drawEffect();
+  }
+
+
+  // フィールド表示
+  void drawField(const Info& info) noexcept
+  {
+    ci::gl::enableDepth();
+    ci::gl::enable(GL_CULL_FACE);
+    ci::gl::disableAlphaBlending();
+
+    renderShadow(info);
+    renderField(info);
   }
 
   
@@ -321,14 +544,6 @@ public:
     ci::gl::draw(model);
   }
 
-#if 0
-  void drawPanel(int number, const glm::ivec2& pos, u_int rotation) noexcept
-  {
-    drawPanel(number, glm::vec3(pos.x, 0.0f, pos.y), rotation, 0.0f);
-  }
-#endif
-
-
   // Fieldのパネルを全て表示
   void drawFieldPanels() noexcept
   {
@@ -344,6 +559,7 @@ public:
     const auto& panels = field_panels_;
     for (const auto& p : panels)
     {
+      // TODO この計算はaddの時に済ませる
       int index = (p.field_pos.x + p.field_pos.y * 3) & 0b11;
       const auto& ofs = offset[index];
 

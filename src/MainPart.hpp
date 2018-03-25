@@ -34,11 +34,6 @@ namespace ngs {
 class MainPart
   : public Task
 {
-  enum {
-    FBO_WIDTH  = 4096,
-    FBO_HEIGHT = 4096,
-  };
-
 
 public:
   MainPart(const ci::JsonTree& params, Event<Arguments>& event, Archive& archive) noexcept
@@ -48,13 +43,6 @@ public:
       panels_(createPanels()),
       game_(std::make_unique<Game>(params["game"], event, panels_)),
       draged_max_length_(params.getValueForKey<float>("field.draged_max_length")),
-      disp_ease_duration_(Json::getVec<glm::vec2>(params["field.disp_ease_duration"])),
-      disp_ease_name_(params.getValueForKey<std::string>("field.disp_ease_name")),
-      rotate_ease_duration_(Json::getVec<glm::vec2>(params["field.rotate_ease_duration"])),
-      rotate_ease_name_(params.getValueForKey<std::string>("field.rotate_ease_name")),
-      height_ease_start_(params.getValueForKey<float>("field.height_ease_start")),
-      height_ease_duration_(params.getValueForKey<float>("field.height_ease_duration")),
-      height_ease_name_(params.getValueForKey<std::string>("field.height_ease_name")),
       camera_rotation_(toRadians(Json::getVec<glm::vec2>(params["field.camera.rotation"]))),
       camera_distance_(params.getValueForKey<float>("field.camera.distance")),
       camera_distance_range_(Json::getVec<glm::vec2>(params["field.camera_distance_range"])),
@@ -67,10 +55,6 @@ public:
       putdown_time_(Json::getVec<glm::vec2>(params["field.putdown_time"])),
       bg_height_(params_.getValueForKey<float>("field.bg_height")),
       view_(params["field"]),
-      pause_duration_(Json::getVec<glm::vec2>(params["field.pause_duration"])),
-      pause_ease_(params.getValueForKey<std::string>("field.pause_ease")),
-      timeline_(ci::Timeline::create()),
-      force_timeline_(ci::Timeline::create()),
       ranking_records_(params.getValueForKey<u_int>("game.ranking_records")),
       transition_duration_(params.getValueForKey<float>("ui.transition.duration")),
       transition_color_(Json::getColorA<float>(params["ui.transition.color"]))
@@ -274,11 +258,11 @@ public:
                                 game_event_.insert("Game:ready");
 
                                 auto delay = params_.getValueForKey<float>("ui.transition.game_begin_delay");
-                                view_.setColor(force_timeline_, transition_duration_, transition_color_, delay);
+                                view_.setColor(transition_duration_, transition_color_, delay);
                                 count_exec_.add(params_.getValueForKey<float>("ui.transition.game_begin_duration"),
                                                 [this]() noexcept
                                                 {
-                                                  view_.setColor(force_timeline_, transition_duration_, ci::ColorA(1, 1, 1, 1));
+                                                  view_.setColor(transition_duration_, ci::ColorA(1, 1, 1, 1));
                                                 });
 
                                 field_distance_ = initial_camera_distance_;
@@ -303,7 +287,6 @@ public:
                               {
                                 game_->beginPlay();
                                 calcNextPanelPosition();
-                                startNextPanelEase();
                               });
 
     holder_ += event_.connect("Game:Aborted",
@@ -328,7 +311,7 @@ public:
                                 const auto& pos = boost::any_cast<glm::ivec2>(args.at("field_pos"));
                                 auto rotation   = boost::any_cast<u_int>(args.at("rotation"));
                                 view_.addPanel(panel, pos, rotation);
-                                view_.startPutEase(timeline_, game_->getPlayTimeRate());
+                                view_.startPutEase(game_->getPlayTimeRate());
                               });
 
     holder_ += event_.connect("Game:Finish",
@@ -342,7 +325,7 @@ public:
                                 game_event_.insert("Game:finish");
 
                                 calcViewRange(false);
-                                view_.setColor(force_timeline_, transition_duration_, transition_color_);
+                                view_.setColor(transition_duration_, transition_color_);
 
                                 // スコア計算
                                 auto score      = calcGameScore(args);
@@ -362,7 +345,7 @@ public:
                                                     { "high_score", high_score },
                                                   };
                                                   event_.signal("Result:begin", a);
-                                                  view_.setColor(force_timeline_, transition_duration_, ci::ColorA(1, 1, 1, 1));
+                                                  view_.setColor(transition_duration_, ci::ColorA(1, 1, 1, 1));
                                                 });
 
                                 count_exec_.add(params_.getValueForKey<double>("field.auto_camera_duration"),
@@ -393,7 +376,7 @@ public:
                                {
                                  for (const auto& p : cc)
                                  {
-                                   view_.startEffect(timeline_, p);
+                                   view_.startEffect(p);
                                  }
                                }
                                game_event_.insert("Comp:forests");
@@ -407,7 +390,7 @@ public:
                                {
                                  for (const auto& p : cc)
                                  {
-                                   view_.startEffect(timeline_, p);
+                                   view_.startEffect(p);
                                  }
                                }
                                game_event_.insert("Comp:path");
@@ -419,7 +402,7 @@ public:
                                auto completed = boost::any_cast<std::vector<glm::ivec2>>(args.at("completed"));
                                for (const auto& p : completed)
                                {
-                                 view_.startEffect(timeline_, p);
+                                 view_.startEffect(p);
                                }
                                game_event_.insert("Comp:church");
                              });
@@ -432,7 +415,7 @@ public:
                                 bool rank_in = boost::any_cast<bool>(args.at("rank_in"));
                                 if (rank_in)
                                 {
-                                  view_.setColor(force_timeline_, transition_duration_, transition_color_);
+                                  view_.setColor(transition_duration_, transition_color_);
                                 }
                                 else
                                 {
@@ -455,8 +438,6 @@ public:
                                                 {
                                                   force_camera_ = true;
                                                   manipulated_  = false;
-
-                                                  timeline_->clear();
 
                                                   // TOPの記録を読み込む
                                                   {
@@ -492,13 +473,13 @@ public:
     holder_ += event_.connect("view:touch_ended",
                               [this](const Connection&, const Arguments&) noexcept
                               {
-                                view_.setColor(force_timeline_, transition_duration_, ci::ColorA(1, 1, 1, 1), 0.8f);
+                                view_.setColor(transition_duration_, ci::ColorA(1, 1, 1, 1), 0.8f);
                               });
     
     holder_ += event_.connect("back:touch_ended",
                               [this](const Connection&, const Arguments&) noexcept
                               {
-                                view_.setColor(force_timeline_, transition_duration_, transition_color_, 0.8f);
+                                view_.setColor(transition_duration_, transition_color_, 0.8f);
                               });
 
     holder_ += event_.connect("Ranking:Finished",
@@ -532,12 +513,11 @@ public:
                                 count_exec_.add(params_.getValueForKey<double>("field.pause_exec_delay"),
                                                 [this]() noexcept
                                                 {
-                                                  view_.setPauseEffect(toRadians(180.0f), force_timeline_,
-                                                                       pause_duration_.x, pause_ease_);
+                                                  view_.pauseGame();
                                                 },
                                                 true);
 
-                                view_.setColor(force_timeline_, transition_duration_, transition_color_,
+                                view_.setColor(transition_duration_, transition_color_,
                                                params_.getValueForKey<double>("field.pause_transition_delay"));
                               });
 
@@ -548,12 +528,11 @@ public:
                                 count_exec_.add(params_.getValueForKey<double>("field.pause_exec_delay"),
                                                 [this]() noexcept
                                                 {
-                                                  view_.setPauseEffect(0.0f, force_timeline_,
-                                                                       pause_duration_.y, pause_ease_);
+                                                  view_.resumeGame();
                                                 },
                                                 true);
 
-                                view_.setColor(force_timeline_, transition_duration_, ci::ColorA(1, 1, 1, 1),
+                                view_.setColor(transition_duration_, ci::ColorA(1, 1, 1, 1),
                                                params_.getValueForKey<double>("field.pause_transition_delay"));
                               });
 
@@ -561,7 +540,7 @@ public:
                               [this](const Connection&, const Arguments&) noexcept
                               {
                                 // ゲーム終了
-                                view_.setColor(force_timeline_, transition_duration_, ci::ColorA(1, 1, 1, 1),
+                                view_.setColor(transition_duration_, ci::ColorA(1, 1, 1, 1),
                                                params_.getValueForKey<double>("field.pause_transition_delay"));
                               });
     
@@ -583,7 +562,7 @@ public:
                               [this](const Connection&, const Arguments&) noexcept
                               {
                                 auto duration = params_.getValueForKey<float>("field.pending_update_duration");
-                                view_.setColor(force_timeline_, duration, ci::ColorA(1, 1, 1, 1));
+                                view_.setColor(duration, ci::ColorA(1, 1, 1, 1));
                               });
 
     holder_ += event_.connect("Settings:Trash",
@@ -624,38 +603,6 @@ public:
     // 本編準備
     game_->preparationPlay(engine_);
     view_.setColor(ci::ColorA(1, 1, 1, 1));
-
-    // Shadow mapping fbo
-    ci::gl::Texture2d::Format depthFormat;
-    depthFormat.setInternalFormat(GL_DEPTH_COMPONENT16);
-    depthFormat.setCompareMode(GL_COMPARE_REF_TO_TEXTURE);
-    depthFormat.setMagFilter(GL_LINEAR);
-    depthFormat.setMinFilter(GL_LINEAR);
-    depthFormat.setWrap(GL_CLAMP_TO_EDGE, GL_CLAMP_TO_EDGE);	
-    depthFormat.setCompareFunc(GL_LEQUAL);
-
-    auto fbo_size = Json::getVec<glm::ivec2>(params["field.shadow_map"]);
-    shadow_map_ = ci::gl::Texture2d::create(fbo_size.x, fbo_size.y, depthFormat);
-
-    try
-    {
-      ci::gl::Fbo::Format fboFormat;
-      fboFormat.attachment(GL_DEPTH_ATTACHMENT, shadow_map_);
-      shadow_fbo_ = ci::gl::Fbo::create(fbo_size.x, fbo_size.y, fboFormat);
-    }
-    catch (const std::exception& e)
-    {
-      DOUT << "FBO ERROR: " << e.what() << std::endl;
-    }
-
-    {
-      light_pos_ = Json::getVec<glm::vec3>(params["field.light.pos"]);
-      
-      float fov    = params.getValueForKey<float>("field.light.fov"); 
-      float near_z = params.getValueForKey<float>("field.light.near_z"); 
-      float far_z  = params.getValueForKey<float>("field.light.far_z"); 
-      light_camera_.setPerspective(fov, shadow_fbo_->getAspectRatio(), near_z, far_z);
-    }
   }
 
 
@@ -670,7 +617,8 @@ private:
     // NOTICE pause中でもカウンタだけは進める
     //        pause→タイトルへ戻る演出のため
     count_exec_.update(delta_time);
-    force_timeline_->step(delta_time);
+
+    view_.update(delta_time, paused_);
 
     if (paused_)
     {
@@ -720,12 +668,7 @@ private:
           game_event_.insert("Panel:put");
 
           // 次のパネルの準備
-          rotate_offset_.stop();
-          rotate_offset_ = 0.0f;
-          can_put_       = false;
-
-          startNextPanelEase();
-
+          can_put_   = false;
           touch_put_ = false;
           // 次のパネルを操作できないようにしとく
           manipulated_ = true;
@@ -734,14 +677,11 @@ private:
             
           // Fieldの中心を再計算
           calcViewRange(true);
+          // 次のパネル
           calcNextPanelPosition();
         }
       }
     }
-
-    put_gauge_timer_ += delta_time;
-
-    timeline_->step(delta_time);
 
     // ゲーム内で起こったイベントをSoundに丸投げする
     if (!game_event_.empty())
@@ -757,39 +697,7 @@ private:
   }
 
 
-
-  void drawShadow() noexcept
-  {
-    // Set polygon offset to battle shadow acne
-    ci::gl::enable(GL_POLYGON_OFFSET_FILL);
-    glPolygonOffset(1.0f, 1.0f);
-
-    // Render scene to fbo from the view of the light
-    ci::gl::ScopedFramebuffer fbo(shadow_fbo_);
-    ci::gl::ScopedViewport viewport(glm::vec2(0), shadow_fbo_->getSize());
-    ci::gl::clear(ci::Color::black());
-    ci::gl::setMatrices(light_camera_);
-
-    ci::gl::ScopedGlslProg prog(view_.setupShadowShader());
-
-    view_.drawFieldPanels();
-
-    if (game_->isPlaying())
-    {
-      // 置ける場所
-      const auto& blank = game_->getBlankPositions();
-      view_.drawFieldBlank(blank);
-      
-      // 手持ちパネル
-      glm::vec3 pos(panel_disp_pos_().x, panel_disp_pos_().y + height_offset_, panel_disp_pos_().z);
-      view_.drawPanel(game_->getHandPanel(), pos, game_->getHandRotation(), rotate_offset_);
-    }
-
-    // Disable polygon offset for final render
-    ci::gl::disable(GL_POLYGON_OFFSET_FILL);
-  }
-
-
+#if 0
   void drawField() noexcept
   {
     // 本編
@@ -864,6 +772,8 @@ private:
 
     view_.drawEffect();
   }
+#endif
+
 
   void draw(const Connection&, const Arguments&) noexcept
   {
@@ -871,7 +781,22 @@ private:
     if (debug_draw_) return;
 #endif
 
-    drawField();
+    View::Info info {
+      game_->isPlaying(),
+      can_put_,
+
+      game_->getHandPanel(),
+      game_->getHandRotation(),
+
+      field_pos_,
+
+      calcBgPosition(),
+
+      &game_->getBlankPositions(),
+      &camera_.body()
+    };
+
+    view_.drawField(info);
 
 #if 0
     // Uncomment for debug
@@ -902,7 +827,7 @@ private:
     camera.lookAt(p + target_position_, target_position_);
     eye_position_ = camera.getEyePoint();
 
-    light_camera_.lookAt(map_center_ + light_pos_, map_center_);
+    view_.setupShadowCamera(map_center_);
   }
 
 
@@ -952,7 +877,7 @@ private:
 
       // 少し宙に浮いた状態
       cursor_pos_ = glm::vec3(field_pos_.x * PANEL_SIZE, panel_height_, field_pos_.y * PANEL_SIZE);
-      startMoveEase();
+      startMovePanelEase();
       game_event_.insert("Panel:move");
     }
   }
@@ -1066,50 +991,33 @@ private:
                                });
     field_pos_ = *it;
     cursor_pos_ = glm::vec3(field_pos_.x * PANEL_SIZE, panel_height_, field_pos_.y * PANEL_SIZE);
-    panel_disp_pos_.stop();
-    panel_disp_pos_ = cursor_pos_;
+    view_.setPanelPosition(cursor_pos_);
+    view_.startNextPanelEase();
 
     touch_put_ = false;
     can_put_   = game_->canPutToBlank(field_pos_);
   }
 
   // パネル移動演出
-  void startMoveEase() noexcept
+  void startMovePanelEase() noexcept
   {
-    panel_disp_pos_.stop();
     // 経過時間で移動速度が上がる
     // NOTICE プレイに影響は無い
-    auto duration = glm::mix(disp_ease_duration_.x, disp_ease_duration_.y, game_->getPlayTimeRate());
-    timeline_->apply(&panel_disp_pos_, cursor_pos_, duration, getEaseFunc(disp_ease_name_));
+    view_.startMovePanelEase(cursor_pos_, game_->getPlayTimeRate());
   }
 
   // パネル回転演出
   void startRotatePanelEase() noexcept
   {
-    rotate_offset_.stop();
-    rotate_offset_ = 90.0f;
-    // 経過時間で回転速度が上がる
-    // NOTICE プレイに影響は無い
-    auto duration = glm::mix(rotate_ease_duration_.x, rotate_ease_duration_.y, game_->getPlayTimeRate());
-    timeline_->apply(&rotate_offset_, 0.0f, duration, getEaseFunc(rotate_ease_name_));
+    // // 経過時間で回転速度が上がる
+    // // NOTICE プレイに影響は無い
+    view_.startRotatePanelEase(game_->getPlayTimeRate());
   }
-
-
-  // 次のパネルの出現演出
-  void startNextPanelEase() noexcept
-  {
-    height_offset_.stop();
-    height_offset_ = height_ease_start_;
-    timeline_->apply(&height_offset_, 0.0f, height_ease_duration_, getEaseFunc(height_ease_name_));
-  }
-
 
   // Game本体初期化
   void resetGame() noexcept
   {
     view_.clear();
-    view_.resetPauseEffect(force_timeline_);
-    timeline_->clear();
 
     paused_ = false;
     count_exec_.pause(false);
@@ -1153,12 +1061,12 @@ private:
     holder_ += event_.connect(begin,
                               [this, delay](const Connection&, const Arguments&) noexcept
                               {
-                                view_.setColor(force_timeline_, transition_duration_, transition_color_, delay);
+                                view_.setColor(transition_duration_, transition_color_, delay);
                               });
     holder_ += event_.connect(end,
                               [this, delay](const Connection&, const Arguments&) noexcept
                               {
-                                view_.setColor(force_timeline_, transition_duration_, ci::ColorA(1, 1, 1, 1), delay);
+                                view_.setColor(transition_duration_, ci::ColorA(1, 1, 1, 1), delay);
                               });
   }
 
@@ -1327,32 +1235,13 @@ private:
   glm::vec2 putdown_time_;
   double current_putdown_time_;
 
-  // 実際のパネル位置
+  // パネル位置
   glm::vec3 cursor_pos_;
 
   // パネルを配置しようとしている位置
   glm::ivec2 field_pos_;
   // 配置可能
   bool can_put_ = false;
-
-  // パネル位置
-  ci::Anim<glm::vec3> panel_disp_pos_;
-  glm::vec2 disp_ease_duration_;
-  std::string disp_ease_name_;
-
-  // パネルの回転
-  ci::Anim<float> rotate_offset_ = 0.0f;
-  glm::vec2 rotate_ease_duration_;
-  std::string rotate_ease_name_;
-
-  // 次のパネルを引いた時の演出
-  ci::Anim<float> height_offset_ = 0.0f;
-  float height_ease_start_;
-  float height_ease_duration_;
-  std::string height_ease_name_;
-
-  // パネルを置くゲージ演出
-  float put_gauge_timer_ = 0.0f;
 
   // カメラ関連
   glm::vec2 camera_rotation_;
@@ -1386,32 +1275,15 @@ private:
   Camera camera_;
   View view_;
 
-  // Pause
-  glm::vec2 pause_duration_;
-  std::string pause_ease_;
-
-  // Tween用
-  ci::TimelineRef timeline_;
-  // Pauseでも続行する
-  ci::TimelineRef force_timeline_;
-
-  // ゲーム内で発生したイベント
+  // ゲーム内で発生したイベント(音効用)
   std::set<std::string> game_event_;
 
   // Rankingで表示する数
   u_int ranking_records_;
 
-  // Transition
+  // TODO Viewへ移動(Transition)
   float transition_duration_;
   ci::ColorA transition_color_;
-
-  // 影レンダリング用
-  ci::gl::Texture2dRef shadow_map_;
-  ci::gl::FboRef shadow_fbo_;
-
-  ci::CameraPersp light_camera_;
-  glm::vec3	light_pos_;
-  glm::vec2 light_fov_;
 
 
 #ifdef DEBUG
