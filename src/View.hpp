@@ -273,6 +273,7 @@ public:
   void clear() noexcept
   {
     timeline_->clear();
+    force_timeline_->clear();
     field_panels_.clear();
     effects_.clear();
 
@@ -290,7 +291,7 @@ public:
 
   void setColor(float duration, const ci::ColorA& color, float delay = 0.0f) noexcept
   {
-    auto option = timeline_->apply(&field_color_, color, duration);
+    auto option = force_timeline_->apply(&field_color_, color, duration);
     option.updateFn([this]() noexcept
                     {
                       field_shader_->uniform("u_color", field_color_());
@@ -302,13 +303,13 @@ public:
   // Pause演出開始
   void pauseGame() noexcept
   {
-    timeline_->apply(&field_rotate_offset_, toRadians(180.0f), pause_duration_.x, getEaseFunc(pause_ease_));
+    force_timeline_->apply(&field_rotate_offset_, toRadians(180.0f), pause_duration_.x, getEaseFunc(pause_ease_));
   }
 
   // Pause演出解除
   void resumeGame() noexcept
   {
-    timeline_->apply(&field_rotate_offset_, 0.0f, pause_duration_.y, getEaseFunc(pause_ease_));
+    force_timeline_->apply(&field_rotate_offset_, 0.0f, pause_duration_.y, getEaseFunc(pause_ease_));
   }
 
   // パネル追加
