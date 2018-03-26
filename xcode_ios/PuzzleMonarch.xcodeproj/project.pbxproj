@@ -32,7 +32,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		00692BCF14FF149000D0A05E /* ApprenticeMonarch.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ApprenticeMonarch.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		00692BCF14FF149000D0A05E /* PuzzleMonarch.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = PuzzleMonarch.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		00748057165D41390024B57A /* assets */ = {isa = PBXFileReference; lastKnownFileType = folder; name = assets; path = ../assets; sourceTree = "<group>"; };
 		0087D25412CD809F002CD69F /* CoreText.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreText.framework; path = System/Library/Frameworks/CoreText.framework; sourceTree = SDKROOT; };
 		00A66A351965AC8800B17EB3 /* Accelerate.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Accelerate.framework; path = System/Library/Frameworks/Accelerate.framework; sourceTree = SDKROOT; };
@@ -54,7 +54,7 @@
 		47EF72EA2043D228002900CF /* Capture.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = Capture.mm; path = ../src/Capture.mm; sourceTree = "<group>"; };
 		4F061B89F5B245658DFC98A3 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		5820392EF46148AA877B309D /* Resources.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = Resources.h; path = ../include/Resources.h; sourceTree = "<group>"; };
-		5F4060D6FC194D6D97ABF703 /* ApprenticeMonarch_Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = "\"\""; path = ApprenticeMonarch_Prefix.pch; sourceTree = "<group>"; };
+		5F4060D6FC194D6D97ABF703 /* PuzzleMonarch_Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PuzzleMonarch_Prefix.pch; sourceTree = "<group>"; };
 		C725E000121DAC8F00FA186B /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = System/Library/Frameworks/AVFoundation.framework; sourceTree = SDKROOT; };
 		C727C02B121B400300192073 /* CoreMedia.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreMedia.framework; path = System/Library/Frameworks/CoreMedia.framework; sourceTree = SDKROOT; };
 		C727C02D121B400300192073 /* CoreVideo.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreVideo.framework; path = System/Library/Frameworks/CoreVideo.framework; sourceTree = SDKROOT; };
@@ -101,7 +101,7 @@
 		00692BD014FF149000D0A05E /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				00692BCF14FF149000D0A05E /* ApprenticeMonarch.app */,
+				00692BCF14FF149000D0A05E /* PuzzleMonarch.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -157,7 +157,7 @@
 			isa = PBXGroup;
 			children = (
 				5820392EF46148AA877B309D /* Resources.h */,
-				5F4060D6FC194D6D97ABF703 /* ApprenticeMonarch_Prefix.pch */,
+				5F4060D6FC194D6D97ABF703 /* PuzzleMonarch_Prefix.pch */,
 			);
 			name = Headers;
 			sourceTree = "<group>";
@@ -172,9 +172,9 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		00692BCE14FF149000D0A05E /* ApprenticeMonarch */ = {
+		00692BCE14FF149000D0A05E /* PuzzleMonarch */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 00692BF514FF149000D0A05E /* Build configuration list for PBXNativeTarget "ApprenticeMonarch" */;
+			buildConfigurationList = 00692BF514FF149000D0A05E /* Build configuration list for PBXNativeTarget "PuzzleMonarch" */;
 			buildPhases = (
 				00692BCB14FF149000D0A05E /* Sources */,
 				00692BCC14FF149000D0A05E /* Frameworks */,
@@ -184,9 +184,9 @@
 			);
 			dependencies = (
 			);
-			name = ApprenticeMonarch;
+			name = PuzzleMonarch;
 			productName = ApprenticeMonarch;
-			productReference = 00692BCF14FF149000D0A05E /* ApprenticeMonarch.app */;
+			productReference = 00692BCF14FF149000D0A05E /* PuzzleMonarch.app */;
 			productType = "com.apple.product-type.application";
 		};
 /* End PBXNativeTarget section */
@@ -206,7 +206,7 @@
 					};
 				};
 			};
-			buildConfigurationList = 00692BC914FF149000D0A05E /* Build configuration list for PBXProject "ApprenticeMonarch" */;
+			buildConfigurationList = 00692BC914FF149000D0A05E /* Build configuration list for PBXProject "PuzzleMonarch" */;
 			compatibilityVersion = "Xcode 3.2";
 			developmentRegion = English;
 			hasScannedForEncodings = 0;
@@ -219,7 +219,7 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				00692BCE14FF149000D0A05E /* ApprenticeMonarch */,
+				00692BCE14FF149000D0A05E /* PuzzleMonarch */,
 			);
 		};
 /* End PBXProject section */
@@ -344,7 +344,7 @@
 				DEVELOPMENT_TEAM = 4Y46LA3FF9;
 				ENABLE_BITCODE = NO;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = ApprenticeMonarch_Prefix.pch;
+				GCC_PREFIX_HEADER = PuzzleMonarch_Prefix.pch;
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"SRCROOT=\"$(SRCROOT)/\"",
 					"PRODUCT_NAME=\"$(PRODUCT_NAME)\"",
@@ -364,6 +364,7 @@
 					"\"$(CINDER_PATH)/lib/ios-sim/libboost_filesystem.a\"",
 					"\"$(CINDER_PATH)/lib/ios-sim/libboost_system.a\"",
 				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.ngs.PuzzleMonarch;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				WRAPPER_EXTENSION = app;
 			};
@@ -376,7 +377,7 @@
 				DEVELOPMENT_TEAM = 4Y46LA3FF9;
 				ENABLE_BITCODE = NO;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = ApprenticeMonarch_Prefix.pch;
+				GCC_PREFIX_HEADER = PuzzleMonarch_Prefix.pch;
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"SRCROOT=\"$(SRCROOT)/\"",
 					"PRODUCT_NAME=\"$(PRODUCT_NAME)\"",
@@ -396,6 +397,7 @@
 					"\"$(CINDER_PATH)/lib/ios-sim/libboost_filesystem.a\"",
 					"\"$(CINDER_PATH)/lib/ios-sim/libboost_system.a\"",
 				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.ngs.PuzzleMonarch;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				WRAPPER_EXTENSION = app;
 			};
@@ -404,7 +406,7 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		00692BC914FF149000D0A05E /* Build configuration list for PBXProject "ApprenticeMonarch" */ = {
+		00692BC914FF149000D0A05E /* Build configuration list for PBXProject "PuzzleMonarch" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				00692BF314FF149000D0A05E /* Debug */,
@@ -413,7 +415,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		00692BF514FF149000D0A05E /* Build configuration list for PBXNativeTarget "ApprenticeMonarch" */ = {
+		00692BF514FF149000D0A05E /* Build configuration list for PBXNativeTarget "PuzzleMonarch" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				00692BF614FF149000D0A05E /* Debug */,

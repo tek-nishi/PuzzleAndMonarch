@@ -15,15 +15,15 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "00692BCE14FF149000D0A05E"
-               BuildableName = "ApprenticeMonarch.app"
-               BlueprintName = "ApprenticeMonarch"
-               ReferencedContainer = "container:ApprenticeMonarch.xcodeproj">
+               BuildableName = "PuzzleMonarch.app"
+               BlueprintName = "PuzzleMonarch"
+               ReferencedContainer = "container:PuzzleMonarch.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
       </BuildActionEntries>
    </BuildAction>
    <TestAction
-      buildConfiguration = "Debug"
+      buildConfiguration = "Release"
       selectedDebuggerIdentifier = "Xcode.DebuggerFoundation.Debugger.LLDB"
       selectedLauncherIdentifier = "Xcode.DebuggerFoundation.Launcher.LLDB"
       language = ""
@@ -34,16 +34,16 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "00692BCE14FF149000D0A05E"
-            BuildableName = "ApprenticeMonarch.app"
-            BlueprintName = "ApprenticeMonarch"
-            ReferencedContainer = "container:ApprenticeMonarch.xcodeproj">
+            BuildableName = "PuzzleMonarch.app"
+            BlueprintName = "PuzzleMonarch"
+            ReferencedContainer = "container:PuzzleMonarch.xcodeproj">
          </BuildableReference>
       </MacroExpansion>
       <AdditionalOptions>
       </AdditionalOptions>
    </TestAction>
    <LaunchAction
-      buildConfiguration = "Debug"
+      buildConfiguration = "Release"
       selectedDebuggerIdentifier = "Xcode.DebuggerFoundation.Debugger.LLDB"
       selectedLauncherIdentifier = "Xcode.DebuggerFoundation.Launcher.LLDB"
       language = ""
@@ -58,16 +58,16 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "00692BCE14FF149000D0A05E"
-            BuildableName = "ApprenticeMonarch.app"
-            BlueprintName = "ApprenticeMonarch"
-            ReferencedContainer = "container:ApprenticeMonarch.xcodeproj">
+            BuildableName = "PuzzleMonarch.app"
+            BlueprintName = "PuzzleMonarch"
+            ReferencedContainer = "container:PuzzleMonarch.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
       <AdditionalOptions>
       </AdditionalOptions>
    </LaunchAction>
    <ProfileAction
-      buildConfiguration = "Debug"
+      buildConfiguration = "Release"
       shouldUseLaunchSchemeArgsEnv = "YES"
       savedToolIdentifier = ""
       useCustomWorkingDirectory = "NO"
@@ -77,14 +77,14 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "00692BCE14FF149000D0A05E"
-            BuildableName = "ApprenticeMonarch.app"
-            BlueprintName = "ApprenticeMonarch"
-            ReferencedContainer = "container:ApprenticeMonarch.xcodeproj">
+            BuildableName = "PuzzleMonarch.app"
+            BlueprintName = "PuzzleMonarch"
+            ReferencedContainer = "container:PuzzleMonarch.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
    </ProfileAction>
    <AnalyzeAction
-      buildConfiguration = "Debug">
+      buildConfiguration = "Release">
    </AnalyzeAction>
    <ArchiveAction
       buildConfiguration = "Release"
