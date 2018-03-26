@@ -1,7 +1,6 @@
 * TODO チュートリアル
 * TODO 影の調整
 * TODO 横一列に並べると、カメラが引きすぎてfar-clipされる
-* TODO パーフェクト時の演出
 * TODO ソフトリセットでBG描画が乱れる
 * TODO RankingでTOP以外の結果も閲覧したい
 * TODO 結果画面やランキング画面で、一定時間入力がないと回転するようにならないか
@@ -45,6 +44,8 @@
 * TODO アプリアイコン
 * TODO iOS:GameCenter対応
 * TODO iOS:実績を実装
+* DONE パーフェクト時の演出
+CLOSED: [2018-03-26 Mon 23:32]
 * DONE iPhone7でヘッドフォンの抜き差しをすると音が乱れる
 CLOSED: [2018-03-19 月 23:30]
 * DONE iOS:ヘッドフォンの抜き差しでノイズが乗る

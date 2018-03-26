@@ -1,0 +1,9 @@
+/* 
+  InfoPlist.string
+  ApprenticeMonarch
+
+  Created by Nishiyama Nobuyuki on 2018/03/26.
+  
+*/
+CFBundleDisplayName = "PuzzleMonarch";
+
