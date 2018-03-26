@@ -37,11 +37,6 @@ struct Game
       waiting_panels.push_back(i);
     }
 
-    // for (const auto& p : params["score_rates"])
-    // {
-    //   score_rates_.push_back(p.getValue<u_int>());
-    // }
-
 #if defined (DEBUG)
     // ランキング計算テスト
     {
@@ -130,9 +125,13 @@ struct Game
       std::shuffle(std::begin(waiting_panels), std::end(waiting_panels), engine);
     }
 
-#if 0
-    // パネル枚数を強制的に変更
-    waiting_panels.resize(5);
+#if defined (DEBUG)
+    auto force_panel = params_.getValueForKey<int>("force_panel");
+    if (force_panel > 0)
+    {
+      // パネル枚数を強制的に変更
+      waiting_panels.resize(force_panel);
+    }
 #endif
 
     // 最初のパネルを設置
@@ -161,6 +160,7 @@ struct Game
       { "total_score",   total_score },
       { "total_ranking", total_ranking },
       { "total_panels",  total_panels },
+      { "perfect",       waiting_panels.empty() },
       
       { "panel_turned_times", panel_turned_times_ },
       { "panel_moved_times",  panel_moved_times_ },

@@ -342,7 +342,7 @@ public:
                                                     { "score",      score },
                                                     { "rank_in",    rank_in },
                                                     { "ranking",    ranking },
-                                                    { "high_score", high_score },
+                                                    { "high_score", high_score }
                                                   };
                                                   event_.signal("Result:begin", a);
                                                   view_.setColor(transition_duration_, ci::ColorA::white());
@@ -1082,6 +1082,8 @@ private:
       boost::any_cast<u_int>(args.at("total_score")),
       boost::any_cast<u_int>(args.at("total_ranking")),
       boost::any_cast<u_int>(args.at("total_panels")),
+
+      boost::any_cast<bool>(args.at("perfect")),
 
       boost::any_cast<u_int>(args.at("panel_turned_times")),
       boost::any_cast<u_int>(args.at("panel_moved_times")),

@@ -148,6 +148,22 @@
           "color": [ 1, 1, 1 ]
         },
         {
+          "identifier": "score:perfect",
+          "rect": [ -34, -1, -34, -2 ],
+          "anchor": [
+            [ 0, 0.22 ],
+            [ 0, 0.3 ]
+          ],
+          "scale": [ 1, 1 ],
+          "pivot": [ 0.5, 0.5 ],
+          "enable": false,
+
+          "font": "en",
+          "text": "Perfect!!",
+          "layout": [ 1, 0 ],
+          "color": [ 1, 1, 1 ]
+        },
+        {
           "rect": [ 0, 0, 0, 0 ],
           "anchor": [
             [ 0, 0.12 ],

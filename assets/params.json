@@ -98,6 +98,7 @@
 
   "game": {
     "play_time": 180,
+    "force_panel": 0,
 
     "score_rates": [
       3,
@@ -406,6 +407,8 @@
       "King",
       "Emperor"
     ],
+
+    "effect_speed": 2.2,
 
     "share": "PuzzleMonarch で%1点獲得しました!!",
 

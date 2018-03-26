@@ -8,7 +8,6 @@
 #include "CountExec.hpp"
 #include "UICanvas.hpp"
 #include "TweenUtil.hpp"
-#include "Score.hpp"
 #include "Share.h"
 #include "Capture.h"
 

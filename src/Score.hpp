@@ -14,6 +14,8 @@ struct Score
   u_int total_ranking;
   u_int total_panels;
 
+  bool perfect;
+
   u_int panel_turned_times;
   u_int panel_moved_times;
 

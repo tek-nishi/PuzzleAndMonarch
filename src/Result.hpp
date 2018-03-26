@@ -24,15 +24,17 @@ class Result
 
   CountExec count_exec_;
 
-  bool rank_in_    = false;
-  u_int ranking_   = 0;
-  bool high_score_ = false;
+  bool rank_in_;
+  u_int ranking_;
+  bool high_score_;
+  bool perfect_;
 
   std::vector<std::string> ranking_text_;
 
   int total_score_;
   int total_rank_;
   bool effect_ = false;
+  double effect_speed_;
 
   ci::Anim<int> disp_score_;
   ci::Anim<int> disp_rank_;
@@ -52,6 +54,7 @@ public:
          const Arguments& args) noexcept
     : event_(event),
       ranking_text_(Json::getArray<std::string>(params["result.ranking"])),
+      effect_speed_(params.getValueForKey<double>("result.effect_speed")),
       timeline_(ci::Timeline::create()),
       canvas_(event, drawer, tween_common,
               params["ui.camera"],
@@ -68,6 +71,7 @@ public:
 
     total_score_ = score.total_score;
     total_rank_  = score.total_ranking;
+    perfect_     = score.perfect;
 
     share_text_ = replaceString(params.getValueForKey<std::string>("result.share"),
                                 "%1",
@@ -126,7 +130,7 @@ public:
                                                 });
                               });
 
-    // ランクインじの演出
+    // ランクイン時の演出
     auto disp_delay_2 = params.getValueForKey<float>("result.disp_delay_2");
     if (high_score_ || rank_in_)
     {
@@ -142,6 +146,15 @@ public:
                         {
                           canvas_.enableWidget("score:rank-in");
                         }
+                      });
+    }
+    if (perfect_)
+    {
+      count_exec_.add(disp_delay_2,
+                      [this]() noexcept
+                      {
+                        effect_ = true;
+                        canvas_.enableWidget("score:perfect");
                       });
     }
 
@@ -177,10 +190,17 @@ private:
 
     if (effect_)
     {
-      auto color = ci::hsvToRgb({ std::fmod(current_time * 2.0, 1.0), 1, 1 });
-      canvas_.setWidgetParam("score:20", "color", color);
-      canvas_.setWidgetParam("score:high-score", "color", color);
-      canvas_.setWidgetParam("score:rank-in", "color", color);
+      auto color = ci::hsvToRgb({ std::fmod(current_time * effect_speed_, 1.0), 1, 1 });
+      if (high_score_ || rank_in_)
+      {
+        canvas_.setWidgetParam("score:20", "color", color);
+        canvas_.setWidgetParam("score:high-score", "color", color);
+        canvas_.setWidgetParam("score:rank-in", "color", color);
+      }
+      if (perfect_)
+      {
+        canvas_.setWidgetParam("score:perfect", "color", color);
+      }
     }
 
     return active_;
