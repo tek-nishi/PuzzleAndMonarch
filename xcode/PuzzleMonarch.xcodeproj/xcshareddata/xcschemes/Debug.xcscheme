@@ -15,7 +15,7 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "8D1107260486CEB800E47090"
-               BuildableName = "ApprenticeMonarch.app"
+               BuildableName = "PuzzleMonarch.app"
                BlueprintName = "PuzzleMonarch"
                ReferencedContainer = "container:PuzzleMonarch.xcodeproj">
             </BuildableReference>
@@ -34,7 +34,7 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "8D1107260486CEB800E47090"
-            BuildableName = "ApprenticeMonarch.app"
+            BuildableName = "PuzzleMonarch.app"
             BlueprintName = "PuzzleMonarch"
             ReferencedContainer = "container:PuzzleMonarch.xcodeproj">
          </BuildableReference>
@@ -58,7 +58,7 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "8D1107260486CEB800E47090"
-            BuildableName = "ApprenticeMonarch.app"
+            BuildableName = "PuzzleMonarch.app"
             BlueprintName = "PuzzleMonarch"
             ReferencedContainer = "container:PuzzleMonarch.xcodeproj">
          </BuildableReference>
@@ -77,7 +77,7 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "8D1107260486CEB800E47090"
-            BuildableName = "ApprenticeMonarch.app"
+            BuildableName = "PuzzleMonarch.app"
             BlueprintName = "PuzzleMonarch"
             ReferencedContainer = "container:PuzzleMonarch.xcodeproj">
          </BuildableReference>

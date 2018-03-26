@@ -157,7 +157,9 @@ class View
     try
     {
       ci::gl::Fbo::Format fboFormat;
-      fboFormat.attachment(GL_DEPTH_ATTACHMENT, shadow_map_);
+      fboFormat.attachment(GL_DEPTH_ATTACHMENT, shadow_map_)
+               .disableColor()
+      ;
       shadow_fbo_ = ci::gl::Fbo::create(fbo_size.x, fbo_size.y, fboFormat);
     }
     catch (const std::exception& e)
@@ -461,7 +463,8 @@ public:
     // Render scene to fbo from the view of the light
     ci::gl::ScopedFramebuffer fbo(shadow_fbo_);
     ci::gl::ScopedViewport viewport(glm::vec2(0), shadow_fbo_->getSize());
-    ci::gl::clear(ci::Color::black());
+    // ci::gl::clear(ci::Color::black());
+    ci::gl::clear(GL_DEPTH_BUFFER_BIT);
     ci::gl::setMatrices(light_camera_);
 
     ci::gl::ScopedGlslProg prog(shadow_shader_);
