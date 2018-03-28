@@ -5,7 +5,6 @@
 * TODO 結果画面やランキング画面で、一定時間入力がないと回転するようにならないか
 * TODO マーカーの黄色と赤が逆？
 * TODO MainPartのカメラを別クラスに
-* TODO BlockをタッチでPanelが移動する操作、演出がないのでわかりづらい
 * TODO Demoプレイ
 * TODO パネルのうらが真っ暗
 * TODO blankパネルの演出
@@ -43,6 +42,8 @@
 * TODO アプリアイコン
 * TODO iOS:GameCenter対応
 * TODO iOS:実績を実装
+* DONE BlockをタッチでPanelが移動する操作、演出がないのでわかりづらい
+CLOSED: [2018-03-29 木 02:22]
 * DONE 影の調整
 CLOSED: [2018-03-27 Tue 00:54]
 * DONE パーフェクト時の演出

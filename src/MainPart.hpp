@@ -95,6 +95,23 @@ public:
                                 const auto& touch = boost::any_cast<const Touch&>(arg.at("touch"));
                                 if (touch.handled) return;
 
+                                {
+                                  // マス目座標計算
+                                  auto result = calcGridPos(touch.pos);
+                                  if (!std::get<0>(result))
+                                  {
+                                    manipulated_ = true;
+                                    return;
+                                  }
+
+                                  grid_pos_ = std::get<1>(result);
+                                  on_blank_ = game_->isBlank(grid_pos_);
+                                  if (on_blank_)
+                                  {
+                                    view_.blankTouchBeginEase(grid_pos_);
+                                  }
+                                }
+
                                 // 元々パネルのある位置をタップ→長押しで設置
                                 if (can_put_ && isCursorPos(touch.pos))
                                 {
@@ -137,12 +154,17 @@ public:
 
                                 // ドラッグの距離を調べて、タップかドラッグか判定
                                 draged_length_ += glm::distance(touch.pos, touch.prev_pos);
-                                manipulated_ = draged_length_ > draged_max_length_;
-                                if (touch_put_ && manipulated_)
+                                auto manip = draged_length_ > draged_max_length_;
+                                if (on_blank_ && manip && !manipulated_)
+                                {
+                                  view_.blankTouchCancelEase(grid_pos_);
+                                }
+                                if (touch_put_ && manip)
                                 {
                                   touch_put_ = false;
                                   event_.signal("Game:PutEnd", Arguments());
                                 }
+                                manipulated_ = manip;
 
                                 // Field回転操作
                                 rotateField(touch);
@@ -164,6 +186,11 @@ public:
                                   return;
                                 }
 
+                                if (on_blank_)
+                                {
+                                  view_.blankTouchEndEase(grid_pos_);
+                                }
+
                                 // 設置操作無効
                                 if (touch_put_)
                                 {
@@ -182,11 +209,11 @@ public:
                                 }
 
                                 // タッチ位置→升目位置
-                                auto result = calcGridPos(touch.pos);
-                                if (!std::get<0>(result)) return;
-                                const auto& grid_pos = std::get<1>(result);
+                                // auto result = calcGridPos(touch.pos);
+                                // if (!std::get<0>(result)) return;
+                                // const auto& grid_pos = std::get<1>(result);
                                 // 可能であればパネルを移動
-                                calcNewFieldPos(grid_pos);
+                                calcNewFieldPos(grid_pos_);
                               });
 
     holder_ += event_.connect("multi_touch_moved",
@@ -1245,6 +1272,9 @@ private:
   glm::vec3 cursor_pos_;
 
   // パネルを配置しようとしている位置
+  glm::ivec2 grid_pos_;
+  bool on_blank_ = false;
+
   glm::ivec2 field_pos_;
   // 配置可能
   bool can_put_ = false;

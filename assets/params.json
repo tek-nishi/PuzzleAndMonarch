@@ -244,6 +244,24 @@
     "rotate_ease_duration": [ 0.5, 0.3 ],
     "rotate_ease_name": "OutExpo",
 
+    "blank_touch_begin": {
+      "duration": 0.2,
+      "pos": -1.5,
+      "ease": "OutExpo"
+    },
+    "blank_touch_cancel": {
+      "duration": 0.2,
+      "ease": "OutExpo"
+    },
+    "blank_touch_end": {
+      "duration1": 0.1,
+      "pos1": -2.5,
+      "ease1": "OutExpo",
+
+      "duration2": 0.2,
+      "ease2": "OutExpo"
+    },
+
     "height_ease_start": 100,
     "height_ease_duration": 0.5,
     "height_ease_name": "OutExpo",

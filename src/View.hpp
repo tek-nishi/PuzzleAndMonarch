@@ -104,6 +104,21 @@ class View
   float height_ease_duration_;
   std::string height_ease_name_;
 
+  // Blankタッチ演出
+  float blank_touch_begin_duration_;
+  float blank_touch_begin_pos_;
+  std::string blank_touch_begin_ease_;
+
+  float blank_touch_cancel_duration_;
+  std::string blank_touch_cancel_ease_;
+
+  float blank_touch_end_duration1_;
+  float blank_touch_end_pos1_;
+  std::string blank_touch_end_ease1_;
+
+  float blank_touch_end_duration2_;
+  std::string blank_touch_end_ease2_;
+
   // パネルを置くゲージ演出
   float put_gauge_timer_ = 0.0f;
 
@@ -211,6 +226,16 @@ public:
       height_ease_start_(params.getValueForKey<float>("height_ease_start")),
       height_ease_duration_(params.getValueForKey<float>("height_ease_duration")),
       height_ease_name_(params.getValueForKey<std::string>("height_ease_name")),
+      blank_touch_begin_duration_(params.getValueForKey<float>("blank_touch_begin.duration")),
+      blank_touch_begin_pos_(params.getValueForKey<float>("blank_touch_begin.pos")),
+      blank_touch_begin_ease_(params.getValueForKey<std::string>("blank_touch_begin.ease")),
+      blank_touch_cancel_duration_(params.getValueForKey<float>("blank_touch_cancel.duration")),
+      blank_touch_cancel_ease_(params.getValueForKey<std::string>("blank_touch_cancel.ease")),
+      blank_touch_end_duration1_(params.getValueForKey<float>("blank_touch_end.duration1")),
+      blank_touch_end_pos1_(params.getValueForKey<float>("blank_touch_end.pos1")),
+      blank_touch_end_ease1_(params.getValueForKey<std::string>("blank_touch_end.ease1")),
+      blank_touch_end_duration2_(params.getValueForKey<float>("blank_touch_end.duration2")),
+      blank_touch_end_ease2_(params.getValueForKey<std::string>("blank_touch_end.ease2")),
       timeline_(ci::Timeline::create()),
       force_timeline_(ci::Timeline::create()),
       transition_timeline_(ci::Timeline::create())
@@ -385,6 +410,15 @@ public:
     return false;
   }
 
+  glm::vec3* searchBlankPosition(const glm::ivec2& pos) noexcept
+  {
+    for (auto& b : blank_panels_)
+    {
+      if (b.field_pos == pos) return &b.position;
+    }
+    return nullptr;
+  }
+
   bool existsBlank(const glm::ivec2& pos, const std::vector<glm::ivec2>& blanks) noexcept
   {
     for (const auto& p : blanks)
@@ -444,12 +478,42 @@ public:
   // Blankをタッチした時の演出
   void blankTouchBeginEase(const glm::vec2& pos) noexcept
   {
+    auto* p = searchBlankPosition(pos);
+    if (!p) {
+      DOUT << "No blank position:" << pos << std::endl;
+      return;
+    }
+
+    timeline_->removeTarget(&p->y);
+    timeline_->applyPtr(&p->y, 0.0f, blank_touch_begin_pos_, blank_touch_begin_duration_, getEaseFunc(blank_touch_begin_ease_));
   }
 
   // Blankのタッチをやめた時の演出
   void blankTouchEndEase(const glm::vec2& pos) noexcept
   {
+    auto* p = searchBlankPosition(pos);
+    if (!p) {
+      DOUT << "No blank position:" << pos << std::endl;
+      return;
+    }
+
+    timeline_->removeTarget(&p->y);
+    timeline_->applyPtr(&p->y, blank_touch_end_pos1_, blank_touch_end_duration1_, getEaseFunc(blank_touch_end_ease1_));
+    timeline_->appendToPtr(&p->y, 0.0f, blank_touch_end_duration2_, getEaseFunc(blank_touch_end_ease2_));
   }
+
+  void blankTouchCancelEase(const glm::vec2& pos) noexcept
+  {
+    auto* p = searchBlankPosition(pos);
+    if (!p) {
+      DOUT << "No blank position:" << pos << std::endl;
+      return;
+    }
+
+    timeline_->removeTarget(&p->y);
+    timeline_->applyPtr(&p->y, 0.0f, blank_touch_cancel_duration_, getEaseFunc(blank_touch_cancel_ease_));
+  }
+
 
   // 得点した時の演出
   void startEffect(const glm::ivec2& pos) noexcept
