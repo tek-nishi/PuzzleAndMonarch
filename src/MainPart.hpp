@@ -312,6 +312,7 @@ public:
                                 auto rotation   = boost::any_cast<u_int>(args.at("rotation"));
                                 view_.addPanel(panel, pos, rotation);
                                 view_.startPutEase(game_->getPlayTimeRate());
+                                view_.updateBlank(game_->getBlankPositions());
                               });
 
     holder_ += event_.connect("Game:Finish",
@@ -798,7 +799,6 @@ private:
 
       calcBgPosition(),
 
-      &game_->getBlankPositions(),
       &camera_.body()
     };
 

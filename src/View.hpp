@@ -51,6 +51,13 @@ class View
   // NOTICE 追加時にメモリ上で再配置されるのを避けるためstd::vectorではない
   std::deque<Panel> field_panels_;
 
+  struct Blank
+  {
+    glm::ivec2 field_pos;
+    glm::vec3 position;
+  };
+  std::list<Blank> blank_panels_;
+
   // 得点時演出用
   ci::gl::VboMeshRef effect_model;
 
@@ -185,8 +192,6 @@ public:
     // 背景位置
     glm::vec3 bg_pos;
 
-    const std::vector<glm::ivec2>* blank;
-
     const ci::CameraPersp* main_camera;
   };
 
@@ -286,6 +291,7 @@ public:
     timeline_->clear();
     force_timeline_->clear();
     field_panels_.clear();
+    blank_panels_.clear();
     effects_.clear();
 
     field_rotate_offset_ = 0.0f;
@@ -345,6 +351,51 @@ public:
     field_panels_.push_back(panel);
   }
 
+  // Blank更新
+  void updateBlank(const std::vector<glm::ivec2>& blanks) noexcept
+  {
+    // 新しいのを追加
+    for (const auto& pos : blanks)
+    {
+      if (searchBlank(pos)) continue; 
+
+      glm::vec3 blank_pos { pos.x * PANEL_SIZE, 0, pos.y * PANEL_SIZE };
+      blank_panels_.push_back({ pos, blank_pos });
+    }
+
+    for (auto it = std::begin(blank_panels_); it != std::end(blank_panels_); )
+    {
+      if (existsBlank(it->field_pos, blanks))
+      {
+        ++it;
+        continue;
+      }
+
+      timeline_->removeTarget(&it->position);
+      it = blank_panels_.erase(it);
+    }
+  }
+
+  bool searchBlank(const glm::ivec2& pos) noexcept
+  {
+    for (const auto& b : blank_panels_)
+    {
+      if (b.field_pos == pos) return true;
+    }
+    return false;
+  }
+
+  bool existsBlank(const glm::ivec2& pos, const std::vector<glm::ivec2>& blanks) noexcept
+  {
+    for (const auto& p : blanks)
+    {
+      if (p == pos) return true;
+    }
+
+    return false;
+  }
+
+
   // パネル位置決め
   void setPanelPosition(const glm::vec3& pos) noexcept
   {
@@ -390,6 +441,15 @@ public:
     timeline_->apply(&height_offset_, 0.0f, height_ease_duration_, getEaseFunc(height_ease_name_));
   }
 
+  // Blankをタッチした時の演出
+  void blankTouchBeginEase(const glm::vec2& pos) noexcept
+  {
+  }
+
+  // Blankのタッチをやめた時の演出
+  void blankTouchEndEase(const glm::vec2& pos) noexcept
+  {
+  }
 
   // 得点した時の演出
   void startEffect(const glm::ivec2& pos) noexcept
@@ -474,7 +534,7 @@ public:
     if (info.playing)
     {
       // 置ける場所
-      drawFieldBlank(*info.blank);
+      drawFieldBlank();
       
       // 手持ちパネル
       auto pos = panel_disp_pos_() + glm::vec3(0, height_offset_, 0);
@@ -501,7 +561,7 @@ public:
     if (info.playing)
     {
       // 置ける場所
-      drawFieldBlank(*info.blank);
+      drawFieldBlank();
       
       // 手持ちパネル
       auto pos = panel_disp_pos_() + glm::vec3(0, height_offset_, 0);
@@ -586,15 +646,13 @@ public:
   }
   
   // Fieldの置ける場所をすべて表示
-  void drawFieldBlank(const std::vector<glm::ivec2>& blank) noexcept
+  void drawFieldBlank() noexcept
   {
     ci::gl::ScopedModelMatrix m;
 
-    for (const auto& pos : blank)
+    for (const auto& p : blank_panels_)
     {
-      glm::ivec2 p = pos * int(PANEL_SIZE);
-
-      auto mtx = glm::translate(glm::vec3(p.x, 0.0, p.y));
+      auto mtx = glm::translate(p.position);
       ci::gl::setModelMatrix(mtx);
       ci::gl::draw(blank_model);
     }

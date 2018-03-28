@@ -138,7 +138,7 @@ struct Game
     putPanel(start_panels[0], { 0, 0 }, ci::randInt(4));
 
     // 次のパネルを決めて、置ける場所も探す
-    fieldUpdate();
+    // fieldUpdate();
     getNextPanel();
   }
 
@@ -301,7 +301,7 @@ struct Game
       event_.signal("Game:UpdateScores", args);
     }
 
-    fieldUpdate();
+    // fieldUpdate();
 
     // 新しいパネル
     if (!getNextPanel())
@@ -660,6 +660,8 @@ private:
     const auto p = panels_[panel];
     auto edge = p.getRotatedEdgeValue(rotation);
     field.addPanel(panel, pos, rotation, edge);
+    //置ける場所を探す
+    blank_ = field.searchBlank();
 
     {
       Arguments args = {
