@@ -15,7 +15,6 @@
 * TODO msaa
 * TODO ローカライズ
 * TODO 得点の係数を二次関数的にする
-* TODO ゲーム完了時にBlankパネルの消える処理
 * TODO Blankパネル手前のPanelをクリックした時にBlankが反応する
 * TODO 道がわかりずらい
 * TODO 真上から見たい
@@ -45,6 +44,8 @@
 * TODO アプリアイコン
 * TODO iOS:GameCenter対応
 * TODO iOS:実績を実装
+* DONE ゲーム完了時にBlankパネルの消える処理
+CLOSED: [2018-03-30 金 00:27]
 * DONE Blankパネルの更新はGame中だけに制限
 CLOSED: [2018-03-29 木 23:15]
 * DONE blankパネルの演出

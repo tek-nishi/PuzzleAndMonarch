@@ -25,175 +25,12 @@ enum {
 class View
   : private boost::noncopyable
 {
-  // パネル
-  std::vector<std::string> panel_path;
-  std::vector<ci::gl::VboMeshRef> panel_models;
-  // AABBは全パネル共通
-  ci::AxisAlignedBox panel_aabb_;
-
-  // 演出用
-  ci::gl::VboMeshRef blank_model;
-  ci::gl::VboMeshRef selected_model;
-  ci::gl::VboMeshRef cursor_model;
-
-  // 背景
-  ci::gl::VboMeshRef bg_model;
-  glm::vec3 bg_scale_;
-
-  // Field上のパネル(Modelと被っている)
-  struct Panel
-  {
-    glm::ivec2 field_pos;
-    glm::vec3 position;
-    glm::vec3 rotation;
-    int index;
-  };
-  // NOTICE 追加時にメモリ上で再配置されるのを避けるためstd::vectorではない
-  std::deque<Panel> field_panels_;
-
-  struct Blank
-  {
-    glm::ivec2 field_pos;
-    glm::vec3 position;
-  };
-  std::list<Blank> blank_panels_;
-
-  // 得点時演出用
-  ci::gl::VboMeshRef effect_model;
-
-  ci::gl::GlslProgRef field_shader_;
-  ci::Anim<ci::ColorA> field_color_ = ci::ColorA::white();
-
-  ci::gl::GlslProgRef bg_shader_;
-  ci::gl::Texture2dRef bg_texture_;
-
-  ci::gl::GlslProgRef shadow_shader_;
-
-  // 影レンダリング用
-  ci::gl::Texture2dRef shadow_map_;
-  ci::gl::FboRef shadow_fbo_;
-
-  glm::vec2 polygon_offset_;
-
-  ci::CameraPersp light_camera_;
-  glm::vec3 light_pos_;
-
-  // 画面演出用情報
-  float panel_height_;
-  glm::vec2 put_duration_;
-  std::string put_ease_;
-
-  // PAUSE時にくるっと回す用
-  ci::Anim<float> field_rotate_offset_ = 0.0f;
-  glm::vec2 pause_duration_;
-  std::string pause_ease_;
-
-  // パネル位置
-  ci::Anim<glm::vec3> panel_disp_pos_;
-  glm::vec2 disp_ease_duration_;
-  std::string disp_ease_name_;
-
-  // パネルの回転
-  ci::Anim<float> rotate_offset_;
-  glm::vec2 rotate_ease_duration_;
-  std::string rotate_ease_name_;
-
-  // 次のパネルを引いた時の演出
-  ci::Anim<float> height_offset_;
-  float height_ease_start_;
-  float height_ease_duration_;
-  std::string height_ease_name_;
-
-  // Blankタッチ演出
-  float blank_touch_begin_duration_;
-  float blank_touch_begin_pos_;
-  std::string blank_touch_begin_ease_;
-
-  float blank_touch_cancel_duration_;
-  std::string blank_touch_cancel_ease_;
-
-  float blank_touch_end_duration1_;
-  float blank_touch_end_pos1_;
-  std::string blank_touch_end_ease1_;
-
-  float blank_touch_end_duration2_;
-  std::string blank_touch_end_ease2_;
-
-  // Blank出現演出
-  glm::vec3 blank_appear_pos_;
-  float blank_appear_duration_;
-  std::string blank_appear_ease_;
-
-  // パネルを置くゲージ演出
-  float put_gauge_timer_ = 0.0f;
-
+  // 演出用の定義
   struct Effect {
     bool active;
     glm::vec3 pos;
     glm::vec3 rot;
   };
-  // FIXME 途中の削除が多いのでvectorは向いていない??
-  std::list<Effect> effects_;
-
-  // Tween用
-  ci::TimelineRef timeline_;
-  // Pause中でも動作
-  ci::TimelineRef force_timeline_;
-  // リセットされたくない
-  ci::TimelineRef transition_timeline_;
-
-
-  // 読まれてないパネルを読み込む
-  const ci::gl::VboMeshRef& getPanelModel(int number) noexcept
-  {
-    if (!panel_models[number])
-    {
-      auto tri_mesh = PLY::load(panel_path[number]);
-      // panel_aabb[number] = tri_mesh.calcBoundingBox();
-      auto mesh = ci::gl::VboMesh::create(tri_mesh);
-      panel_models[number] = mesh;
-    }
-
-    return panel_models[number];
-  }
-
-  // OBJ形式を読み込む
-  static ci::gl::VboMeshRef loadObj(const std::string& path) noexcept
-  {
-    ci::ObjLoader loader(Asset::load(path));
-    auto mesh = ci::gl::VboMesh::create(ci::TriMesh(loader));
-
-    return mesh;
-  }
-
-  // 影レンダリング用の設定
-  void setupShadowMap(const glm::ivec2& fbo_size) noexcept
-  {
-    ci::gl::Texture2d::Format depthFormat;
-
-    depthFormat.internalFormat(GL_DEPTH_COMPONENT16)
-               .compareMode(GL_COMPARE_REF_TO_TEXTURE)
-               .magFilter(GL_LINEAR)
-               .minFilter(GL_LINEAR)
-               .wrap(GL_CLAMP_TO_EDGE)	
-               .compareFunc(GL_LEQUAL)
-    ;
-
-    shadow_map_ = ci::gl::Texture2d::create(fbo_size.x, fbo_size.y, depthFormat);
-
-    try
-    {
-      ci::gl::Fbo::Format fboFormat;
-      fboFormat.attachment(GL_DEPTH_ATTACHMENT, shadow_map_)
-               .disableColor()
-      ;
-      shadow_fbo_ = ci::gl::Fbo::create(fbo_size.x, fbo_size.y, fboFormat);
-    }
-    catch (const std::exception& e)
-    {
-      DOUT << "FBO ERROR: " << e.what() << std::endl;
-    }
-  }
 
 
 public:
@@ -215,6 +52,8 @@ public:
     const ci::CameraPersp* main_camera;
   };
 
+
+public:
   View(const ci::JsonTree& params) noexcept
     : polygon_offset_(Json::getVec<glm::vec2>(params["polygon_offset"])),
       panel_height_(params.getValueForKey<float>("panel_height")),
@@ -244,6 +83,9 @@ public:
       blank_appear_pos_(Json::getVec<glm::vec3>(params["blank_appear.pos"])),
       blank_appear_duration_(params.getValueForKey<float>("blank_appear.duration")),
       blank_appear_ease_(params.getValueForKey<std::string>("blank_appear.ease")),
+      blank_disappear_pos_(Json::getVec<glm::vec3>(params["blank_disappear.pos"])),
+      blank_disappear_duration_(params.getValueForKey<float>("blank_disappear.duration")),
+      blank_disappear_ease_(params.getValueForKey<std::string>("blank_disappear.ease")),
       timeline_(ci::Timeline::create()),
       force_timeline_(ci::Timeline::create()),
       transition_timeline_(ci::Timeline::create())
@@ -415,35 +257,6 @@ public:
     }
   }
 
-  bool searchBlank(const glm::ivec2& pos) noexcept
-  {
-    for (const auto& b : blank_panels_)
-    {
-      if (b.field_pos == pos) return true;
-    }
-    return false;
-  }
-
-  glm::vec3* searchBlankPosition(const glm::ivec2& pos) noexcept
-  {
-    for (auto& b : blank_panels_)
-    {
-      if (b.field_pos == pos) return &b.position;
-    }
-    return nullptr;
-  }
-
-  bool existsBlank(const glm::ivec2& pos, const std::vector<glm::ivec2>& blanks) noexcept
-  {
-    for (const auto& p : blanks)
-    {
-      if (p == pos) return true;
-    }
-
-    return false;
-  }
-
-
   // パネル位置決め
   void setPanelPosition(const glm::vec3& pos) noexcept
   {
@@ -528,7 +341,6 @@ public:
     timeline_->applyPtr(&p->y, 0.0f, blank_touch_cancel_duration_, getEaseFunc(blank_touch_cancel_ease_));
   }
 
-
   // 得点した時の演出
   void startEffect(const glm::ivec2& pos) noexcept
   {
@@ -557,25 +369,25 @@ public:
     }
   }
 
-  // 演出表示
-  void drawEffect() noexcept
+
+  // ゲーム終了
+  void endPlay() noexcept
   {
-    ci::gl::ScopedModelMatrix m;
-
-    for (auto it = std::begin(effects_); it != std::end(effects_); )
+    for (auto& panel : blank_panels_)
     {
-      if (!it->active)
-      {
-        it = effects_.erase(it);
-        continue;
-      }
+      timeline_->removeTarget(&panel.position);
 
-      auto mtx = glm::translate(it->pos) * glm::eulerAngleXYZ(it->rot.x, it->rot.y, it->rot.z);
-      ci::gl::setModelMatrix(mtx);
-      ci::gl::draw(effect_model);
-
-      ++it;
+      // Blank Panel出現演出
+      timeline_->applyPtr(&panel.position,
+                          panel.position + blank_disappear_pos_,
+                          blank_disappear_duration_, getEaseFunc(blank_disappear_ease_));
     }
+
+    timeline_->add([this]() noexcept
+                   {
+                     blank_panels_.clear();
+                   },
+                   timeline_->getCurrentTime() + blank_appear_duration_ + 0.1f);
   }
 
 
@@ -584,12 +396,118 @@ public:
     return panel_aabb_;
   }
 
-
+  // ShadowMap用のカメラ更新
   void setupShadowCamera(const glm::vec3& map_center) noexcept
   {
     light_camera_.lookAt(map_center + light_pos_, map_center);
   }
 
+  // フィールド表示
+  void drawField(const Info& info) noexcept
+  {
+    ci::gl::enableDepth();
+    ci::gl::enable(GL_CULL_FACE);
+    ci::gl::disableAlphaBlending();
+
+    renderShadow(info);
+    renderField(info);
+  }
+
+
+#if defined (DEBUG)
+
+void drawShadowMap() noexcept
+{
+  ci::gl::setMatricesWindow(ci::app::getWindowSize());
+  ci::gl::color(1.0f, 1.0f, 1.0f);
+  float size = 0.5f * std::min(ci::app::getWindowWidth(), ci::app::getWindowHeight());
+  ci::gl::draw(shadow_map_, ci::Rectf(0, 0, size, size));
+}
+
+#endif
+
+
+private:
+  // 読まれてないパネルを読み込む
+  const ci::gl::VboMeshRef& getPanelModel(int number) noexcept
+  {
+    if (!panel_models[number])
+    {
+      auto tri_mesh = PLY::load(panel_path[number]);
+      // panel_aabb[number] = tri_mesh.calcBoundingBox();
+      auto mesh = ci::gl::VboMesh::create(tri_mesh);
+      panel_models[number] = mesh;
+    }
+
+    return panel_models[number];
+  }
+
+  // OBJ形式を読み込む
+  static ci::gl::VboMeshRef loadObj(const std::string& path) noexcept
+  {
+    ci::ObjLoader loader(Asset::load(path));
+    auto mesh = ci::gl::VboMesh::create(ci::TriMesh(loader));
+
+    return mesh;
+  }
+
+  // 影レンダリング用の設定
+  void setupShadowMap(const glm::ivec2& fbo_size) noexcept
+  {
+    ci::gl::Texture2d::Format depthFormat;
+
+    depthFormat.internalFormat(GL_DEPTH_COMPONENT16)
+               .compareMode(GL_COMPARE_REF_TO_TEXTURE)
+               .magFilter(GL_LINEAR)
+               .minFilter(GL_LINEAR)
+               .wrap(GL_CLAMP_TO_EDGE)	
+               .compareFunc(GL_LEQUAL)
+    ;
+
+    shadow_map_ = ci::gl::Texture2d::create(fbo_size.x, fbo_size.y, depthFormat);
+
+    try
+    {
+      ci::gl::Fbo::Format fboFormat;
+      fboFormat.attachment(GL_DEPTH_ATTACHMENT, shadow_map_)
+               .disableColor()
+      ;
+      shadow_fbo_ = ci::gl::Fbo::create(fbo_size.x, fbo_size.y, fboFormat);
+    }
+    catch (const std::exception& e)
+    {
+      DOUT << "FBO ERROR: " << e.what() << std::endl;
+    }
+  }
+
+  // Blank Panel関連
+  bool searchBlank(const glm::ivec2& pos) noexcept
+  {
+    for (const auto& b : blank_panels_)
+    {
+      if (b.field_pos == pos) return true;
+    }
+    return false;
+  }
+
+  glm::vec3* searchBlankPosition(const glm::ivec2& pos) noexcept
+  {
+    for (auto& b : blank_panels_)
+    {
+      if (b.field_pos == pos) return &b.position;
+    }
+    return nullptr;
+  }
+
+  bool existsBlank(const glm::ivec2& pos, const std::vector<glm::ivec2>& blanks) noexcept
+  {
+    for (const auto& p : blanks)
+    {
+      if (p == pos) return true;
+    }
+
+    return false;
+  }
 
   // 影のレンダリング
   void renderShadow(const Info& info) noexcept
@@ -608,12 +526,10 @@ public:
     ci::gl::ScopedGlslProg prog(shadow_shader_);
 
     drawFieldPanels();
+    drawFieldBlank();
 
     if (info.playing)
     {
-      // 置ける場所
-
-      drawFieldBlank();
       // 手持ちパネル
       auto pos = panel_disp_pos_() + glm::vec3(0, height_offset_, 0);
       drawPanel(info.panel_index, pos, info.panel_rotation, rotate_offset_);
@@ -623,6 +539,7 @@ public:
     ci::gl::disable(GL_POLYGON_OFFSET_FILL);
   }
 
+  // Field描画
   void renderField(const Info& info) noexcept
   {
     ci::gl::setMatrices(*info.main_camera);
@@ -636,12 +553,10 @@ public:
     ci::gl::ScopedTextureBind texScope(shadow_map_);
 
     drawFieldPanels();
+    drawFieldBlank();
 
     if (info.playing)
     {
-      // 置ける場所
-      drawFieldBlank();
-      
       // 手持ちパネル
       auto pos = panel_disp_pos_() + glm::vec3(0, height_offset_, 0);
       drawPanel(info.panel_index, pos, info.panel_rotation, rotate_offset_);
@@ -663,19 +578,6 @@ public:
     drawFieldBg(info.bg_pos);
     drawEffect();
   }
-
-
-  // フィールド表示
-  void drawField(const Info& info) noexcept
-  {
-    ci::gl::enableDepth();
-    ci::gl::enable(GL_CULL_FACE);
-    ci::gl::disableAlphaBlending();
-
-    renderShadow(info);
-    renderField(info);
-  }
-
   
   // パネルを１枚表示
   void drawPanel(int number, const glm::vec3& pos, u_int rotation, float rotate_offset) noexcept
@@ -775,18 +677,143 @@ public:
     ci::gl::draw(bg_model);
   }
 
-#if defined (DEBUG)
+  // 演出表示
+  void drawEffect() noexcept
+  {
+    ci::gl::ScopedModelMatrix m;
 
-void drawShadowMap() noexcept
-{
-  ci::gl::setMatricesWindow(ci::app::getWindowSize());
-  ci::gl::color(1.0f, 1.0f, 1.0f);
-  float size = 0.5f * std::min(ci::app::getWindowWidth(), ci::app::getWindowHeight());
-  ci::gl::draw(shadow_map_, ci::Rectf(0, 0, size, size));
-}
+    for (auto it = std::begin(effects_); it != std::end(effects_); )
+    {
+      if (!it->active)
+      {
+        it = effects_.erase(it);
+        continue;
+      }
 
-#endif
+      auto mtx = glm::translate(it->pos) * glm::eulerAngleXYZ(it->rot.x, it->rot.y, it->rot.z);
+      ci::gl::setModelMatrix(mtx);
+      ci::gl::draw(effect_model);
 
+      ++it;
+    }
+  }
+
+
+  // パネル
+  std::vector<std::string> panel_path;
+  std::vector<ci::gl::VboMeshRef> panel_models;
+  // AABBは全パネル共通
+  ci::AxisAlignedBox panel_aabb_;
+
+  // 演出用
+  ci::gl::VboMeshRef blank_model;
+  ci::gl::VboMeshRef selected_model;
+  ci::gl::VboMeshRef cursor_model;
+
+  // 背景
+  ci::gl::VboMeshRef bg_model;
+  glm::vec3 bg_scale_;
+
+  // Field上のパネル(Modelと被っている)
+  struct Panel
+  {
+    glm::ivec2 field_pos;
+    glm::vec3 position;
+    glm::vec3 rotation;
+    int index;
+  };
+  // NOTICE 追加時にメモリ上で再配置されるのを避けるためstd::vectorではない
+  std::deque<Panel> field_panels_;
+
+  struct Blank
+  {
+    glm::ivec2 field_pos;
+    glm::vec3 position;
+  };
+  std::list<Blank> blank_panels_;
+
+  // 得点時演出用
+  ci::gl::VboMeshRef effect_model;
+
+  ci::gl::GlslProgRef field_shader_;
+  ci::Anim<ci::ColorA> field_color_ = ci::ColorA::white();
+
+  ci::gl::GlslProgRef bg_shader_;
+  ci::gl::Texture2dRef bg_texture_;
+
+  ci::gl::GlslProgRef shadow_shader_;
+
+  // 影レンダリング用
+  ci::gl::Texture2dRef shadow_map_;
+  ci::gl::FboRef shadow_fbo_;
+
+  glm::vec2 polygon_offset_;
+
+  ci::CameraPersp light_camera_;
+  glm::vec3 light_pos_;
+
+  // 画面演出用情報
+  float panel_height_;
+  glm::vec2 put_duration_;
+  std::string put_ease_;
+
+  // PAUSE時にくるっと回す用
+  ci::Anim<float> field_rotate_offset_ = 0.0f;
+  glm::vec2 pause_duration_;
+  std::string pause_ease_;
+
+  // パネル位置
+  ci::Anim<glm::vec3> panel_disp_pos_;
+  glm::vec2 disp_ease_duration_;
+  std::string disp_ease_name_;
+
+  // パネルの回転
+  ci::Anim<float> rotate_offset_;
+  glm::vec2 rotate_ease_duration_;
+  std::string rotate_ease_name_;
+
+  // 次のパネルを引いた時の演出
+  ci::Anim<float> height_offset_;
+  float height_ease_start_;
+  float height_ease_duration_;
+  std::string height_ease_name_;
+
+  // Blankタッチ演出
+  float blank_touch_begin_duration_;
+  float blank_touch_begin_pos_;
+  std::string blank_touch_begin_ease_;
+
+  float blank_touch_cancel_duration_;
+  std::string blank_touch_cancel_ease_;
+
+  float blank_touch_end_duration1_;
+  float blank_touch_end_pos1_;
+  std::string blank_touch_end_ease1_;
+
+  float blank_touch_end_duration2_;
+  std::string blank_touch_end_ease2_;
+
+  // Blank出現演出
+  glm::vec3 blank_appear_pos_;
+  float blank_appear_duration_;
+  std::string blank_appear_ease_;
+
+  glm::vec3 blank_disappear_pos_;
+  float blank_disappear_duration_;
+  std::string blank_disappear_ease_;
+
+  // パネルを置くゲージ演出
+  float put_gauge_timer_ = 0.0f;
+
+  // FIXME 途中の削除が多いのでvectorは向いていない??
+  std::list<Effect> effects_;
+
+  // Tween用
+  ci::TimelineRef timeline_;
+  // Pause中でも動作
+  ci::TimelineRef force_timeline_;
+  // リセットされたくない
+  ci::TimelineRef transition_timeline_;
 };
 
 

@@ -363,6 +363,7 @@ public:
 
                                 calcViewRange(false);
                                 view_.setColor(transition_duration_, transition_color_);
+                                view_.endPlay();
 
                                 // スコア計算
                                 auto score      = calcGameScore(args);
