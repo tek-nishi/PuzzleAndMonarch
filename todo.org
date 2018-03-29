@@ -1,4 +1,5 @@
 * TODO チュートリアル
+* TODO 記録を消す時の確認ダイアログ
 * TODO 横一列に並べると、カメラが引きすぎてfar-clipされる
 * TODO ソフトリセットでBG描画が乱れる
 * TODO RankingでTOP以外の結果も閲覧したい
@@ -7,13 +8,15 @@
 * TODO MainPartのカメラを別クラスに
 * TODO Demoプレイ
 * TODO パネルのうらが真っ暗
-* TODO blankパネルの演出
 * TODO iPad:Shareのpopoverをボタン位置と合わせる
 * TODO tween中止
 * TODO iOS：基本図形描画のパフォーマンス調査
 * TODO VisualStudioでDEBUGが定義されていない疑惑
 * TODO msaa
 * TODO ローカライズ
+* TODO 得点の係数を二次関数的にする
+* TODO ゲーム完了時にBlankパネルの消える処理
+* TODO Blankパネル手前のPanelをクリックした時にBlankが反応する
 * TODO 道がわかりずらい
 * TODO 真上から見たい
 * TODO 湖と川が欲しい
@@ -42,6 +45,10 @@
 * TODO アプリアイコン
 * TODO iOS:GameCenter対応
 * TODO iOS:実績を実装
+* DONE Blankパネルの更新はGame中だけに制限
+CLOSED: [2018-03-29 木 23:15]
+* DONE blankパネルの演出
+CLOSED: [2018-03-29 木 23:14]
 * DONE BlockをタッチでPanelが移動する操作、演出がないのでわかりづらい
 CLOSED: [2018-03-29 木 02:22]
 * DONE 影の調整

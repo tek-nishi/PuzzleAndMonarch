@@ -261,6 +261,11 @@
       "duration2": 0.2,
       "ease2": "OutExpo"
     },
+    "blank_appear": {
+      "pos": [ 0, -10, 0 ],
+      "duration": 0.5,
+      "ease": "OutBack"
+    },
 
     "height_ease_start": 100,
     "height_ease_duration": 0.5,

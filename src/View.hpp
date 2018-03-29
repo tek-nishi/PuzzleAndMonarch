@@ -119,6 +119,11 @@ class View
   float blank_touch_end_duration2_;
   std::string blank_touch_end_ease2_;
 
+  // Blank出現演出
+  glm::vec3 blank_appear_pos_;
+  float blank_appear_duration_;
+  std::string blank_appear_ease_;
+
   // パネルを置くゲージ演出
   float put_gauge_timer_ = 0.0f;
 
@@ -236,6 +241,9 @@ public:
       blank_touch_end_ease1_(params.getValueForKey<std::string>("blank_touch_end.ease1")),
       blank_touch_end_duration2_(params.getValueForKey<float>("blank_touch_end.duration2")),
       blank_touch_end_ease2_(params.getValueForKey<std::string>("blank_touch_end.ease2")),
+      blank_appear_pos_(Json::getVec<glm::vec3>(params["blank_appear.pos"])),
+      blank_appear_duration_(params.getValueForKey<float>("blank_appear.duration")),
+      blank_appear_ease_(params.getValueForKey<std::string>("blank_appear.ease")),
       timeline_(ci::Timeline::create()),
       force_timeline_(ci::Timeline::create()),
       transition_timeline_(ci::Timeline::create())
@@ -386,6 +394,12 @@ public:
 
       glm::vec3 blank_pos { pos.x * PANEL_SIZE, 0, pos.y * PANEL_SIZE };
       blank_panels_.push_back({ pos, blank_pos });
+
+      // Blank Panel出現演出
+      auto& panel = blank_panels_.back();
+      timeline_->applyPtr(&panel.position,
+                          panel.position + blank_appear_pos_, panel.position,
+                          blank_appear_duration_, getEaseFunc(blank_appear_ease_));
     }
 
     for (auto it = std::begin(blank_panels_); it != std::end(blank_panels_); )
@@ -598,8 +612,8 @@ public:
     if (info.playing)
     {
       // 置ける場所
+
       drawFieldBlank();
-      
       // 手持ちパネル
       auto pos = panel_disp_pos_() + glm::vec3(0, height_offset_, 0);
       drawPanel(info.panel_index, pos, info.panel_rotation, rotate_offset_);
@@ -620,6 +634,7 @@ public:
 
     ci::gl::ScopedGlslProg prog(field_shader_);
     ci::gl::ScopedTextureBind texScope(shadow_map_);
+
     drawFieldPanels();
 
     if (info.playing)

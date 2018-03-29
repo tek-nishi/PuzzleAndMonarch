@@ -137,6 +137,11 @@ public:
                                   touch_put_ = false;
                                   event_.signal("Game:PutEnd", Arguments());
                                 }
+                                if (on_blank_ && !manipulated_)
+                                {
+                                  view_.blankTouchCancelEase(grid_pos_);
+                                }
+                                manipulated_ = true;
                               });
 
     holder_ += event_.connect("single_touch_moved",
@@ -313,6 +318,7 @@ public:
                               [this](const Connection&, const Arguments&) noexcept
                               {
                                 game_->beginPlay();
+                                view_.updateBlank(game_->getBlankPositions());
                                 calcNextPanelPosition();
                               });
 
@@ -339,7 +345,10 @@ public:
                                 auto rotation   = boost::any_cast<u_int>(args.at("rotation"));
                                 view_.addPanel(panel, pos, rotation);
                                 view_.startPutEase(game_->getPlayTimeRate());
-                                view_.updateBlank(game_->getBlankPositions());
+                                if (game_->isPlaying())
+                                {
+                                  view_.updateBlank(game_->getBlankPositions());
+                                }
                               });
 
     holder_ += event_.connect("Game:Finish",
