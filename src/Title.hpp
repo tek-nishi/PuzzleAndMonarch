@@ -166,6 +166,8 @@ public:
       canvas_.startCommonTween("root", "in-from-left");
       canvas_.startTween("start");
     }
+
+    event.signal("Title:begin", Arguments());
   }
 
   ~Title() = default;

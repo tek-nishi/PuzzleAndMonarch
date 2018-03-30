@@ -26,6 +26,7 @@
 #include "EaseFunc.hpp"
 #include "Archive.hpp"
 #include "Score.hpp"
+#include "AutoRotateCamera.hpp"
 
 
 namespace ngs {
@@ -56,7 +57,8 @@ public:
       view_(params["field"]),
       ranking_records_(params.getValueForKey<u_int>("game.ranking_records")),
       transition_duration_(params.getValueForKey<float>("ui.transition.duration")),
-      transition_color_(Json::getColorA<float>(params["ui.transition.color"]))
+      transition_color_(Json::getColorA<float>(params["ui.transition.color"])),
+      rotate_camera_(event, params["field"], std::bind(&MainPart::rotateCamera, this, std::placeholders::_1))
   {
     initial_camera_rotation_ = camera_rotation_;
     initial_camera_distance_ = camera_distance_;
@@ -389,12 +391,6 @@ public:
                                                   force_camera_ = false;
                                                   prohibited_   = false;
                                                 });
-
-                                auto speed = params_.getValueForKey<double>("field.auto_camera_rotation_speed");
-                                fixed_exec_.add(params_.getValueForKey<double>("field.auto_camera_delay"),
-                                                -1.0,
-                                                std::bind(&MainPart::autoRotateCamera,
-                                                          this, std::placeholders::_1, speed));
                               });
 
     // 得点時の演出
@@ -485,12 +481,6 @@ public:
                                                                   {
                                                                     force_camera_ = false;
                                                                   });
-
-                                                  auto speed = params_.getValueForKey<double>("field.auto_camera_rotation_speed");
-                                                  fixed_exec_.add(params_.getValueForKey<double>("field.auto_camera_delay"),
-                                                                  -1.0,
-                                                                  std::bind(&MainPart::autoRotateCamera,
-                                                                            this, std::placeholders::_1, speed));
                                                 });
                               });
     
@@ -1222,19 +1212,14 @@ private:
     archive_.erase();
   }
 
-
   // 自動で回転するカメラ
-  // 何かしら操作されたら終了
-  bool autoRotateCamera(double delta_time, double speed) noexcept
+  void rotateCamera(float delta_angle) noexcept
   {
-    camera_rotation_.y += M_PI * speed * delta_time;
+    camera_rotation_.y += delta_angle;
     calcCamera(camera_.body());
-      
-    return !manipulated_;
   }
 
-
-
+  
   // FIXME 変数を後半に定義する実験
   const ci::JsonTree& params_;
 
@@ -1317,6 +1302,9 @@ private:
   // TODO Viewへ移動(Transition)
   float transition_duration_;
   ci::ColorA transition_color_;
+
+
+  AutoRotateCamera rotate_camera_;
 
 
 #ifdef DEBUG
