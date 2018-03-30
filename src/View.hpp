@@ -239,9 +239,12 @@ public:
 
       // Blank Panel出現演出
       auto& panel = blank_panels_.back();
+      auto panel_pos = panel.position + blank_appear_pos_;
       timeline_->applyPtr(&panel.position,
-                          panel.position + blank_appear_pos_, panel.position,
+                          panel_pos, panel.position,
                           blank_appear_duration_, getEaseFunc(blank_appear_ease_));
+
+      panel.position = panel_pos;
     }
 
     for (auto it = std::begin(blank_panels_); it != std::end(blank_panels_); )
