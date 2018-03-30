@@ -31,6 +31,10 @@ struct Game
   {
     DOUT << "Panel: " << panels_.size() << std::endl;
 
+    // 乱数
+    std::random_device seed_gen;
+    engine_ = std::mt19937(seed_gen());
+
     // パネルを通し番号で用意
     for (int i = 0; i < panels_.size(); ++i)
     {
@@ -98,7 +102,7 @@ struct Game
 
 
   // 本編準備
-  void preparationPlay(std::mt19937& engine) noexcept
+  void preparationPlay() noexcept
   {
     // 開始パネルを探す
     std::vector<int> start_panels;
@@ -114,7 +118,7 @@ struct Game
     if (start_panels.size() > 1)
     {
       // 開始パネルが何枚かある時はシャッフル
-      std::shuffle(std::begin(start_panels), std::end(start_panels), engine);
+      std::shuffle(std::begin(start_panels), std::end(start_panels), engine_);
     }
 
     {
@@ -122,7 +126,7 @@ struct Game
       auto it = std::find(std::begin(waiting_panels), std::end(waiting_panels), start_panels[0]);
       if (it != std::end(waiting_panels)) waiting_panels.erase(it);
 
-      std::shuffle(std::begin(waiting_panels), std::end(waiting_panels), engine);
+      std::shuffle(std::begin(waiting_panels), std::end(waiting_panels), engine_);
     }
 
 #if defined (DEBUG)
@@ -351,6 +355,27 @@ struct Game
   const std::vector<glm::ivec2>& getBlankPositions() const noexcept
   {
     return blank_;
+  }
+
+  // パネルを置く場所を適当に決める
+  glm::ivec2 getNextPanelPosition(const glm::ivec2& put_pos) noexcept
+  {
+    auto positions = getBlankPositions();
+    // 適当に並び替える
+    std::shuffle(std::begin(positions), std::end(positions), engine_);
+
+    // 置いた場所から一番距離の近い場所を選ぶ
+    auto it = std::min_element(std::begin(positions), std::end(positions),
+                               [put_pos](const glm::ivec2& a, const glm::ivec2& b) noexcept
+                               {
+                                 // FIXME 整数型のベクトルだとdistance2とかdotとかが使えない
+                                 auto da = put_pos - a;
+                                 auto db = put_pos - b;
+
+                                 return (da.x * da.x + da.y * da.y) < (db.x * db.x + db.y * db.y);
+                               });
+
+    return *it;
   }
 
 
@@ -583,7 +608,7 @@ private:
     }
 
     hand_panel    = waiting_panels[i];
-    hand_rotation = 0;
+    hand_rotation = ci::randInt(4);
 
     // コンテナから削除
     waiting_panels.erase(std::begin(waiting_panels) + i);
@@ -674,10 +699,13 @@ private:
   }
 
 
+  // NOTICE 変数をクラス定義の最後に書くテスト
   // FIXME 参照で持つのいくない
   const ci::JsonTree& params_;
   Event<Arguments>& event_;
   const std::vector<Panel>& panels_;
+
+  std::mt19937 engine_;
 
   CountExec count_exec_;
 

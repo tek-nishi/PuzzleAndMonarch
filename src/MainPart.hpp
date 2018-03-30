@@ -10,7 +10,6 @@
 #include <glm/gtx/norm.hpp>
 #include <glm/gtx/transform.hpp>
 #include <glm/gtc/quaternion.hpp>
-#include <cinder/Rand.h>
 #include <cinder/Ray.h>
 #include <cinder/Sphere.h>
 #include "Params.hpp"
@@ -63,10 +62,6 @@ public:
     initial_camera_distance_ = camera_distance_;
     initial_target_position_ = target_position_;
 
-    // 乱数
-    std::random_device seed_gen;
-    engine_ = std::mt19937(seed_gen());
-
     // フィールドカメラ
     calcCamera(camera_.body());
     field_distance_ = camera_distance_;
@@ -95,6 +90,7 @@ public:
                                 const auto& touch = boost::any_cast<const Touch&>(arg.at("touch"));
                                 if (touch.handled) return;
 
+                                auto cursor = isCursorPos(touch.pos);
                                 {
                                   // マス目座標計算
                                   auto result = calcGridPos(touch.pos);
@@ -106,14 +102,14 @@ public:
 
                                   grid_pos_ = std::get<1>(result);
                                   on_blank_ = game_->isBlank(grid_pos_);
-                                  if (on_blank_)
+                                  if (on_blank_ && !cursor.first)
                                   {
                                     view_.blankTouchBeginEase(grid_pos_);
                                   }
                                 }
 
                                 // 元々パネルのある位置をタップ→長押しで設置
-                                if (can_put_ && isCursorPos(touch.pos))
+                                if (can_put_ && (cursor.first || cursor.second))
                                 {
                                   touch_put_ = true;
                                   // ゲーム終盤さっさとパネルを置ける
@@ -191,7 +187,8 @@ public:
                                   return;
                                 }
 
-                                if (on_blank_)
+                                auto result = isCursorPos(touch.pos);
+                                if (on_blank_ && !result.first)
                                 {
                                   view_.blankTouchEndEase(grid_pos_);
                                 }
@@ -202,8 +199,8 @@ public:
                                   event_.signal("Game:PutEnd", Arguments());
                                   touch_put_ = false;
                                 }
-                                
-                                if (isCursorPos(touch.pos))
+
+                                if (result.first || result.second)
                                 {
                                   // パネルを回転
                                   game_->rotationHandPanel();
@@ -645,7 +642,7 @@ public:
                               });
 #endif
     // 本編準備
-    game_->preparationPlay(engine_);
+    game_->preparationPlay();
     view_.setColor(ci::ColorA::white());
   }
 
@@ -890,21 +887,24 @@ private:
     return { true, roundValue(touch_pos.x, touch_pos.z, PANEL_SIZE), ray };
   }
 
+
   // タッチ位置がパネルのある位置と同じか調べる
-  bool isCursorPos(const glm::vec2& pos) const noexcept
+  // first  パネルをタッチ
+  // second Blankをタッチ
+  std::pair<bool, bool> isCursorPos(const glm::vec2& pos) const noexcept
   {
     auto result = calcGridPos(pos);
-    if (!std::get<0>(result)) return false;
+    if (!std::get<0>(result)) return { false, false };
 
     // パネルとのRay-cast
     auto aabb = view_.panelAabb(game_->getHandPanel());
     const auto& ray = std::get<2>(result);
     aabb.transform(glm::translate(cursor_pos_));
-    if (aabb.intersects(ray)) return true;
+    if (aabb.intersects(ray)) return { true, false };
 
     // タッチ位置の座標が一致しているかで判断
     const auto& grid_pos = std::get<1>(result);
-    return grid_pos == field_pos_;
+    return { false, grid_pos == field_pos_ };
   }
 
   // 升目位置からPanel位置を計算する
@@ -1016,21 +1016,8 @@ private:
   // 次のパネルの出現位置を決める
   void calcNextPanelPosition() noexcept
   {
-    auto positions = game_->getBlankPositions();
-    // 適当に並び替える
-    std::shuffle(std::begin(positions), std::end(positions), engine_);
+    field_pos_ = game_->getNextPanelPosition(field_pos_);
 
-    // 置いた場所から一番距離の近い場所を選ぶ
-    auto it = std::min_element(std::begin(positions), std::end(positions),
-                               [this](const glm::ivec2& a, const glm::ivec2& b) noexcept
-                               {
-                                 // FIXME 整数型のベクトルだとdistance2とかdotとかが使えない
-                                 auto da = field_pos_ - a;
-                                 auto db = field_pos_ - b;
-
-                                 return (da.x * da.x + da.y * da.y) < (db.x * db.x + db.y * db.y);
-                               });
-    field_pos_ = *it;
     cursor_pos_ = glm::vec3(field_pos_.x * PANEL_SIZE, panel_height_, field_pos_.y * PANEL_SIZE);
     view_.setPanelPosition(cursor_pos_);
     view_.startNextPanelEase();
@@ -1067,7 +1054,7 @@ private:
     // Game再生成
     game_.reset();            // TIPS メモリを２重に確保したくないので先にresetする
     game_ = std::make_unique<Game>(params_["game"], event_, panels_);
-    game_->preparationPlay(engine_);
+    game_->preparationPlay();
                                                   
     field_center_   = initial_target_position_;
     field_distance_ = initial_camera_distance_;
@@ -1256,8 +1243,6 @@ private:
   FixedTimeExec fixed_exec_;
 
   Archive& archive_;
-  
-  std::mt19937 engine_;
 
   bool paused_ = false;
   // true: カメラ操作不可
