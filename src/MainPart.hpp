@@ -393,13 +393,8 @@ public:
                                 auto speed = params_.getValueForKey<double>("field.auto_camera_rotation_speed");
                                 fixed_exec_.add(params_.getValueForKey<double>("field.auto_camera_delay"),
                                                 -1.0,
-                                                [this, speed](double delta_time) noexcept
-                                                {
-                                                  camera_rotation_.y += M_PI * speed * delta_time;
-                                                  calcCamera(camera_.body());
-
-                                                  return !manipulated_;
-                                                });
+                                                std::bind(&MainPart::autoRotateCamera,
+                                                          this, std::placeholders::_1, speed));
                               });
 
     // 得点時の演出
@@ -494,13 +489,8 @@ public:
                                                   auto speed = params_.getValueForKey<double>("field.auto_camera_rotation_speed");
                                                   fixed_exec_.add(params_.getValueForKey<double>("field.auto_camera_delay"),
                                                                   -1.0,
-                                                                  [this, speed](double delta_time) noexcept
-                                                                  {
-                                                                    camera_rotation_.y += M_PI * speed * delta_time;
-                                                                    calcCamera(camera_.body());
-
-                                                                    return !manipulated_;
-                                                                  });
+                                                                  std::bind(&MainPart::autoRotateCamera,
+                                                                            this, std::placeholders::_1, speed));
                                                 });
                               });
     
@@ -1231,6 +1221,18 @@ private:
 
     archive_.erase();
   }
+
+
+  // 自動で回転するカメラ
+  // 何かしら操作されたら終了
+  bool autoRotateCamera(double delta_time, double speed) noexcept
+  {
+    camera_rotation_.y += M_PI * speed * delta_time;
+    calcCamera(camera_.body());
+      
+    return !manipulated_;
+  }
+
 
 
   // FIXME 変数を後半に定義する実験
