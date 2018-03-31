@@ -224,7 +224,7 @@ struct TouchEvent
     {
       // マルチタッチ終了
       multi_touch_ = false;
-      // event_.signal("multi_touch_ended", Arguments());
+      event_.signal("multi_touch_ended", Arguments());
       DOUT << "multi_touch_ended" << std::endl;
     }
   }
