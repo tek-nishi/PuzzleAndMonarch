@@ -99,6 +99,7 @@
   "game": {
     "play_time": 180,
     "force_panel": 0,
+    "test_score_": 99999,
 
     "score_rates": [
       3,
@@ -113,8 +114,8 @@
     "perfect_score_rate": 1.1,
     "total_score_rate": 50,
 
-    "ranking_num": 13,
-    "ranking_rate": [ 0.16, 40261.2148 ],
+    "ranking_num": 15,
+    "ranking_rate": [ 0.16, 26667.1822 ],
 
     "ranking_records": 10,
 
@@ -351,6 +352,13 @@
         "path": "FuturaCon-Bol.ttf",
         "texture_size": 512,
         "size": 64
+      },
+      {
+        "name": "rank",
+        "path": "ChessAlpha2.ttf",
+        "spacing": -5,
+        "texture_size": 256,
+        "size": 64
       }
     ],
     
@@ -421,19 +429,21 @@
     ],
 
     "ranking": [
-      "Baronet",
-      "Baron",
-      "Viscount",
-      "Count", 
-      "Margrave",
-      "Marquess",
-      "Duke",
-      "Landgrave",
-      "Prince",
-      "Grand Duke",
-      "Viceroy",
-      "King",
-      "Emperor"
+      "Ê",
+      "êÊ",
+      "À",
+      "àÀ", 
+      "Â",
+      "âÂ",
+      "Ä",
+      "äÄ",
+      "Æ",
+      "æÆ",
+      "È",
+      "èÈ",
+      "ÆÈ",
+      "æè",
+      "æèÆÈ"
     ],
 
     "effect_speed": 2.2,

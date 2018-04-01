@@ -355,6 +355,7 @@ private:
           { "widget", widget->getIdentifier() }
         };
         event_.signal(event, args);
+        // DOUT << "Event: " << event << std::endl;
       }
 
       if (widget->hasSe())

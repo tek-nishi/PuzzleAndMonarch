@@ -661,6 +661,10 @@ private:
     }
 
     score *= params_.getValueForKey<u_int>("total_score_rate");
+#if defined (DEBUG)
+    // テスト用にスコアを上書き
+    score = Json::getValue(params_, "test_score", score);
+#endif
     return score;
   }
 

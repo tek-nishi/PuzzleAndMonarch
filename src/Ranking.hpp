@@ -168,6 +168,24 @@ public:
                                                 });
                               });
 
+#if 0
+    // TOP3を閲覧
+    for (int i = 0; i < 3; ++i)
+    {
+      char message[64];
+      sprintf(message, "rank%d:touch_ended", i + 1);
+
+      holder_ += event_.connect(message,
+                                [this, message](const Connection&, const Arguments&) noexcept
+                                {
+                                  DOUT << message << std::endl;
+                                });
+
+      sprintf(message, "rank%d", i + 1);
+      setupCommonTweens(event_, holder_, canvas_, message);
+    }
+#endif
+
     // ボタンイベント共通Tween
     setupCommonTweens(event_, holder_, canvas_, "agree");
     setupCommonTweens(event_, holder_, canvas_, "view");
