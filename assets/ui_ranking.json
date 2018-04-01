@@ -37,15 +37,15 @@
         {
           "rect": [ -30, -22.5, 20, 22.5 ],
           "anchor": [
-            [ 0.5, 0.35 ],
-            [ 0.5, 0.65 ]
+            [ 0.52, 0.33 ],
+            [ 0.52, 0.68 ]
           ],
           "scale": [ 1, 1 ],
           "pivot": [ 0.5, 0.5 ],
 
           "childlen": [
             {
-              "identifier": "rank1",
+              "identifier": "rank0",
 
               "rect": [ 0, 0, 0, 0 ],
               "anchor": [
@@ -55,8 +55,6 @@
               "scale": [ 1, 1 ],
               "pivot": [ 0.5, 0.5 ],
               
-              "event": "rank1",
-
               "childlen": [
                 {
                   "identifier": "1",
@@ -107,7 +105,7 @@
             },
 
             {
-              "identifier": "rank2",
+              "identifier": "rank1",
               "rect": [ 0, 0, 0, 0 ],
               "anchor": [
                 [ 0, 0.8 ],
@@ -115,8 +113,6 @@
               ],
               "scale": [ 1, 1 ],
               "pivot": [ 0.5, 0.5 ],
-
-              "event": "rank2",
 
               "childlen": [
                 {
@@ -168,7 +164,7 @@
             },
 
             {
-              "identifier": "rank3",
+              "identifier": "rank2",
               "rect": [ 0, 0, 0, 0 ],
               "anchor": [
                 [ 0, 0.7 ],
@@ -176,8 +172,6 @@
               ],
               "scale": [ 1, 1 ],
               "pivot": [ 0.5, 0.5 ],
-
-              "event": "rank3",
 
               "childlen": [
                 {

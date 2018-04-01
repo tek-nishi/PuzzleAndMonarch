@@ -44,6 +44,8 @@
 * TODO アプリアイコン
 * TODO iOS:GameCenter対応
 * TODO iOS:実績を実装
+* DONE Rankingレイアウト修正
+CLOSED: [2018-04-01 Sun 20:42]
 * DONE ランクは文字だけでなく格好いい勲章とか出す
 CLOSED: [2018-04-01 日 13:04]
 * DONE ランキング演出は「自分がどの程度か」を把握できるように
