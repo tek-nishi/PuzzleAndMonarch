@@ -25,9 +25,7 @@ struct Game
       initial_play_time_(params.getValueForKey<double>("play_time")),
       play_time_(initial_play_time_),
       scores_(7, 0),
-      score_rates_(Json::getArray<u_int>(params["score_rates"])),
-      ranking_num_(params.getValueForKey<u_int>("ranking_num")),
-      ranking_rate_(Json::getVec<glm::vec2>(params["ranking_rate"]))
+      score_rates_(Json::getArray<u_int>(params["score_rates"]))
   {
     DOUT << "Panel: " << panels_.size() << std::endl;
 
@@ -40,19 +38,6 @@ struct Game
     {
       waiting_panels.push_back(i);
     }
-
-#if defined (DEBUG)
-    // ランキング計算テスト
-    {
-      DOUT << "Ranking scores.\n";
-
-      for (int i = 0; i < ranking_num_; ++i)
-      {
-        DOUT << (std::cosh(i * ranking_rate_.x) - 1.0) * ranking_rate_.y << '\n';
-      }
-      DOUT << std::endl;
-    }
-#endif
   }
 
   ~Game() = default;
@@ -669,14 +654,14 @@ private:
   }
 
   // ランキングを決める
-  // TIPS 数値の上昇にカテナリー曲線を利用
   u_int calcRanking(int score) const noexcept
   {
-    u_int ranking;
-    for (ranking = (ranking_num_ - 1); ranking > 0; --ranking)
+    auto ranking_scores = Json::getArray<int>(params_["ranking_scores"]);
+    u_int ranking = u_int(ranking_scores.size());
+    for (auto s : ranking_scores)
     {
-      auto rank_score = (std::cosh(ranking * ranking_rate_.x) - 1.0) * ranking_rate_.y;
-      if (score >= rank_score) break;
+      if (score >= s) break;
+      ranking -= 1;
     }
 
     return ranking;
@@ -754,10 +739,6 @@ private:
 
   // スコア計算用係数
   std::vector<u_int> score_rates_;
-
-  // ランキング計算用
-  u_int ranking_num_;
-  glm::vec2 ranking_rate_;
 };
 
 }
