@@ -24,8 +24,7 @@ struct Game
       panels_(panels),
       initial_play_time_(params.getValueForKey<double>("play_time")),
       play_time_(initial_play_time_),
-      scores_(7, 0),
-      score_rates_(Json::getArray<u_int>(params["score_rates"]))
+      scores_(7, 0)
   {
     DOUT << "Panel: " << panels_.size() << std::endl;
 
@@ -631,21 +630,41 @@ private:
   // 最終スコア
   u_int calcTotalScore() const noexcept
   {
-    // FIXME 適当に加算しているだけ…
-    u_int score = 0;
-    for (u_int i = 0; i < scores_.size(); ++i)
+    // 道と森の計算用
+    auto panel_rate  = Json::getVec<glm::vec2>(params_["panel_rate"]);
+    auto score_rates = Json::getArray<float>(params_["score_rates"]);
+
+    float score = 0;
+
+    // 道の計算
+    // TIPS 長い道ほど指数関数的に得点が上がる
+    for (const auto path : completed_path)
     {
-      score += scores_[i] * score_rates_[i];
+      score += std::pow(float(path.size()), panel_rate.x) * panel_rate.y * score_rates[0];
     }
-    DOUT << "Score-1: " << score << std::endl;
+    // 全ての道パネル数
+    score += scores_[1] * score_rates[1];
+
+    // 森の計算
+    // TIPS 長い道ほど指数関数的に得点が上がる
+    for (const auto forest : completed_forests)
+    {
+      score += std::pow(float(forest.size()), panel_rate.x) * panel_rate.y * score_rates[2];
+    }
+    // 全ての森パネル数
+    score += scores_[3] * score_rates[3];
+    // 深い森の数
+    score += scores_[4] * score_rates[4];
+    // 街の数
+    score += scores_[5] * score_rates[5];
+    // 教会
+    score += scores_[6] * score_rates[6];
 
     // Perfect
     if (waiting_panels.empty())
     {
       score *= params_.getValueForKey<float>("perfect_score_rate");
     }
-
-    score *= params_.getValueForKey<u_int>("total_score_rate");
 #if defined (DEBUG)
     // テスト用にスコアを上書き
     score = Json::getValue(params_, "test_score", score);
@@ -736,9 +755,6 @@ private:
   u_int total_score   = 0;
   u_int total_ranking = 0;
   u_int total_panels  = 0;
-
-  // スコア計算用係数
-  std::vector<u_int> score_rates_;
 };
 
 }

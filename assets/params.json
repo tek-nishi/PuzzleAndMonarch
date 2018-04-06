@@ -102,17 +102,16 @@
     "test_score_": 100000,
 
     "score_rates": [
-      3,
-      4,
-      5,
-      8,
-      15,
-      4,
-      20
+      300,
+      100,
+      500,
+      150,
+      3000,
+      2000,
+      5000
     ],
-
+    "panel_rate": [ 1.7, 0.3 ],
     "perfect_score_rate": 1.1,
-    "total_score_rate": 50,
 
     "ranking_scores": [
       100000,
