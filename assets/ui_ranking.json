@@ -54,6 +54,8 @@
               ],
               "scale": [ 1, 1 ],
               "pivot": [ 0.5, 0.5 ],
+              "event": "rank0",
+              "move_event": true,
               
               "childlen": [
                 {
@@ -113,6 +115,8 @@
               ],
               "scale": [ 1, 1 ],
               "pivot": [ 0.5, 0.5 ],
+              "event": "rank1",
+              "move_event": true,
 
               "childlen": [
                 {
@@ -172,6 +176,8 @@
               ],
               "scale": [ 1, 1 ],
               "pivot": [ 0.5, 0.5 ],
+              "event": "rank2",
+              "move_event": true,
 
               "childlen": [
                 {

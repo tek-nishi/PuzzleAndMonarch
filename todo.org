@@ -14,6 +14,7 @@
 * TODO パネルのうらが真っ暗
 * TODO iPad:Shareのpopoverをボタン位置と合わせる
 * TODO tween中止
+* TODO 下の方のランクが出にくい
 * TODO iOS：基本図形描画のパフォーマンス調査
 * TODO VisualStudioでDEBUGが定義されていない疑惑
 * TODO msaa

@@ -105,6 +105,7 @@ public:
     
     touching_in_ = false;
     // FIXME 何度も実行して良いのか??
+    first_touched_widget_.reset();
     touching_widget_.reset();
   }
 
@@ -278,14 +279,16 @@ private:
       if (w->contains(pos))
       {
         // DOUT << "widget touch began: " << w->getIdentifier() << std::endl;
-        std::string event = w->getEvent() + ":touch_began";
-        Arguments args = {
-          { "widget", w->getIdentifier() }
-        };
-        event_.signal(event, args);
+        signalEventMessage(w, ":touch_began");
+        // std::string event = w->getEvent() + ":touch_began";
+        // Arguments args{
+        //   { "widget", w->getIdentifier() }
+        // };
+        // event_.signal(event, args);
 
+        first_touched_widget_ = w;
         touching_widget_ = w;
-        touching_in_ = true;
+        touching_in_  = true;
         touch.handled = true;
         break;
       }
@@ -295,80 +298,77 @@ private:
   void touchMoved(const Connection&, Arguments& arg) noexcept
   {
     if (!active_) return;
-    if (touching_widget_.expired()) return;
+    if (first_touched_widget_.expired()) return;
 
     auto& touch = boost::any_cast<Touch&>(arg.at("touch"));
     auto pos = calcUIPosition(touch.pos);
     touch.handled = true;
 
-    auto widget = touching_widget_.lock();
-    bool contains = widget->contains(pos);
-    Arguments args = {
-      { "widget", widget->getIdentifier() }
-    };
-    if (contains)
+    auto first_touch = first_touched_widget_.lock();
+    auto widget      = touching_widget_.lock();
+
+    touching_in_ = false;
+    for (const auto& w : enumerated_widgets_)
     {
-      if (touching_in_)
+      if (!w->hasEvent()) continue;
+      if (w != first_touch && !w->reactMoveEvent()) continue;
+
+      bool contains = w->contains(pos);
+      if (contains)
       {
-        // DOUT << "widget touch moved in-in: " << widget->getIdentifier() << std::endl;
+        touching_in_ = true;
+        if (w != widget)
+        {
+          // DOUT << "widget touch moved out-in: " << w->getIdentifier() << " " << ci::app::getElapsedFrames() << std::endl;
+          signalEventMessage(w, ":moved_in");
+          touching_widget_ = w;
+
+          if (widget)
+          {
+            // Touch中のは強制キャンセル
+            signalEventMessage(widget, ":moved_out");
+          }
+          break;
+        }
       }
       else
       {
-        // DOUT << "widget touch moved out-in: " << widget->getIdentifier() << std::endl;
-        std::string event = widget->getEvent() + ":moved_in";
-        event_.signal(event, args);
+        if (w == widget)
+        {
+          // DOUT << "widget touch moved in-out: " << w->getIdentifier() << " " << ci::app::getElapsedFrames() << std::endl;
+          signalEventMessage(w, ":moved_out");
+          touching_widget_.reset();
+        }
       }
     }
-    else
-    {
-      if (touching_in_)
-      {
-        // DOUT << "widget touch moved in-out: " << widget->getIdentifier() << std::endl;
-        std::string event = widget->getEvent() + ":moved_out";
-        event_.signal(event, args);
-      }
-      else
-      {
-        // DOUT << "widget touch moved out-out: " << widget->getIdentifier() << std::endl;
-      }
-    }
-    touching_in_ = contains;
   }
 
   void touchEnded(const Connection&, Arguments& arg) noexcept
   {
     if (!active_) return;
-    if (touching_widget_.expired()) return;
+
+    if (first_touched_widget_.expired()) return;
+    first_touched_widget_.reset();
 
     auto& touch = boost::any_cast<Touch&>(arg.at("touch"));
     auto pos = calcUIPosition(touch.pos);
     touch.handled = true;
 
+    if (touching_widget_.expired()) return;
     auto widget = touching_widget_.lock();
     if (widget->contains(pos))
     {
       // DOUT << "widget touch ended in: " << widget->getIdentifier() << std::endl;
       // イベント送信
-      {
-        std::string event = widget->getEvent() + ":touch_ended";
-        Arguments args = {
-          { "widget", widget->getIdentifier() }
-        };
-        event_.signal(event, args);
-        // DOUT << "Event: " << event << std::endl;
-      }
+      signalEventMessage(widget, ":touch_ended");
 
       if (widget->hasSe())
       {
-        Arguments args = {
+        Arguments args{
           { "name", widget->getSe() }
         };
         event_.signal("UI:sound", args);
       }
-    }
-    else
-    {
-      // DOUT << "widget touch ended out: " << widget->getIdentifier() << std::endl;
     }
 
     touching_widget_.reset();
@@ -377,28 +377,31 @@ private:
 
   void multiTouchBegan(const Connection&, Arguments& arg) noexcept
   {
-    // タッチ操作をキャンセル
     if (touching_widget_.expired()) return;
 
-    auto widget = touching_widget_.lock();
-    Arguments args = {
-      { "widget", widget->getIdentifier() }
-    };
-
+    // タッチ操作をキャンセル
     if (touching_in_)
     {
       // DOUT << "widget touch cancel: " << widget->getIdentifier() << std::endl;
-      std::string event = widget->getEvent() + ":moved_out";
-      event_.signal(event, args);
+      auto widget = touching_widget_.lock();
+      signalEventMessage(widget, ":moved_out");
+      touching_in_ = false;
     }
-    else
-    {
-      // DOUT << "widget touch moved out-out: " << widget->getIdentifier() << std::endl;
-    }
+    first_touched_widget_.reset();
     touching_widget_.reset();
   }
 
+
+  void signalEventMessage(const std::shared_ptr<Widget>& widget, const std::string& message)
+  {
+    Arguments args{
+      { "widget", widget->getIdentifier() }
+    };
+    std::string event = widget->getEvent() + message;
+    event_.signal(event, args);
+  }
   
+
   glm::vec2 calcUIPosition(const glm::vec2& pos) noexcept
   {
     const auto& camera = camera_.body();
@@ -427,6 +430,7 @@ private:
   std::map<std::string, UI::WidgetPtr> query_widgets_;
   std::vector<UI::WidgetPtr> enumerated_widgets_;
   
+  std::weak_ptr<UI::Widget> first_touched_widget_;
   std::weak_ptr<UI::Widget> touching_widget_;
   bool touching_in_ = false;
 

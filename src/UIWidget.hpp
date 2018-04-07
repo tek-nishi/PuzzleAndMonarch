@@ -62,6 +62,11 @@ public:
     return has_se_;
   }
 
+  // Touch-Moveでも反応する
+  bool reactMoveEvent() const
+  {
+    return has_event_ && move_event_;
+  }
 
   bool hasChild() const noexcept
   {
@@ -291,6 +296,7 @@ public:
       widget->event_     = params.getValueForKey<std::string>("event");
       widget->has_event_ = true;
     }
+    widget->move_event_ = Json::getValue(params, "move_event", false);
     if (params.hasChild("se"))
     {
       widget->se_     = params.getValueForKey<std::string>("se");
@@ -369,6 +375,8 @@ private:
 
   bool has_event_ = false;
   std::string event_;
+
+  bool move_event_;
 
   bool has_se_ = false;
   std::string se_;
