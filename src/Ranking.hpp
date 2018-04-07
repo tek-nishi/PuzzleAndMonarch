@@ -168,27 +168,30 @@ public:
                                                 });
                               });
 
-    // TOP3を閲覧
-    for (int i = 0; i < 10; ++i)
+    // TOP10を閲覧
+    if (!rank_in_)
     {
-      char id[64];
+      for (int i = 0; i < ranking_records_; ++i)
+      {
+        char id[64];
 
-      // Tween登録
-      sprintf(id, "rank%d", i);
-      setupCommonTweens(event_, holder_, canvas_, id, "rank");
+        // Tween登録
+        sprintf(id, "rank%d", i);
+        setupCommonTweens(event_, holder_, canvas_, id, "rank");
 
-      // コールバック登録
-      sprintf(id, "rank%d:touch_ended", i);
-      holder_ += event_.connect(id,
-                                [this, id, i](const Connection&, const Arguments&) noexcept
-                                {
-                                  DOUT << i << " " << id << std::endl;
-                                  // セーブデータがあれば読み込む
-                                  Arguments args{
-                                    { "rank", i }
-                                  };
-                                  event_.signal("Ranking:reload", args);
-                                });
+        // コールバック登録
+        sprintf(id, "rank%d:touch_ended", i);
+        holder_ += event_.connect(id,
+                                  [this, id, i](const Connection&, const Arguments&) noexcept
+                                  {
+                                    DOUT << i << " " << id << std::endl;
+                                    // セーブデータがあれば読み込む
+                                    Arguments args{
+                                      { "rank", i }
+                                    };
+                                    event_.signal("Ranking:reload", args);
+                                  });
+      }
     }
 
     // ボタンイベント共通Tween
