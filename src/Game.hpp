@@ -424,6 +424,8 @@ struct Game
     }
 #endif
 
+    count_exec_.clear();
+
     hand_panel     = json.getValueForKey<int>("hand_panel");
     hand_rotation  = json.getValueForKey<u_int>("hand_rotation");
     waiting_panels = Json::getArray<int>(json["waiting_panels"]);

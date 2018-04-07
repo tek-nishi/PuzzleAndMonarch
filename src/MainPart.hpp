@@ -459,29 +459,21 @@ public:
     holder_ += event_.connect("Ranking:begin",
                               [this](const Connection&, const Arguments&) noexcept
                               {
-                                count_exec_.add(params_.getValueForKey<double>("field.reset_delay"),
+                                auto delay = params_.getValueForKey<double>("field.reset_delay");
+                                count_exec_.add(delay,
                                                 [this]() noexcept
                                                 {
-                                                  force_camera_ = true;
-                                                  manipulated_  = false;
-
                                                   // TOPの記録を読み込む
-                                                  {
-                                                    const auto& json = archive_.getRecordArray("games");
-                                                    if (json.hasChildren() && json[0].hasChild("path"))
-                                                    {
-                                                      view_.clear();
-                                                      game_->load(json[0].getValueForKey("path"));
-                                                      calcViewRange(false);
-                                                    }
-                                                  }
-
-                                                  count_exec_.add(params_.getValueForKey<double>("field.auto_camera_duration"),
-                                                                  [this]() noexcept
-                                                                  {
-                                                                    force_camera_ = false;
-                                                                  });
+                                                  loadGameResult(0);
                                                 });
+                              });
+
+    // Ranking セーブデータ読み込み
+    holder_ += event_.connect("Ranking:reload",
+                              [this](const Connection&, const Arguments& args) noexcept
+                              {
+                                auto rank = boost::any_cast<int>(args.at("rank"));
+                                loadGameResult(rank);
                               });
     
     // Ranking詳細開始
@@ -1218,6 +1210,30 @@ private:
     camera_rotation_.y += delta_angle;
     calcCamera(camera_.body());
   }
+
+  // 過去の記録を読み込む
+  void loadGameResult(int rank)
+  {
+    force_camera_ = true;
+    manipulated_  = false;
+
+    {
+      const auto& json = archive_.getRecordArray("games");
+      if (json.hasChildren() && json[rank].hasChild("path"))
+      {
+        view_.clear();
+        game_->load(json[rank].getValueForKey("path"));
+        calcViewRange(false);
+      }
+    }
+
+    count_exec_.add(params_.getValueForKey<double>("field.auto_camera_duration"),
+                    [this]() noexcept
+                    {
+                      force_camera_ = false;
+                    });
+  }
+
 
   
   // FIXME 変数を後半に定義する実験

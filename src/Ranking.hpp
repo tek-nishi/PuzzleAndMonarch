@@ -172,16 +172,23 @@ public:
     for (int i = 0; i < 10; ++i)
     {
       char id[64];
-      // sprintf(message, "rank%d:touch_ended", i);
 
-      // holder_ += event_.connect(message,
-      //                           [this, message](const Connection&, const Arguments&) noexcept
-      //                           {
-      //                             DOUT << message << std::endl;
-      //                           });
-
+      // Tween登録
       sprintf(id, "rank%d", i);
       setupCommonTweens(event_, holder_, canvas_, id, "rank");
+
+      // コールバック登録
+      sprintf(id, "rank%d:touch_ended", i);
+      holder_ += event_.connect(id,
+                                [this, id, i](const Connection&, const Arguments&) noexcept
+                                {
+                                  DOUT << i << " " << id << std::endl;
+                                  // セーブデータがあれば読み込む
+                                  Arguments args{
+                                    { "rank", i }
+                                  };
+                                  event_.signal("Ranking:reload", args);
+                                });
     }
 
     // ボタンイベント共通Tween
