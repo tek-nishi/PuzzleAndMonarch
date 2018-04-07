@@ -194,5 +194,72 @@
         ]
       }
     ]
+  },
+
+  "rank:touch-in": {
+    "tween": [
+      {
+        "param": "scale",
+        "type": "vec2",
+        "body": [
+          {
+            "duration": 0.25,
+            "ease_func": "OutBack",
+            "end": [ 1, 1.3 ]
+          }
+        ]
+      }
+    ]
+  },
+  "rank:moved-out": {
+    "tween": [
+      {
+        "param": "scale",
+        "type": "vec2",
+        "body": [
+          {
+            "duration": 0.6,
+            "ease_func": "OutQuint",
+            "end": [ 1, 1 ]
+          }
+        ]
+      }
+    ]
+  },
+  "rank:moved-in": {
+    "tween": [
+      {
+        "param": "scale",
+        "type": "vec2",
+        "body": [
+          {
+            "duration": 0.25,
+            "ease_func": "OutBack",
+            "end": [ 1, 1.3 ]
+          }
+        ]
+      }
+    ]
+  },
+  "rank:ended-in": {
+    "tween": [
+      {
+        "param": "scale",
+        "type": "vec2",
+        "body": [
+          {
+            "duration": 0.2,
+            "ease_func": "OutBack",
+            "start": [ 1, 1.3 ],
+            "end": [ 1, 1.5 ]
+          },
+          {
+            "duration": 0.3,
+            "ease_func": "OutBack",
+            "end": [ 1, 1 ]
+          }
+        ]
+      }
+    ]
   }
 }

@@ -229,6 +229,7 @@
             },
 
             {
+              "identifier": "rank3",
               "rect": [ 0, 0, 0, 0 ],
               "anchor": [
                 [ 0, 0.6 ],
@@ -236,6 +237,8 @@
               ],
               "scale": [ 1, 1 ],
               "pivot": [ 0.5, 0.5 ],
+              "event": "rank3",
+              "move_event": true,
 
               "childlen": [
                 {
@@ -287,6 +290,7 @@
             },
 
             {
+              "identifier": "rank4",
               "rect": [ 0, 0, 0, 0 ],
               "anchor": [
                 [ 0, 0.5 ],
@@ -294,6 +298,8 @@
               ],
               "scale": [ 1, 1 ],
               "pivot": [ 0.5, 0.5 ],
+              "event": "rank4",
+              "move_event": true,
 
               "childlen": [
                 {
@@ -345,6 +351,7 @@
             },
 
             {
+              "identifier": "rank5",
               "rect": [ 0, 0, 0, 0 ],
               "anchor": [
                 [ 0, 0.4 ],
@@ -352,6 +359,8 @@
               ],
               "scale": [ 1, 1 ],
               "pivot": [ 0.5, 0.5 ],
+              "event": "rank5",
+              "move_event": true,
 
               "childlen": [
                 {
@@ -403,6 +412,7 @@
             },
 
             {
+              "identifier": "rank6",
               "rect": [ 0, 0, 0, 0 ],
               "anchor": [
                 [ 0, 0.3 ],
@@ -410,6 +420,8 @@
               ],
               "scale": [ 1, 1 ],
               "pivot": [ 0.5, 0.5 ],
+              "event": "rank6",
+              "move_event": true,
 
               "childlen": [
                 {
@@ -460,6 +472,7 @@
               ]
             },
             {
+              "identifier": "rank7",
               "rect": [ 0, 0, 0, 0 ],
               "anchor": [
                 [ 0, 0.2 ],
@@ -467,6 +480,8 @@
               ],
               "scale": [ 1, 1 ],
               "pivot": [ 0.5, 0.5 ],
+              "event": "rank7",
+              "move_event": true,
 
               "childlen": [
                 {
@@ -518,6 +533,7 @@
             },
 
             {
+              "identifier": "rank8",
               "rect": [ 0, 0, 0, 0 ],
               "anchor": [
                 [ 0, 0.1 ],
@@ -525,6 +541,8 @@
               ],
               "scale": [ 1, 1 ],
               "pivot": [ 0.5, 0.5 ],
+              "event": "rank8",
+              "move_event": true,
 
               "childlen": [
                 {
@@ -576,6 +594,7 @@
             },
 
             {
+              "identifier": "rank9",
               "rect": [ 0, 0, 0, 0 ],
               "anchor": [
                 [ 0, 0.0 ],
@@ -583,6 +602,8 @@
               ],
               "scale": [ 1, 1 ],
               "pivot": [ 0.5, 0.5 ],
+              "event": "rank9",
+              "move_event": true,
 
               "childlen": [
                 {

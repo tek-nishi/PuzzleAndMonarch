@@ -168,11 +168,10 @@ public:
                                                 });
                               });
 
-#if 1
     // TOP3を閲覧
-    for (int i = 0; i < 3; ++i)
+    for (int i = 0; i < 10; ++i)
     {
-      char message[64];
+      char id[64];
       // sprintf(message, "rank%d:touch_ended", i);
 
       // holder_ += event_.connect(message,
@@ -181,10 +180,9 @@ public:
       //                             DOUT << message << std::endl;
       //                           });
 
-      sprintf(message, "rank%d", i);
-      setupCommonTweens(event_, holder_, canvas_, message);
+      sprintf(id, "rank%d", i);
+      setupCommonTweens(event_, holder_, canvas_, id, "rank");
     }
-#endif
 
     // ボタンイベント共通Tween
     setupCommonTweens(event_, holder_, canvas_, "agree");
