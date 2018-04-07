@@ -937,7 +937,8 @@ private:
       DOUT << "distace_rate: " << rate << std::endl;
       if ((rate > distance_rate_.x) && (rate < distance_rate_.y))
       {
-        field_distance_ = distance;
+        field_distance_ = ci::clamp(distance,
+                                    camera_distance_range_.x, camera_distance_range_.y);
       }
     }
 
