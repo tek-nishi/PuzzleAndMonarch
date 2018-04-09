@@ -4,6 +4,8 @@
 // Debug用のコード
 //
 
+#if defined (DEBUG)
+
 #include <cinder/Json.h>
 #include <boost/signals2.hpp>
 #include <map>
@@ -11,8 +13,6 @@
 #include "Arguments.hpp"
 #include "Event.hpp"
 
-
-#if defined (DEBUG)
 
 namespace ngs { namespace Debug {
 

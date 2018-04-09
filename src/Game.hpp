@@ -192,6 +192,24 @@ struct Game
   }
 
 
+#if defined (DEBUG)
+
+  void testPutPanel(const glm::ivec2& field_pos, int panel, u_int rotation)
+  {
+    putPanel(panel, field_pos, rotation);
+    checkFieldStatus(field_pos);
+  }
+
+  void testCalcResults()
+  {
+    calcResults();
+    DOUT << "Score: " << total_score << std::endl;
+    DOUT << " Rank: " << total_ranking << std::endl;
+  }
+
+#endif
+
+
   // 操作
   void putHandPanel(const glm::ivec2& field_pos) noexcept
   {
@@ -202,6 +220,21 @@ struct Game
     total_panels += 1;
     putPanel(hand_panel, field_pos, hand_rotation);
 
+    // 状況チェック
+    checkFieldStatus(field_pos);
+
+    // 新しいパネル
+    if (!getNextPanel())
+    {
+      // 全パネルを使い切った
+      DOUT << "End of panels." << std::endl;
+      endPlay();
+    }
+  }
+
+  // 状況チェック
+  void checkFieldStatus(const glm::ivec2& field_pos)
+  {
     bool update_score = false;
     {
       // 森完成チェック
@@ -287,16 +320,6 @@ struct Game
         { "scores", scores_ }
       };
       event_.signal("Game:UpdateScores", args);
-    }
-
-    // fieldUpdate();
-
-    // 新しいパネル
-    if (!getNextPanel())
-    {
-      // 全パネルを使い切った
-      DOUT << "End of panels." << std::endl;
-      endPlay();
     }
   }
 

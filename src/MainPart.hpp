@@ -27,6 +27,7 @@
 #include "Archive.hpp"
 #include "Score.hpp"
 #include "AutoRotateCamera.hpp"
+#include "ScoreTest.hpp"
 
 
 namespace ngs {
@@ -602,15 +603,32 @@ public:
                               });
     
     holder_ += event_.connect("debug-main-draw",
-                              [this](const Connection&, Arguments& arg) noexcept
+                              [this](const Connection&, Arguments&) noexcept
                               {
                                 debug_draw_ = !debug_draw_;
                               });
     
     holder_ += event_.connect("debug-shadowmap",
-                              [this](const Connection&, Arguments& arg) noexcept
+                              [this](const Connection&, Arguments&) noexcept
                               {
                                 disp_shadowmap_ = !disp_shadowmap_;
+                              });
+
+    holder_ += event_.connect("debug-score-test",
+                              [this](const Connection&, Arguments&) noexcept
+                              {
+                                ScoreTest test(event_, "game-2018-03-14_00-41-24.json");
+                                game_->testCalcResults(); 
+                              });
+
+    holder_ += event_.connect("Test:PutPanel",
+                              [this](const Connection&, Arguments& args) noexcept
+                              {
+                                auto panel    = boost::any_cast<int>(args.at("panel"));
+                                auto rotation = boost::any_cast<u_int>(args.at("rotation"));
+                                auto pos      = boost::any_cast<glm::ivec2>(args.at("pos"));
+
+                                game_->testPutPanel(pos, panel, rotation);
                               });
 #endif
     // 本編準備

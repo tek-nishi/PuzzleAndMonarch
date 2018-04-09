@@ -13,7 +13,8 @@
       [ "m", "debug-main-draw" ],
       [ "f", "debug-font" ],
       [ "s", "debug-settings" ],
-      [ "k", "debug-shadowmap" ]
+      [ "k", "debug-shadowmap" ],
+      [ "t", "debug-score-test" ]
     ]
   },
 
