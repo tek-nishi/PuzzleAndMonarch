@@ -26,7 +26,9 @@
 #define PREPRO_STR(value)    #value
 
 // セーブファイルの難読化
-#define OBFUSCATION_ARCHIVE
+// #define OBFUSCATION_ARCHIVE
+// ゲーム記録の難読化
+// #define OBFUSCATION_GAME_RECORD
 
 #if defined(CINDER_COCOA_TOUCH)
 

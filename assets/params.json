@@ -101,16 +101,14 @@
     "force_panel": 0,
     "test_score_": 100000,
 
+    "panel_rate": [ 1.7, 0.3 ],
     "score_rates": [
-      300,
-      100,
-      500,
-      150,
-      3000,
+      250,
+      1000,
       2000,
+      1000,
       5000
     ],
-    "panel_rate": [ 1.7, 0.3 ],
     "perfect_score_rate": 1.1,
 
     "ranking_scores": [

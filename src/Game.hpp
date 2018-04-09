@@ -382,7 +382,7 @@ struct Game
              ;
 
 
-#if defined(OBFUSCATION_ARCHIVE)
+#if defined(OBFUSCATION_GAME_RECORD)
     TextCodec::write((getDocumentPath() / name).string(), save_data.serialize());
 #else
     save_data.write(getDocumentPath() / name);
@@ -401,7 +401,7 @@ struct Game
     }
 
     ci::JsonTree json;
-#if defined(OBFUSCATION_ARCHIVE)
+#if defined(OBFUSCATION_GAME_RECORD)
     auto text = TextCodec::load(full_path.string());
     try
     {
@@ -640,27 +640,40 @@ private:
 
     // 道の計算
     // TIPS 長い道ほど指数関数的に得点が上がる
+    float path_score = 0;
     for (const auto path : completed_path)
     {
-      score += std::pow(float(path.size()), panel_rate.x) * panel_rate.y * score_rates[0];
+      path_score += std::pow(float(path.size()), panel_rate.x) * panel_rate.y * score_rates[0];
     }
-    // 全ての道パネル数
-    score += scores_[1] * score_rates[1];
+    score += path_score;
+    DOUT << "Path: " << path_score << std::endl;
 
     // 森の計算
-    // TIPS 長い道ほど指数関数的に得点が上がる
+    // TIPS 面積が大きいほど指数関数的に得点が上がる
+    float forest_score = 0;
     for (const auto forest : completed_forests)
     {
-      score += std::pow(float(forest.size()), panel_rate.x) * panel_rate.y * score_rates[2];
+      float s = std::pow(float(forest.size()), panel_rate.x) * panel_rate.y * score_rates[1];
+      forest_score += s;
+      DOUT << forest.size() << " : " << s << std::endl;
     }
-    // 全ての森パネル数
-    score += scores_[3] * score_rates[3];
+    score += forest_score;
+    DOUT << "Forest: " << forest_score << std::endl;
+
     // 深い森の数
-    score += scores_[4] * score_rates[4];
+    float df_score = scores_[4] * score_rates[2];
+    score += df_score;
+    DOUT << "Deep forest: " << df_score << std::endl;
+
     // 街の数
-    score += scores_[5] * score_rates[5];
+    float town_score = scores_[5] * score_rates[3];
+    score += town_score;
+    DOUT << "Town forest: " << town_score << std::endl;
+
     // 教会
-    score += scores_[6] * score_rates[6];
+    float church_score = scores_[6] * score_rates[4];
+    score += church_score;
+    DOUT << "Church: " << church_score << std::endl;
 
     // Perfect
     if (waiting_panels.empty())
