@@ -617,6 +617,10 @@ public:
     holder_ += event_.connect("debug-score-test",
                               [this](const Connection&, Arguments&) noexcept
                               {
+                                view_.clear();
+                                game_.reset();            // TIPS メモリを２重に確保したくないので先にresetする
+                                game_ = std::make_unique<Game>(params_["game"], event_, panels_);
+
                                 ScoreTest test(event_, "game-2018-03-14_00-41-24.json");
                                 game_->testCalcResults(); 
                               });

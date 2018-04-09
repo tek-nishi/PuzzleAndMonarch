@@ -666,7 +666,9 @@ private:
     float path_score = 0;
     for (const auto path : completed_path)
     {
-      path_score += std::pow(float(path.size()), panel_rate.x) * panel_rate.y * score_rates[0];
+      float s = std::pow(float(path.size()), panel_rate.x) * panel_rate.y * score_rates[0];
+      path_score += s;
+      DOUT << path.size() << " : " << s << std::endl;
     }
     score += path_score;
     DOUT << "Path: " << path_score << std::endl;

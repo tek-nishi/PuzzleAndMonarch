@@ -42,11 +42,31 @@ bool canPutPanel(const Panel& panel, const glm::ivec2& pos, u_int rotation, cons
 }
 
 
+// 調査済みエッジ
+struct CheckedEdge
+{
+  glm::ivec2 pos;
+  u_int direction;
+};
+
+bool isCheckedEdge(const glm::ivec2& pos, u_int direction, const std::vector<CheckedEdge>& checked)
+{
+  auto it = std::find_if(std::begin(checked), std::end(checked),
+                         [&pos, direction](const CheckedEdge& value)
+                         {
+                           return (value.pos == pos) && (value.direction == direction);
+                         });
+
+  return it != std::end(checked);
+}
+
+
 // パネル属性の端を調べる
 bool checkAttributeEdge(const glm::ivec2& pos, u_int direction,
                         u_int attribute,
                         const Field& field, const std::vector<Panel>& panels,
                         std::vector<glm::ivec2>& checked,
+                        std::vector<CheckedEdge>& checked_edge,
                         std::vector<glm::ivec2>& completed) noexcept
 {
   // パネルがない→閉じていない
@@ -57,9 +77,18 @@ bool checkAttributeEdge(const glm::ivec2& pos, u_int direction,
   const auto& panel  = panels[status.number];
   const auto edge    = panel.getRotatedEdge(status.rotation);
 
+  u_int dir = (direction + 2) % 4;
+
   // そこが端なら判定完了
-  if (edge[(direction + 2) % 4] & Panel::EDGE)
+  if (edge[dir] & Panel::EDGE)
   {
+    // 調査済みEdge
+    if (isCheckedEdge(pos, dir, checked_edge))
+    {
+      return false;
+    }
+
+    checked_edge.push_back({ pos, dir });
     completed.push_back(pos);
     return true;
   }
@@ -67,6 +96,7 @@ bool checkAttributeEdge(const glm::ivec2& pos, u_int direction,
   // 調査ずみ？
   if (std::find(std::begin(checked), std::end(checked), pos) != std::end(checked))
   {
+    // 調査続行
     return true;
   }
   checked.push_back(pos);
@@ -79,17 +109,16 @@ bool checkAttributeEdge(const glm::ivec2& pos, u_int direction,
     { -1,  0 },
   };
 
+  // NOTICE 必ず１編は同じ属性がある
   for (u_int i = 0; i < 4; ++i)
   {
     // 戻らない
-    if (i == ((direction + 2) % 4)) continue;
+    if (i == dir) continue;
+    if (!(edge[i] & attribute)) continue;
     
+    // その先が閉じているか調査
     auto p = pos + offsets[i];
-    if (edge[i] & attribute)
-    {
-      // その先が閉じているか調査
-      if (!checkAttributeEdge(p, i, attribute, field, panels, checked, completed)) return false;
-    }
+    if (!checkAttributeEdge(p, i, attribute, field, panels, checked, checked_edge, completed)) return false;
   }
 
   completed.push_back(pos);
@@ -117,7 +146,11 @@ std::vector<std::vector<glm::ivec2>> isCompleteAttribute(u_int attribute,
     if (edge[i] & attribute)
     {
       has_attr = true;
-      if (edge[i] & Panel::EDGE) has_edge = true;
+      if (edge[i] & Panel::EDGE)
+      {
+        has_edge = true;
+        break;
+      }
     }
   }
 
@@ -135,19 +168,23 @@ std::vector<std::vector<glm::ivec2>> isCompleteAttribute(u_int attribute,
   if (has_edge)
   {
     // 端を含んでいる→端ごとに調査
+    std::vector<CheckedEdge> checked_edge;
+
     for (u_int i = 0; i < 4; ++i)
     {
+      if (!(edge[i] & attribute)) continue;
+      if (isCheckedEdge(pos, i, checked_edge)) continue;
+
+      checked_edge.push_back({ pos, i });
+
+      // その先が閉じているか調査
+      std::vector<glm::ivec2> checked;
+      std::vector<glm::ivec2> comp;
       auto p = pos + offsets[i];
-      if (edge[i] & attribute)
+      if (checkAttributeEdge(p, i, attribute, field, panels, checked, checked_edge, comp))
       {
-        std::vector<glm::ivec2> checked;
-        std::vector<glm::ivec2> comp;
-        // その先が閉じているか調査
-        if (checkAttributeEdge(p, i, attribute, field, panels, checked, comp))
-        {
-          comp.push_back(pos);
-          completed.push_back(comp);
-        }
+        comp.push_back(pos);
+        completed.push_back(comp);
       }
     }
   }
@@ -155,6 +192,8 @@ std::vector<std::vector<glm::ivec2>> isCompleteAttribute(u_int attribute,
   {
     // 端を含んでいない→その先すべてで閉じていないとならない
     std::vector<glm::ivec2> checked;
+    std::vector<CheckedEdge> checked_edge;
+
     std::vector<glm::ivec2> comp;
     for (u_int i = 0; i < 4; ++i)
     {
@@ -168,7 +207,7 @@ std::vector<std::vector<glm::ivec2>> isCompleteAttribute(u_int attribute,
         // }
 
         // その先が閉じているか調査
-        if (!checkAttributeEdge(p, i, attribute, field, panels, checked, comp))
+        if (!checkAttributeEdge(p, i, attribute, field, panels, checked, checked_edge, comp))
         {
           // １つでも閉じていなければ調査完了
           return completed;

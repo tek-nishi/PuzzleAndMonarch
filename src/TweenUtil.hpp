@@ -36,7 +36,7 @@ void setupCommonTweens(Event<Arguments>& event, ConnectionHolder& holder, UI::Ca
     const auto& tn = tween_name[i];
 
     holder += event.connect(event_name + id,
-                            [&canvas, &tn](const Connection&, const Arguments& arg) noexcept
+                            [&canvas, tn](const Connection&, const Arguments& arg) noexcept
                             {
                               if (!arg.count("widget")) return;
 
@@ -65,7 +65,7 @@ void setupCommonTweens(Event<Arguments>& event, ConnectionHolder& holder, UI::Ca
   for (int i = 0; i < 4; ++i)
   {
     const auto& id = identifiers[i];
-    auto tn = tween_name + tname[i];
+    const auto& tn = tween_name + tname[i];
 
     holder += event.connect(event_name + id,
                             [&canvas, tn](const Connection&, const Arguments& arg) noexcept
