@@ -205,6 +205,8 @@ struct Game
     calcResults();
     DOUT << "Score: " << total_score << std::endl;
     DOUT << " Rank: " << total_ranking << std::endl;
+    
+    sendScores();
   }
 
 #endif
@@ -416,6 +418,10 @@ struct Game
 
   void load(const std::string& path)
   {
+#if defined (DEBUG)
+    game_path = path;
+#endif
+
     auto full_path = getDocumentPath() / path;
     if (!ci::fs::is_regular_file(full_path))
     {
@@ -424,7 +430,7 @@ struct Game
     }
 
     ci::JsonTree json;
-#if defined(OBFUSCATION_GAME_RECORD)
+#if defined (OBFUSCATION_GAME_RECORD)
     auto text = TextCodec::load(full_path.string());
     try
     {
@@ -483,27 +489,10 @@ struct Game
     // NOTICE 最初に置かれているパネルは除く
     total_panels = u_int(panels.size()) - 1;
 
-    {
-      // スコア情報は時間差で送信
-      updateScores();
-      calcResults();
-
-      double delay_time = params_.getValueForKey<double>("replay.score_delay");
-      count_exec_.add(delay_time,
-                      [this]() noexcept
-                      {
-                        Arguments args = {
-                          { "scores",        scores_ },
-                          { "total_score",   total_score },
-                          { "total_ranking", total_ranking },
-                          { "total_panels",  total_panels },
-
-                          { "panel_turned_times", panel_turned_times_ },
-                          { "panel_moved_times",  panel_moved_times_ },
-                        };
-                        event_.signal("Ranking:UpdateScores", args);
-                      });
-    }
+    // スコア情報は時間差で送信
+    updateScores();
+    calcResults();
+    sendScores();
   }
 
 
@@ -726,6 +715,27 @@ private:
     return ranking;
   }
 
+  // スコアを送信
+  void sendScores() noexcept
+  {
+    double delay_time = params_.getValueForKey<double>("replay.score_delay");
+    count_exec_.add(delay_time,
+                    [this]() noexcept
+                    {
+                      Arguments args = {
+                        { "scores",        scores_ },
+                        { "total_score",   total_score },
+                        { "total_ranking", total_ranking },
+                        { "total_panels",  total_panels },
+
+                        { "panel_turned_times", panel_turned_times_ },
+                        { "panel_moved_times",  panel_moved_times_ },
+                      };
+                      event_.signal("Ranking:UpdateScores", args);
+                    });
+  }
+
+
   // パネルを追加してイベント送信
   void putPanel(int panel, const glm::ivec2& pos, u_int rotation) noexcept
   {
@@ -762,7 +772,7 @@ private:
 
   double initial_play_time_;
   double play_time_;
-#ifdef DEBUG
+#if defined (DEBUG)
   bool time_count = true;
 #endif
 
@@ -795,6 +805,13 @@ private:
   u_int total_score   = 0;
   u_int total_ranking = 0;
   u_int total_panels  = 0;
+
+#if defined (DEBUG)
+public:
+  // 読み込んだパス
+  std::string game_path;
+#endif
+
 };
 
 }
