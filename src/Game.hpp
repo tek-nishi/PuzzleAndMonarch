@@ -248,18 +248,15 @@ struct Game
         u_int deep_num = 0;
         for (const auto& comp : completed)
         {
-          DOUT << " Point: " << comp.size() << '\n';
-
           // 深い森
-          bool deep = isDeepForest(comp, field, panels_);
-          if (deep)
-          {
-            deep_num += 1;
-          }
-          deep_forest.push_back(deep ? 1 : 0);
+          auto deep = countDeepForest(comp, field, panels_);
+          deep_num += deep;
+          deep_forest.push_back(deep);
+
+          DOUT << " Point: " << comp.size() << '\n';
+          DOUT << "  Deep: " << deep << '\n';
         }
-        DOUT << "  Deep: " << deep_num 
-             << std::endl;
+        DOUT << "Total Deep: " << deep_num << std::endl;
 
         appendContainer(completed, completed_forests);
 
@@ -629,7 +626,8 @@ private:
     scores_[1] = countTotalAttribute(completed_path, field, panels_);
     scores_[2] = int(completed_forests.size());
     scores_[3] = countTotalAttribute(completed_forests, field, panels_);
-    scores_[4] = int(std::count(std::begin(deep_forest), std::end(deep_forest), 1));
+    scores_[4] = int(std::count_if(std::begin(deep_forest), std::end(deep_forest),
+                                   [](int x) { return x > 0; }));
     scores_[5] = countTown(completed_path, field, panels_);
     scores_[6] = int(completed_church.size());
   }
@@ -665,19 +663,23 @@ private:
     // 森の計算
     // TIPS 面積が大きいほど指数関数的に得点が上がる
     float forest_score = 0;
+    size_t index = 0;
     for (const auto forest : completed_forests)
     {
-      float s = std::pow(float(forest.size()), panel_rate.x) * panel_rate.y * score_rates[1];
+      auto count = forest.size() + deep_forest[index] * score_rates[2];
+      float s = std::pow(float(count), panel_rate.x) * panel_rate.y * score_rates[1];
       forest_score += s;
-      DOUT << forest.size() << " : " << s << std::endl;
+      DOUT << forest.size() << "(" << deep_forest[index] << ") : " << s << std::endl;
+
+      ++index;
     }
     score += forest_score;
     DOUT << "Forest: " << forest_score << std::endl;
 
     // 深い森の数
-    float df_score = scores_[4] * score_rates[2];
-    score += df_score;
-    DOUT << "Deep forest: " << df_score << std::endl;
+    // float df_score = scores_[4] * score_rates[2];
+    // score += df_score;
+    // DOUT << "Deep forest: " << df_score << std::endl;
 
     // 街の数
     float town_score = scores_[5] * score_rates[3];

@@ -194,6 +194,8 @@ std::vector<std::vector<glm::ivec2>> isCompleteAttribute(u_int attribute,
     std::vector<glm::ivec2> checked;
     std::vector<CheckedEdge> checked_edge;
 
+    checked.push_back(pos);
+
     std::vector<glm::ivec2> comp;
     for (u_int i = 0; i < 4; ++i)
     {
@@ -284,18 +286,20 @@ std::vector<glm::ivec2> isCompleteChurch(const glm::ivec2& pos,
   return completed;
 }
 
-// 深い森を含むか調べる
-bool isDeepForest(const std::vector<glm::ivec2>& completed,
-                  const Field& field, const std::vector<Panel>& panels) noexcept
+// 深い森を数える
+u_int countDeepForest(const std::vector<glm::ivec2>& completed,
+                      const Field& field, const std::vector<Panel>& panels) noexcept
 {
+  u_int count = 0;
+
   for (const auto& pos : completed)
   {
     const auto& status = field.getPanelStatus(pos);
     const auto& panel  = panels[status.number];
-    if (panel.getAttribute() & Panel::DEEP_FOREST) return true;
+    if (panel.getAttribute() & Panel::DEEP_FOREST) ++count;
   }
 
-  return false;
+  return count;
 }
 
 
