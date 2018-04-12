@@ -429,7 +429,23 @@ public:
                                auto completed = boost::any_cast<std::vector<glm::ivec2>>(args.at("completed"));
                                for (const auto& p : completed)
                                {
-                                 view_.startEffect(p);
+                                 // 周囲８パネルも演出
+                                 static glm::ivec2 ofs[] = {
+                                   {  0,  0 },
+                                   { -1,  0 },
+                                   { -1,  1 },
+                                   {  0,  1 },
+                                   {  1,  1 },
+                                   {  1,  0 },
+                                   {  1, -1 },
+                                   {  0, -1 },
+                                   { -1, -1 }
+                                 };
+
+                                 for (const auto& o : ofs)
+                                 {
+                                   view_.startEffect(p + o);
+                                 }
                                }
                                game_event_.insert("Comp:church");
                              });

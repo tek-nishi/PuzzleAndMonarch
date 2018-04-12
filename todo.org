@@ -8,7 +8,6 @@
 * TODO iOS NightShiftモードの影響で処理速度が落ちる
 * TODO 記録を消す時の確認ダイアログ
 * TODO ソフトリセットでBG描画が乱れる
-* TODO 教会完成時の演出を派手に
 * TODO マーカーの黄色と赤が逆？
 * TODO MainPartのカメラを別クラスに
 * TODO Demoプレイ
@@ -45,6 +44,8 @@
 * TODO アプリアイコン
 * TODO iOS:GameCenter対応
 * TODO iOS:実績を実装
+* DONE 教会完成時の演出を派手に
+CLOSED: [2018-04-13 金 00:06]
 * DONE Ranking画面で記録から得点をやり直せるように
 CLOSED: [2018-04-11 Wed 00:21]
 * DONE 保存した記録から得点をやり直すテストを書く
