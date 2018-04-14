@@ -1,5 +1,4 @@
 * TODO チュートリアル
-* TODO Viewのイージングでポインタが迷子になっている
 * TODO 初心者は１万点、中級者は５万点、上級者は10万点を競えるバランスに
 * TODO 教会は宗教色が強いので別の名称にする
 * TODO 時々雲が斜めに横切るとかの演出が欲しい
@@ -15,7 +14,6 @@
 * TODO パネルのうらが真っ暗
 * TODO iPad:Shareのpopoverをボタン位置と合わせる
 * TODO tween中止
-* TODO 下の方のランクが出にくい
 * TODO iOS：基本図形描画のパフォーマンス調査
 * TODO VisualStudioでDEBUGが定義されていない疑惑
 * TODO msaa
@@ -43,6 +41,10 @@
 * TODO アプリアイコン
 * TODO iOS:GameCenter対応
 * TODO iOS:実績を実装
+* DONE 下の方のランクが出にくい
+CLOSED: [2018-04-14 Sat 16:18]
+* DONE Viewのイージングでポインタが迷子になっている
+CLOSED: [2018-04-14 Sat 16:10]
 * DONE 教会完成時の演出を派手に
 CLOSED: [2018-04-13 金 00:06]
 * DONE Ranking画面で記録から得点をやり直せるように

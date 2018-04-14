@@ -143,6 +143,30 @@ public:
       float far_z  = params.getValueForKey<float>("light.far_z"); 
       light_camera_.setPerspective(fov, shadow_fbo_->getAspectRatio(), near_z, far_z);
     }
+
+    for (const auto& cloud : params["cloud_models"])
+    {
+      const auto& p = cloud.getValue<std::string>();
+      cloud_models_.push_back(loadObj(p));
+    }
+
+    {
+      const auto x_pos = Json::getVec<glm::vec2>(params["cloud_pos"][0]);
+      const auto y_pos = Json::getVec<glm::vec2>(params["cloud_pos"][1]);
+      const auto z_pos = Json::getVec<glm::vec2>(params["cloud_pos"][2]);
+
+      auto num = params.getValueForKey<int>("cloud_num");
+      for (int i = 0; i < num; ++i)
+      {
+        clouds_.push_back({ ci::randFloat(x_pos.x, x_pos.y),
+                            ci::randFloat(y_pos.x, y_pos.y),
+                            ci::randFloat(z_pos.x, z_pos.y) });
+      }
+
+      cloud_scale_ = Json::getVec<glm::vec3>(params["cloud_scale"]);
+      cloud_speed_ = Json::getVec<glm::vec3>(params["cloud_speed"]);
+      cloud_area_  = params.getValueForKey<float>("cloud_area");
+    }
   }
 
   ~View() = default;
@@ -448,7 +472,8 @@ private:
   // OBJ形式を読み込む
   static ci::gl::VboMeshRef loadObj(const std::string& path) noexcept
   {
-    ci::ObjLoader loader(Asset::load(path));
+    // 面法線は無しで
+    ci::ObjLoader loader(Asset::load(path), false);
     auto mesh = ci::gl::VboMesh::create(ci::TriMesh(loader));
 
     return mesh;
@@ -537,6 +562,9 @@ private:
       auto pos = panel_disp_pos_() + glm::vec3(0, height_offset_, 0);
       drawPanel(info.panel_index, pos, info.panel_rotation, rotate_offset_);
     }
+
+    // 雲
+    drawClouds();
 
     // Disable polygon offset for final render
     ci::gl::disable(GL_POLYGON_OFFSET_FILL);
@@ -701,6 +729,30 @@ private:
     }
   }
 
+  // 雲
+  void drawClouds()
+  {
+    ci::gl::ScopedModelMatrix m;
+
+    size_t i = 0;
+    for (auto& pos : clouds_)
+    {
+      pos += cloud_speed_;
+
+      if (pos.x >  cloud_area_) pos.x -= cloud_area_ * 2;
+      if (pos.x < -cloud_area_) pos.x += cloud_area_ * 2;
+      if (pos.z >  cloud_area_) pos.z -= cloud_area_ * 2;
+      if (pos.z < -cloud_area_) pos.z += cloud_area_ * 2;
+
+      auto mtx = glm::translate(pos) * glm::scale(cloud_scale_);
+      ci::gl::setModelMatrix(mtx);
+      ci::gl::draw(cloud_models_[i % cloud_models_.size()]);
+      ++i;
+    }
+  }
+
+
+
 
   // パネル
   std::vector<std::string> panel_path;
@@ -810,6 +862,15 @@ private:
 
   // FIXME 途中の削除が多いのでvectorは向いていない??
   std::list<Effect> effects_;
+
+
+  // 雲演出
+  std::vector<ci::gl::VboMeshRef> cloud_models_;
+  std::vector<glm::vec3> clouds_;
+  glm::vec3 cloud_scale_;
+  glm::vec3 cloud_speed_;
+  float cloud_area_;
+
 
   // Tween用
   ci::TimelineRef timeline_;

@@ -321,7 +321,19 @@
     "bg_scale":   [ 250, 1, 250 ],
     "bg_texture": "ground.png",
     "bg_bright":  [ 0.6, 0.6, 0.6, 1 ],
-    "bg_dark":    [ 0.25, 0.25, 0.25, 1 ]
+    "bg_dark":    [ 0.25, 0.25, 0.25, 1 ],
+
+    "cloud_models": [
+      "cloud1.obj", 
+      "cloud2.obj", 
+      "cloud3.obj" 
+    ],
+
+    "cloud_num": 10,
+    "cloud_pos": [ [ -200, 200 ], [ 50, 60 ], [ -200, 200 ] ],
+    "cloud_scale": [ 50, 1, 50 ],
+    "cloud_speed": [ 0.05, 0, 0.05 ],
+    "cloud_area": 250 
   },
 
   "ui": {
