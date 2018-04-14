@@ -140,9 +140,9 @@ public:
                               });
 
     holder_ += event_.connect("Game:UpdateScores",
-                              [this](const Connection&, const Arguments& args) noexcept
+                              [this](const Connection&, const Arguments& args)
                               {
-                                const auto& scores = boost::any_cast<std::vector<u_int>>(args.at("scores"));
+                                const auto& scores = boost::any_cast<const std::vector<u_int>&>(args.at("scores"));
                                 updateScores(scores);
                               });
 
@@ -221,8 +221,9 @@ private:
   // 得点時の演出準備
   void setupScores(const ci::JsonTree& params) noexcept
   {
-    const auto& score_rates = params["game.score_rates"];
-    auto num = score_rates.getNumChildren();
+    // FIXME Canvasのレイアウトから数を特定している
+    const auto& widget = canvas_.at("scores");
+    auto num = widget->getChildNum() / 2;
     scores_.resize(num);
     std::fill(std::begin(scores_), std::end(scores_), u_int(0));
 
@@ -230,7 +231,7 @@ private:
     std::fill(std::begin(scores_color_), std::end(scores_color_), ci::Color::white());
   }
 
-  void updateScores(const std::vector<u_int>& scores) noexcept
+  void updateScores(const std::vector<u_int>& scores)
   {
     int i = 0;
     for (auto score : scores)

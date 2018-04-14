@@ -73,6 +73,11 @@ public:
     return !children_.empty();
   }
 
+  size_t getChildNum() const
+  {
+    return children_.size();
+  }
+
   void addChildren(const WidgetPtr& widget) noexcept
   {
     children_.push_back(widget);
