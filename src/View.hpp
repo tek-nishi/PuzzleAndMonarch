@@ -380,7 +380,7 @@ public:
     {
       timeline_->removeTarget(&panel.position);
 
-      // Blank Panel出現演出
+      // Blank Panel消滅演出
       timeline_->applyPtr(&panel.position,
                           panel.position + blank_disappear_pos_,
                           blank_disappear_duration_, getEaseFunc(blank_disappear_ease_));
@@ -390,7 +390,7 @@ public:
                    {
                      blank_panels_.clear();
                    },
-                   timeline_->getCurrentTime() + blank_appear_duration_ + 0.1f);
+                   timeline_->getCurrentTime() + blank_disappear_duration_ + 0.1f);
   }
 
 
