@@ -313,7 +313,7 @@
     "field_shader": "field",
     "shadow_shader": "shadow",
     "shadow_map": [ 1024, 1024 ],
-    "shadow_intensity": 0.7,
+    "shadow_intensity": 0.75,
     "polygon_offset": [ 1, 4.5 ],
 
     "bg_shader":  "bg",
@@ -330,10 +330,12 @@
     ],
 
     "cloud_num": 10,
-    "cloud_pos": [ [ -200, 200 ], [ 50, 60 ], [ -200, 200 ] ],
-    "cloud_scale": [ 50, 1, 50 ],
-    "cloud_speed": [ 0.05, 0, 0.05 ],
-    "cloud_area": 250 
+    "cloud_pos": [ [ -180, 180 ], [ 50, 50 ], [ -180, 180 ] ],
+    "cloud_scale": [ 40, 1, 40 ],
+    "cloud_dir": [ 0.5, 0, 0.4 ],
+    "cloud_speed": [ 10, 20 ],
+    "cloud_area": 250,
+    "cloud_disp": false
   },
 
   "ui": {

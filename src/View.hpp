@@ -151,22 +151,31 @@ public:
     }
 
     {
-      const auto x_pos = Json::getVec<glm::vec2>(params["cloud_pos"][0]);
-      const auto y_pos = Json::getVec<glm::vec2>(params["cloud_pos"][1]);
-      const auto z_pos = Json::getVec<glm::vec2>(params["cloud_pos"][2]);
+      auto x_pos = Json::getVec<glm::vec2>(params["cloud_pos"][0]);
+      auto y_pos = Json::getVec<glm::vec2>(params["cloud_pos"][1]);
+      auto z_pos = Json::getVec<glm::vec2>(params["cloud_pos"][2]);
+
+      auto dir   = glm::normalize(Json::getVec<glm::vec3>(params["cloud_dir"]));
+      auto speed = Json::getVec<glm::vec2>(params["cloud_speed"]);
 
       auto num = params.getValueForKey<int>("cloud_num");
       for (int i = 0; i < num; ++i)
       {
-        clouds_.push_back({ ci::randFloat(x_pos.x, x_pos.y),
-                            ci::randFloat(y_pos.x, y_pos.y),
-                            ci::randFloat(z_pos.x, z_pos.y) });
+        glm::vec3 p { ci::randFloat(x_pos.x, x_pos.y),
+                      ci::randFloat(y_pos.x, y_pos.y),
+                      ci::randFloat(z_pos.x, z_pos.y) };
+        auto v = dir * ci::randFloat(speed.x, speed.y);
+
+        clouds_.push_back({ p, v });
       }
 
       cloud_scale_ = Json::getVec<glm::vec3>(params["cloud_scale"]);
-      cloud_speed_ = Json::getVec<glm::vec3>(params["cloud_speed"]);
       cloud_area_  = params.getValueForKey<float>("cloud_area");
     }
+
+#if defined (DEBUG)
+    disp_cloud_ = Json::getValue(params, "cloud_disp", false);
+#endif
   }
 
   ~View() = default;
@@ -178,6 +187,8 @@ public:
     put_gauge_timer_ += delta_time;
     force_timeline_->step(delta_time);
     transition_timeline_->step(delta_time);
+
+    updateClouds(delta_time);
 
     if (game_paused) return;
 
@@ -608,6 +619,9 @@ private:
 
     drawFieldBg(info.bg_pos);
     drawEffect();
+#if defined (DEBUG)
+    if (disp_cloud_) drawClouds();
+#endif
   }
   
   // パネルを１枚表示
@@ -730,14 +744,23 @@ private:
   }
 
   // 雲
+  void updateClouds(double delta_time)
+  {
+    for (auto& c : clouds_)
+    {
+      auto& pos = c.first;
+      pos += c.second * float(delta_time);
+    }
+  }
+
   void drawClouds()
   {
     ci::gl::ScopedModelMatrix m;
 
     size_t i = 0;
-    for (auto& pos : clouds_)
+    for (auto& c : clouds_)
     {
-      pos += cloud_speed_;
+      auto& pos = c.first;
 
       if (pos.x >  cloud_area_) pos.x -= cloud_area_ * 2;
       if (pos.x < -cloud_area_) pos.x += cloud_area_ * 2;
@@ -866,9 +889,8 @@ private:
 
   // 雲演出
   std::vector<ci::gl::VboMeshRef> cloud_models_;
-  std::vector<glm::vec3> clouds_;
+  std::vector<std::pair<glm::vec3, glm::vec3>> clouds_;
   glm::vec3 cloud_scale_;
-  glm::vec3 cloud_speed_;
   float cloud_area_;
 
 
@@ -878,6 +900,11 @@ private:
   ci::TimelineRef force_timeline_;
   // リセットされたくない
   ci::TimelineRef transition_timeline_;
+
+
+#if defined (DEBUG)
+  bool disp_cloud_ = false;
+#endif
 };
 
 
