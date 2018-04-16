@@ -324,16 +324,19 @@
     "bg_dark":    [ 0.25, 0.25, 0.25, 1 ],
 
     "cloud_models": [
-      "cloud1.obj", 
-      "cloud2.obj", 
-      "cloud3.obj" 
+      "cloud_t1.obj", 
+      "cloud_t2.obj", 
+      "cloud_t3.obj",
+      "cloud_t4.obj" 
     ],
+    "cloud_texture": "clouds.png",
+    "cloud_shader": "shadow_tex",
 
     "cloud_num": 10,
     "cloud_pos": [ [ -180, 180 ], [ 50, 50 ], [ -180, 180 ] ],
-    "cloud_scale": [ 40, 1, 40 ],
+    "cloud_scale": [ 300, 1, 300 ],
     "cloud_dir": [ 0.5, 0, 0.4 ],
-    "cloud_speed": [ 10, 20 ],
+    "cloud_speed": [ 5, 10 ],
     "cloud_area": 250,
     "cloud_disp": false
   },

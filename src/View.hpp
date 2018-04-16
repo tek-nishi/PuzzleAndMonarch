@@ -172,6 +172,15 @@ public:
       cloud_scale_ = Json::getVec<glm::vec3>(params["cloud_scale"]);
       cloud_area_  = params.getValueForKey<float>("cloud_area");
     }
+    {
+      auto name = params.getValueForKey<std::string>("cloud_shader");
+      cloud_shader_ = createShader(name, name);
+    }
+    {
+      auto format = ci::gl::Texture2d::Format();   // .minFilter(GL_NEAREST).magFilter(GL_NEAREST);
+      cloud_texture_ = ci::gl::Texture2d::create(ci::loadImage(Asset::load(params.getValueForKey<std::string>("cloud_texture"))),
+                                                 format);
+    }
 
 #if defined (DEBUG)
     disp_cloud_ = Json::getValue(params, "cloud_disp", false);
@@ -755,6 +764,8 @@ private:
 
   void drawClouds()
   {
+    ci::gl::ScopedGlslProg prog(cloud_shader_);
+    ci::gl::ScopedTextureBind tex(cloud_texture_);
     ci::gl::ScopedModelMatrix m;
 
     size_t i = 0;
@@ -889,6 +900,8 @@ private:
 
   // 雲演出
   std::vector<ci::gl::VboMeshRef> cloud_models_;
+  ci::gl::Texture2dRef cloud_texture_;
+  ci::gl::GlslProgRef cloud_shader_;
   std::vector<std::pair<glm::vec3, glm::vec3>> clouds_;
   glm::vec3 cloud_scale_;
   float cloud_area_;
