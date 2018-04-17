@@ -5,6 +5,7 @@
 //
 
 #include <random>
+#include <numeric>
 #include <boost/noncopyable.hpp>
 #include <cinder/Rand.h>
 #include "Logic.hpp"
