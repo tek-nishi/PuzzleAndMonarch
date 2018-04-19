@@ -19,6 +19,7 @@
 #include "View.hpp"
 #include "Shader.hpp"
 #include "Camera.hpp"
+#include "FieldCamera.hpp"
 #include "ConnectionHolder.hpp"
 #include "Task.hpp"
 #include "CountExec.hpp"
@@ -44,14 +45,7 @@ public:
       panels_(createPanels()),
       game_(std::make_unique<Game>(params["game"], event, panels_)),
       draged_max_length_(params.getValueForKey<float>("field.draged_max_length")),
-      camera_rotation_(toRadians(Json::getVec<glm::vec2>(params["field.camera.rotation"]))),
-      camera_distance_(params.getValueForKey<float>("field.camera.distance")),
-      camera_distance_range_(Json::getVec<glm::vec2>(params["field.camera_distance_range"])),
-      target_rate_(Json::getVec<glm::vec2>(params["field.target_rate"])),
-      distance_rate_(Json::getVec<glm::vec2>(params["field.distance_rate"])),
       camera_(params["field.camera"]),
-      target_position_(Json::getVec<glm::vec3>(params["field.target_position"])),
-      field_center_(target_position_),
       panel_height_(params.getValueForKey<float>("field.panel_height")),
       putdown_time_(Json::getVec<glm::vec2>(params["field.putdown_time"])),
       bg_height_(params_.getValueForKey<float>("field.bg_height")),
@@ -61,13 +55,8 @@ public:
       transition_color_(Json::getColorA<float>(params["ui.transition.color"])),
       rotate_camera_(event, params["field"], std::bind(&MainPart::rotateCamera, this, std::placeholders::_1))
   {
-    initial_camera_rotation_ = camera_rotation_;
-    initial_camera_distance_ = camera_distance_;
-    initial_target_position_ = target_position_;
-
     // フィールドカメラ
     calcCamera(camera_.body());
-    field_distance_ = camera_distance_;
 
     // system
     holder_ += event_.connect("resize",
@@ -1286,6 +1275,7 @@ private:
   CountExec count_exec_;
   FixedTimeExec fixed_exec_;
 
+  // プレイ記録 
   Archive& archive_;
 
   bool paused_ = false;
@@ -1317,31 +1307,6 @@ private:
   glm::ivec2 field_pos_;
   // 配置可能
   bool can_put_ = false;
-
-  // カメラ関連
-  glm::vec2 camera_rotation_;
-  float camera_distance_;
-  glm::vec3 target_position_;
-  glm::vec3 eye_position_;
-
-  // ピンチング操作時の距離の範囲
-  glm::vec2 camera_distance_range_;
-
-  // 距離を調整するための係数
-  glm::vec2 target_rate_;
-  glm::vec2 distance_rate_;
-  // カメラ計算を優先
-  bool force_camera_ = false;
-
-  // Fieldの中心座標
-  glm::vec3 map_center_;
-  glm::vec3 field_center_;
-  float field_distance_ = 0.0f;
-
-  // カメラを初期状態に戻すための変数
-  glm::vec2 initial_camera_rotation_;
-  float initial_camera_distance_;
-  glm::vec3 initial_target_position_;
 
   // 地面の高さ 
   float bg_height_;

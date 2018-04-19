@@ -15,7 +15,6 @@
 * TODO iPad:Shareのpopoverをボタン位置と合わせる
 * TODO tween中止
 * TODO iOS：基本図形描画のパフォーマンス調査
-* TODO VisualStudioでDEBUGが定義されていない疑惑
 * TODO msaa
 * TODO ローカライズ
 * TODO 道がわかりずらい
@@ -42,6 +41,8 @@
 * TODO アプリアイコン
 * TODO iOS:GameCenter対応
 * TODO iOS:実績を実装
+* DONE VisualStudioでDEBUGが定義されていない疑惑
+CLOSED: [2018-04-17 Tue 17:51]
 * DONE 下の方のランクが出にくい
 CLOSED: [2018-04-14 Sat 16:18]
 * DONE Viewのイージングでポインタが迷子になっている
