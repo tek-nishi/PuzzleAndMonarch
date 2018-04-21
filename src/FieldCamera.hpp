@@ -20,12 +20,12 @@ public:
       distance_range_(Json::getVec<glm::vec2>(params["field.camera_distance_range"])),
       target_rate_(Json::getVec<glm::vec2>(params["field.target_rate"])),
       distance_rate_(Json::getVec<glm::vec2>(params["field.distance_rate"])),
-      initial_rotation_(rotation_),
-      initial_distance_(distance_),
-      initial_position_(target_position_),
       field_center_(target_position_),
       field_distance_(distance_),
-      map_center_(field_center_)
+      map_center_(field_center_),
+      initial_rotation_(rotation_),
+      initial_distance_(distance_),
+      initial_target_position_(target_position_)
   {
   }
 
@@ -34,6 +34,8 @@ public:
 
   void update(double delta_time)
   {
+    target_position_ += (field_center_ - target_position_) * 0.025f;
+    distance_ += (field_distance_ - distance_) * 0.05f;
   }
 
 
@@ -41,6 +43,8 @@ public:
   void resetAll() noexcept
   {
     force_camera_ = false;
+
+    reset();
 
     rotation_ = initial_rotation_;
     distance_ = initial_distance_;
@@ -55,9 +59,42 @@ public:
   }
 
 
-  void addYaw(float yaw) noexcept
+  void rotate(glm::vec3 pos, glm::vec3 prev_pos)
   {
-    rotation_.y += yaw;
+    pos      = glm::normalize(pos - target_position_);
+    prev_pos = glm::normalize(prev_pos - target_position_);
+
+    // 外積から回転量が決まる
+    float cross = prev_pos.x * pos.z - prev_pos.z * pos.x;
+    rotation_.y += std::asin(cross);
+  }
+
+  void addYaw(float r)
+  {
+    rotation_.y += r;
+  }
+
+
+  // 距離設定
+  void setDistance(float rate)
+  {
+    distance_ = ci::clamp(distance_ / rate,
+                          distance_range_.x, distance_range_.y);
+    field_distance_ = distance_;
+  }
+
+  // 平行移動
+  void setTranslate(const glm::vec3& v, ci::CameraPersp& camera)
+  {
+    target_position_ += v;
+    field_center_ = target_position_;
+    eye_position_ += v;
+    camera.setEyePoint(eye_position_);
+  }
+
+  void force(bool value)
+  {
+    force_camera_ = value;
   }
 
 
@@ -66,48 +103,29 @@ public:
   {
     map_center_ = center;
 
-    {
-      // ある程度の範囲が変更対象
-      auto d = glm::distance(map_center_, target_position_);
-      // 見た目の距離に変換
-      auto dd = d / distance_;
-      DOUT << "target_rate: " << dd << std::endl;
-      if ((dd > target_rate_.x) && (dd < target_rate_.y))
-      {
-        field_center_.x = map_center_.x;
-        field_center_.z = map_center_.z;
-      }
-    }
+    field_center_.x = map_center_.x;
+    field_center_.z = map_center_.z;
     
     float fov = camera.getFov();
-    float distance = center / std::tan(ci::toRadians(fov * 0.5f));
+    float distance = radius / std::tan(ci::toRadians(fov * 0.5f));
 
-    {
-      // カメラが斜め上から見下ろしているのを考慮
-      float n = d / std::cos(camera_rotation_.x);
-      distance -= n;
-    }
+    // カメラが斜め上から見下ろしているのを考慮
+    float n = radius / std::cos(rotation_.x);
+    distance -= n;
 
-    {
-      // 一定値以上遠のく場合は「ユーザー操作で意図的に離れている」
-      // と判断する
-      auto rate = distance / distance_;
-      DOUT << "distace_rate: " << rate << std::endl;
-      // if ((rate > distance_rate_.x) && (rate < distance_rate_.y))
-      {
-        field_distance_ = ci::clamp(distance,
-                                    distance_range_.x, distance_range_.y);
-      }
-    }
+    field_distance_ = ci::clamp(distance,
+                                distance_range_.x, distance_range_.y);
 
+#if 0
     // 強制モード
     if (force_camera_)
     {
       field_center_.x = map_center_.x;
       field_center_.z = map_center_.z;
-      field_distance_ = ci::clamp(distance, 
-                                  distance_range_.x, distance_range_.y);
+
+      DOUT << "field_distance: " << field_distance_ << std::endl;
     }
+#endif
   }
 
 
@@ -141,16 +159,16 @@ private:
   // カメラ計算を優先
   bool force_camera_ = false;
 
-  // カメラを初期状態に戻すための変数
-  glm::vec2 initial_rotation_;
-  float initial_distance_;
-  glm::vec3 initial_target_position_;
-
   // Fieldの中心座標
   glm::vec3 field_center_;
   float field_distance_;
 
   glm::vec3 map_center_;
+
+  // カメラを初期状態に戻すための変数
+  glm::vec2 initial_rotation_;
+  float initial_distance_;
+  glm::vec3 initial_target_position_;
 
 };
 

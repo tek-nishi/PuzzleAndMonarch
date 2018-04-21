@@ -45,6 +45,7 @@ public:
       panels_(createPanels()),
       game_(std::make_unique<Game>(params["game"], event, panels_)),
       draged_max_length_(params.getValueForKey<float>("field.draged_max_length")),
+      field_camera_(params),
       camera_(params["field.camera"]),
       panel_height_(params.getValueForKey<float>("field.panel_height")),
       putdown_time_(Json::getVec<glm::vec2>(params["field.putdown_time"])),
@@ -56,7 +57,7 @@ public:
       rotate_camera_(event, params["field"], std::bind(&MainPart::rotateCamera, this, std::placeholders::_1))
   {
     // フィールドカメラ
-    calcCamera(camera_.body());
+    field_camera_.applyDetail(camera_.body(), view_);
 
     // system
     holder_ += event_.connect("resize",
@@ -161,7 +162,6 @@ public:
 
                                 // Field回転操作
                                 rotateField(touch);
-                                calcCamera(camera_.body());
                               });
 
     holder_ += event_.connect("single_touch_ended",
@@ -239,10 +239,8 @@ public:
                                   {
                                     // ピンチング
                                     float n = l0 / l1;
-                                    camera_distance_ = ci::clamp(camera_distance_ / n,
-                                                                 camera_distance_range_.x, camera_distance_range_.y);
-                                    calcCamera(camera);
-                                    field_distance_ = camera_distance_;
+                                    field_camera_.setDistance(n);
+                                    field_camera_.applyDetail(camera_.body(), view_);
                                   }
                                   if (dot > 0.0f)
                                   {
@@ -264,10 +262,7 @@ public:
                                     auto v = p2 - p1;
                                     v.y = 0;
 
-                                    target_position_ += v;
-                                    field_center_ = target_position_;
-                                    eye_position_ += v;
-                                    camera.setEyePoint(eye_position_);
+                                    field_camera_.setTranslate(v, camera_.body());
                                   }
                                 }
                               });
@@ -286,14 +281,9 @@ public:
                                                   view_.setColor(transition_duration_, ci::ColorA::white());
                                                 });
 
-                                field_distance_ = initial_camera_distance_;
-                                field_center_   = initial_target_position_;
-                                // auto option = timeline_->applyPtr(&camera_rotation_,
-                                //                                   initial_camera_rotation_, 0.8, getEaseFunc("OutCubic"));
-                                // option.finishFn([this]() noexcept
-                                //                 {
-                                //                   prohibited_ = false;
-                                //                 });
+                                // カメラ設定初期化
+                                field_camera_.reset();
+
                                 prohibited_ = true;
                                 count_exec_.add(1.0,
                                                 [this]() noexcept
@@ -321,7 +311,7 @@ public:
                                                 [this]() noexcept
                                                 {
                                                   resetGame();
-                                                  resetCamera();
+                                                  field_camera_.resetAll();
                                                 },
                                                 true);
                               });
@@ -345,7 +335,8 @@ public:
                               {
                                 DOUT << "Game:Finish" << std::endl;
 
-                                force_camera_ = true;
+                                field_camera_.force(true);
+
                                 prohibited_   = true;
                                 manipulated_  = false;
                                 game_event_.insert("Game:finish");
@@ -378,7 +369,7 @@ public:
                                 count_exec_.add(params_.getValueForKey<double>("field.auto_camera_duration"),
                                                 [this]() noexcept
                                                 {
-                                                  force_camera_ = false;
+                                                  field_camera_.force(false);
                                                   prohibited_   = false;
                                                 });
                               });
@@ -455,7 +446,7 @@ public:
                                                   [this]() noexcept
                                                   {
                                                     resetGame();
-                                                    resetCamera();
+                                                    field_camera_.resetAll();
                                                   },
                                                   true);
                                 }
@@ -502,7 +493,7 @@ public:
                                                 [this]() noexcept
                                                 {
                                                   resetGame();
-                                                  resetCamera();
+                                                  field_camera_.resetAll();
                                                 });
                               });
 
@@ -671,9 +662,8 @@ private:
     fixed_exec_.update(delta_time);
 
     // カメラの中心位置変更
-    target_position_ += (field_center_ - target_position_) * 0.025f;
-    camera_distance_ += (field_distance_ - camera_distance_) * 0.05f;
-    calcCamera(camera_.body());
+    field_camera_.update(delta_time);
+    field_camera_.applyDetail(camera_.body(), view_);
 
     if (game_->isPlaying())
     {
@@ -859,16 +849,6 @@ private:
 #endif
   }
   
-  void calcCamera(ci::CameraPersp& camera) noexcept
-  {
-    glm::quat q(glm::vec3{ camera_rotation_.x, camera_rotation_.y, 0 });
-    glm::vec3 p = q * glm::vec3{ 0, 0, -camera_distance_ };
-    camera.lookAt(p + target_position_, target_position_);
-    eye_position_ = camera.getEyePoint();
-
-    view_.setupShadowCamera(map_center_);
-  }
-
 
   // タッチ位置からField上の升目座標を計算する
   std::tuple<bool, glm::ivec2, ci::Ray> calcGridPos(const glm::vec2& pos) const noexcept
@@ -929,56 +909,9 @@ private:
   void calcViewRange(bool blank) noexcept
   {
     auto result = game_->getFieldCenterAndDistance(blank);
-
-    map_center_ = result.first * float(PANEL_SIZE);
-
-    {
-      // ある程度の範囲が変更対象
-      auto d = glm::distance(map_center_, target_position_);
-      // 見た目の距離に変換
-      auto dd = d / camera_distance_;
-      DOUT << "target_rate: " << dd << std::endl;
-      if ((dd > target_rate_.x) && (dd < target_rate_.y))
-      {
-        field_center_.x = map_center_.x;
-        field_center_.z = map_center_.z;
-      }
-    }
-    
-    auto d = result.second * PANEL_SIZE;
-    const auto& camera = camera_.body();
-    float fov_v = camera.getFov();
-    float fov_h = camera.getFovHorizontal();
-    float fov = (fov_v < fov_h) ? fov_v : fov_h;
-    float distance = d / std::tan(ci::toRadians(fov * 0.5f));
-
-    if (fov_v < fov_h)
-    {
-      // 横長画面の場合はカメラが斜め上から見下ろしているのを考慮
-      float n = d / std::cos(camera_rotation_.x);
-      distance -= n;
-    }
-
-    {
-      // 一定値以上遠のく場合は「ユーザー操作で意図的に離れている」
-      // と判断する
-      auto rate = distance / camera_distance_;
-      DOUT << "distace_rate: " << rate << std::endl;
-      if ((rate > distance_rate_.x) && (rate < distance_rate_.y))
-      {
-        field_distance_ = ci::clamp(distance,
-                                    camera_distance_range_.x, camera_distance_range_.y);
-      }
-    }
-
-    // 強制モード
-    if (force_camera_)
-    {
-      field_center_.x = map_center_.x;
-      field_center_.z = map_center_.z;
-      field_distance_ = ci::clamp(distance, 
-                                  camera_distance_range_.x, camera_distance_range_.y);
-    }
+    auto center = result.first * float(PANEL_SIZE);
+    auto radius = result.second * float(PANEL_SIZE);
+    field_camera_.calcViewRange(center, radius, camera_);
   }
 
   // Touch座標→Field上の座標
@@ -1003,16 +936,8 @@ private:
     auto pos      = calcTouchPos(touch.pos);
     auto prev_pos = calcTouchPos(touch.prev_pos);
 
-    pos      -= target_position_;
-    prev_pos -= target_position_;
-
-    // 正規化
-    pos      = glm::normalize(pos);
-    prev_pos = glm::normalize(prev_pos);
-
-    // 外積から回転量が決まる
-    float cross = prev_pos.x * pos.z - prev_pos.z * pos.x;
-    camera_rotation_.y += std::asin(cross);
+    field_camera_.rotate(pos, prev_pos);
+    field_camera_.applyDetail(camera_.body(), view_);
   }
 
   // 次のパネルの出現位置を決める
@@ -1057,9 +982,6 @@ private:
     game_.reset();            // TIPS メモリを２重に確保したくないので先にresetする
     game_ = std::make_unique<Game>(params_["game"], event_, panels_);
     game_->preparationPlay();
-                                                  
-    field_center_   = initial_target_position_;
-    field_distance_ = initial_camera_distance_;
   }
 
   // カメラから見える範囲のBGを計算
@@ -1072,16 +994,6 @@ private:
     float z;
     ray.calcPlaneIntersection(glm::vec3(0, bg_height_, 0), glm::vec3(0, 1, 0), &z);
     return ray.calcPosition(z);
-  }
-
-  // カメラリセット
-  void resetCamera() noexcept
-  {
-    force_camera_ = false;
-
-    camera_rotation_ = initial_camera_rotation_;
-    camera_distance_ = initial_camera_distance_;
-    target_position_ = initial_target_position_;
   }
 
 
@@ -1237,14 +1149,14 @@ private:
   // 自動で回転するカメラ
   void rotateCamera(float delta_angle) noexcept
   {
-    camera_rotation_.y += delta_angle;
-    calcCamera(camera_.body());
+    field_camera_.addYaw(delta_angle);
+    field_camera_.applyDetail(camera_.body(), view_);
   }
 
   // 過去の記録を読み込む
   void loadGameResult(int rank)
   {
-    force_camera_ = true;
+    field_camera_.force(true);
     manipulated_  = false;
 
     {
@@ -1260,7 +1172,7 @@ private:
     count_exec_.add(params_.getValueForKey<double>("field.auto_camera_duration"),
                     [this]() noexcept
                     {
-                      force_camera_ = false;
+                      field_camera_.force(false);
                     });
   }
 
@@ -1310,6 +1222,8 @@ private:
 
   // 地面の高さ 
   float bg_height_;
+
+  FieldCamera field_camera_;
 
   // 表示
   Camera camera_;
