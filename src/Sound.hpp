@@ -152,7 +152,6 @@ public:
     {
       const auto& path = p.getValueForKey<std::string>("path");
       auto source = ci::audio::load(Asset::load(path), ctx->getSampleRate());
-      source->setMaxFramesPerRead(8192);
 
       const auto& type = p.getValueForKey<std::string>("type");
       auto node = funcs.at(type)(ctx, source);

@@ -16,7 +16,9 @@ bool canPost() noexcept
 
 static NSString* createString(const std::string& text) noexcept
 {
-  return [[[NSString alloc] initWithCString:text.c_str() encoding:NSUTF8StringEncoding] autorelease];
+  return [[[NSString alloc]
+              initWithCString:text.c_str()
+              encoding:NSUTF8StringEncoding] autorelease];
 }
 
   
