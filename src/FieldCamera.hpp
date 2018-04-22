@@ -18,6 +18,7 @@ public:
       distance_(params.getValueForKey<float>("camera.distance")),
       target_position_(Json::getVec<glm::vec3>(params["target_position"])),
       distance_range_(Json::getVec<glm::vec2>(params["camera_distance_range"])),
+      ease_rate_(params.getValueForKey<double>("camera_ease_rate")),
       target_rate_(Json::getVec<glm::vec2>(params["target_rate"])),
       distance_rate_(Json::getVec<glm::vec2>(params["distance_rate"])),
       field_center_(target_position_),
@@ -34,8 +35,8 @@ public:
 
   void update(double delta_time)
   {
-    target_position_ += (field_center_ - target_position_) * 0.025f;
-    distance_ += (field_distance_ - distance_) * 0.05f;
+    target_position_ += (field_center_ - target_position_) * float(1 - std::pow(ease_rate_, delta_time));
+    distance_ += (field_distance_ - distance_) * float(1 - std::pow(ease_rate_, delta_time));
   }
 
 
@@ -69,7 +70,7 @@ public:
     rotation_.y += std::asin(cross);
   }
 
-  void addYaw(float r)
+  void addYaw(float r) noexcept
   {
     rotation_.y += r;
   }
@@ -92,7 +93,7 @@ public:
     camera.setEyePoint(eye_position_);
   }
 
-  void force(bool value)
+  void force(bool value) noexcept
   {
     force_camera_ = value;
   }
@@ -141,6 +142,7 @@ public:
 
 
 private:
+  // 向きと注視点からの距離
   glm::vec2 rotation_;
   float distance_;
 
@@ -154,7 +156,10 @@ private:
   glm::vec2 distance_rate_;
   // ピンチング操作時の距離の範囲
   glm::vec2 distance_range_;
-  
+
+  // 補間用係数
+  double ease_rate_;
+
   // カメラ計算を優先
   bool force_camera_ = false;
 
@@ -168,7 +173,6 @@ private:
   glm::vec2 initial_rotation_;
   float initial_distance_;
   glm::vec3 initial_target_position_;
-
 };
 
 }
