@@ -45,7 +45,7 @@ public:
       panels_(createPanels()),
       game_(std::make_unique<Game>(params["game"], event, panels_)),
       draged_max_length_(params.getValueForKey<float>("field.draged_max_length")),
-      field_camera_(params),
+      field_camera_(params["field"]),
       camera_(params["field.camera"]),
       panel_height_(params.getValueForKey<float>("field.panel_height")),
       putdown_time_(Json::getVec<glm::vec2>(params["field.putdown_time"])),
@@ -911,7 +911,7 @@ private:
     auto result = game_->getFieldCenterAndDistance(blank);
     auto center = result.first * float(PANEL_SIZE);
     auto radius = result.second * float(PANEL_SIZE);
-    field_camera_.calcViewRange(center, radius, camera_);
+    field_camera_.calcViewRange(center, radius, camera_.getFov());
   }
 
   // Touch座標→Field上の座標

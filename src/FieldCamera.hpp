@@ -14,12 +14,12 @@ class FieldCamera
 {
 public:
   FieldCamera(const ci::JsonTree& params)
-    : rotation_(toRadians(Json::getVec<glm::vec2>(params["field.camera.rotation"]))),
-      distance_(params.getValueForKey<float>("field.camera.distance")),
-      target_position_(Json::getVec<glm::vec3>(params["field.target_position"])),
-      distance_range_(Json::getVec<glm::vec2>(params["field.camera_distance_range"])),
-      target_rate_(Json::getVec<glm::vec2>(params["field.target_rate"])),
-      distance_rate_(Json::getVec<glm::vec2>(params["field.distance_rate"])),
+    : rotation_(toRadians(Json::getVec<glm::vec2>(params["camera.rotation"]))),
+      distance_(params.getValueForKey<float>("camera.distance")),
+      target_position_(Json::getVec<glm::vec3>(params["target_position"])),
+      distance_range_(Json::getVec<glm::vec2>(params["camera_distance_range"])),
+      target_rate_(Json::getVec<glm::vec2>(params["target_rate"])),
+      distance_rate_(Json::getVec<glm::vec2>(params["distance_rate"])),
       field_center_(target_position_),
       field_distance_(distance_),
       map_center_(field_center_),
@@ -99,14 +99,13 @@ public:
 
 
   // フィールドの広さから注視点と距離を計算
-  void calcViewRange(const glm::vec3& center, float radius, const Camera& camera)
+  void calcViewRange(const glm::vec3& center, float radius, float fov)
   {
     map_center_ = center;
 
     field_center_.x = map_center_.x;
     field_center_.z = map_center_.z;
     
-    float fov = camera.getFov();
     float distance = radius / std::tan(ci::toRadians(fov * 0.5f));
 
     // カメラが斜め上から見下ろしているのを考慮

@@ -1,4 +1,5 @@
 * TODO チュートリアル
+* TODO 影の設定をリアルタイムで編集
 * TODO 初心者は１万点、中級者は５万点、上級者は10万点を競えるバランスに
 * TODO 教会は宗教色が強いので別の名称にする
 * TODO 時々雲が斜めに横切るとかの演出が欲しい
@@ -9,7 +10,7 @@
 * TODO 記録を消す時の確認ダイアログ
 * TODO ソフトリセットでBG描画が乱れる
 * TODO マーカーの黄色と赤が逆？
-* TODO MainPartのカメラを別クラスに
+* TODO 高い位置からの影は色を薄くしたい
 * TODO Demoプレイ
 * TODO パネルのうらが真っ暗
 * TODO iPad:Shareのpopoverをボタン位置と合わせる
@@ -30,8 +31,10 @@
 * TODO 全く見た目の違うパネルセット
 * TODO Windows版: イベントハンドルが微妙
 * TODO Win: ストリーミング再生でassertが出る
+* TODO Win: 解像度が低いと文字が汚く見える
 * TODO 実績で「長さ10の道を作る」「広さ5の森を作る」などを用意
 * TODO 点光源
+* TODO 大域光源
 * TODO 本格的に見た目を決める
 * TODO BGM作る
 * TODO SE作る
@@ -42,6 +45,8 @@
 * TODO アプリアイコン
 * TODO iOS:GameCenter対応
 * TODO iOS:実績を実装
+* DONE MainPartのカメラを別クラスに
+CLOSED: [2018-04-22 日 09:18]
 * DONE VisualStudioでDEBUGが定義されていない疑惑
 CLOSED: [2018-04-17 Tue 17:51]
 * DONE 下の方のランクが出にくい

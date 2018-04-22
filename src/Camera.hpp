@@ -30,11 +30,13 @@ struct Camera
   {
     float aspect = ci::app::getWindowAspectRatio();
     camera_.setAspectRatio(aspect);
-    if (aspect < 1.0f) {
+    if (aspect < 1.0f)
+    {
       // TIPS cinder0.9.1には便利なAPIがあった!!
       camera_.setFovHorizontal(fov_);
     }
-    else {
+    else
+    {
       camera_.setFov(fov_);
     }
   }
@@ -42,7 +44,10 @@ struct Camera
   
   float getFov() const noexcept
   {
-    return fov_;
+    // NOTICE 横長画面と縦長画面ではFOVは違う
+    auto aspect = camera_.getAspectRatio();
+    return (aspect < 1.0f) ? camera_.getFovHorizontal()
+                           : camera_.getFov();
   }
 
   void setFov(float fov) noexcept
