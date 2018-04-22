@@ -57,7 +57,7 @@ public:
       rotate_camera_(event, params["field"], std::bind(&MainPart::rotateCamera, this, std::placeholders::_1))
   {
     // フィールドカメラ
-    field_camera_.applyDetail(camera_.body(), view_);
+    // field_camera_.applyDetail(camera_.body(), view_);
 
     // system
     holder_ += event_.connect("resize",
@@ -240,7 +240,7 @@ public:
                                     // ピンチング
                                     float n = l0 / l1;
                                     field_camera_.setDistance(n);
-                                    field_camera_.applyDetail(camera_.body(), view_);
+                                    // field_camera_.applyDetail(camera_.body(), view_);
                                   }
                                   if (dot > 0.0f)
                                   {
@@ -937,7 +937,7 @@ private:
     auto prev_pos = calcTouchPos(touch.prev_pos);
 
     field_camera_.rotate(pos, prev_pos);
-    field_camera_.applyDetail(camera_.body(), view_);
+    // field_camera_.applyDetail(camera_.body(), view_);
   }
 
   // 次のパネルの出現位置を決める
@@ -1150,7 +1150,7 @@ private:
   void rotateCamera(float delta_angle) noexcept
   {
     field_camera_.addYaw(delta_angle);
-    field_camera_.applyDetail(camera_.body(), view_);
+    // field_camera_.applyDetail(camera_.body(), view_);
   }
 
   // 過去の記録を読み込む

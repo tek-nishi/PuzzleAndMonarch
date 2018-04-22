@@ -104,30 +104,29 @@ public:
   {
     map_center_ = center;
 
-    field_center_.x = map_center_.x;
-    field_center_.z = map_center_.z;
-    
     float distance = radius / std::tan(ci::toRadians(fov * 0.5f));
-
     // カメラが斜め上から見下ろしているのを考慮
     float n = radius / std::cos(rotation_.x);
     distance -= n;
 
-    field_distance_ = ci::clamp(distance,
-                                distance_range_.x, distance_range_.y);
-
-#if 0
     // 強制モード
     if (force_camera_)
     {
       field_center_.x = map_center_.x;
       field_center_.z = map_center_.z;
+      field_distance_ = ci::clamp(distance,
+                                  distance_range_.x, distance_range_.y);
 
-      DOUT << "field_distance: " << field_distance_ << std::endl;
+      return;
     }
-#endif
-  }
 
+    // TODO マニュアル操作を重ねるとだんだん補正が減るようにする
+    field_center_.x = map_center_.x;
+    field_center_.z = map_center_.z;
+
+    field_distance_ = ci::clamp(std::max(distance, distance_),
+                                distance_range_.x, distance_range_.y);
+  }
 
   // 内容を他のクラスへ反映 
   void applyDetail(ci::CameraPersp& camera, View& view) 
