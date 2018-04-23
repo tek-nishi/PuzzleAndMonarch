@@ -9,67 +9,70 @@ class AutoRotateCamera
 public:
   AutoRotateCamera(Event<Arguments>& event, const ci::JsonTree& params,
                    const std::function<void (float)>& camera_callback) noexcept
-    : event_(event),
-      camera_callback_(camera_callback),
+    : camera_callback_(camera_callback),
       waiting_time_(params.getValueForKey<double>("auto_camera_delay")),
       speed_(params.getValueForKey<double>("auto_camera_rotation_speed")),
       delay_(waiting_time_)
 
   {
-    holder_ += event_.connect("update",
-                              std::bind(&AutoRotateCamera::update,
-                                        this, std::placeholders::_1, std::placeholders::_2));
+    holder_ += event.connect("update",
+                             std::bind(&AutoRotateCamera::update,
+                                       this, std::placeholders::_1, std::placeholders::_2));
 
-    holder_ += event_.connect("single_touch_began",
-                              [this](const Connection&, Arguments& arg) noexcept
-                              {
-                                const auto& touch = boost::any_cast<const Touch&>(arg.at("touch"));
-                                if (touch.handled) return;
+    holder_ += event.connect("single_touch_began",
+                             [this](const Connection&, Arguments& arg) noexcept
+                             {
+                               const auto& touch = boost::any_cast<const Touch&>(arg.at("touch"));
+                               if (touch.handled) return;
                                 
-                                manipulating_ = true;
-                              });
-    holder_ += event_.connect("multi_touch_began",
-                              [this](const Connection&, Arguments& arg) noexcept
-                              {
-                                manipulating_ = true;
-                              });
+                               manipulating_ = true;
+                               current_speed_ = 0.0;
+                             });
+    holder_ += event.connect("multi_touch_began",
+                             [this](const Connection&, Arguments& arg) noexcept
+                             {
+                               manipulating_ = true;
+                               current_speed_ = 0.0;
+                             });
+    
+    holder_ += event.connect("single_touch_ended",
+                             [this](const Connection&, Arguments& arg) noexcept
+                             {
+                               const auto& touch = boost::any_cast<const Touch&>(arg.at("touch"));
+                               if (touch.handled) return;
 
-    holder_ += event_.connect("single_touch_ended",
-                              [this](const Connection&, Arguments& arg) noexcept
-                              {
-                                const auto& touch = boost::any_cast<const Touch&>(arg.at("touch"));
-                                if (touch.handled) return;
-
-                                manipulating_ = false;
-                                delay_  = 3;
-                              });
-    holder_ += event_.connect("multi_touch_ended",
-                              [this](const Connection&, Arguments& arg) noexcept
-                              {
-                                manipulating_ = false;
-                                delay_  = 3;
-                              });
+                               manipulating_ = false;
+                               delay_  = 3;
+                             });
+    holder_ += event.connect("multi_touch_ended",
+                             [this](const Connection&, Arguments& arg) noexcept
+                             {
+                               manipulating_ = false;
+                               delay_  = 3;
+                             });
 
     // 動作開始のきっかけ
-    holder_ += event_.connect("Game:Finish",
-                              [this](const Connection&, Arguments&) noexcept
-                              {
-                                delay_ = waiting_time_;
-                                active_ = true;
-                              });
-    holder_ += event_.connect("Ranking:begin",
-                              [this](const Connection&, Arguments&) noexcept
-                              {
-                                delay_ = waiting_time_;
-                                active_ = true;
-                              });
+    holder_ += event.connect("Game:Finish",
+                             [this](const Connection&, Arguments&) noexcept
+                             {
+                               delay_ = waiting_time_;
+                               active_ = true;
+                               current_speed_ = 0.0;
+                             });
+    holder_ += event.connect("Ranking:begin",
+                             [this](const Connection&, Arguments&) noexcept
+                             {
+                               delay_ = waiting_time_;
+                               active_ = true;
+                               current_speed_ = 0.0;
+                             });
 
-    holder_ += event_.connect("Title:begin",
-                              [this](const Connection&, Arguments&) noexcept
-                              {
-                                active_ = false;
-                              });
-
+    holder_ += event.connect("Title:begin",
+                             [this](const Connection&, Arguments&) noexcept
+                             {
+                               active_ = false;
+                               current_speed_ = 0.0;
+                             });
   }
 
   ~AutoRotateCamera() = default;
@@ -89,17 +92,21 @@ private:
       return;
     }
 
-    camera_callback_(delta_time * speed_);
+    // じわっと加速する
+    current_speed_ += (speed_ - current_speed_) * (1 - std::pow(0.5, delta_time));
+    camera_callback_(delta_time * current_speed_);
   }
 
 
-  Event<Arguments>& event_;
+
   ConnectionHolder holder_;
 
   std::function<void (float)> camera_callback_;
 
   double waiting_time_;
   double speed_;
+
+  double current_speed_ = 0.0;
 
   double delay_;
 

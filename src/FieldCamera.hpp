@@ -57,6 +57,8 @@ public:
   {
     field_center_   = initial_target_position_;
     field_distance_ = initial_distance_;
+    
+    skip_easing_ = false;
   }
 
 
@@ -82,6 +84,8 @@ public:
     distance_ = ci::clamp(distance_ / rate,
                           distance_range_.x, distance_range_.y);
     field_distance_ = distance_;
+    
+    skip_easing_ = true;
   }
 
   // 平行移動
@@ -91,6 +95,8 @@ public:
     field_center_ = target_position_;
     eye_position_ += v;
     camera.setEyePoint(eye_position_);
+
+    skip_easing_ = true;
   }
 
   void force(bool value) noexcept
@@ -120,7 +126,14 @@ public:
       return;
     }
 
-    // TODO マニュアル操作を重ねるとだんだん補正が減るようにする
+    // パネルを置く前にカメラ操作があった
+    if (skip_easing_)
+    {
+      // TODO パネルを置く位置が画面中心より離れすぎたら補正再開
+      skip_easing_ = false;
+      // DOUT << "camera easing reactive: " << d << std::endl;
+    }
+
     field_center_.x = map_center_.x;
     field_center_.z = map_center_.z;
 
@@ -161,6 +174,8 @@ private:
 
   // カメラ計算を優先
   bool force_camera_ = false;
+  // カメラを動かしたので補間をスキップする
+  bool skip_easing_ = false;
 
   // Fieldの中心座標
   glm::vec3 field_center_;

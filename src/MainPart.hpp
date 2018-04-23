@@ -1222,7 +1222,7 @@ private:
 
   // 地面の高さ 
   float bg_height_;
-
+  // カメラ
   FieldCamera field_camera_;
 
   // 表示
@@ -1235,10 +1235,8 @@ private:
   // Rankingで表示する数
   u_int ranking_records_;
 
-  // TODO Viewへ移動(Transition)
   float transition_duration_;
   ci::ColorA transition_color_;
-
 
   AutoRotateCamera rotate_camera_;
 
