@@ -106,7 +106,7 @@ public:
 
 
   // フィールドの広さから注視点と距離を計算
-  void calcViewRange(const glm::vec3& center, float radius, float fov)
+  void calcViewRange(const glm::vec3& center, float radius, float fov, const glm::vec3& put_pos)
   {
     map_center_ = center;
 
@@ -129,9 +129,21 @@ public:
     // パネルを置く前にカメラ操作があった
     if (skip_easing_)
     {
-      // TODO パネルを置く位置が画面中心より離れすぎたら補正再開
+      // パネルを置く位置が画面中心より離れすぎたら補正再開
+      // TODO 距離ではなく画面内安全領域で判定する
+      auto d = glm::distance2(target_position_, put_pos);
+      if (d > 0.0f)
+      {
+        d = std::sqrt(d) / distance_;
+        DOUT << "Distance: " << d << std::endl;
+        if (d < 0.18f)
+        {
+          return;
+        }
+      }
+
       skip_easing_ = false;
-      // DOUT << "camera easing reactive: " << d << std::endl;
+      // DOUT << "camera easing reactive" << std::endl;
     }
 
     field_center_.x = map_center_.x;

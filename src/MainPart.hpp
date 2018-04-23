@@ -911,7 +911,10 @@ private:
     auto result = game_->getFieldCenterAndDistance(blank);
     auto center = result.first * float(PANEL_SIZE);
     auto radius = result.second * float(PANEL_SIZE);
-    field_camera_.calcViewRange(center, radius, camera_.getFov());
+
+    // パネルを置いた位置
+    glm::vec3 put_pos(field_pos_.x * PANEL_SIZE, center.y, field_pos_.y * PANEL_SIZE);
+    field_camera_.calcViewRange(center, radius, camera_.getFov(), put_pos);
   }
 
   // Touch座標→Field上の座標
