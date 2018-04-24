@@ -707,10 +707,10 @@ private:
           // 適当に大きな値
           draged_length_ = draged_max_length_ * 2;
             
-          // Fieldの中心を再計算
-          calcViewRange(true);
           // 次のパネル
           calcNextPanelPosition();
+          // Fieldの中心を再計算
+          calcViewRange(true);
         }
       }
     }
@@ -912,9 +912,7 @@ private:
     auto center = result.first * float(PANEL_SIZE);
     auto radius = result.second * float(PANEL_SIZE);
 
-    // パネルを置いた位置
-    glm::vec3 put_pos(field_pos_.x * PANEL_SIZE, center.y, field_pos_.y * PANEL_SIZE);
-    field_camera_.calcViewRange(center, radius, camera_.getFov(), put_pos);
+    field_camera_.calcViewRange(center, radius, camera_.getFov(), cursor_pos_, camera_.body());
   }
 
   // Touch座標→Field上の座標

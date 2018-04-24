@@ -19,8 +19,7 @@ public:
       target_position_(Json::getVec<glm::vec3>(params["target_position"])),
       distance_range_(Json::getVec<glm::vec2>(params["camera_distance_range"])),
       ease_rate_(params.getValueForKey<double>("camera_ease_rate")),
-      target_rate_(Json::getVec<glm::vec2>(params["target_rate"])),
-      distance_rate_(Json::getVec<glm::vec2>(params["distance_rate"])),
+      retarget_rect_(Json::getRect<float>(params["camera_retarget"])),
       field_center_(target_position_),
       field_distance_(distance_),
       map_center_(field_center_),
@@ -106,7 +105,8 @@ public:
 
 
   // フィールドの広さから注視点と距離を計算
-  void calcViewRange(const glm::vec3& center, float radius, float fov, const glm::vec3& put_pos)
+  void calcViewRange(const glm::vec3& center, float radius, float fov, const glm::vec3& put_pos,
+                     const ci::CameraPersp& camera)
   {
     map_center_ = center;
 
@@ -129,21 +129,32 @@ public:
     // パネルを置く前にカメラ操作があった
     if (skip_easing_)
     {
-      // パネルを置く位置が画面中心より離れすぎたら補正再開
-      // TODO 距離ではなく画面内安全領域で判定する
-      auto d = glm::distance2(target_position_, put_pos);
-      if (d > 0.0f)
+      static glm::vec3 tbl[] = {
+        { -PANEL_SIZE / 2, 0, 0 },
+        {  PANEL_SIZE / 2, 0, 0 },
+        { 0, -PANEL_SIZE / 2, 0 },
+        { 0,  PANEL_SIZE / 2, 0 },
+      };
+
+      bool in_view = true;
+      for (const auto& ofs : tbl)
       {
-        d = std::sqrt(d) / distance_;
-        DOUT << "Distance: " << d << std::endl;
-        if (d < 0.18f)
+        auto p1 = camera.worldToNdc(put_pos + ofs);
+        glm::vec2 p(p1.x, p1.y);
+        if (!retarget_rect_.contains(p))
         {
-          return;
+          in_view = false;
+          break;
         }
       }
 
+      if (in_view)
+      {
+        // パネルを置く場所が画面からはみ出しそうでなければそのまま
+        return;
+      }
+
       skip_easing_ = false;
-      // DOUT << "camera easing reactive" << std::endl;
     }
 
     field_center_.x = map_center_.x;
@@ -175,14 +186,14 @@ private:
   // カメラ位置
   glm::vec3 eye_position_;
 
-  // 距離を調整するための係数
-  glm::vec2 target_rate_;
-  glm::vec2 distance_rate_;
   // ピンチング操作時の距離の範囲
   glm::vec2 distance_range_;
 
   // 補間用係数
   double ease_rate_;
+
+  // 再追尾用の範囲
+  ci::Rectf retarget_rect_; 
 
   // カメラ計算を優先
   bool force_camera_ = false;

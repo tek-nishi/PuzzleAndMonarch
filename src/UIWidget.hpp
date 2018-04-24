@@ -264,7 +264,7 @@ public:
   // パラメーターから生成
   static WidgetPtr createFromParams(const ci::JsonTree& params) noexcept
   {
-    auto rect = Json::getRect(params["rect"]);
+    auto rect = Json::getRect<float>(params["rect"]);
     auto widget = std::make_shared<UI::Widget>(rect);
 
     if (params.hasChild("identifier"))

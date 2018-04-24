@@ -161,8 +161,7 @@
 
     "camera_distance_range": [ 150, 1000 ],
     "camera_ease_rate": 0.35,
-    "target_rate":   [ 0.01, 0.1 ],
-    "distance_rate": [ 1.0, 1.35 ],
+    "camera_retarget": [ -0.75, -0.75, 0.75, 0.75 ],
 
     "draged_max_length": 20, 
 

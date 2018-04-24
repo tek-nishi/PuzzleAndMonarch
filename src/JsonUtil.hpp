@@ -54,18 +54,11 @@ ci::ColorA getVec<ci::ColorA>(const ci::JsonTree& json) noexcept
   return v;
 }
 
-ci::Rectf getRect(const ci::JsonTree& json) noexcept
-{
-  return ci::Rectf(json[0].getValue<double>(), json[1].getValue<double>(),
-                   json[2].getValue<double>(), json[3].getValue<double>());  
-}
-
 ci::quat getQuat(const ci::JsonTree& json) noexcept
 {
   glm::vec3 v = getVec<glm::vec3>(json) * float(M_PI) / 180.0f;
   return ci::quat(v);
 }
-
 
 template <typename T>
 ci::JsonTree createArray(const T& array) noexcept
