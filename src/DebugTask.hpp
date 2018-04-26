@@ -39,8 +39,8 @@ class DebugTask
   float font_buffer_ = 0.5f;
   float font_gamma_  = 0.03f;
 
-  float polygon_factor_ = 0.2f;
-  float polygon_units_  = 0.2f;
+  float polygon_factor_;
+  float polygon_units_;
 
 
   void createSettings() noexcept
@@ -62,6 +62,8 @@ class DebugTask
               {
                 drawer_.setFontShaderParams({ font_buffer_, font_gamma_ });
               });
+
+    settings_->addSeparator();
 
     settings_->addParam("Shadow:factor", &polygon_factor_)
     .precision(2)
@@ -177,6 +179,10 @@ public:
   {
     // FIXME near_zピッタリの位置だとmacOSのReleaseビルドで絵が出ない
     camera_.body().lookAt(glm::vec3(0, 0, camera_.getNearClip() + 0.001f), glm::vec3(0));
+
+    auto polygon_offset = Json::getVec<glm::vec2>(params["field.polygon_offset"]);
+    polygon_factor_ = polygon_offset.x;
+    polygon_units_  = polygon_offset.y;
 
     holder_ += event_.connect("draw", 99,
                               std::bind(&DebugTask::draw,

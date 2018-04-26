@@ -314,7 +314,7 @@
     "shadow_shader": "shadow",
     "shadow_map": [ 1024, 1024 ],
     "shadow_intensity": 0.75,
-    "polygon_offset": [ 1, 4.5 ],
+    "polygon_offset": [ 0.2, 4.2 ],
 
     "bg_shader":  "bg",
     "bg_height":  -7,
