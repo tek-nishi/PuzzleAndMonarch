@@ -610,6 +610,19 @@ public:
                                 disp_shadowmap_ = !disp_shadowmap_;
                               });
 
+    holder_ += event_.connect("debug-polygon-factor",
+                              [this](const Connection&, Arguments& args) noexcept
+                              {
+                                auto value = boost::any_cast<float>(args.at("value"));
+                                view_.setPolygonFactor(value);
+                              });
+    holder_ += event_.connect("debug-polygon-units",
+                              [this](const Connection&, Arguments& args) noexcept
+                              {
+                                auto value = boost::any_cast<float>(args.at("value"));
+                                view_.setPolygonUnits(value);
+                              });
+
     holder_ += event_.connect("debug-score-test",
                               [this](const Connection&, Arguments&) noexcept
                               {
@@ -1242,7 +1255,7 @@ private:
   AutoRotateCamera rotate_camera_;
 
 
-#ifdef DEBUG
+#if defined (DEBUG)
   bool disp_debug_info_ = false;
   bool debug_draw_      = false;
   bool disp_shadowmap_  = false;

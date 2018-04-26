@@ -463,13 +463,23 @@ public:
 
 #if defined (DEBUG)
 
-void drawShadowMap() noexcept
-{
-  ci::gl::setMatricesWindow(ci::app::getWindowSize());
-  ci::gl::color(1.0f, 1.0f, 1.0f);
-  float size = 0.5f * std::min(ci::app::getWindowWidth(), ci::app::getWindowHeight());
-  ci::gl::draw(shadow_map_, ci::Rectf(0, 0, size, size));
-}
+  void drawShadowMap() noexcept
+  {
+    ci::gl::setMatricesWindow(ci::app::getWindowSize());
+    ci::gl::color(1.0f, 1.0f, 1.0f);
+    float size = 0.5f * std::min(ci::app::getWindowWidth(), ci::app::getWindowHeight());
+    ci::gl::draw(shadow_map_, ci::Rectf(0, 0, size, size));
+  }
+
+  void setPolygonFactor(float value) noexcept
+  {
+    polygon_offset_.x = value;
+  }
+
+  void setPolygonUnits(float value) noexcept
+  {
+    polygon_offset_.y = value;
+  }
 
 #endif
 
@@ -567,7 +577,6 @@ private:
     // Render scene to fbo from the view of the light
     ci::gl::ScopedFramebuffer fbo(shadow_fbo_);
     ci::gl::ScopedViewport viewport(glm::vec2(0), shadow_fbo_->getSize());
-    // ci::gl::clear(ci::Color::black());
     ci::gl::clear(GL_DEPTH_BUFFER_BIT);
     ci::gl::setMatrices(light_camera_);
 

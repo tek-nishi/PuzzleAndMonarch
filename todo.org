@@ -16,7 +16,6 @@
 * TODO iPad:Shareのpopoverをボタン位置と合わせる
 * TODO tween中止
 * TODO iOS：基本図形描画のパフォーマンス調査
-* TODO msaa
 * TODO ローカライズ
 * TODO 道がわかりずらい
 * TODO 真上から見たい
@@ -430,6 +429,8 @@ CLOSED: [2018-01-09 火 16:27]
 CLOSED: [2018-01-09 Tue 00:32]
 * DONE iOS:縦画面→非アクティブ→横画面→アクティブ→画面乱れる
 CLOSED: [2018-03-17 土 17:19]
+* ABORT msaa
+CLOSED: [2018-04-24 火 18:56]
 * ABORT 保存したゲームは得点した瞬間などもプレイバックできる
 CLOSED: [2018-04-13 金 00:27]
 * ABORT 長押しないわー

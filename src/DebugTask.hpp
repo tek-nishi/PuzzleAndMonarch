@@ -23,7 +23,6 @@ class DebugTask
 {
   Event<Arguments>& event_;
   ConnectionHolder holder_;
-
   Camera camera_;
 
   UI::Drawer& drawer_;
@@ -40,7 +39,8 @@ class DebugTask
   float font_buffer_ = 0.5f;
   float font_gamma_  = 0.03f;
 
-
+  float polygon_factor_ = 0.2f;
+  float polygon_units_  = 0.2f;
 
 
   void createSettings() noexcept
@@ -55,13 +55,36 @@ class DebugTask
                 drawer_.setFontShaderParams({ font_buffer_, font_gamma_ });
               });
 
-    settings_->addParam("Font:gamma",  &font_gamma_)
+    settings_->addParam("Font:gamma", &font_gamma_)
     .precision(2)
     .step(0.01f)
     .updateFn([this]() noexcept
               {
                 drawer_.setFontShaderParams({ font_buffer_, font_gamma_ });
               });
+
+    settings_->addParam("Shadow:factor", &polygon_factor_)
+    .precision(2)
+    .step(0.01f)
+    .updateFn([this]() noexcept
+              {
+                Arguments args{
+                  { "value", polygon_factor_ }
+                };
+                event_.signal("debug-polygon-factor", args);
+              });
+
+    settings_->addParam("Shadow:units", &polygon_units_)
+    .precision(2)
+    .step(0.01f)
+    .updateFn([this]() noexcept
+              {
+                Arguments args{
+                  { "value", polygon_units_ }
+                };
+                event_.signal("debug-polygon-units", args);
+              });
+
 
     settings_->show(false);
 
