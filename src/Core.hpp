@@ -13,6 +13,7 @@
 #include "TweenCommon.hpp"
 #include "TaskContainer.hpp"
 #include "MainPart.hpp"
+#include "Intro.hpp"
 #include "Title.hpp"
 #include "GameMain.hpp"
 #include "Result.hpp"
@@ -188,14 +189,9 @@ public:
                               std::bind(&Core::update,
                                         this, std::placeholders::_1, std::placeholders::_2));
 
+    // アプリの起動回数を更新して保存
     archive_.addRecord("startup-times", uint32_t(1));
     archive_.save();
-    
-    // 最初のタスクを登録
-    tasks_.pushBack<Sound>(params_, event_);
-    tasks_.pushBack<MainPart>(params_, event_, archive_);
-    tasks_.pushBack<Title>(params_, event_, drawer_, tween_common_,
-                           true, archive_.isSaved());
 
     {
       // Sound初期設定
@@ -207,6 +203,13 @@ public:
       };
       event_.signal("Settings:Changed", args);
     }
+    
+    // 最初のタスクを登録
+    tasks_.pushBack<Sound>(params_, event_);
+    tasks_.pushBack<MainPart>(params_, event_, archive_);
+    // tasks_.pushBack<Title>(params_, event_, drawer_, tween_common_,
+    //                        true, archive_.isSaved());
+    tasks_.pushBack<Intro>(params_, event_, drawer_, tween_common_);
 
 #if defined (DEBUG)
     tasks_.pushBack<DebugTask>(params_, event_, drawer_);

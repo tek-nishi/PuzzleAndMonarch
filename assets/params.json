@@ -413,7 +413,12 @@
       "game_begin_duration": 2.0
     }
   },
-  
+
+  "intro": {
+    "canvas": "ui_intro.json",
+    "tweens": "tw_intro.json"
+  },
+
   "title": {
     "canvas": "ui_title.json",
     "tweens": "tw_title.json",
