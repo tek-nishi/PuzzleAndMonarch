@@ -21,7 +21,6 @@
 * TODO 湖と川が欲しい
 * TODO 飛行場が欲しい
 * TODO 電車(乗り物系)が欲しい
-* TODO ショートカット操作で主要iPhone、iPadの縦横比へ切り替える機能
 * TODO モデルデータが重い
 * TODO Panelのデータをテキストに
 * TODO 全く見た目の違うパネルセット
@@ -41,6 +40,8 @@
 * TODO アプリアイコン
 * TODO iOS:GameCenter対応
 * TODO iOS:実績を実装
+* DONE ショートカット操作で主要iPhone、iPadの縦横比へ切り替える機能
+CLOSED: [2018-04-28 土 20:15]
 * DONE いい感じに画面全体に街が映るように
 CLOSED: [2018-04-28 土 18:38]
 * DONE 初回起動時に思わせぶりな演出を入れる
