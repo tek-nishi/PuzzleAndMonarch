@@ -423,7 +423,10 @@
     "touch_delay": 1,
     "finish_delay": 0.5,
 
-    "distance": 600
+    "distance": 600,
+
+    "cloud_erase_duration": 0.5,
+    "cloud_erase_delay": 1.5
   },
 
   "title": {

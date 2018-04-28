@@ -276,6 +276,10 @@ public:
                                 field_camera_.setCurrentDistance(params_.getValueForKey<float>("intro.distance"));
                                 view_.setColor(ci::Color::black());
                                 view_.setColor(2.0f, ci::Color::white());
+
+                                view_.setCloudAlpha(params_.getValueForKey<float>("intro.cloud_erase_duration"),
+                                                    0.0f,
+                                                    params_.getValueForKey<float>("intro.cloud_erase_delay"));
                               });
     holder_ += event_.connect("Intro:skiped",
                               [this](const Connection&, const Arguments&) noexcept

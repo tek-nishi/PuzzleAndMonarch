@@ -171,22 +171,15 @@ public:
 
       cloud_scale_ = Json::getVec<glm::vec3>(params["cloud_scale"]);
       cloud_area_  = params.getValueForKey<float>("cloud_area");
+      cloud_color_ = Json::getColorA<float>(params["cloud_color"]);
     }
     {
       auto name = params.getValueForKey<std::string>("cloud_shader");
       cloud_shader_ = createShader(name, name);
-      cloud_shader_->uniform("uColor", Json::getVec<glm::vec4>(params["cloud_color"]));
+      cloud_shader_->uniform("uColor", cloud_color_);
       cloud_shader_->uniform("uThreshold", params.getValueForKey<float>("cloud_threshold"));
     }
-    {
-      auto format = ci::gl::Texture2d::Format();   // .minFilter(GL_NEAREST).magFilter(GL_NEAREST);
-      cloud_texture_ = ci::gl::Texture2d::create(ci::loadImage(Asset::load(params.getValueForKey<std::string>("cloud_texture"))),
-                                                 format);
-    }
-
-#if defined (DEBUG)
-    disp_cloud_ = Json::getValue(params, "cloud_disp", false);
-#endif
+    cloud_texture_ = ci::gl::Texture2d::create(ci::loadImage(Asset::load(params.getValueForKey<std::string>("cloud_texture"))));
   }
 
   ~View() = default;
@@ -225,6 +218,7 @@ public:
     field_color_ = color;
     field_shader_->uniform("u_color", color);
     bg_shader_->uniform("u_color", color);
+    cloud_shader_->uniform("uColor", cloud_color_ * color);
   }
 
   void setColor(float duration, const ci::ColorA& color, float delay = 0.0f) noexcept
@@ -234,6 +228,7 @@ public:
                     {
                       field_shader_->uniform("u_color", field_color_());
                       bg_shader_->uniform("u_color", field_color_());
+                      cloud_shader_->uniform("uColor", cloud_color_ * field_color_());
                     });
     option.delay(delay);
   }
@@ -463,6 +458,32 @@ public:
   }
 
 
+  void dispCloud(bool disp) noexcept
+  {
+    disp_cloud_ = disp;
+  }
+
+  void setCloudAlpha(float alpha) noexcept
+  {
+    transition_timeline_->removeTarget(&cloud_color_.a);
+
+    disp_cloud_ = alpha > 0.0f;
+    cloud_color_.a = alpha;
+    cloud_shader_->uniform("uColor", cloud_color_ * field_color_());
+  }
+
+  void setCloudAlpha(float duration, float alpha, float delay = 0.0f) noexcept
+  {
+    auto option = transition_timeline_->applyPtr(&cloud_color_.a, alpha, duration);
+    option.updateFn([this]() noexcept
+                    {
+                      disp_cloud_ = cloud_color_.a > 0.0f;
+                      cloud_shader_->uniform("uColor", cloud_color_ * field_color_());
+                    });
+    option.delay(delay);
+  }
+
+
 #if defined (DEBUG)
 
   void drawShadowMap() noexcept
@@ -639,11 +660,17 @@ private:
 
     drawFieldBg(info.bg_pos);
     drawEffect();
-#if defined (DEBUG)
-    if (disp_cloud_) drawClouds();
-#endif
+
+    if (disp_cloud_)
+    {
+      ci::gl::enableDepth(false);
+      ci::gl::disable(GL_CULL_FACE);
+      ci::gl::enableAlphaBlending();
+
+      drawClouds();
+    }
   }
-  
+
   // パネルを１枚表示
   void drawPanel(int number, const glm::vec3& pos, u_int rotation, float rotate_offset) noexcept
   {
@@ -916,6 +943,8 @@ private:
   std::vector<std::pair<glm::vec3, glm::vec3>> clouds_;
   glm::vec3 cloud_scale_;
   float cloud_area_;
+  ci::ColorA cloud_color_;
+  bool disp_cloud_ = true;
 
 
   // Tween用
@@ -924,11 +953,6 @@ private:
   ci::TimelineRef force_timeline_;
   // リセットされたくない
   ci::TimelineRef transition_timeline_;
-
-
-#if defined (DEBUG)
-  bool disp_cloud_ = false;
-#endif
 };
 
 

@@ -42,18 +42,6 @@ T getVec(const ci::JsonTree& json) noexcept
   return v;
 }
 
-template <>
-ci::ColorA getVec<ci::ColorA>(const ci::JsonTree& json) noexcept
-{
-  ci::ColorA v;
-  for (u_int i = 0; i < 4; ++i)
-  {
-    v[i] = json[i].getValue<double>();
-  }
-
-  return v;
-}
-
 ci::quat getQuat(const ci::JsonTree& json) noexcept
 {
   glm::vec3 v = getVec<glm::vec3>(json) * float(M_PI) / 180.0f;
