@@ -209,6 +209,27 @@ private:
       }
       break;
 
+    case ci::app::KeyEvent::KEY_1:
+    case ci::app::KeyEvent::KEY_2:
+    case ci::app::KeyEvent::KEY_3:
+    case ci::app::KeyEvent::KEY_4:
+    case ci::app::KeyEvent::KEY_5:
+    case ci::app::KeyEvent::KEY_6:
+      {
+        int index = code - ci::app::KeyEvent::KEY_1;
+        auto size = Json::getVec<glm::ivec2>(params_["app.app_size"][index]);
+        changeWindowSize(size);
+      }
+      break;
+
+    case ci::app::KeyEvent::KEY_0:
+      {
+        // 初期状態
+        auto size = Json::getVec<glm::ivec2>(params_["app.size"]);
+        changeWindowSize(size);
+      }
+      break;
+
     default:
       {
         Debug::signalKeyEvent(event_, debug_events_, code);
@@ -219,6 +240,15 @@ private:
 
   void keyUp(ci::app::KeyEvent event) noexcept override
   {
+  }
+
+
+  // アプリの画面サイズを変更
+  void changeWindowSize(const glm::ivec2& app_size) const noexcept
+  {
+    ci::app::setWindowSize(app_size);
+    auto size = ci::Display::getMainDisplay()->getSize();
+    ci::app::setWindowPos(size / 2 - app_size / 2);
   }
 #endif
 
