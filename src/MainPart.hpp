@@ -274,6 +274,7 @@ public:
                                 // カメラをジワーッと寄せる
                                 prohibited_ = true;
                                 field_camera_.setCurrentDistance(params_.getValueForKey<float>("intro.distance"));
+                                field_camera_.setEaseRate(Json::getVec<glm::dvec2>(params_["intro.camera_ease_rate"]));
                                 view_.setColor(ci::Color::black());
                                 view_.setColor(2.0f, ci::Color::white());
 
@@ -284,12 +285,13 @@ public:
     holder_ += event_.connect("Intro:skiped",
                               [this](const Connection&, const Arguments&) noexcept
                               {
-                                field_camera_.setCurrentDistance(params_.getValueForKey<float>("field.camera.distance") * 1.2f);
+                                // field_camera_.setCurrentDistance(params_.getValueForKey<float>("field.camera.distance") * 1.2f);
                                 view_.setColor(0.5f, ci::Color::white());
                               });
     holder_ += event_.connect("Intro:finished",
                               [this](const Connection&, const Arguments&) noexcept
                               {
+                                field_camera_.restoreEaseRate();
                                 game_->preparationPlay();
                                 // カメラを初期位置へ
                                 prohibited_ = false;

@@ -160,7 +160,7 @@
     "putdown_time": [ 0.5, 0.25 ],
 
     "camera_distance_range": [ 150, 1000 ],
-    "camera_ease_rate": [ 0.53, 5 ],
+    "camera_ease_rate": [ 0.72, 5 ],
     "camera_retarget": [ -0.75, -0.75, 0.75, 0.75 ],
 
     "draged_max_length": 20, 
@@ -424,6 +424,8 @@
     "finish_delay": 0.5,
 
     "distance": 600,
+
+    "camera_ease_rate": [ 0.9, 4 ],
 
     "cloud_erase_duration": 0.5,
     "cloud_erase_delay": 1.5

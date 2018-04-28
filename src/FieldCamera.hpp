@@ -19,6 +19,7 @@ public:
       target_position_(Json::getVec<glm::vec3>(params["target_position"])),
       distance_range_(Json::getVec<glm::vec2>(params["camera_distance_range"])),
       ease_rate_(Json::getVec<glm::dvec2>(params["camera_ease_rate"])),
+      initial_ease_rate_(ease_rate_),
       retarget_rect_(Json::getRect<float>(params["camera_retarget"])),
       field_center_(target_position_),
       field_distance_(distance_),
@@ -184,6 +185,18 @@ public:
     distance_ = distance;
   }
 
+  void setEaseRate(const glm::dvec2 rate) noexcept
+  {
+    ease_rate_.x = rate.x;
+    ease_rate_.y = rate.y;
+  }
+
+  void restoreEaseRate() noexcept
+  {
+    ease_rate_ = initial_ease_rate_;
+  }
+
+
 
 private:
   // 向きと注視点からの距離
@@ -200,6 +213,7 @@ private:
 
   // 補間用係数
   glm::dvec2 ease_rate_;
+  glm::dvec2 initial_ease_rate_;
 
   // 再追尾用の範囲
   ci::Rectf retarget_rect_; 
