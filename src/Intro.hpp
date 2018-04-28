@@ -32,8 +32,7 @@ public:
                       holder_ += event_.connect("single_touch_ended",
                                                 [this](const Connection&, const Arguments&)
                                                 {
-                                                  DOUT << "touched" << std::endl;
-                                                  active_ = false;
+                                                  finishTask();
                                                 });
                     });
 
@@ -58,14 +57,24 @@ private:
       count_exec_.add(finish_delay_,
                       [this]()
                       {
-                        active_ = false;
-                        event_.signal("Intro:finished", Arguments());
-                        DOUT << "Intro:finished" << std::endl;
+                        finishTask();
                       });
     }
 
     return active_;
   }
+
+  void finishTask()
+  {
+    if (!active_) return;
+
+    active_ = false;
+    event_.signal("Intro:finished", Arguments());
+    DOUT << "Intro:finished" << std::endl;
+  }
+
+
+
 
   
   Event<Arguments>& event_;

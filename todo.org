@@ -8,7 +8,6 @@
 * TODO 得点時の演出を派手に
 * TODO iOS NightShiftモードの影響で処理速度が落ちる
 * TODO 記録を消す時の確認ダイアログ
-* TODO ソフトリセットでBG描画が乱れる
 * TODO マーカーの黄色と赤が逆？
 * TODO 高い位置からの影は色を薄くしたい
 * TODO Demoプレイ
@@ -44,6 +43,8 @@
 * TODO アプリアイコン
 * TODO iOS:GameCenter対応
 * TODO iOS:実績を実装
+* DONE ソフトリセットでBG描画が乱れる
+CLOSED: [2018-04-28 土 10:29]
 * DONE 深い森の得点を少し減らす
 CLOSED: [2018-04-26 木 22:49]
 * DONE 影の設定をリアルタイムで編集
