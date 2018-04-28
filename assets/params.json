@@ -331,6 +331,8 @@
     ],
     "cloud_texture": "clouds.png",
     "cloud_shader": "shadow_tex",
+    "cloud_color": [ 0.9, 0.9, 0.91, 1 ],
+    "cloud_threshold": 0.5,
 
     "cloud_num": 10,
     "cloud_pos": [ [ -180, 180 ], [ 50, 50 ], [ -180, 180 ] ],
@@ -338,7 +340,7 @@
     "cloud_dir": [ 0.5, 0, 0.4 ],
     "cloud_speed": [ 5, 10 ],
     "cloud_area": 250,
-    "cloud_disp": false
+    "cloud_disp":true 
   },
 
   "ui": {
@@ -418,7 +420,10 @@
     "canvas": "ui_intro.json",
     "tweens": "tw_intro.json",
 
-    "finish_delay": 0.5
+    "touch_delay": 1,
+    "finish_delay": 0.5,
+
+    "distance": 600
   },
 
   "title": {

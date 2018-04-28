@@ -4,8 +4,12 @@
 $version$
 $precision$
 
+uniform vec4 uColor;
+uniform float uThreshold;
 uniform sampler2D	uTex0;
 in vec2 TexCoord0;
+
+
 
 out vec4 oColor;
 
@@ -13,7 +17,7 @@ out vec4 oColor;
 void main(void)
 {
   vec4 color = texture(uTex0, TexCoord0);
-  if (color.a < 0.5) discard;
+  if (color.a < uThreshold) discard;
 
-  oColor = color;
+  oColor = vec4(uColor);
 }

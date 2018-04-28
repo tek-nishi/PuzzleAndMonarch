@@ -34,10 +34,14 @@ struct Game
     engine_ = std::mt19937(seed_gen());
 
     // パネルを通し番号で用意
-    for (int i = 0; i < panels_.size(); ++i)
-    {
-      waiting_panels.push_back(i);
-    }
+    waiting_panels.resize(panels_.size());
+    std::iota(std::begin(waiting_panels), std::end(waiting_panels), 0);
+    // for (int i = 0; i < panels_.size(); ++i)
+    // {
+    //   waiting_panels.push_back(i);
+    // }
+
+    preparationPanel();
   }
 
   ~Game() = default;
@@ -89,6 +93,7 @@ struct Game
   // 本編準備
   void preparationPlay() noexcept
   {
+#if 0
     // 開始パネルを探す
     std::vector<int> start_panels;
     for (int i = 0; i < panels_.size(); ++i)
@@ -123,8 +128,10 @@ struct Game
     }
 #endif
 
+#endif
+
     // 最初のパネルを設置
-    putPanel(start_panels[0], { 0, 0 }, ci::randInt(4));
+    putPanel(start_panel_, { 0, 0 }, ci::randInt(4));
 
     // 次のパネルを決めて、置ける場所も探す
     // fieldUpdate();
@@ -585,6 +592,46 @@ struct Game
 
 
 private:
+  // フィールドに置くパネルの準備
+  void preparationPanel()
+  {
+    // 開始パネルを探す
+    std::vector<int> start_panels;
+    for (int i = 0; i < panels_.size(); ++i)
+    {
+      if (panels_[i].getAttribute() & Panel::START)
+      {
+        start_panels.push_back(i);
+      }
+    }
+    assert(!start_panels.empty());
+
+    if (start_panels.size() > 1)
+    {
+      // 開始パネルが何枚かある時はシャッフル
+      std::shuffle(std::begin(start_panels), std::end(start_panels), engine_);
+    }
+    start_panel_ = start_panels[0];
+
+    {
+      // 最初に置くパネルを取り除いてからシャッフル
+      auto it = std::find(std::begin(waiting_panels), std::end(waiting_panels), start_panel_);
+      assert(it != std::end(waiting_panels));
+      waiting_panels.erase(it);
+
+      std::shuffle(std::begin(waiting_panels), std::end(waiting_panels), engine_);
+    }
+
+#if defined (DEBUG)
+    auto force_panel = params_.getValueForKey<int>("force_panel");
+    if (force_panel > 0)
+    {
+      // パネル枚数を強制的に変更
+      waiting_panels.resize(force_panel);
+    }
+#endif
+  }
+
   // NOTICE 先にfieldUpdateしとく
   bool getNextPanel() noexcept
   {
@@ -781,6 +828,9 @@ private:
 
   // 配置するパネル
   std::vector<int> waiting_panels;
+  // 最初に中央に配置するパネル
+  int start_panel_;
+  // 手持ちのパネル
   int hand_panel;
   u_int hand_rotation;
 

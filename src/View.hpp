@@ -175,6 +175,8 @@ public:
     {
       auto name = params.getValueForKey<std::string>("cloud_shader");
       cloud_shader_ = createShader(name, name);
+      cloud_shader_->uniform("uColor", Json::getVec<glm::vec4>(params["cloud_color"]));
+      cloud_shader_->uniform("uThreshold", params.getValueForKey<float>("cloud_threshold"));
     }
     {
       auto format = ci::gl::Texture2d::Format();   // .minFilter(GL_NEAREST).magFilter(GL_NEAREST);

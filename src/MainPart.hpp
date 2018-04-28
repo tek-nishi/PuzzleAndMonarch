@@ -268,6 +268,29 @@ public:
                               });
 
     // 各種イベント
+    holder_ += event_.connect("Intro:begin",
+                              [this](const Connection&, const Arguments&) noexcept
+                              {
+                                // カメラをジワーッと寄せる
+                                prohibited_ = true;
+                                field_camera_.setCurrentDistance(params_.getValueForKey<float>("intro.distance"));
+                                view_.setColor(ci::Color::black());
+                                view_.setColor(2.0f, ci::Color::white());
+                              });
+    holder_ += event_.connect("Intro:skiped",
+                              [this](const Connection&, const Arguments&) noexcept
+                              {
+                                field_camera_.setCurrentDistance(params_.getValueForKey<float>("field.camera.distance") * 1.2f);
+                                view_.setColor(0.5f, ci::Color::white());
+                              });
+    holder_ += event_.connect("Intro:finished",
+                              [this](const Connection&, const Arguments&) noexcept
+                              {
+                                game_->preparationPlay();
+                                // カメラを初期位置へ
+                                prohibited_ = false;
+                              });
+
     holder_ += event_.connect("Title:finished",
                               [this](const Connection&, const Arguments&) noexcept
                               {
@@ -646,8 +669,7 @@ public:
                                 game_->testPutPanel(pos, panel, rotation);
                               });
 #endif
-    // 本編準備
-    game_->preparationPlay();
+
     view_.setColor(ci::ColorA::white());
   }
 

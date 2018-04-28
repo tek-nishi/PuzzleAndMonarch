@@ -26,16 +26,16 @@ public:
               Params::load(params.getValueForKey<std::string>("intro.tweens"))),
       finish_delay_(params.getValueForKey<double>("intro.finish_delay"))
   {
-    count_exec_.add(1.0,
+    count_exec_.add(params.getValueForKey<double>("intro.touch_delay"),
                     [this]()
                     {
                       holder_ += event_.connect("single_touch_ended",
                                                 [this](const Connection&, const Arguments&)
                                                 {
+                                                  event_.signal("Intro:skiped", Arguments());
                                                   finishTask();
                                                 });
                     });
-
 
     event.signal("Intro:begin", Arguments());
     canvas_.startTween("start");
