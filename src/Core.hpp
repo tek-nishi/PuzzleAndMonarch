@@ -50,6 +50,14 @@ public:
       tween_common_(Params::load("tw_common.json"))
   {
     // 各種イベント登録
+    // Intro→Title
+    holder_ += event_.connect("Intro:finished",
+                              [this](const Connection&, const Arguments&) noexcept
+                              {
+                                tasks_.pushBack<Title>(params_, event_, drawer_, tween_common_,
+                                                       true, archive_.isSaved());
+                              });
+
     // Title→GameMain
     holder_ += event_.connect("Title:finished",
                               [this](const Connection&, const Arguments&) noexcept
@@ -207,8 +215,6 @@ public:
     // 最初のタスクを登録
     tasks_.pushBack<Sound>(params_, event_);
     tasks_.pushBack<MainPart>(params_, event_, archive_);
-    // tasks_.pushBack<Title>(params_, event_, drawer_, tween_common_,
-    //                        true, archive_.isSaved());
     tasks_.pushBack<Intro>(params_, event_, drawer_, tween_common_);
 
 #if defined (DEBUG)

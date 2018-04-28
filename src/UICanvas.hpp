@@ -202,6 +202,13 @@ public:
   }
 
 
+  // 何かしらTween中か？
+  bool hasTween() const noexcept
+  {
+    return !timeline_->empty();
+  }
+
+
 private:
   void resize(const Connection&, const Arguments&) noexcept
   {

@@ -416,7 +416,9 @@
 
   "intro": {
     "canvas": "ui_intro.json",
-    "tweens": "tw_intro.json"
+    "tweens": "tw_intro.json",
+
+    "finish_delay": 0.5
   },
 
   "title": {

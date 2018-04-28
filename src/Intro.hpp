@@ -23,9 +23,23 @@ public:
       canvas_(event, drawer, tween_common,
               params["ui.camera"],
               Params::load(params.getValueForKey<std::string>("intro.canvas")),
-              Params::load(params.getValueForKey<std::string>("intro.tweens")))
+              Params::load(params.getValueForKey<std::string>("intro.tweens"))),
+      finish_delay_(params.getValueForKey<double>("intro.finish_delay"))
   {
+    count_exec_.add(1.0,
+                    [this]()
+                    {
+                      holder_ += event_.connect("single_touch_ended",
+                                                [this](const Connection&, const Arguments&)
+                                                {
+                                                  DOUT << "touched" << std::endl;
+                                                  active_ = false;
+                                                });
+                    });
+
+
     event.signal("Intro:begin", Arguments());
+    canvas_.startTween("start");
   }
 
   ~Intro() = default;
@@ -35,6 +49,20 @@ private:
   bool update(double current_time, double delta_time) noexcept override
   {
     count_exec_.update(delta_time);
+
+    if (tweening_ && !canvas_.hasTween())
+    {
+      // 演出が完了したらタイトル画面へ
+      tweening_ = false;
+
+      count_exec_.add(finish_delay_,
+                      [this]()
+                      {
+                        active_ = false;
+                        event_.signal("Intro:finished", Arguments());
+                        DOUT << "Intro:finished" << std::endl;
+                      });
+    }
 
     return active_;
   }
@@ -46,6 +74,9 @@ private:
   CountExec count_exec_;
 
   UI::Canvas canvas_;
+
+  double finish_delay_;
+  bool tweening_ = true;
 
   bool active_ = true;
 };

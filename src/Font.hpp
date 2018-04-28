@@ -114,6 +114,11 @@ void Font::update(void* userPtr, int* rect, const unsigned char* data) noexcept
   glPixelStorei(GL_UNPACK_SKIP_ROWS, rect[1]);
 
   gl->tex->update(data, GL_RED, GL_UNSIGNED_BYTE, 0, w, h, ci::ivec2(rect[0], rect[1]));
+
+  // 元に戻す
+  glPixelStorei(GL_UNPACK_ROW_LENGTH,  0);
+  glPixelStorei(GL_UNPACK_SKIP_PIXELS, 0);
+  glPixelStorei(GL_UNPACK_SKIP_ROWS,   0);
 }
 
 // FIXME: ci::glのコードを参考にした
