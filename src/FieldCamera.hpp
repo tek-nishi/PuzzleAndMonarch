@@ -110,10 +110,12 @@ public:
   {
     map_center_ = center;
 
-    float distance = radius / std::tan(ci::toRadians(fov * 0.5f));
+    float half_fov = ci::toRadians(fov * 0.5f);
+    float distance = radius / std::sin(half_fov);
     // カメラが斜め上から見下ろしているのを考慮
     float n = radius / std::cos(rotation_.x);
-    distance -= n;
+    // FIXME マジックナンバー
+    distance -= n * 0.75f;
 
     // 強制モード
     if (force_camera_)
