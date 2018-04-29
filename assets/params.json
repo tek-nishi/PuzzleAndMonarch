@@ -516,5 +516,10 @@
     "tweens": "tw_ranking.json",
 
     "share": "PuzzleMonarch でのハイスコアです!!"
+  },
+
+  "tutorial": {
+    "canvas": "ui_tutorial.json",
+    "tweens": "tw_tutorial.json"
   }
 }

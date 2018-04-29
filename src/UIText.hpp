@@ -18,11 +18,11 @@ class Text
   std::string initial_text_;
 
   std::string font_name_;
-  glm::vec2 layout_ = { 0.5, 0.5 };
+  glm::vec2 layout_;
   ci::Color color_ = ci::Color::white();
 
   // 文字内容で動的にレイアウトを決める
-  bool dynamic_layout_ = true;
+  bool dynamic_layout_;
 
 
 public:
@@ -31,17 +31,12 @@ public:
       font_name_(params.getValueForKey<std::string>("font")),
       initial_text_(text_)
   {
-    if (params.hasChild("layout"))
-    {
-      layout_ = Json::getVec<glm::vec2>(params["layout"]);
-    }
+    layout_         = Json::getVec(params, "layout", glm::vec2(0.5));
+    dynamic_layout_ = Json::getValue(params, "dynamic_layout", true);
+
     if (params.hasChild("color"))
     {
       color_ = Json::getColor<float>(params["color"]);
-    }
-    if (params.hasChild("dynamic_layout"))
-    {
-      dynamic_layout_ = params.getValueForKey<bool>("dynamic_layout");
     }
   }
 

@@ -1,0 +1,44 @@
+{
+  "identifier": "root",
+  "rect": [ 0, 0, 0, 0 ],
+  "anchor": [
+    [ 0, 0 ],
+    [ 1, 1 ]
+  ],
+
+  "childlen": [
+    {
+      "identifier": "blank",
+      "rect": [ 0, 0, 0, 15 ],
+      "anchor": [
+        [ 0.5, 0.5 ],
+        [ 0.5, 0.5 ]
+      ],
+
+      "childlen": [
+        {
+          "identifier": "blank:text",
+          "rect": [ 0, 0, 0, 15 ],
+          "anchor": [
+            [ 0, 0.5 ],
+            [ 1, 0.5 ]
+          ],
+
+          "font": "jp",
+          "text": "ほげふが"
+        },
+        {
+          "identifier": "blank:arrow",
+          "rect": [ 0, -15, 0, 0 ],
+          "anchor": [
+            [ 0, 0.5 ],
+            [ 1, 0.5 ]
+          ],
+
+          "font": "icon",
+          "text": ""
+        }
+      ]
+    }
+  ]
+}

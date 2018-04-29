@@ -264,44 +264,34 @@ public:
   // パラメーターから生成
   static WidgetPtr createFromParams(const ci::JsonTree& params) noexcept
   {
-    auto rect = Json::getRect<float>(params["rect"]);
+    auto rect   = Json::getRect<float>(params["rect"]);
     auto widget = std::make_shared<UI::Widget>(rect);
 
     if (params.hasChild("identifier"))
     {
       widget->identifier_ = params.getValueForKey<std::string>("identifier");
     }
-    if (params.hasChild("enable"))
-    {
-      widget->enable_ = params.getValueForKey<bool>("enable");
-    }
-    if (params.hasChild("alpha"))
-    {
-      widget->alpha_ = params.getValueForKey<float>("alpha");
-    }
+
+    widget->enable_ = Json::getValue(params, "enable", true);
+    widget->alpha_  = Json::getValue(params, "alpha",  1.0f);
+
     if (params.hasChild("anchor"))
     {
       widget->anchor_min_ = Json::getVec<glm::vec2>(params["anchor"][0]);
       widget->anchor_max_ = Json::getVec<glm::vec2>(params["anchor"][1]);
     }
-    if (params.hasChild("scale"))
-    {
-      widget->scale_ = Json::getVec<glm::vec2>(params["scale"]);
-    }
-    if (params.hasChild("pivot"))
-    {
-      widget->pivot_ = Json::getVec<glm::vec2>(params["pivot"]);
-    }
-    if (params.hasChild("offset"))
-    {
-      widget->offset_ = Json::getVec<glm::vec2>(params["offset"]);
-    }
+
+    widget->scale_  = Json::getVec(params, "scale",  glm::vec2(1));
+    widget->pivot_  = Json::getVec(params, "pivot",  glm::vec2(0.5));
+    widget->offset_ = Json::getVec(params, "offset", glm::vec2(0));
+
     if (params.hasChild("event"))
     {
       widget->event_     = params.getValueForKey<std::string>("event");
       widget->has_event_ = true;
     }
     widget->move_event_ = Json::getValue(params, "move_event", false);
+
     if (params.hasChild("se"))
     {
       widget->se_     = params.getValueForKey<std::string>("se");
@@ -362,7 +352,7 @@ private:
 
   // メンバ変数
   std::string identifier_;
-  bool enable_ = true;
+  bool enable_;
   // 親も有効
   bool parent_enable_ = true;
 
@@ -370,13 +360,13 @@ private:
   glm::vec2 offset_;
 
   // スケーリングの中心(normalized)
-  glm::vec2 pivot_ = { 0.5f, 0.5f };
+  glm::vec2 pivot_;
 
   // 親のサイズの影響力(normalized)
   glm::vec2 anchor_min_ = { 0.5f, 0.5f };
   glm::vec2 anchor_max_ = { 0.5f, 0.5f };
 
-  glm::vec2 scale_ = { 1.0f, 1.0f };
+  glm::vec2 scale_;
 
   bool has_event_ = false;
   std::string event_;
@@ -386,7 +376,7 @@ private:
   bool has_se_ = false;
   std::string se_;
 
-  float alpha_ = 1.0;
+  float alpha_;
 
   // 描画用クラス
   std::unique_ptr<UI::WidgetBase> widget_base_;

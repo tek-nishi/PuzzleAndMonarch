@@ -15,6 +15,7 @@
 #include "MainPart.hpp"
 #include "Intro.hpp"
 #include "Title.hpp"
+#include "Tutorial.hpp"
 #include "GameMain.hpp"
 #include "Result.hpp"
 #include "Credits.hpp"
@@ -216,6 +217,8 @@ public:
     tasks_.pushBack<Sound>(params_, event_);
     tasks_.pushBack<MainPart>(params_, event_, archive_);
     tasks_.pushBack<Intro>(params_, event_, drawer_, tween_common_);
+
+    tasks_.pushBack<Tutorial>(params_, event_, drawer_, tween_common_);
 
 #if defined (DEBUG)
     tasks_.pushBack<DebugTask>(params_, event_, drawer_);

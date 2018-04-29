@@ -36,7 +36,9 @@ class Tween
     bool has_start;
     bool copy_start;
 
+    // 開始時にWidget表示
     bool enable_start;
+    // 終了時にWidget消去
     bool disable_end;
 
     boost::any start;
@@ -47,6 +49,7 @@ class Tween
   {
     std::string name;
     int type;
+    bool repeat;
     std::vector<Body> bodies;
   };
 
@@ -59,16 +62,15 @@ public:
     for (int i = 0; i < params.getNumChildren(); ++i)
     {
       const auto& p = params[i];
-
-      const auto& param_name = p.getValueForKey<std::string>("param");
       auto type = getParamType(p.getValueForKey<std::string>("type"));
 
-      std::vector<Body> bodies;
-
       const auto& body = p["body"];
-      for (int j = 0; j < body.getNumChildren(); ++j)
+
+      std::vector<Body> bodies;
+      bodies.reserve(body.getNumChildren());
+
+      for (const auto& b : body)
       {
-        const auto& b = body[j];
         float duration = b.getValueForKey<float>("duration");
 
         bool loop         = Json::getValue(b, "loop", false);
@@ -82,10 +84,11 @@ public:
         bool has_start = false;
         boost::any start;
         boost::any end;
+
         if (b.hasChild("start"))
         {
           has_start = true;
-          start = getValueForType(b["start"], type);
+          start     = getValueForType(b["start"], type);
         }
         end = getValueForType(b["end"], type);
 
@@ -96,8 +99,11 @@ public:
                            start, end });
       }
 
+      const auto& param_name = p.getValueForKey<std::string>("param");
+      auto repeat = Json::getValue(p, "repeat", false);
+
       // TODO 構造体のコピーを無くす
-      components_.push_back({ param_name, type, bodies });
+      components_.push_back({ param_name, type, repeat, bodies });
     }
   }
 
@@ -118,6 +124,11 @@ public:
                           DOUT << "disable: " << widget->getIdentifier() << std::endl;
                         };
 
+    auto repeat_func = [this, timeline, widget]() noexcept
+                       {
+                         this->set(timeline, widget);
+                       };
+
     for (const auto& c : components_)
     {
       const auto& param_name = c.name;
@@ -133,11 +144,15 @@ public:
         }
       }
 
-      for (u_int i = 1; i < c.bodies.size(); ++i)
+      u_int num = u_int(c.bodies.size());
+      for (u_int i = 1; i < num; ++i)
       {
         const auto& b = c.bodies[i];
+        bool repeat = c.repeat && (i == (num - 1));
+
         appendToTween(type, timeline, widget->getParam(param_name), b,
-                      enable_func, disable_func);
+                      enable_func, disable_func,
+                      repeat, repeat_func);
       }
     }
   }
@@ -189,28 +204,17 @@ private:
                                const std::function<void ()>& enable_func,
                                const std::function<void ()>& disable_func) noexcept
   {
-      if (body.has_start)
-      {
-        auto options = timeline->applyPtr(boost::any_cast<T*>(target),
-                                          boost::any_cast<T>(body.start), boost::any_cast<T>(body.end),
-                                          body.duration, body.ease_func);
-        if (body.loop)         options.loop();
-        if (body.pingpong)     options.pingPong();
-        if (body.delay > 0.0f) options.delay(body.delay);
-        if (body.enable_start) options.startFn(enable_func);
-        if (body.disable_end)  options.finishFn(disable_func);
-      }
-      else
-      {
-        auto options = timeline->applyPtr(boost::any_cast<T*>(target),
-                                          boost::any_cast<T>(body.end),
-                                          body.duration, body.ease_func);
-        if (body.loop)         options.loop();
-        if (body.pingpong)     options.pingPong();
-        if (body.delay > 0.0f) options.delay(body.delay);
-        if (body.enable_start) options.startFn(enable_func);
-        if (body.disable_end)  options.finishFn(disable_func);
-      }
+    auto options = (body.has_start) ? timeline->applyPtr(boost::any_cast<T*>(target),
+                                                         boost::any_cast<T>(body.start), boost::any_cast<T>(body.end),
+                                                         body.duration, body.ease_func)
+                                    : timeline->applyPtr(boost::any_cast<T*>(target),
+                                                         boost::any_cast<T>(body.end),
+                                                         body.duration, body.ease_func);
+    if (body.loop)         options.loop();
+    if (body.pingpong)     options.pingPong();
+    if (body.delay > 0.0f) options.delay(body.delay);
+    if (body.enable_start) options.startFn(enable_func);
+    if (body.disable_end)  options.finishFn(disable_func);
   }
 
   template <typename T>
@@ -218,30 +222,21 @@ private:
                                 const boost::any& target,
                                 const Body& body,
                                 const std::function<void ()>& enable_func,
-                                const std::function<void ()>& disable_func) noexcept
+                                const std::function<void ()>& disable_func,
+                                bool repeat, const std::function<void ()>& repeat_func)
   {
-      if (body.has_start)
-      {
-        auto options = timeline->appendToPtr(boost::any_cast<T*>(target),
-                                             boost::any_cast<T>(body.start), boost::any_cast<T>(body.end),
-                                             body.duration, body.ease_func);
-        if (body.loop)         options.loop();
-        if (body.pingpong)     options.pingPong();
-        if (body.delay > 0.0f) options.delay(body.delay);
-        if (body.enable_start) options.startFn(enable_func);
-        if (body.disable_end)  options.finishFn(disable_func);
-      }
-      else
-      {
-        auto options = timeline->appendToPtr(boost::any_cast<T*>(target),
-                                             boost::any_cast<T>(body.end),
-                                             body.duration, body.ease_func);
-        if (body.loop)         options.loop();
-        if (body.pingpong)     options.pingPong();
-        if (body.delay > 0.0f) options.delay(body.delay);
-        if (body.enable_start) options.startFn(enable_func);
-        if (body.disable_end)  options.finishFn(disable_func);
-      }
+    auto options = (body.has_start) ? timeline->appendToPtr(boost::any_cast<T*>(target),
+                                                            boost::any_cast<T>(body.start), boost::any_cast<T>(body.end),
+                                                            body.duration, body.ease_func)
+                                    : timeline->appendToPtr(boost::any_cast<T*>(target),
+                                                            boost::any_cast<T>(body.end),
+                                                            body.duration, body.ease_func);
+    if (body.loop)         options.loop();
+    if (body.pingpong)     options.pingPong();
+    if (body.delay > 0.0f) options.delay(body.delay);
+    if (body.enable_start) options.startFn(enable_func);
+    if (body.disable_end)  options.finishFn(disable_func);
+    if (repeat)            options.finishFn(repeat_func);
   }
 
 
@@ -282,28 +277,29 @@ private:
                             const boost::any& target,
                             const Body& body,
                             const std::function<void ()>& enable_func,
-                            const std::function<void ()>& disable_func) noexcept
+                            const std::function<void ()>& disable_func,
+                            bool repeat, const std::function<void ()>& repeat_func)
   {
     switch (type)
     {
     case Type::FLOAT:
-      appendTweenParams<float>(timeline, target, body, enable_func, disable_func);
+      appendTweenParams<float>(timeline, target, body, enable_func, disable_func, repeat, repeat_func);
       break;
 
     case Type::VEC2:
-      appendTweenParams<glm::vec2>(timeline, target, body, enable_func, disable_func);
+      appendTweenParams<glm::vec2>(timeline, target, body, enable_func, disable_func, repeat, repeat_func);
       break;
 
     case Type::VEC3:
-      appendTweenParams<glm::vec3>(timeline, target, body, enable_func, disable_func);
+      appendTweenParams<glm::vec3>(timeline, target, body, enable_func, disable_func, repeat, repeat_func);
       break;
 
     case Type::COLOR:
-      appendTweenParams<ci::Color>(timeline, target, body, enable_func, disable_func);
+      appendTweenParams<ci::Color>(timeline, target, body, enable_func, disable_func, repeat, repeat_func);
       break;
 
     case Type::RECT:
-      appendTweenParams<ci::Rectf>(timeline, target, body, enable_func, disable_func);
+      appendTweenParams<ci::Rectf>(timeline, target, body, enable_func, disable_func, repeat, repeat_func);
       break;
     }
   }
