@@ -199,6 +199,7 @@ public:
                                   startRotatePanelEase();
                                   can_put_ = game_->canPutToBlank(field_pos_);
                                   game_event_.insert("Panel:rotate");
+                                  event_.signal("Game:PanelRotate", Arguments());
                                   return;
                                 }
 
@@ -208,6 +209,7 @@ public:
                                 // const auto& grid_pos = std::get<1>(result);
                                 // 可能であればパネルを移動
                                 calcNewFieldPos(grid_pos_);
+                                event_.signal("Game:PanelMove", Arguments());
                               });
 
     holder_ += event_.connect("multi_touch_moved",

@@ -149,6 +149,14 @@ public:
                                 tasks_.pushBack<Title>(params_, event_, drawer_, tween_common_,
                                                        false, archive_.isSaved());
                               });
+
+    // 本編開始
+    holder_ += event_.connect("Game:Start",
+                              [this](const Connection&, const Arguments&) noexcept
+                              {
+                                tasks_.pushBack<Tutorial>(params_, event_, drawer_, tween_common_);
+                              });
+
     // ゲーム中断
     holder_ += event_.connect("Game:Aborted",
                               [this](const Connection&, const Arguments&) noexcept
@@ -217,8 +225,6 @@ public:
     tasks_.pushBack<Sound>(params_, event_);
     tasks_.pushBack<MainPart>(params_, event_, archive_);
     tasks_.pushBack<Intro>(params_, event_, drawer_, tween_common_);
-
-    tasks_.pushBack<Tutorial>(params_, event_, drawer_, tween_common_);
 
 #if defined (DEBUG)
     tasks_.pushBack<DebugTask>(params_, event_, drawer_);

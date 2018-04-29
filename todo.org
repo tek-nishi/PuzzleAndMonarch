@@ -1,5 +1,4 @@
 * TODO チュートリアル
-* TODO Playボタンが表示されていないのに入力を受け付ける
 * TODO ランキング→タイトルでのGameのリセットを無くしたい
 * TODO 初心者は１万点、中級者は５万点、上級者は10万点を競えるバランスに
 * TODO Creditsに関ゲ部追加
@@ -42,6 +41,8 @@
 * TODO アプリアイコン
 * TODO iOS:GameCenter対応
 * TODO iOS:実績を実装
+* DONE Playボタンが表示されていないのに入力を受け付ける
+CLOSED: [2018-04-29 Sun 21:35]
 * DONE tween中止
 CLOSED: [2018-04-29 Sun 13:57]
 * DONE ショートカット操作で主要iPhone、iPadの縦横比へ切り替える機能

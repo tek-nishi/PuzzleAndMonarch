@@ -85,7 +85,7 @@
 
       "event": "play",
       "se":    "play",
-      "alpha": 0,
+      "enable": false,
 
       "childlen": [
         {
