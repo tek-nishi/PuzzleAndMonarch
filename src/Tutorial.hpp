@@ -18,14 +18,45 @@ class Tutorial
 {
 
 public:
-  Tutorial(const ci::JsonTree& params, Event<Arguments>& event, UI::Drawer& drawer, TweenCommon& tween_common) noexcept
+  Tutorial(const ci::JsonTree& params, Event<Arguments>& event, UI::Drawer& drawer, TweenCommon& tween_common)
     : event_(event),
       canvas_(event, drawer, tween_common,
               params["ui.camera"],
               Params::load(params.getValueForKey<std::string>("tutorial.canvas")),
-              Params::load(params.getValueForKey<std::string>("tutorial.tweens")))
+              Params::load(params.getValueForKey<std::string>("tutorial.tweens"))),
+      text_put_(params.getValueForKey<std::string>("tutorial.put")),
+      text_blank_(params.getValueForKey<std::string>("tutorial.blank")),
+      text_rotate_(params.getValueForKey<std::string>("tutorial.rotate"))
   {
-    canvas_.startTween("start");
+    // ゲーム開始
+    holder_ += event_.connect("Game:Start",
+                              [this](const Connection&, const Arguments& args)
+                              {
+                                canvas_.startTween("start");
+                              });
+    
+    // 長押しで置く
+    holder_ += event_.connect("Game:panel:tap",
+                              [this](const Connection&, const Arguments& args)
+                              {
+                                {
+                                  const auto& pos = boost::any_cast<glm::vec3>(args.at("pos"));
+                                  auto offset = canvas_.ndcToPos(pos);
+                                  canvas_.setWidgetParam("blank", "offset", offset);
+                                }
+                              });
+
+    holder_ += event_.connect("Game:blank:tap",
+                              [this](const Connection&, const Arguments& args)
+                              {
+                                {
+                                  const auto& pos = boost::any_cast<glm::vec3>(args.at("pos"));
+                                  auto offset = canvas_.ndcToPos(pos);
+                                  canvas_.setWidgetParam("blank", "offset", offset);
+                                }
+                              });
+    // タップで回転
+    // タップで移動
   }
 
   ~Tutorial() = default;
@@ -47,6 +78,10 @@ private:
   CountExec count_exec_;
 
   UI::Canvas canvas_;
+
+  std::string text_put_;
+  std::string text_blank_;
+  std::string text_rotate_;
 
   bool active_ = true;
 };

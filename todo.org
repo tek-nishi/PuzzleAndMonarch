@@ -1,5 +1,6 @@
 * TODO チュートリアル
-* TODO ランキング→タイトルでのリセットを無くしたい
+* TODO Playボタンが表示されていないのに入力を受け付ける
+* TODO ランキング→タイトルでのGameのリセットを無くしたい
 * TODO 初心者は１万点、中級者は５万点、上級者は10万点を競えるバランスに
 * TODO Creditsに関ゲ部追加
 * TODO 教会は宗教色が強いので別の名称にする
@@ -15,7 +16,6 @@
 * TODO Demoプレイ
 * TODO パネルのうらが真っ暗
 * TODO iPad:Shareのpopoverをボタン位置と合わせる
-* TODO tween中止
 * TODO iOS：基本図形描画のパフォーマンス調査
 * TODO ローカライズ
 * TODO 道がわかりずらい
@@ -42,6 +42,8 @@
 * TODO アプリアイコン
 * TODO iOS:GameCenter対応
 * TODO iOS:実績を実装
+* DONE tween中止
+CLOSED: [2018-04-29 Sun 13:57]
 * DONE ショートカット操作で主要iPhone、iPadの縦横比へ切り替える機能
 CLOSED: [2018-04-28 土 20:15]
 * DONE いい感じに画面全体に街が映るように

@@ -157,6 +157,17 @@ public:
     }
   }
 
+  template <typename T>
+  void stop(const ci::TimelineRef& timeline, const T& widget) const
+  {
+    for (const auto& c : components_)
+    {
+      const auto& name = c.name;
+      int type = c.type;
+      removeTarget(type, timeline, widget->getParam(name));
+    }
+  }
+
 
 private:
   static int getParamType(const std::string& type) noexcept
@@ -304,6 +315,42 @@ private:
     }
   }
   
+
+  template <typename T>
+  static void removeTarget(const ci::TimelineRef& timeline,
+                           const boost::any& target)
+  {
+    timeline->removeTarget(boost::any_cast<T*>(target));
+  }
+
+  static void removeTarget(int type,
+                           const ci::TimelineRef& timeline,
+                           const boost::any& target)
+  {
+    switch (type)
+    {
+    case Type::FLOAT:
+      removeTarget<float>(timeline, target);
+      break;
+
+    case Type::VEC2:
+      removeTarget<glm::vec2>(timeline, target);
+      break;
+
+    case Type::VEC3:
+      removeTarget<glm::vec3>(timeline, target);
+      break;
+
+    case Type::COLOR:
+      removeTarget<ci::Color>(timeline, target);
+      break;
+
+    case Type::RECT:
+      removeTarget<ci::Rectf>(timeline, target);
+      break;
+    }
+  }
+
 };
 
 }

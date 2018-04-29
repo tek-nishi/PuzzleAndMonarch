@@ -708,14 +708,26 @@ private:
 
     if (game_->isPlaying())
     {
-      // 10秒切った時のカウントダウン判定
-      auto play_time = game_->getPlayTime();
-      u_int prev    = std::ceil(play_time + delta_time);
-      u_int current = std::ceil(play_time);
-
-      if ((current <= 10) && (prev != current))
       {
-        game_event_.insert("Game:countdown");
+        // 10秒切った時のカウントダウン判定
+        auto play_time = game_->getPlayTime();
+        u_int prev     = std::ceil(play_time + delta_time);
+        u_int current  = std::ceil(play_time);
+
+        if ((current <= 10) && (prev != current))
+        {
+          game_event_.insert("Game:countdown");
+        }
+      }
+
+      auto ndc_pos = camera_.body().worldToNdc(cursor_pos_);
+      if (can_put_)
+      {
+        // Tutorial向け
+        Arguments args{
+          { "pos", ndc_pos },
+        };
+        event_.signal("Game:panel:tap", args);
       }
 
       // パネル設置操作
@@ -725,7 +737,6 @@ private:
         put_remaining_ -= delta_time;
 
         {
-          auto ndc_pos = camera_.body().worldToNdc(cursor_pos_);
           auto scale = 1.0f - glm::clamp(float(put_remaining_ / current_putdown_time_), 0.0f, 1.0f);
           Arguments args = {
             { "pos",   ndc_pos },

@@ -520,6 +520,10 @@
 
   "tutorial": {
     "canvas": "ui_tutorial.json",
-    "tweens": "tw_tutorial.json"
+    "tweens": "tw_tutorial.json",
+
+    "put": "長押しで置く",
+    "blank": "タップで移動",
+    "rotate": "タップで回転"
   }
 }

@@ -120,6 +120,17 @@ public:
     }
   }
 
+  void stopTween(const std::string& name)
+  {
+    auto& contents = tweens_.at(name);
+    for (const auto& c : contents)
+    {
+      const auto& widget = this->at(c.identifier);
+      c.tween.stop(timeline_, widget);
+    }
+  }
+
+
   void startCommonTween(const std::string& id, const std::string& name) noexcept
   {
     auto& tween = tween_common_.at(name);
