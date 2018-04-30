@@ -47,6 +47,7 @@ public:
                     [this]() noexcept
                     {
                       event_.signal("Game:Start", Arguments());
+                      canvas_.active();
                     });
 
     auto wipe_delay    = params.getValueForKey<double>("ui.wipe.delay");
@@ -202,6 +203,7 @@ public:
 
     setupScores(params);
 
+    canvas_.active(false);
     canvas_.startTween("start");
   }
 

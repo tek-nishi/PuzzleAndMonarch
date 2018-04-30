@@ -39,6 +39,30 @@ public:
       text_(Json::getArray<std::string>(params["tutorial.text"])),
       offset_(Json::getVecArray<glm::vec2>(params["tutorial.offset"]))
   {
+    // Pause操作
+    holder_ += event_.connect("GameMain:pause",
+                              [this](const Connection&, const Arguments&)
+                              {
+                                pause_ = true;
+
+                                // Pause中はチュートリアルの指示を消す
+                                if (disp_)
+                                {
+                                  canvas_.startTween("pause");
+                                }
+                              });
+    holder_ += event_.connect("GameMain:resume",
+                              [this](const Connection&, const Arguments&)
+                              {
+                                pause_ = false;
+
+                                if (disp_)
+                                {
+                                  canvas_.startTween("start");
+                                }
+                              });
+
+    // 各種操作
     holder_ += event_.connect("Game:PutPanel",
                               [this](const Connection&, const Arguments&)
                               {
@@ -128,6 +152,8 @@ private:
   {
     count_exec_.update(delta_time);
 
+    if (pause_) return active_;
+
     // 必須操作が無いと催促する感じ
     if (!disp_)
     {
@@ -189,6 +215,7 @@ private:
   std::vector<std::string> text_;
   std::vector<glm::vec2> offset_;
 
+  bool pause_  = false;
   bool active_ = true;
 };
 

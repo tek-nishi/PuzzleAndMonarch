@@ -59,5 +59,26 @@
         }
       ]
     }
+  ],
+
+  "pause": [
+    {
+      "identifier": "blank",
+      "tween": [
+        {
+          "param": "alpha",
+          "type": "float",
+          "body": [
+            {
+              "duration": 0.3,
+              "delay": 0.5,
+              "disable_end": true,
+              "ease_func": "None",
+              "end": 0
+            }
+          ]
+        }
+      ]
+    }
   ]
 }

@@ -1,5 +1,4 @@
-* TODO チュートリアル
-* TODO チュートリアルの指示はPauseで消す
+* TODO チュートリアル、教会とか森とかの得点方法の指示出し
 * TODO glm::vec3 の定数を積極的に使う
 * TODO ランキング→タイトルでのGameのリセットを無くしたい
 * TODO 初心者は１万点、中級者は５万点、上級者は10万点を競えるバランスに
@@ -43,6 +42,10 @@
 * TODO アプリアイコン
 * TODO iOS:GameCenter対応
 * TODO iOS:実績を実装
+* DONE チュートリアルの指示はPauseで消す
+CLOSED: [2018-04-30 Mon 13:51]
+* DONE チュートリアル
+CLOSED: [2018-04-30 Mon 13:19]
 * DONE Playボタンが表示されていないのに入力を受け付ける
 CLOSED: [2018-04-29 Sun 21:35]
 * DONE tween中止
