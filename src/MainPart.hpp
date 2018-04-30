@@ -1167,9 +1167,17 @@ private:
     {
       // 森の位置
       auto panel = game_->searchAttribute(0, Panel::FOREST);
-      if (panel.first)
+      if (std::get<0>(panel))
       {
-        auto ndc_pos = camera.worldToNdc(glm::vec3(panel.second.x * PANEL_SIZE, 0, panel.second.y * PANEL_SIZE));
+        const static glm::vec3 offset[]{
+          {                  0, 0,  PANEL_SIZE * 0.4f },
+          {  PANEL_SIZE * 0.4f, 0,                  0 },
+          {                  0, 0, -PANEL_SIZE * 0.4f },
+          { -PANEL_SIZE * 0.4f, 0,                  0 }
+        };
+
+        auto ndc_pos = camera.worldToNdc(glm::vec3(std::get<1>(panel).x * PANEL_SIZE, 0, std::get<1>(panel).y * PANEL_SIZE)
+                                         + offset[std::get<2>(panel)]);
         args.insert({ "forest", ndc_pos });
       }
     }
@@ -1177,9 +1185,9 @@ private:
     {
       // 街の位置
       auto panel = game_->searchAttribute(Panel::TOWN, 0);
-      if (panel.first)
+      if (std::get<0>(panel))
       {
-        auto ndc_pos = camera.worldToNdc(glm::vec3(panel.second.x * PANEL_SIZE, 0, panel.second.y * PANEL_SIZE));
+        auto ndc_pos = camera.worldToNdc(glm::vec3(std::get<1>(panel).x * PANEL_SIZE, 0, std::get<1>(panel).y * PANEL_SIZE));
         args.insert({ "town", ndc_pos });
       }
     }
@@ -1187,9 +1195,9 @@ private:
     {
       // 教会の位置
       auto panel = game_->searchAttribute(Panel::CHURCH, 0);
-      if (panel.first)
+      if (std::get<0>(panel))
       {
-        auto ndc_pos = camera.worldToNdc(glm::vec3(panel.second.x * PANEL_SIZE, 0, panel.second.y * PANEL_SIZE));
+        auto ndc_pos = camera.worldToNdc(glm::vec3(std::get<1>(panel).x * PANEL_SIZE, 0, std::get<1>(panel).y * PANEL_SIZE));
         args.insert({ "church", ndc_pos });
       }
     }

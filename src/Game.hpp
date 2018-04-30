@@ -393,7 +393,7 @@ struct Game
   }
 
   // 指定属性のパネルを探す
-  std::pair<bool, glm::ivec2> searchAttribute(u_int attribute, u_int edge) const
+  std::tuple<bool, glm::ivec2, int> searchAttribute(u_int attribute, u_int edge) const
   {
     uint64_t e = edge;
     uint64_t edge_bundled = e | (e << 16) | (e << 32) | (e << 48);
@@ -405,15 +405,33 @@ struct Game
                              const auto& status = field.getPanelStatus(pos);
                              const auto& panel  = panels_[status.number];
 
-                             return (panel.getAttribute() & attribute) || (edge_bundled & panel.getEdgeBundled());
+                             return (panel.getAttribute() & attribute) || (edge_bundled & status.edge);
                            });
 
     if (it == std::end(panel_positions))
     {
-      return { false, glm::ivec2(0) };
+      return { false, glm::ivec2(0), 0 };
     }
 
-    return { true, *it };
+    // edge情報をゲット
+    int rotate = 0;
+    if (edge)
+    {
+      const auto& status = field.getPanelStatus(*it);
+      auto rotated_edge  = status.edge;
+
+      for ( ; rotate < 4; ++rotate)
+      {
+        if (rotated_edge & e)
+        {
+          break;
+        }
+        // NOTICE 事前に定義した変数を変更している
+        e <<= 16;
+      }
+    }
+
+    return { true, *it, rotate };
   }
 
 

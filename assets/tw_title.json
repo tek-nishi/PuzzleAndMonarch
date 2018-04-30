@@ -133,7 +133,6 @@
               "pingpong": true,
               "ease_func": "OutCubic",
               "copy_start": true,
-              "enable_start": true,
               "start": 0,
               "end":   1
             }
