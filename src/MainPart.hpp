@@ -1141,27 +1141,60 @@ private:
   // 各種座標をNormalized Device Coordinates変換して送信
   void sendFieldPositions()
   {
+    Arguments args;
+
     const auto& camera = camera_.body();
+    {
+      // カーソル位置
+      auto cursor_ndc_pos = camera.worldToNdc(cursor_pos_);
+      args.insert({ "cursor", cursor_ndc_pos });
+    }
 
-    // カーソル位置
-    auto cursor_ndc_pos = camera.worldToNdc(cursor_pos_);
-    // Blank
-    // NOTICE カーソル位置とは別の場所を探している   
-    const auto& blanks = game_->getBlankPositions();
-    auto it = std::find_if(std::begin(blanks), std::end(blanks),
-                           [this](const glm::ivec2& a)
-                           {
-                             return a != field_pos_;
-                           });
-    auto blank_ndc_pos = camera.worldToNdc(glm::vec3(it->x * PANEL_SIZE, 0, it->y * PANEL_SIZE));
+    {
+      // Blank
+      // NOTICE カーソル位置とは別の場所を探している   
+      const auto& blanks = game_->getBlankPositions();
+      auto it = std::find_if(std::begin(blanks), std::end(blanks),
+                             [this](const glm::ivec2& a)
+                             {
+                               return a != field_pos_;
+                             });
 
-    Arguments args{
-      { "cursor", cursor_ndc_pos },
-      { "blank",  blank_ndc_pos },
-    };
+      auto blank_ndc_pos = camera.worldToNdc(glm::vec3(it->x * PANEL_SIZE, 0, it->y * PANEL_SIZE));
+      args.insert({ "blank",  blank_ndc_pos });
+    }
+    
+    {
+      // 森の位置
+      auto panel = game_->searchAttribute(0, Panel::FOREST);
+      if (panel.first)
+      {
+        auto ndc_pos = camera.worldToNdc(glm::vec3(panel.second.x * PANEL_SIZE, 0, panel.second.y * PANEL_SIZE));
+        args.insert({ "forest", ndc_pos });
+      }
+    }
+
+    {
+      // 街の位置
+      auto panel = game_->searchAttribute(Panel::TOWN, 0);
+      if (panel.first)
+      {
+        auto ndc_pos = camera.worldToNdc(glm::vec3(panel.second.x * PANEL_SIZE, 0, panel.second.y * PANEL_SIZE));
+        args.insert({ "town", ndc_pos });
+      }
+    }
+
+    {
+      // 教会の位置
+      auto panel = game_->searchAttribute(Panel::CHURCH, 0);
+      if (panel.first)
+      {
+        auto ndc_pos = camera.worldToNdc(glm::vec3(panel.second.x * PANEL_SIZE, 0, panel.second.y * PANEL_SIZE));
+        args.insert({ "church", ndc_pos });
+      }
+    }
+
     event_.signal("Field:Positions", args);
-
-    // TODO 森とか街とか教会の位置も送る
   }
 
   

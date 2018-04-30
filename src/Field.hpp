@@ -30,6 +30,7 @@ struct Field
   ~Field() = default;
 
 
+  // Jsonから状況を復元
   Field(const ci::JsonTree& json) noexcept
   {
     for (const auto& obj : json)

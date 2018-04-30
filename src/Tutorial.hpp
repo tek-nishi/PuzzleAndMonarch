@@ -22,7 +22,7 @@ class Tutorial
     PANEL_PUT,
 
     GET_FOREST,
-    GET_CIRY,
+    GET_TOWN,
     GET_CHURCH,
   };
 
@@ -66,41 +66,32 @@ public:
     holder_ += event_.connect("Game:PutPanel",
                               [this](const Connection&, const Arguments&)
                               {
-                                if (disp_ && (disp_type_ == PANEL_PUT))
-                                {
-                                  disp_ = false;
-                                  canvas_.startTween("end");
-                                }
-
-                                // パネルを設置した
-                                operation_.insert(PANEL_PUT);
-                                current_direction_delay_ = direction_delay_;
+                                doneOperation(PANEL_PUT);
                               });
     holder_ += event_.connect("Game:PanelRotate",
                               [this](const Connection&, const Arguments&)
                               {
-                                if (disp_ && (disp_type_ == PANEL_ROTATE))
-                                {
-                                  disp_ = false;
-                                  canvas_.startTween("end");
-                                }
-
-                                // パネルを回した
-                                operation_.insert(PANEL_ROTATE);
-                                current_direction_delay_ = direction_delay_;
+                                doneOperation(PANEL_ROTATE);
                               });
     holder_ += event_.connect("Game:PanelMove",
                               [this](const Connection&, const Arguments&)
                               {
-                                if (disp_ && (disp_type_ == PANEL_MOVE))
-                                {
-                                  disp_ = false;
-                                  canvas_.startTween("end");
-                                }
-
-                                // パネルを移動した
-                                operation_.insert(PANEL_MOVE);
-                                current_direction_delay_ = direction_delay_;
+                                doneOperation(PANEL_MOVE);
+                              });
+    holder_ += event_.connect("Game:completed_forests",
+                              [this](const Connection&, const Arguments&)
+                              {
+                                doneOperation(GET_FOREST);
+                              });
+    holder_ += event_.connect("Game:completed_path",
+                              [this](const Connection&, const Arguments&)
+                              {
+                                doneOperation(GET_TOWN);
+                              });
+    holder_ += event_.connect("Game:completed_church",
+                              [this](const Connection&, const Arguments&)
+                              {
+                                doneOperation(GET_CHURCH);
                               });
 
     // 座標計算
@@ -115,7 +106,7 @@ public:
                                   "cursor",           // PANEL_PUT
 
                                   "forest",           // GET_FOREST
-                                  "city",             // GET_CITY
+                                  "town",             // GET_TOWN
                                   "church",           // GET_CHURCH
                                 };
 
@@ -193,6 +184,21 @@ private:
     return active_;
   }
 
+
+  // 操作完了
+  void doneOperation(int type)
+  {
+    if (disp_ && (disp_type_ == type))
+    {
+      disp_ = false;
+      canvas_.startTween("end");
+    }
+
+    // パネルを設置した
+    operation_.insert(type);
+    current_direction_delay_ = direction_delay_;
+  }
+ 
   
   Event<Arguments>& event_;
   ConnectionHolder holder_;

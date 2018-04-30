@@ -151,7 +151,7 @@ struct Game
     finished = true;
     calcResults();
 
-    Arguments args = {
+    Arguments args{
       { "scores",        scores_ },
       { "total_score",   total_score },
       { "total_ranking", total_ranking },
@@ -268,7 +268,7 @@ struct Game
 
         appendContainer(completed, completed_forests);
 
-        Arguments args {
+        Arguments args{
           { "completed", completed }
         };
         event_.signal("Game:completed_forests", args);
@@ -291,7 +291,7 @@ struct Game
 
         appendContainer(completed, completed_path);
 
-        Arguments args {
+        Arguments args{
           { "completed", completed }
         };
         event_.signal("Game:completed_path", args);
@@ -309,7 +309,7 @@ struct Game
               
         appendContainer(completed, completed_church);
         
-        Arguments args {
+        Arguments args{
           { "completed", completed }
         };
         event_.signal("Game:completed_church", args);
@@ -323,7 +323,7 @@ struct Game
     {
       updateScores();
       
-      Arguments args = {
+      Arguments args{
         { "scores", scores_ }
       };
       event_.signal("Game:UpdateScores", args);
@@ -390,6 +390,30 @@ struct Game
                                });
 
     return *it;
+  }
+
+  // 指定属性のパネルを探す
+  std::pair<bool, glm::ivec2> searchAttribute(u_int attribute, u_int edge) const
+  {
+    uint64_t e = edge;
+    uint64_t edge_bundled = e | (e << 16) | (e << 32) | (e << 48);
+
+    const auto& panel_positions = field.getPanelPositions();
+    auto it = std::find_if(std::begin(panel_positions), std::end(panel_positions),
+                           [this, attribute, edge_bundled](const glm::ivec2& pos)
+                           {
+                             const auto& status = field.getPanelStatus(pos);
+                             const auto& panel  = panels_[status.number];
+
+                             return (panel.getAttribute() & attribute) || (edge_bundled & panel.getEdgeBundled());
+                           });
+
+    if (it == std::end(panel_positions))
+    {
+      return { false, glm::ivec2(0) };
+    }
+
+    return { true, *it };
   }
 
 
@@ -482,7 +506,7 @@ struct Game
       count_exec_.add(at_time,
                       [status, this]() noexcept
                       {
-                        Arguments args = {
+                        Arguments args{
                           { "panel",     status.number },
                           { "field_pos", status.position },
                           { "rotation",  status.rotation },
@@ -535,7 +559,7 @@ struct Game
   void updateGameUI() const noexcept
   {
     // UI更新
-    Arguments args = {
+    Arguments args{
       { "remaining_time", getPlayTime() }
     };
     event_.signal("Game:UI", args);
@@ -772,7 +796,7 @@ private:
     count_exec_.add(delay_time,
                     [this]() noexcept
                     {
-                      Arguments args = {
+                      Arguments args{
                         { "scores",        scores_ },
                         { "total_score",   total_score },
                         { "total_ranking", total_ranking },
@@ -797,7 +821,7 @@ private:
     blank_ = field.searchBlank();
 
     {
-      Arguments args = {
+      Arguments args{
         { "panel",     panel },
         { "field_pos", pos },
         { "rotation",  rotation },

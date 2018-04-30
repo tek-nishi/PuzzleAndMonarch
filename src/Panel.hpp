@@ -60,6 +60,11 @@ struct Panel {
     return edge_;
   }
 
+  uint64_t getEdgeBundled() const noexcept
+  {
+    return edge_bundled_;
+  }
+
   // 回転ずみの端情報
   std::vector<u_int> getRotatedEdge(u_int rotation) const noexcept
   {
