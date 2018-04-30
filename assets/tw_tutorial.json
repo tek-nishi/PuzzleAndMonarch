@@ -27,7 +27,8 @@
           "type": "float",
           "body": [
             {
-              "duration": 1,
+              "duration": 0.8,
+              "delay": 0.1,
               "enable_start": true,
               "ease_func": "None",
               "copy_start": true,
@@ -49,7 +50,7 @@
           "type": "float",
           "body": [
             {
-              "duration": 0.5,
+              "duration": 0.3,
               "disable_end": true,
               "ease_func": "None",
               "end": 0

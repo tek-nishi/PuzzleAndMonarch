@@ -197,6 +197,7 @@ template <typename T>
 std::vector<T> getVecArray(const ci::JsonTree& json) noexcept
 {
   std::vector<T> array;
+  array.reserve(json.getNumChildren());
 
   for (const auto& obj : json)
   {
@@ -210,6 +211,7 @@ template <typename T>
 std::vector<std::vector<T>> getVecVecArray(const ci::JsonTree& json) noexcept
 {
   std::vector<std::vector<T>> array;
+  array.reserve(json.getNumChildren());
 
   for (const auto& aa : json)
   {

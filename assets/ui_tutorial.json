@@ -9,7 +9,7 @@
   "childlen": [
     {
       "identifier": "blank",
-      "rect": [ -10, 35, 10, 35 ],
+      "rect": [ -10, 0, 10, 0 ],
       "anchor": [
         [ 0.5, 0.5 ],
         [ 0.5, 0.5 ]

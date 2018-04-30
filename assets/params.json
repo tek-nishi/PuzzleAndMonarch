@@ -522,12 +522,26 @@
     "canvas": "ui_tutorial.json",
     "tweens": "tw_tutorial.json",
 
-    "direction_delay": 3,
+    "direction_delay": 2.5,
 
     "text": [
       "タップで移動",
       "タップで回転",
       "長押しで置く"
+    ],
+    "text_": [
+      "森の完成で得点",
+      "街を道で繋いで得点",
+      "教会の周囲を埋めて得点"
+    ],
+    "offset": [
+      [ 0, 15 ],
+      [ 0, 35 ],
+      [ 0, 35 ],
+
+      [ 0, 20 ],
+      [ 0, 20 ],
+      [ 0, 20 ]
     ]
   }
 }

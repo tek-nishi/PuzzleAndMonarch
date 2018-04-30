@@ -56,9 +56,6 @@ public:
       transition_color_(Json::getColorA<float>(params["ui.transition.color"])),
       rotate_camera_(event, params["field"], std::bind(&MainPart::rotateCamera, this, std::placeholders::_1))
   {
-    // フィールドカメラ
-    // field_camera_.applyDetail(camera_.body(), view_);
-
     // system
     holder_ += event_.connect("resize",
                               std::bind(&MainPart::resize,
@@ -242,7 +239,6 @@ public:
                                     // ピンチング
                                     float n = l0 / l1;
                                     field_camera_.setDistance(n);
-                                    // field_camera_.applyDetail(camera_.body(), view_);
                                   }
                                   if (dot > 0.0f)
                                   {
@@ -287,7 +283,6 @@ public:
     holder_ += event_.connect("Intro:skiped",
                               [this](const Connection&, const Arguments&) noexcept
                               {
-                                // field_camera_.setCurrentDistance(params_.getValueForKey<float>("field.camera.distance") * 1.2f);
                                 view_.setColor(0.5f, ci::Color::white());
                               });
     holder_ += event_.connect("Intro:finished",
@@ -404,6 +399,16 @@ public:
                                                   prohibited_   = false;
                                                 });
                               });
+
+    // Tutorial
+    holder_ += event.connect("Tutorial:Begin",
+                             [this](const Connection&, Arguments&)
+                             {
+                             });
+    holder_ += event.connect("Tutorial:Finish",
+                             [this](const Connection&, Arguments&)
+                             {
+                             });
 
     // 得点時の演出
     holder_ += event.connect("Game:completed_forests",
@@ -722,15 +727,8 @@ private:
         }
       }
 
-      auto ndc_pos = camera_.body().worldToNdc(cursor_pos_);
-      if (can_put_)
-      {
-        // Tutorial向け
-        Arguments args{
-          { "pos", ndc_pos },
-        };
-        event_.signal("Game:panel:tap", args);
-      }
+      // For Tutorial
+      sendFieldPositions();
 
       // パネル設置操作
       if (touch_put_)
@@ -739,7 +737,8 @@ private:
         put_remaining_ -= delta_time;
 
         {
-          auto scale = 1.0f - glm::clamp(float(put_remaining_ / current_putdown_time_), 0.0f, 1.0f);
+          auto ndc_pos = camera_.body().worldToNdc(cursor_pos_);
+          auto scale   = 1.0f - glm::clamp(float(put_remaining_ / current_putdown_time_), 0.0f, 1.0f);
           Arguments args = {
             { "pos",   ndc_pos },
             { "scale", scale },
@@ -782,85 +781,6 @@ private:
     return true;
   }
 
-
-#if 0
-  void drawField() noexcept
-  {
-    // 本編
-    ci::gl::enableDepth();
-    ci::gl::enable(GL_CULL_FACE);
-    ci::gl::disableAlphaBlending();
-
-    drawShadow();
-
-    ci::gl::setMatrices(camera_.body());
-    ci::gl::clear(ci::Color::black());
-
-    // フィールド
-    ci::gl::ScopedGlslProg prog(view_.setupFieldShader(light_camera_));
-    ci::gl::ScopedTextureBind texScope(shadow_map_, 0);
-    view_.drawFieldPanels();
-
-    if (game_->isPlaying())
-    {
-      // 置ける場所
-      const auto& blank = game_->getBlankPositions();
-      view_.drawFieldBlank(blank);
-      
-      // 手持ちパネル
-      glm::vec3 pos(panel_disp_pos_().x, panel_disp_pos_().y + height_offset_, panel_disp_pos_().z);
-      view_.drawPanel(game_->getHandPanel(), pos, game_->getHandRotation(), rotate_offset_);
-      
-      float s = std::abs(std::sin(put_gauge_timer_ * 6.0f)) * 0.1;
-      glm::vec3 scale(0.9 + s, 1, 0.9 + s);
-      view_.drawFieldSelected(field_pos_, scale);
-      
-      if (can_put_)
-      {
-        scale.x = 1.0 + s;
-        scale.z = 1.0 + s;
-        view_.drawCursor(pos, scale);
-      }
-
-#ifdef DEBUG
-      if (disp_debug_info_)
-      {
-        if (game_->isPlaying())
-        {
-          // 手元のパネル
-          drawPanelEdge(panels_[game_->getHandPanel()], pos, game_->getHandRotation());
-          
-          // 置こうとしている場所の周囲
-          auto around = game_->enumerateAroundPanels(field_pos_);
-          if (!around.empty())
-          {
-            for (auto& it : around)
-            {
-              auto p = it.first * int(PANEL_SIZE);
-              glm::vec3 disp_pos(p.x, 0.0f, p.y);
-
-              auto status = it.second;
-              drawPanelEdge(panels_[status.number], disp_pos, status.rotation);
-            }
-          }
-
-          // パネルのAABB
-          // auto aabb = view_.panelAabb(game_->getHandPanel());
-          // aabb.transform(glm::translate(cursor_pos_));
-          // ci::gl::color(0, 1, 0);
-          // ci::gl::drawStrokedCube(aabb);
-        }
-      }
-#endif
-    }
-    auto bg_pos = calcBgPosition();
-    view_.drawFieldBg(bg_pos);
-
-    view_.drawEffect();
-  }
-#endif
-
-
   void draw(const Connection&, const Arguments&) noexcept
   {
 #if defined (DEBUG)
@@ -888,18 +808,6 @@ private:
     {
       view_.drawShadowMap();
     }
-
-#if 0
-    // 外接球の表示
-    ci::gl::enableDepth(false);
-    ci::gl::enableAlphaBlending();
-
-    ci::gl::pushModelView();
-    ci::gl::color(0, 0.8, 0, 0.2);
-    ci::gl::drawSphere(framing_sphere_);
-    ci::gl::popModelView();
-#endif
-
 #endif
   }
   
@@ -992,7 +900,6 @@ private:
     auto prev_pos = calcTouchPos(touch.prev_pos);
 
     field_camera_.rotate(pos, prev_pos);
-    // field_camera_.applyDetail(camera_.body(), view_);
   }
 
   // 次のパネルの出現位置を決める
@@ -1044,7 +951,7 @@ private:
   {
     const auto& camera = camera_.body();
     auto aspect = camera.getAspectRatio();
-    auto ray = camera.generateRay(0.5, 0.5, aspect);
+    auto ray    = camera.generateRay(0.5, 0.5, aspect);
     // 地面との交差位置を計算
     float z;
     ray.calcPlaneIntersection(glm::vec3(0, bg_height_, 0), glm::vec3(0, 1, 0), &z);
@@ -1205,14 +1112,13 @@ private:
   void rotateCamera(float delta_angle) noexcept
   {
     field_camera_.addYaw(delta_angle);
-    // field_camera_.applyDetail(camera_.body(), view_);
   }
 
   // 過去の記録を読み込む
   void loadGameResult(int rank)
   {
     field_camera_.force(true);
-    manipulated_  = false;
+    manipulated_ = false;
 
     {
       const auto& json = archive_.getRecordArray("games");
@@ -1231,6 +1137,32 @@ private:
                     });
   }
 
+  // チュートリアル向けの座標計算
+  // 各種座標をNormalized Device Coordinates変換して送信
+  void sendFieldPositions()
+  {
+    const auto& camera = camera_.body();
+
+    // カーソル位置
+    auto cursor_ndc_pos = camera.worldToNdc(cursor_pos_);
+    // Blank
+    // NOTICE カーソル位置とは別の場所を探している   
+    const auto& blanks = game_->getBlankPositions();
+    auto it = std::find_if(std::begin(blanks), std::end(blanks),
+                           [this](const glm::ivec2& a)
+                           {
+                             return a != field_pos_;
+                           });
+    auto blank_ndc_pos = camera.worldToNdc(glm::vec3(it->x * PANEL_SIZE, 0, it->y * PANEL_SIZE));
+
+    Arguments args{
+      { "cursor", cursor_ndc_pos },
+      { "blank",  blank_ndc_pos },
+    };
+    event_.signal("Field:Positions", args);
+
+    // TODO 森とか街とか教会の位置も送る
+  }
 
   
   // FIXME 変数を後半に定義する実験
@@ -1270,7 +1202,7 @@ private:
   // パネルを配置しようとしている位置
   glm::ivec2 grid_pos_;
   bool on_blank_ = false;
-
+  // 置こうとしているパネルの位置
   glm::ivec2 field_pos_;
   // 配置可能
   bool can_put_ = false;
@@ -1300,9 +1232,6 @@ private:
   bool disp_debug_info_ = false;
   bool debug_draw_      = false;
   bool disp_shadowmap_  = false;
-
-  // Fieldの外接球
-  ci::Sphere framing_sphere_;
 #endif
 };
 
