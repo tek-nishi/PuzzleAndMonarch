@@ -98,8 +98,6 @@ public:
     holder_ += event_.connect("Field:Positions",
                               [this](const Connection&, const Arguments& args)
                               {
-                                if (!disp_) return;
-
                                 static const char* label[] = {
                                   "blank",            // PANEL_MOVE
                                   "cursor",           // PANEL_ROTATE
@@ -109,6 +107,21 @@ public:
                                   "town",             // GET_TOWN
                                   "church",           // GET_CHURCH
                                 };
+
+                                // 表示可能な情報を調査
+                                for (int i = 0; i < text_.size(); ++i)
+                                {
+                                  if (args.count(label[i]))
+                                  {
+                                    waiting_.insert(i);
+                                  }
+                                  else
+                                  {
+                                    waiting_.erase(i);
+                                  }
+                                }
+
+                                if (!disp_) return;
 
                                 if (!args.count(label[disp_type_])) return;
 
@@ -156,7 +169,7 @@ private:
         bool disp = false;
         for (int i = 0; i < text_.size(); ++i)
         {
-          if (!operation_.count(i))
+          if (!operation_.count(i) && waiting_.count(i))
           {
             canvas_.setWidgetText("blank:text", text_[i]);
             disp_type_ = i;
@@ -173,10 +186,18 @@ private:
         }
         else
         {
-          // すべて表示した
-          DOUT << "Tutorial:Finish" << std::endl;
-          event_.signal("Tutorial:Finish", Arguments());
-          active_ = false;
+          if (operation_.size() < text_.size())
+          {
+            // まだ途中
+            current_direction_delay_ = 1.0;
+          }
+          else
+          {
+            // すべて表示した
+            DOUT << "Tutorial:Finish" << std::endl;
+            event_.signal("Tutorial:Finish", Arguments());
+            active_ = false;
+          }
         }
       }
     }
@@ -208,7 +229,8 @@ private:
   UI::Canvas canvas_;
 
   // 各種操作
-  std::set<int> operation_; 
+  std::set<int> operation_;
+  std::set<int> waiting_;
 
   double direction_delay_;
   double current_direction_delay_;
