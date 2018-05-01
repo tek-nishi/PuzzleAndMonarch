@@ -94,6 +94,13 @@ public:
                                 doneOperation(GET_CHURCH);
                               });
 
+    // Callback登録
+    holder_ += event_.connect("Tutorial:callback",
+                              [this](const Connection&, const Arguments& args)
+                              {
+                                update_ = boost::any_cast<const std::function<void ()>&>(args.at("callback"));
+                              });
+
     // 座標計算
     holder_ += event_.connect("Field:Positions",
                               [this](const Connection&, const Arguments& args)
@@ -165,9 +172,10 @@ public:
 private:
   bool update(double current_time, double delta_time) noexcept override
   {
-    count_exec_.update(delta_time);
-
     if (pause_) return active_;
+
+    // 更新関数を呼ぶ
+    if (update_) update_();
 
     // 必須操作が無いと催促する感じ
     if (!disp_)
@@ -245,8 +253,6 @@ private:
   Event<Arguments>& event_;
   ConnectionHolder holder_;
 
-  CountExec count_exec_;
-
   UI::Canvas canvas_;
 
   // 各種操作
@@ -262,6 +268,9 @@ private:
 
   std::vector<std::string> text_;
   std::vector<glm::vec2> offset_;
+
+  // 更新関数
+  std::function<void ()> update_;
 
   bool pause_  = false;
   bool active_ = true;

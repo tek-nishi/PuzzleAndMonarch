@@ -325,6 +325,16 @@ public:
                                 game_->beginPlay();
                                 view_.updateBlank(game_->getBlankPositions());
                                 calcNextPanelPosition();
+
+                                {
+                                  // Tutorial向けに関数ポインタを送信
+                                  std::function<void ()> func = std::bind(&MainPart::sendFieldPositions, this);
+
+                                  Arguments args{
+                                    { "callback", func }
+                                  };
+                                  event_.signal("Tutorial:callback", args);
+                                }
                               });
 
     holder_ += event_.connect("Game:Aborted",
@@ -726,9 +736,6 @@ private:
           game_event_.insert("Game:countdown");
         }
       }
-
-      // For Tutorial
-      sendFieldPositions();
 
       // パネル設置操作
       if (touch_put_)

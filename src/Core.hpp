@@ -8,7 +8,6 @@
 
 #include <boost/noncopyable.hpp>
 #include "ConnectionHolder.hpp"
-#include "CountExec.hpp"
 #include "UIDrawer.hpp"
 #include "TweenCommon.hpp"
 #include "TaskContainer.hpp"
@@ -37,7 +36,6 @@ class Core
     auto current_time = boost::any_cast<double>(args.at("current_time"));
     auto delta_time   = boost::any_cast<double>(args.at("delta_time"));
 
-    count_exec_.update(delta_time);
     tasks_.update(current_time, delta_time);
   }
 
@@ -64,6 +62,16 @@ public:
                               [this](const Connection&, const Arguments&) noexcept
                               {
                                 tasks_.pushBack<GameMain>(params_, event_, drawer_, tween_common_);
+
+                                if (!archive_.getRecord<bool>("tutorial-finish")
+#if defined (DEBUG)
+                                    || Json::getValue(params_, "game.force_tutorial", false)
+#endif
+                                   )
+                                {
+                                  DOUT << "Tutorial started." << std::endl;
+                                  tasks_.pushBack<Tutorial>(params_, event_, drawer_, tween_common_);
+                                }
                               });
     // Title→Credits
     holder_ += event_.connect("Credits:begin",
@@ -154,16 +162,6 @@ public:
     holder_ += event_.connect("Game:Start",
                               [this](const Connection&, const Arguments&) noexcept
                               {
-                                if (
-                                  !archive_.getRecord<bool>("tutorial-finish")
-#if defined (DEBUG)
-                                  || Json::getValue(params_, "game.force_tutorial", false)
-#endif
-                                   )
-                                {
-                                  DOUT << "Tutorial started." << std::endl;
-                                  tasks_.pushBack<Tutorial>(params_, event_, drawer_, tween_common_);
-                                }
                               });
 
     // ゲーム中断
@@ -258,7 +256,6 @@ private:
   Event<Arguments>& event_;
   ConnectionHolder holder_;
 
-  CountExec count_exec_;
   TaskContainer tasks_;
 
   Archive archive_;
