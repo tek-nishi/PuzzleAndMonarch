@@ -1147,7 +1147,8 @@ private:
     {
       // カーソル位置
       auto cursor_ndc_pos = camera.worldToNdc(cursor_pos_);
-      args.insert({ "cursor", cursor_ndc_pos });
+      args.insert({ "cursor",  cursor_ndc_pos });
+      args.insert({ "can_put", can_put_ });
     }
 
     {
@@ -1169,6 +1170,7 @@ private:
       auto panel = game_->searchAttribute(0, Panel::FOREST);
       if (std::get<0>(panel))
       {
+        // Edge部に指示を出したいので、そのオフセットを用意
         const static glm::vec3 offset[]{
           {                  0, 0,  PANEL_SIZE * 0.4f },
           {  PANEL_SIZE * 0.4f, 0,                  0 },
@@ -1182,27 +1184,23 @@ private:
       }
     }
 
-    {
-      // 街の位置
-      auto panel = game_->searchAttribute(Panel::TOWN, 0);
-      if (std::get<0>(panel))
-      {
-        auto ndc_pos = camera.worldToNdc(glm::vec3(std::get<1>(panel).x * PANEL_SIZE, 0, std::get<1>(panel).y * PANEL_SIZE));
-        args.insert({ "town", ndc_pos });
-      }
-    }
-
-    {
-      // 教会の位置
-      auto panel = game_->searchAttribute(Panel::CHURCH, 0);
-      if (std::get<0>(panel))
-      {
-        auto ndc_pos = camera.worldToNdc(glm::vec3(std::get<1>(panel).x * PANEL_SIZE, 0, std::get<1>(panel).y * PANEL_SIZE));
-        args.insert({ "church", ndc_pos });
-      }
-    }
+    // 街の位置
+    addAttributePanel(args, "town", Panel::TOWN, camera);
+    // 教会の位置
+    addAttributePanel(args, "church", Panel::CHURCH, camera);
 
     event_.signal("Field:Positions", args);
+  }
+
+  // 指定属性のパネルを探して追加
+  void addAttributePanel(Arguments& args, const std::string& id, u_int attribute, const ci::CameraPersp& camera)
+  {
+    auto panel = game_->searchAttribute(attribute, 0);
+    if (std::get<0>(panel))
+    {
+      auto ndc_pos = camera.worldToNdc(glm::vec3(std::get<1>(panel).x * PANEL_SIZE, 0, std::get<1>(panel).y * PANEL_SIZE));
+      args.insert({ id, ndc_pos });
+    }
   }
 
   

@@ -21,8 +21,8 @@ class Tutorial
     PANEL_ROTATE,
     PANEL_PUT,
 
-    GET_FOREST,
     GET_TOWN,
+    GET_FOREST,
     GET_CHURCH,
   };
 
@@ -103,8 +103,8 @@ public:
                                   "cursor",           // PANEL_ROTATE
                                   "cursor",           // PANEL_PUT
 
-                                  "forest",           // GET_FOREST
                                   "town",             // GET_TOWN
+                                  "forest",           // GET_FOREST
                                   "church",           // GET_CHURCH
                                 };
 
@@ -128,6 +128,19 @@ public:
                                 const auto& pos = boost::any_cast<glm::vec3>(args.at(label[disp_type_]));
                                 auto offset = canvas_.ndcToPos(pos) + offset_[disp_type_];
                                 canvas_.setWidgetParam("blank", "offset", offset);
+
+                                // 置ける状況の場合だけ指示
+                                if (disp_type_ == PANEL_PUT)
+                                {
+                                  auto can_put = boost::any_cast<bool>(args.at("can_put"));
+                                  if (can_put != active_disp_)
+                                  {
+                                    if (can_put) canvas_.startTween("start");
+                                    else         canvas_.startTween("end");
+
+                                    active_disp_ = can_put;
+                                  }
+                                }
                               });
 
     // 本編終了に伴い本タスクも終了
@@ -215,9 +228,12 @@ private:
       canvas_.startTween("end");
     }
 
-    // パネルを設置した
+    if (!operation_.count(type))
+    {
+      // 最初に条件を満たした時だけ猶予時間
+      current_direction_delay_ = direction_delay_;
+    }
     operation_.insert(type);
-    current_direction_delay_ = direction_delay_;
   }
  
   
@@ -236,9 +252,8 @@ private:
   double current_direction_delay_;
 
   bool disp_ = false;
+  bool active_disp_ = true;
   int disp_type_;
-
-  glm::vec3 disp_pos_;
 
   std::vector<std::string> text_;
   std::vector<glm::vec2> offset_;
