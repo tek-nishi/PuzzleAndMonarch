@@ -35,6 +35,8 @@ class Archive
             .addChild(ci::JsonTree("startup-times",      uint32_t(0)))
             .addChild(ci::JsonTree("abort-times",        uint32_t(0)))
 
+            .addChild(ci::JsonTree("tutorial-finish", false))
+
             .addChild(ci::JsonTree("average-score",       0.0))
             .addChild(ci::JsonTree("average-put-panels",  0.0))
             .addChild(ci::JsonTree("average-moved-times", 0.0))

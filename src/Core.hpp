@@ -154,7 +154,16 @@ public:
     holder_ += event_.connect("Game:Start",
                               [this](const Connection&, const Arguments&) noexcept
                               {
-                                tasks_.pushBack<Tutorial>(params_, event_, drawer_, tween_common_);
+                                if (
+                                  !archive_.getRecord<bool>("tutorial-finish")
+#if defined (DEBUG)
+                                  || Json::getValue(params_, "game.force_tutorial", false)
+#endif
+                                   )
+                                {
+                                  DOUT << "Tutorial started." << std::endl;
+                                  tasks_.pushBack<Tutorial>(params_, event_, drawer_, tween_common_);
+                                }
                               });
 
     // ゲーム中断
@@ -191,6 +200,14 @@ public:
                                   tasks_.pushBack<Title>(params_, event_, drawer_, tween_common_,
                                                                            false, archive_.isSaved());
                                 }
+                              });
+
+    holder_ += event_.connect("Tutorial:Complete",
+                              [this](const Connection&, const Arguments&)
+                              {
+                                // Tutorialコンプリート
+                                archive_.setRecord("tutorial-finish", true);
+                                DOUT << "Tutorial completed." << std::endl;
                               });
 
     // ???

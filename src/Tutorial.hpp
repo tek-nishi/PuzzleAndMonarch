@@ -147,15 +147,13 @@ public:
     holder_ += event_.connect("Game:Finish",
                               [this](const Connection&, const Arguments&)
                               {
-                                event_.signal("Tutorial:Finish", Arguments());
-                                active_ = false;
+                                finishTask();
                               });
 
     holder_ += event_.connect("Game:Aborted",
                               [this](const Connection&, const Arguments&)
                               {
-                                event_.signal("Tutorial:Finish", Arguments());
-                                active_ = false;
+                                finishTask();
                               });
 
     event_.signal("Tutorial:Begin", Arguments());
@@ -207,9 +205,9 @@ private:
           else
           {
             // すべて表示した
-            DOUT << "Tutorial:Finish" << std::endl;
-            event_.signal("Tutorial:Finish", Arguments());
-            active_ = false;
+            DOUT << "Tutorial:Complete" << std::endl;
+            event_.signal("Tutorial:Complete", Arguments());
+            finishTask();
           }
         }
       }
@@ -218,6 +216,13 @@ private:
     return active_;
   }
 
+  
+  // タスク終了
+  void finishTask()
+  {
+    event_.signal("Tutorial:Finish", Arguments());
+    active_ = false;
+  }
 
   // 操作完了
   void doneOperation(int type)
