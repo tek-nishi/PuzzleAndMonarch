@@ -248,13 +248,13 @@ public:
                                     auto pos = (touches[0].pos + touches[1].pos) * 0.5f;
                                     auto ray1 = camera.generateRay(pos, ci::app::getWindowSize());
                                     float z1;
-                                    ray1.calcPlaneIntersection(glm::vec3(0), glm::vec3(0, 1, 0), &z1);
+                                    ray1.calcPlaneIntersection(glm::vec3(), unitY(), &z1);
                                     auto p1 = ray1.calcPosition(z1);
 
                                     auto prev_pos = (touches[0].prev_pos + touches[1].prev_pos) * 0.5f;
                                     auto ray2 = camera.generateRay(prev_pos, ci::app::getWindowSize());
                                     float z2;
-                                    ray2.calcPlaneIntersection(glm::vec3(0), glm::vec3(0, 1, 0), &z2);
+                                    ray2.calcPlaneIntersection(glm::vec3(), unitY(), &z2);
                                     auto p2 = ray2.calcPosition(z2);
 
                                     auto v = p2 - p1;
@@ -826,7 +826,7 @@ private:
     ci::Ray ray = camera_.body().generateRay(pos, ci::app::getWindowSize());
 
     float z;
-    float on_field = ray.calcPlaneIntersection(glm::vec3(0), glm::vec3(0, 1, 0), &z);
+    float on_field = ray.calcPlaneIntersection(glm::vec3(), unitY(), &z);
     if (!on_field)
     {
       // なんらかの事情で位置を計算できず
@@ -892,7 +892,7 @@ private:
 
     // 地面との交差を調べ、正確な位置を計算
     float z;
-    if (!ray.calcPlaneIntersection(glm::vec3(0), glm::vec3(0, 1, 0), &z))
+    if (!ray.calcPlaneIntersection(glm::vec3(), unitY(), &z))
     {
       // FIXME FieldとRayが交差しなかったら原点を返す
       return glm::vec3();
@@ -961,7 +961,7 @@ private:
     auto ray    = camera.generateRay(0.5, 0.5, aspect);
     // 地面との交差位置を計算
     float z;
-    ray.calcPlaneIntersection(glm::vec3(0, bg_height_, 0), glm::vec3(0, 1, 0), &z);
+    ray.calcPlaneIntersection(glm::vec3(0, bg_height_, 0), unitY(), &z);
     return ray.calcPosition(z);
   }
 

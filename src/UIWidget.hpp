@@ -283,7 +283,7 @@ public:
 
     widget->scale_  = Json::getVec(params, "scale",  glm::vec2(1));
     widget->pivot_  = Json::getVec(params, "pivot",  glm::vec2(0.5));
-    widget->offset_ = Json::getVec(params, "offset", glm::vec2(0));
+    widget->offset_ = Json::getVec(params, "offset", glm::vec2());
 
     if (params.hasChild("event"))
     {

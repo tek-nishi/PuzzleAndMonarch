@@ -53,7 +53,7 @@ private:
                                     : initial_text_;
     auto size = font.drawSize(t) * font_scale; 
     // レイアウトを計算
-    glm::vec2 pos = rect.getUpperLeft() * (glm::vec2(1.0) - layout_) + (rect.getLowerRight() - size) * layout_; 
+    glm::vec2 pos = rect.getUpperLeft() * (glm::vec2(1) - layout_) + (rect.getLowerRight() - size) * layout_; 
 
     ci::gl::ScopedGlslProg prog(drawer.getFontShader());
     ci::gl::ScopedModelMatrix m;
@@ -62,7 +62,7 @@ private:
     ci::gl::setModelMatrix(mtx);
     ci::gl::scale(glm::vec3(font_scale));
     ci::ColorA color(color_, alpha);
-    font.draw(text_, glm::vec2(0), color);
+    font.draw(text_, glm::vec2(), color);
   }
 
 

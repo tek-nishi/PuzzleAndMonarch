@@ -213,7 +213,6 @@ private:
           else
           {
             // すべて表示した
-            DOUT << "Tutorial:Complete" << std::endl;
             event_.signal("Tutorial:Complete", Arguments());
             finishTask();
           }
@@ -228,6 +227,7 @@ private:
   // タスク終了
   void finishTask()
   {
+    DOUT << "Tutorial:Finish" << std::endl;
     event_.signal("Tutorial:Finish", Arguments());
     active_ = false;
   }

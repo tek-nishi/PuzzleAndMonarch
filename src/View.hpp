@@ -599,7 +599,7 @@ private:
 
     // Render scene to fbo from the view of the light
     ci::gl::ScopedFramebuffer fbo(shadow_fbo_);
-    ci::gl::ScopedViewport viewport(glm::vec2(0), shadow_fbo_->getSize());
+    ci::gl::ScopedViewport viewport(glm::vec2(), shadow_fbo_->getSize());
     ci::gl::clear(GL_DEPTH_BUFFER_BIT);
     ci::gl::setMatrices(light_camera_);
 
@@ -970,7 +970,7 @@ void drawPanelEdge(const Panel& panel, const glm::vec3& pos, u_int rotation) noe
 
   ci::gl::pushModelView();
   ci::gl::translate(pos.x, pos.y, pos.z);
-  ci::gl::rotate(toRadians(ci::vec3(0.0f, r_tbl[rotation], 0.0f)));
+  ci::gl::rotate(toRadians(glm::vec3(0.0f, r_tbl[rotation], 0.0f)));
 
   ci::gl::lineWidth(10);
 
@@ -982,8 +982,8 @@ void drawPanelEdge(const Panel& panel, const glm::vec3& pos, u_int rotation) noe
     if (e & Panel::GRASS)  col = ci::Color(0.0, 1.0, 0.0);
     ci::gl::color(col);
 
-    ci::gl::drawLine(ci::vec3(-10.1, 1, 10.1), ci::vec3(10.1, 1, 10.1));
-    ci::gl::rotate(toRadians(ci::vec3(0.0f, 90.0f, 0.0f)));
+    ci::gl::drawLine(glm::vec3(-10.1, 1, 10.1), glm::vec3(10.1, 1, 10.1));
+    ci::gl::rotate(toRadians(glm::vec3(0.0f, 90.0f, 0.0f)));
   }
 
   ci::gl::popModelView();

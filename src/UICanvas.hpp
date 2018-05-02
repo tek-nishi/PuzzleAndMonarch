@@ -36,7 +36,7 @@ public:
       tweens_(tween_params)
   {
     // FIXME near_zピッタリの位置だとmacOSのReleaseビルドで絵が出ない
-    camera_.body().lookAt(glm::vec3(0, 0, camera_.getNearClip() + 0.001f), glm::vec3(0));
+    camera_.body().lookAt(glm::vec3(0, 0, camera_.getNearClip() + 0.001f), glm::vec3());
 
     makeQueryWidgets(widgets_);
 
@@ -426,7 +426,7 @@ private:
     auto ray = camera.generateRay(pos, ci::app::getWindowSize());
 
     float t;
-    ray.calcPlaneIntersection(glm::vec3(0), glm::vec3(0, 0, -1), &t);
+    ray.calcPlaneIntersection(glm::vec3(), -unitZ(), &t);
     auto touch_pos = ray.calcPosition(t);
     // FIXME 暗黙の変換(vec3→vec2)
     glm::vec2 ui_pos = touch_pos;

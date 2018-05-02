@@ -69,7 +69,7 @@ public:
     glm::vec3 bottom_right;
     camera.getNearClipCoordinates(&top_left, &top_right, &bottom_left, &bottom_right);
     ci::Rectf rect(top_left.x, top_left.y, bottom_right.x, bottom_right.y);
-    widgets_->draw(rect, glm::vec2(1, 1), drawer_);
+    widgets_->draw(rect, glm::vec2(1), drawer_);
   }
 
 

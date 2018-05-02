@@ -109,4 +109,21 @@ std::string getFormattedDate() noexcept
   return { ss.str() };
 }
 
+
+// glm::vec3の定数
+constexpr glm::vec3 unitX() 
+{
+  return { 1, 0, 0 };
+}
+
+constexpr glm::vec3 unitY() 
+{
+  return { 0, 1, 0 };
+}
+
+constexpr glm::vec3 unitZ() 
+{
+  return { 0, 0, 1 };
+}
+
 }

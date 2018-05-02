@@ -80,7 +80,7 @@ ci::TriMesh load(const std::string& path) noexcept
     std::getline(ifs, line_buffer);
     auto split_text = split(line_buffer);
 
-    ci::vec3 p(std::stof(split_text[0]), std::stof(split_text[1]), std::stof(split_text[2]));
+    glm::vec3 p(std::stof(split_text[0]), std::stof(split_text[1]), std::stof(split_text[2]));
     mesh.appendPosition(p);
 
     ci::Color c(std::stof(split_text[3]) / 255.0f, std::stof(split_text[4]) / 255.0f, std::stof(split_text[5]) / 255.0f);

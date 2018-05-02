@@ -54,7 +54,7 @@ public:
   float getSize() const noexcept;
 
   // 描画した時のサイズを取得
-  ci::vec2 drawSize(const std::string& text) noexcept;
+  glm::vec2 drawSize(const std::string& text) noexcept;
 
   // 描画
   // text  表示文字列
@@ -236,12 +236,12 @@ float Font::getSize() const noexcept
   return font_size_;
 }
 
-ci::vec2 Font::drawSize(const std::string& text) noexcept
+glm::vec2 Font::drawSize(const std::string& text) noexcept
 {
   float bounds[4];
   fonsTextBounds(context_, 0, 0, text.c_str(), nullptr, bounds);
 
-  return ci::vec2{ bounds[2], bounds[3] };
+  return { bounds[2], bounds[3] };
 }
 
 void Font::draw(const std::string& text, const glm::vec2& pos, const ci::ColorA& color) noexcept

@@ -178,7 +178,7 @@ public:
       drawer_(drawer)
   {
     // FIXME near_zピッタリの位置だとmacOSのReleaseビルドで絵が出ない
-    camera_.body().lookAt(glm::vec3(0, 0, camera_.getNearClip() + 0.001f), glm::vec3(0));
+    camera_.body().lookAt(glm::vec3(0, 0, camera_.getNearClip() + 0.001f), glm::vec3());
 
     auto polygon_offset = Json::getVec<glm::vec2>(params["field.polygon_offset"]);
     polygon_factor_ = polygon_offset.x;
