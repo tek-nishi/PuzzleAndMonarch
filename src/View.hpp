@@ -275,7 +275,7 @@ public:
     {
       if (searchBlank(pos)) continue; 
 
-      glm::vec3 blank_pos { pos.x * PANEL_SIZE, 0, pos.y * PANEL_SIZE };
+      glm::vec3 blank_pos = vec2ToVec3(pos * int(PANEL_SIZE));
       blank_panels_.push_back({ pos, blank_pos });
 
       // Blank Panel出現演出
@@ -388,7 +388,7 @@ public:
   // 得点した時の演出
   void startEffect(const glm::ivec2& pos) noexcept
   {
-    glm::vec3 gpos{ pos.x * PANEL_SIZE, 0, pos.y * PANEL_SIZE };
+    glm::vec3 gpos = vec2ToVec3(pos * int(PANEL_SIZE));
 
     for (int i = 0; i < 10; ++i)
     {
@@ -734,11 +734,9 @@ private:
   // 置けそうな箇所をハイライト
   void drawFieldSelected(const glm::ivec2& pos, const glm::vec3& scale) noexcept
   {
-    glm::ivec2 p = pos * int(PANEL_SIZE);
-    
     ci::gl::ScopedModelMatrix m;
 
-    auto mtx = glm::translate(glm::vec3(p.x, 0.0f, p.y));
+    auto mtx = glm::translate(vec2ToVec3(pos * int(PANEL_SIZE)));
     mtx = glm::scale(mtx, scale);
     ci::gl::setModelMatrix(mtx);
     ci::gl::draw(selected_model);

@@ -126,4 +126,11 @@ constexpr glm::vec3 unitZ()
   return { 0, 0, 1 };
 }
 
+// vec3.xz = vec2
+template <typename T>
+glm::vec3 vec2ToVec3(const T& v)
+{
+  return { v.x, 0, v.y };
+}
+
 }

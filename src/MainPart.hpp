@@ -1168,7 +1168,8 @@ private:
                                return a != field_pos_;
                              });
 
-      auto blank_ndc_pos = camera.worldToNdc(glm::vec3(it->x * PANEL_SIZE, 0, it->y * PANEL_SIZE));
+      auto pos = vec2ToVec3(*it * int(PANEL_SIZE));
+      auto blank_ndc_pos = camera.worldToNdc(pos);
       args.insert({ "blank",  blank_ndc_pos });
     }
     
@@ -1185,8 +1186,8 @@ private:
           { -PANEL_SIZE * 0.4f, 0,                  0 }
         };
 
-        auto ndc_pos = camera.worldToNdc(glm::vec3(std::get<1>(panel).x * PANEL_SIZE, 0, std::get<1>(panel).y * PANEL_SIZE)
-                                         + offset[std::get<2>(panel)]);
+        auto pos = vec2ToVec3(std::get<1>(panel) * int(PANEL_SIZE)) + offset[std::get<2>(panel)];
+        auto ndc_pos = camera.worldToNdc(pos);
         args.insert({ "forest", ndc_pos });
       }
     }
@@ -1205,7 +1206,8 @@ private:
     auto panel = game_->searchAttribute(attribute, 0);
     if (std::get<0>(panel))
     {
-      auto ndc_pos = camera.worldToNdc(glm::vec3(std::get<1>(panel).x * PANEL_SIZE, 0, std::get<1>(panel).y * PANEL_SIZE));
+      auto pos = vec2ToVec3(std::get<1>(panel) * int(PANEL_SIZE));
+      auto ndc_pos = camera.worldToNdc(pos);
       args.insert({ id, ndc_pos });
     }
   }
