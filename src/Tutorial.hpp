@@ -133,8 +133,8 @@ public:
                                 if (!args.count(label[disp_type_])) return;
 
                                 const auto& pos = boost::any_cast<glm::vec3>(args.at(label[disp_type_]));
-                                auto offset = canvas_.ndcToPos(pos) + offset_[disp_type_];
-                                canvas_.setWidgetParam("blank", "offset", offset);
+                                cur_ofs_ = canvas_.ndcToPos(pos) + offset_[disp_type_];
+                                canvas_.setWidgetParam("blank", "offset", cur_ofs_);
 
                                 // 置ける状況の場合だけ指示
                                 if (disp_type_ == PANEL_PUT)
@@ -239,6 +239,8 @@ private:
     {
       disp_ = false;
       canvas_.startTween("end");
+      canvas_.setWidgetParam("like", "offset", cur_ofs_);
+      canvas_.startTween("like");
     }
 
     if (!operation_.count(type))
@@ -265,6 +267,7 @@ private:
   bool disp_ = false;
   bool active_disp_ = true;
   int disp_type_;
+  glm::vec2 cur_ofs_;
 
   std::vector<std::string> text_;
   std::vector<glm::vec2> offset_;
