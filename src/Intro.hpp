@@ -37,6 +37,12 @@ public:
                                                 });
                     });
 
+    // 用意されたテキストから選ぶ
+    int index = ci::randInt(int(params["intro.text"].getNumChildren()));
+    const auto& text = params["intro.text"][index];
+    canvas_.setWidgetParam("0", "text", text.getValueAtIndex<std::string>(0));
+    canvas_.setWidgetParam("1", "text", text.getValueAtIndex<std::string>(1));
+
     event.signal("Intro:begin", Arguments());
     canvas_.startTween("start");
   }

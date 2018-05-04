@@ -41,6 +41,8 @@
 * TODO アプリアイコン
 * TODO iOS:GameCenter対応
 * TODO iOS:実績を実装
+* DONE Introはゲーム導入テキストを数種類用意する
+CLOSED: [2018-05-04 Fri 12:28]
 * DONE Title、ランキング画面から戻ってくるとPlayボタンが無効になる
 CLOSED: [2018-05-04 Fri 11:50]
 * DONE チュートリアル操作良いね！演出
