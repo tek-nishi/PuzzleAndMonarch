@@ -151,8 +151,8 @@
   "field": {
     "camera": {
       "fov":    20,
-      "near_z": 2,
-      "far_z":  1500,
+      "near_z": 5,
+      "far_z":  1800,
 
       "rotation": [ 45, 45 ],
       "distance": 190

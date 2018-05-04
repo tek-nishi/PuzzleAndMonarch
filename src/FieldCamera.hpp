@@ -84,9 +84,22 @@ public:
   // 距離設定
   void setDistance(float rate)
   {
-    distance_ = ci::clamp(distance_ / rate,
-                          distance_range_.x, distance_range_.y);
-    field_distance_ = distance_;
+    auto distance = distance_ / rate;
+
+    // 寄りと引きの限界付近で滑らかな挙動を得る
+    if ((distance > distance_) && (distance > distance_range_.y))
+    {
+      // 引きの場合
+      distance += (distance_range_.y - distance) * 0.5;
+    }
+    else if ((distance < distance_) && (distance < distance_range_.x))
+    {
+      // 寄せの場合
+      distance += (distance_range_.x - distance) * 0.25;
+    }
+    distance_ = distance;
+    
+    field_distance_ = ci::clamp(distance_, distance_range_.x, distance_range_.y);
     
     skip_easing_ = true;
   }
