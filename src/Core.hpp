@@ -92,7 +92,8 @@ public:
                               {
                                 Settings::Detail detail = {
                                   archive_.getRecord<bool>("bgm-enable"),
-                                  archive_.getRecord<bool>("se-enable")
+                                  archive_.getRecord<bool>("se-enable"),
+                                  archive_.isSaved()
                                 };
 
                                 tasks_.pushBack<Settings>(params_, event_, drawer_, tween_common_, detail);

@@ -5,8 +5,6 @@
     [ 0, 0 ],
     [ 1, 1 ]
   ],
-  "scale": [ 1, 1 ],
-  "pivot": [ 0.5, 0.5 ],
   
   "childlen": [
     {
@@ -15,173 +13,266 @@
         [ 0.5, 0.91 ],
         [ 0.5, 0.91 ]
       ],
-      "scale": [ 1, 1 ],
-      "pivot": [ 0.5, 0.5 ],
 
       "font": "head",
-      "text": "Settings",
-      "color": [ 1, 1, 1 ]
+      "text": "Settings"
     },
 
     {
-      "rect": [ -41.5, 40, -41.5, 53 ],
-      "anchor": [
-        [ 0.5, 0.5 ],
-        [ 0.5, 0.5 ]
-      ],
-      "scale": [ 1, 1 ],
-      "pivot": [ 0.5, 0.5 ],
+      "identifier": "main",
 
-      "font": "en",
-      "text": "BGM",
-      "color": [ 1, 1, 1 ]
-    },
-    {
-      "identifier": "BGM",
-      "rect": [ -53, 13.0, -30, 36.0 ],
+      "rect": [ 0, 0, 0, 0 ],
       "anchor": [
-        [ 0.5, 0.5 ],
-        [ 0.5, 0.5 ]
+        [ 0, 0 ],
+        [ 1, 1 ]
       ],
-      "scale": [ 1, 1 ],
-      "pivot": [ 0.5, 0.5 ],
-      
-      "radius": 1,
-      "line_width": 1.5,
-      "color": [ 1, 1, 1 ],
-
-      "event": "BGM",
-      "se": "bgm-test",
 
       "childlen": [
         {
-          "identifier": "BGM-text",
-          "rect": [ 3, 2, -1, -2 ],
+          "rect": [ -41.5, 40, -41.5, 53 ],
           "anchor": [
-            [ 0, 0 ],
-            [ 1, 1 ]
+            [ 0.5, 0.5 ],
+            [ 0.5, 0.5 ]
           ],
-          "scale": [ 1, 1 ],
-          "pivot": [ 0.5, 0.5 ],
 
-          "font": "icon",
-          "text": "",
-          "dynamic_layout": false,
-          "color": [ 1, 1, 1 ]
+          "font": "en",
+          "text": "BGM"
+        },
+        {
+          "identifier": "BGM",
+          "rect": [ -53, 13.0, -30, 36.0 ],
+          "anchor": [
+            [ 0.5, 0.5 ],
+            [ 0.5, 0.5 ]
+          ],
+          
+          "radius": 1,
+          "line_width": 1.5,
+
+          "event": "BGM",
+          "se": "bgm-test",
+
+          "childlen": [
+            {
+              "identifier": "BGM-text",
+              "rect": [ 3, 2, -1, -2 ],
+              "anchor": [
+                [ 0, 0 ],
+                [ 1, 1 ]
+              ],
+
+              "font": "icon",
+              "text": "",
+              "dynamic_layout": false
+            }
+          ]
+        },
+        
+        {
+          "rect": [ 41.5, 40, 41.5, 53 ],
+          "anchor": [
+            [ 0.5, 0.5 ],
+            [ 0.5, 0.5 ]
+          ],
+
+          "font": "en",
+          "text": "SE"
+        },
+        {
+          "identifier": "SE",
+          "rect": [ 30, 13.0, 53, 36.0 ],
+          "anchor": [
+            [ 0.5, 0.5 ],
+            [ 0.5, 0.5 ]
+          ],
+
+          "radius": 1,
+          "line_width": 1.5,
+
+          "event": "SE",
+          "se": "se-test",
+
+          "childlen": [
+            {
+              "identifier": "SE-text",
+              "rect": [ 3, 2, -1, -2 ],
+              "anchor": [
+                [ 0, 0 ],
+                [ 1, 1 ]
+              ],
+
+              "font": "icon",
+              "text": "",
+              "dynamic_layout": false
+            }
+          ]
+        },
+
+        {
+          "identifier": "Trash-text",
+          "rect": [ 0, 4, 0, 17 ],
+          "anchor": [
+            [ 0.5, 0.4 ],
+            [ 0.5, 0.4 ]
+          ],
+
+          "font": "jp",
+          "text": "記録を消去"
+        },
+        {
+          "identifier": "Trash",
+          "rect": [ -12, -23, 12, 0 ],
+          "anchor": [
+            [ 0.5, 0.4 ],
+            [ 0.5, 0.4 ]
+          ],
+
+          "radius": 1,
+          "line_width": 1.5,
+
+          "event": "Trash",
+
+          "childlen": [
+            {
+              "rect": [ 0, 0, 0, 0 ],
+              "anchor": [
+                [ 0.07, 0.15 ],
+                [ 1.0, 0.93 ]
+              ],
+
+              "font": "icon",
+              "text": ""
+            }
+          ]
+        },
+
+        {
+          "identifier": "touch",
+          "rect": [ -10, 0, 10, 20 ],
+          "anchor": [
+            [ 0.5, 0.06 ],
+            [ 0.5, 0.06 ]
+          ],
+          "event": "agree",
+          "se": "agree",
+
+          "radius": 1,
+          "line_width": 1.5,
+
+          "childlen": [
+            {
+              "rect": [ 0, 0, 0, 0 ],
+              "anchor": [
+                [ 0.14, 0.14 ],
+                [ 0.85, 0.93 ]
+              ],
+              "font": "icon",
+              "text": ""
+            }
+          ]
         }
       ]
     },
-    
+
     {
-      "rect": [ 41.5, 40, 41.5, 53 ],
+      "identifier": "dust",
+
+      "rect": [ 0, 0, 0, 0 ],
       "anchor": [
-        [ 0.5, 0.5 ],
-        [ 0.5, 0.5 ]
+        [ 0, 0 ],
+        [ 1, 1 ]
       ],
-      "scale": [ 1, 1 ],
-      "pivot": [ 0.5, 0.5 ],
-
-      "font": "en",
-      "text": "SE",
-      "color": [ 1, 1, 1 ]
-    },
-    {
-      "identifier": "SE",
-      "rect": [ 30, 13.0, 53, 36.0 ],
-      "anchor": [
-        [ 0.5, 0.5 ],
-        [ 0.5, 0.5 ]
-      ],
-      "scale": [ 1, 1 ],
-      "pivot": [ 0.5, 0.5 ],
-
-      "radius": 1,
-      "line_width": 1.5,
-      "color": [ 1, 1, 1 ],
-
-      "event": "SE",
-      "se": "se-test",
+      "enable": false,
 
       "childlen": [
         {
-          "identifier": "SE-text",
-          "rect": [ 3, 2, -1, -2 ],
+          "rect": [ 0, 45, 0, 60 ],
           "anchor": [
-            [ 0, 0 ],
-            [ 1, 1 ]
+            [ 0.5, 0.45 ],
+            [ 0.5, 0.45 ]
           ],
-          "scale": [ 1, 1 ],
-          "pivot": [ 0.5, 0.5 ],
-
-          "font": "icon",
-          "text": "",
-          "dynamic_layout": false,
-          "color": [ 1, 1, 1 ]
-        }
-      ]
-    },
-
-    {
-      "identifier": "Trash",
-      "rect": [ -12, -23.0, 12, 0.0 ],
-      "anchor": [
-        [ 0.5, 0.45 ],
-        [ 0.5, 0.45 ]
-      ],
-      "scale": [ 1, 1 ],
-      "pivot": [ 0.5, 0.5 ],
-
-      "radius": 1,
-      "line_width": 1.5,
-      "color": [ 1, 1, 1 ],
-
-      "event": "Trash",
-
-      "childlen": [
+          "font": "jp",
+          "text": "プレイ記録を消去します。"
+        },
         {
-          "rect": [ 0, 0, 0, 0 ],
+          "rect": [ 0, 30, 0, 42 ],
           "anchor": [
-            [ 0.07, 0.15 ],
-            [ 1.0, 0.93 ]
+            [ 0.5, 0.45 ],
+            [ 0.5, 0.45 ]
           ],
-          "scale": [ 1, 1 ],
-          "pivot": [ 0.5, 0.5 ],
-
-          "font": "icon",
-          "text": "",
-          "color": [ 1, 1, 1 ]
-        }
-      ]
-    },
-
-    {
-      "identifier": "touch",
-      "rect": [ -10, 0, 10, 20 ],
-      "anchor": [
-        [ 0.5, 0.06 ],
-        [ 0.5, 0.06 ]
-      ],
-      "scale": [ 1, 1 ],
-      "pivot": [ 0.5, 0.5 ],
-      "event": "agree",
-      "se": "agree",
-
-      "radius": 1,
-      "line_width": 1.5,
-      "color": [ 1, 1, 1 ],
-
-      "childlen": [
+          "font": "jp",
+          "text": "あなたのこれまでのプレイ記録をすべて消去して"
+        },
         {
-          "rect": [ 0, 0, 0, 0 ],
+          "rect": [ 0, 18, 0, 30 ],
           "anchor": [
-            [ 0.14, 0.14 ],
-            [ 0.85, 0.93 ]
+            [ 0.5, 0.45 ],
+            [ 0.5, 0.45 ]
           ],
-          "scale": [ 1, 1 ],
-          "pivot": [ 0.5, 0.5 ],
-          "font": "icon",
-          "text": "",
-          "color": [ 1, 1, 1 ]
+          "font": "jp",
+          "text": "まっさらな状態に戻します。"
+        },
+        {
+          "rect": [ 0, -13, 0, 0 ],
+          "anchor": [
+            [ 0.5, 0.45 ],
+            [ 0.5, 0.45 ]
+          ],
+
+          "font": "jp",
+          "text": "記録を消去する"
+        },
+        {
+          "identifier": "erase-record",
+          "rect": [ -12, -40, 12, -17 ],
+          "anchor": [
+            [ 0.5, 0.45 ],
+            [ 0.5, 0.45 ]
+          ],
+
+          "radius": 1,
+          "line_width": 1.5,
+
+          "event": "erase-record",
+
+          "childlen": [
+            {
+              "rect": [ 0, 0, 0, 0 ],
+              "anchor": [
+                [ 0.07, 0.15 ],
+                [ 1.0, 0.93 ]
+              ],
+
+              "font": "icon",
+              "text": ""
+            }
+          ]
+        },
+
+        {
+          "identifier": "back",
+          "rect": [ -10, 0, 10, 20 ],
+          "anchor": [
+            [ 0.5, 0.06 ],
+            [ 0.5, 0.06 ]
+          ],
+          "event": "back",
+          "se": "agree",
+
+          "radius": 1,
+          "line_width": 1.5,
+
+          "childlen": [
+            {
+              "rect": [ 0, 0, 0, 0 ],
+              "anchor": [
+                [ 0.14, 0.14 ],
+                [ 0.85, 0.93 ]
+              ],
+              "font": "icon",
+              "text": ""
+            }
+          ]
         }
       ]
     }

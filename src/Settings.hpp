@@ -19,8 +19,9 @@ class Settings
 
   UI::Canvas canvas_;
 
-  bool bgm_enable_ = true;
-  bool se_enable_  = true;
+  bool bgm_enable_;
+  bool se_enable_;
+  bool has_records_;
 
   bool active_ = true;
 
@@ -30,6 +31,7 @@ public:
   struct Detail {
     bool bgm_enable;
     bool se_enable;
+    bool has_records;
   };
 
 
@@ -85,19 +87,83 @@ public:
                               });
 
 
+    // holder_ += event_.connect("Trash:touch_ended",
+    //                           [this](const Connection&, const Arguments&) noexcept
+    //                           {
+    //                             // 記録削除
+    //                             event_.signal("Settings:Trash", Arguments());
+    //                             DOUT << "Trash." << std::endl;
+    //                           });
+
+    // 記録削除画面へ
     holder_ += event_.connect("Trash:touch_ended",
-                              [this](const Connection&, const Arguments&) noexcept
+                              [this, wipe_delay, wipe_duration](const Connection&, const Arguments&) noexcept
                               {
-                                // 記録削除
-                                event_.signal("Settings:Trash", Arguments());
-                                DOUT << "Trash." << std::endl;
+                                canvas_.active(false);
+                                canvas_.startCommonTween("main", "out-to-left");
+                                count_exec_.add(wipe_delay,
+                                                [this]() noexcept
+                                                {
+                                                  canvas_.startCommonTween("dust", "in-from-right");
+                                                });
+                                count_exec_.add(wipe_duration,
+                                                [this]() noexcept
+                                                {
+                                                  canvas_.active(true);
+                                                });
+
+                                DOUT << "Erase record." << std::endl;
                               });
 
+    // 設定画面へ戻る
+    holder_ += event_.connect("back:touch_ended",
+                              [this, wipe_delay, wipe_duration](const Connection&, const Arguments&) noexcept
+                              {
+                                canvas_.active(false);
+                                canvas_.startCommonTween("dust", "out-to-right");
+                                count_exec_.add(wipe_delay,
+                                                [this]() noexcept
+                                                {
+                                                  canvas_.startCommonTween("main", "in-from-left");
+                                                });
+                                count_exec_.add(wipe_duration,
+                                                [this]() noexcept
+                                                {
+                                                  canvas_.active(true);
+                                                });
+
+                                DOUT << "Back to settings." << std::endl;
+                              });
+
+    // 記録を削除して設定画面へ戻る
+    holder_ += event_.connect("erase-record:touch_ended",
+                              [this, wipe_delay, wipe_duration](const Connection&, const Arguments&) noexcept
+                              {
+                                event_.signal("Settings:Trash", Arguments());
+                                enableTrashButton(false);
+
+                                canvas_.active(false);
+                                canvas_.startCommonTween("dust", "out-to-right");
+                                count_exec_.add(wipe_delay,
+                                                [this]() noexcept
+                                                {
+                                                  canvas_.startCommonTween("main", "in-from-left");
+                                                });
+                                count_exec_.add(wipe_duration,
+                                                [this]() noexcept
+                                                {
+                                                  canvas_.active(true);
+                                                });
+
+                                DOUT << "Erase record and back to settings." << std::endl;
+                              });
 
     setupCommonTweens(event_, holder_, canvas_, "agree");
     setupCommonTweens(event_, holder_, canvas_, "BGM");
     setupCommonTweens(event_, holder_, canvas_, "SE");
     setupCommonTweens(event_, holder_, canvas_, "Trash");
+    setupCommonTweens(event_, holder_, canvas_, "back");
+    setupCommonTweens(event_, holder_, canvas_, "erase-record");
 
     applyDetail(detail);
     canvas_.startCommonTween("root", "in-from-right");
@@ -116,28 +182,31 @@ private:
 
   void applyDetail(const Detail& detail) noexcept
   {
-    bgm_enable_ = detail.bgm_enable;
-    se_enable_  = detail.se_enable;
+    bgm_enable_  = detail.bgm_enable;
+    se_enable_   = detail.se_enable;
+    has_records_ = detail.has_records;
 
     canvas_.setWidgetText("BGM-text", bgm_enable_ ? u8"" : u8"");
     canvas_.setWidgetText("SE-text",  se_enable_  ? u8"" : u8"");
+
+    enableTrashButton(has_records_);
   }
+
+  void enableTrashButton(bool enable)
+  {
+    canvas_.enableWidget("Trash-text", enable);
+    canvas_.enableWidget("Trash",      enable);
+  }
+
 
   void signalSettings() noexcept
   {
-    Arguments args = {
+    Arguments args{
       { "bgm-enable", bgm_enable_ },
       { "se-enable",  se_enable_ }
     };
     event_.signal("Settings:Changed", args);
   }
-
-  void setWidgetText(const std::string& id, bool value, const std::string& true_text, const std::string& false_text) noexcept
-  {
-    const auto& widget = canvas_.at(id);
-    widget->setParam("text", value ? true_text : false_text);
-  }
-
 };
 
 }
