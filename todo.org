@@ -1,4 +1,3 @@
-* TODO vec2とvec3の相互変換
 * TODO カメラが意図せず引きになったと感じる状況がある
 * TODO チュートリアル発動中はパネルの出現順序を固定する
 * TODO 「チュートリアル完了」演出
@@ -15,7 +14,6 @@
 * TODO 記録を消す時の確認ダイアログ
 * TODO マーカーの黄色と赤が逆？
 * TODO 高い位置からの影は色を薄くしたい
-* TODO ビルドが長いので可能な箇所を別のCPPへ
 * TODO モデル読み込みはファイルを一気に読み込んでから処理
 * TODO Demoプレイ
 * TODO パネルのうらが真っ暗
@@ -46,6 +44,8 @@
 * TODO アプリアイコン
 * TODO iOS:GameCenter対応
 * TODO iOS:実績を実装
+* DONE vec2とvec3の相互変換
+CLOSED: [2018-05-03 Thu 00:38]
 * DONE glm::vec3 の定数を積極的に使う
 CLOSED: [2018-05-02 Wed 20:29]
 * DONE upvecとかleftvecとか
@@ -482,6 +482,8 @@ CLOSED: [2018-03-12 月 16:32]
 CLOSED: [2018-03-12 月 16:31]
 * ABORT ランクを日本語にしてみる
 CLOSED: [2018-03-10 土 16:48]
+* ABORT ビルドが長いので可能な箇所を別のCPPへ
+CLOSED: [2018-05-03 Thu 00:40]
 * ABORT UI演出の早送り操作が欲しい
 CLOSED: [2018-03-10 土 16:13]
 * ABORT iOS: iCloud対応
