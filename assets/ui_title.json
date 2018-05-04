@@ -86,6 +86,8 @@
       "event": "play",
       "se":    "play",
 
+      "enable": false,
+
       "childlen": [
         {
           "rect": [ 0, 0, 0, 0 ],
