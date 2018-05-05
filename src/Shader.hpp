@@ -26,13 +26,17 @@ ci::gl::GlslProgRef createShader(const std::string& vertex_path,
 // テキストファイル -> std::string
 std::string readFile(const std::string& path) noexcept
 {
-  std::ifstream ifs(path);
+#if defined (USE_PACKED_FILE)
+  return PackedFile::readString(path);
+#else
+  std::ifstream ifs(getAssetPath(path).string());
   assert(ifs);
 
   std::string str((std::istreambuf_iterator<char>(ifs)),
                   std::istreambuf_iterator<char>());
 
   return str;
+#endif
 }
 
 
@@ -63,10 +67,10 @@ std::string replaceText(std::string text) noexcept
 Shader readShader(const std::string& vertex_path,
                   const std::string& fragment_path) noexcept
 {
-  auto vertex_shader = readFile(getAssetPath(vertex_path + ".vsh").string());
+  auto vertex_shader = readFile(vertex_path + ".vsh");
   vertex_shader      = replaceText(vertex_shader);
   
-  auto fragment_shader = readFile(getAssetPath(fragment_path + ".fsh").string());
+  auto fragment_shader = readFile(fragment_path + ".fsh");
   fragment_shader      = replaceText(fragment_shader);
 
   return { vertex_shader, fragment_shader };
