@@ -26,9 +26,6 @@ ci::gl::GlslProgRef createShader(const std::string& vertex_path,
 // テキストファイル -> std::string
 std::string readFile(const std::string& path) noexcept
 {
-#if defined (USE_PACKED_FILE)
-  return PackedFile::readString(path);
-#else
   std::ifstream ifs(getAssetPath(path).string());
   assert(ifs);
 
@@ -36,7 +33,6 @@ std::string readFile(const std::string& path) noexcept
                   std::istreambuf_iterator<char>());
 
   return str;
-#endif
 }
 
 

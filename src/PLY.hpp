@@ -12,12 +12,11 @@
 #include <fstream>
 #include <sstream> 
 #include <vector> 
-#include "PackedFile.hpp"
 
 
 namespace ngs { namespace PLY {
 
-ci::TriMesh load(const std::string& path) noexcept;
+ci::TriMesh load(const std::string& path);
 
 
 #if defined (NGS_PLY_IMPLEMENTATION)
@@ -38,14 +37,24 @@ std::vector<std::string> split(const std::string& text) noexcept
   return split_text;
 }
 
-ci::TriMesh load(const std::string& path) noexcept
+
+// ファイルから読み込んでstringstreamにする
+std::istringstream createStringStream(const std::string& path)
 {
-#if defined (USE_PACKED_FILE)
-  std::istringstream ifs(PackedFile::readString(path));
-#else
   std::ifstream ifs(getAssetPath(path).string());
-#endif
   assert(ifs);
+
+  // ファイルから一気に読み込む
+  std::string str((std::istreambuf_iterator<char>(ifs)),
+                  std::istreambuf_iterator<char>());
+
+  return std::istringstream(str);
+}
+
+
+ci::TriMesh load(const std::string& path)
+{
+  auto iss = createStringStream(path);
 
   // 頂点カラーを含むTriMeshを準備
   ci::TriMesh mesh(ci::TriMesh::Format().positions().normals().colors());
@@ -54,11 +63,11 @@ ci::TriMesh load(const std::string& path) noexcept
   int face_num = 0;
 
   // ヘッダ解析
-  while (!ifs.eof())
+  while (!iss.eof())
   {
     // １行読み込む
     std::string line_buffer;
-    std::getline(ifs, line_buffer);
+    std::getline(iss, line_buffer);
 
     auto split_text = split(line_buffer);
     if (split_text[0] == "element" && split_text[1] == "vertex")
@@ -83,7 +92,7 @@ ci::TriMesh load(const std::string& path) noexcept
   for (int i = 0; i < vertex_num; ++i)
   {
     std::string line_buffer;
-    std::getline(ifs, line_buffer);
+    std::getline(iss, line_buffer);
     auto split_text = split(line_buffer);
 
     glm::vec3 p(std::stof(split_text[0]), std::stof(split_text[1]), std::stof(split_text[2]));
@@ -96,7 +105,7 @@ ci::TriMesh load(const std::string& path) noexcept
   for (int i = 0; i < face_num; ++i)
   {
     std::string line_buffer;
-    std::getline(ifs, line_buffer);
+    std::getline(iss, line_buffer);
     auto split_text = split(line_buffer);
 
     switch (std::stoi(split_text[0]))

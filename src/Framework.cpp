@@ -10,10 +10,6 @@
 #include "Path.hpp"
 #undef  NGS_PATH_IMPLEMENTATION
 
-#define NGS_PACKEDFILE_IMPLEMENTATION
-#include "PackedFile.hpp"
-#undef  NGS_PACKEDFILE_IMPLEMENTATION
-
 #define NGS_FONT_IMPLEMENTATION
 #include "Font.hpp"
 #undef  NGS_FONT_IMPLEMENTATION

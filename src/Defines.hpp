@@ -30,9 +30,6 @@
 // ゲーム記録の難読化
 // #define OBFUSCATION_GAME_RECORD
 
-// Packedファイルを使う
-// #define USE_PACKED_FILE
-
 
 #if defined(CINDER_COCOA_TOUCH)
 

@@ -73,28 +73,6 @@ public:
 
 #if defined (NGS_FONT_IMPLEMENTATION)
 
-#if defined (USE_PACKED_FILE)
-
-// Read from packed.
-static int loadFont(FONScontext* stash, const char* name, const std::string& path) 
-{
-  unsigned char* ptr;
-  int size;
-
-  {
-    auto data = PackedFile::read(path);
-    size = int(data.size());
-    ptr = (unsigned char*)malloc(size);
-    assert(ptr);
-    std::copy(std::begin(data), std::end(data), ptr);
-  }
-
-  return fonsAddFontMem(stash, name, ptr, size, 1);
-}
-
-#endif
-
-
 int Font::create(void* userPtr, int width, int height) noexcept
 {
   DOUT << "Font::create: " << width << "," << height << std::endl;
@@ -229,12 +207,8 @@ Font::Font(const std::string& path,
   assert(context_);
   fonsClearState(context_);
 
-#if defined (USE_PACKED_FILE)
-  int handle = loadFont(context_, "font", path);
-#else
   auto full_path = getAssetPath(path).string();
   int handle = fonsAddFont(context_, "font", full_path.c_str());
-#endif
   fonsSetFont(context_, handle);
 
   // TIPS:下揃えにしておくと、下にはみ出す部分も正しく扱える
