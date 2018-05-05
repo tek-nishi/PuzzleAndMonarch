@@ -105,7 +105,6 @@ std::vector<char> PackedFile::readFile(const std::string& path)
   return input;
 }
 
-
 PackedFile& PackedFile::instance()
 {
   static PackedFile packed(getAssetPath("test.data").string());
