@@ -1,0 +1,3 @@
+#!/bin/sh
+
+c++ -std=c++14 -stdlib=libc++ -fdebug-macro -I"/Users/nishi/src/boost_1_66_0/" -L"/Users/nishi/src/boost_1_66_0/stage-osx/lib" -lboost_filesystem -lboost_system main.cpp -o conv
