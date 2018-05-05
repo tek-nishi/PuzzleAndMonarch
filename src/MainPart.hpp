@@ -1158,21 +1158,29 @@ private:
       args.insert({ "can_put", can_put_ });
     }
 
+    // Blank
+    // NOTICE カーソル位置とは別の場所を探している
+    if (!tutorial_pos_.count("blank"))
     {
-      // Blank
-      // NOTICE カーソル位置とは別の場所を探している   
       const auto& blanks = game_->getBlankPositions();
       auto it = std::find_if(std::begin(blanks), std::end(blanks),
                              [this](const glm::ivec2& a)
                              {
                                return a != field_pos_;
                              });
-
-      auto pos = vec2ToVec3(*it * int(PANEL_SIZE));
-      auto blank_ndc_pos = camera.worldToNdc(pos);
-      args.insert({ "blank",  blank_ndc_pos });
+      if (it != std::end(blanks))
+      {
+        auto pos = vec2ToVec3(*it * int(PANEL_SIZE));
+        tutorial_pos_.insert({ "blank", pos });
+      }
     }
-    
+    else
+    {
+      auto ndc_pos = camera.worldToNdc(tutorial_pos_.at("blank"));
+      args.insert({ "blank",  ndc_pos });
+    }
+
+    if (!tutorial_pos_.count("forest"))
     {
       // 森の位置
       auto panel = game_->searchAttribute(0, Panel::FOREST);
@@ -1187,9 +1195,13 @@ private:
         };
 
         auto pos = vec2ToVec3(std::get<1>(panel) * int(PANEL_SIZE)) + offset[std::get<2>(panel)];
-        auto ndc_pos = camera.worldToNdc(pos);
-        args.insert({ "forest", ndc_pos });
+        tutorial_pos_.insert({ "forest", pos });
       }
+    }
+    else
+    {
+      auto ndc_pos = camera.worldToNdc(tutorial_pos_.at("forest"));
+      args.insert({ "forest", ndc_pos });
     }
 
     // 街の位置
@@ -1203,11 +1215,18 @@ private:
   // 指定属性のパネルを探して追加
   void addAttributePanel(Arguments& args, const std::string& id, u_int attribute, const ci::CameraPersp& camera)
   {
-    auto panel = game_->searchAttribute(attribute, 0);
-    if (std::get<0>(panel))
+    if (!tutorial_pos_.count(id))
     {
-      auto pos = vec2ToVec3(std::get<1>(panel) * int(PANEL_SIZE));
-      auto ndc_pos = camera.worldToNdc(pos);
+      auto panel = game_->searchAttribute(attribute, 0);
+      if (std::get<0>(panel))
+      {
+        auto pos = vec2ToVec3(std::get<1>(panel) * int(PANEL_SIZE));
+        tutorial_pos_.insert({ id, pos });
+      }
+    }
+    else
+    {
+      auto ndc_pos = camera.worldToNdc(tutorial_pos_.at(id));
       args.insert({ id, ndc_pos });
     }
   }
@@ -1274,6 +1293,9 @@ private:
   ci::ColorA transition_color_;
 
   AutoRotateCamera rotate_camera_;
+
+  // Tutorial向け
+  std::map<std::string, glm::vec3> tutorial_pos_;
 
 
 #if defined (DEBUG)
