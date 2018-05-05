@@ -12,6 +12,8 @@
 #include <fstream>
 #include <sstream> 
 #include <vector> 
+#include "PackedFile.hpp"
+
 
 namespace ngs { namespace PLY {
 
@@ -38,7 +40,11 @@ std::vector<std::string> split(const std::string& text) noexcept
 
 ci::TriMesh load(const std::string& path) noexcept
 {
+#if defined (USE_PACKED_FILE)
+  std::istringstream ifs(PackedFile::readString(path));
+#else
   std::ifstream ifs(getAssetPath(path).string());
+#endif
   assert(ifs);
 
   // 頂点カラーを含むTriMeshを準備
