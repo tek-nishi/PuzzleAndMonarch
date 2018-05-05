@@ -107,7 +107,7 @@ std::vector<char> PackedFile::readFile(const std::string& path)
 
 PackedFile& PackedFile::instance()
 {
-  static PackedFile packed(getAssetPath("test.data").string());
+  static PackedFile packed(getAssetPath("packed.data").string());
   return packed;
 }
 
@@ -121,7 +121,6 @@ std::string PackedFile::readString(const std::string& path)
   auto data = instance().readFile(path);
   return { std::begin(data), std::end(data) };
 }
-
 
 #endif
 

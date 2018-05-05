@@ -34,7 +34,6 @@
 * TODO 本格的に見た目を決める
 * TODO BGM作る
 * TODO SE作る
-* TODO ファルを１つにまとめる
 * TODO AppStore提出に必要な書類や素材
 * TODO iPhone 5sでの動作確認
 * TODO カルカソンヌ公式に許可を取る
@@ -467,6 +466,8 @@ CLOSED: [2018-01-09 火 16:27]
 CLOSED: [2018-01-09 Tue 00:32]
 * DONE iOS:縦画面→非アクティブ→横画面→アクティブ→画面乱れる
 CLOSED: [2018-03-17 土 17:19]
+* ABORT ファルを１つにまとめる
+CLOSED: [2018-05-05 土 17:29]
 * ABORT iOS NightShiftモードの影響で処理速度が落ちる
 CLOSED: [2018-05-04 Fri 19:17]
 * ABORT msaa

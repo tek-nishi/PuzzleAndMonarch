@@ -12,7 +12,7 @@
 #include <boost/filesystem.hpp>
 
 
-bool isHidden(const boost::filesystem::path &p)
+bool isHidden(const boost::filesystem::path& p)
 {
   auto name = p.filename();
   if(name != ".." &&
@@ -23,6 +23,21 @@ bool isHidden(const boost::filesystem::path &p)
   }
 
   return false;
+}
+
+// Packするファイルか??
+//  FIXME ハードコーディング
+bool isPack(const boost::filesystem::path& p)
+{
+  auto name = p.extension();
+  if (name == ".m4a"
+      || name == ".png"
+      || name == ".data")
+  {
+    return false;
+  }
+  
+  return true;
 }
 
 
@@ -138,7 +153,7 @@ int main(int argc, char* argv[])
   // ファイル情報収拾
   for (boost::filesystem::directory_entry& x : boost::filesystem::directory_iterator(p))
   {
-    if (!isHidden(x.path()))
+    if (!isHidden(x.path()) && isPack(x.path()))
     {
       files.push_back({
           x.path(),
@@ -202,7 +217,7 @@ int main(int argc, char* argv[])
     // 実際のファイルと比較する
     for (boost::filesystem::directory_entry& x : boost::filesystem::directory_iterator(p))
     {
-      if (!isHidden(x.path()))
+      if (!isHidden(x.path()) && isPack(x.path()))
       {
         std::vector<char> src(boost::filesystem::file_size(x.path()));
         {

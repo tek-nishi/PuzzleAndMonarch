@@ -10,7 +10,8 @@
 
 namespace ngs { namespace Asset {
 
-ci::DataSourceRef load(const std::string& path) noexcept {
+ci::DataSourceRef load(const std::string& path)
+{
   return ci::loadFile(getAssetPath(path));
 }
 
