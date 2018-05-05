@@ -334,7 +334,7 @@ void setupApp(ci::app::App::Settings* settings) noexcept
   // FIXME:ここで設定ファイルを読むなんて...
   auto params = ngs::Params::load("settings.json");
 
-  settings->setWindowSize(ngs::Json::getVec<ci::ivec2>(params["app.size"]));
+  settings->setWindowSize(ngs::Json::getVec<ci::ivec2>(params["size"]));
   settings->setTitle(PREPRO_TO_STR(PRODUCT_NAME));
 
 #if !defined (CINDER_MAC)
@@ -342,14 +342,14 @@ void setupApp(ci::app::App::Settings* settings) noexcept
 #endif
 
 #if !defined (CINDER_COCOA_TOUCH)
-  if (params.getValueForKey<bool>("app.full_screen"))
+  if (params.getValueForKey<bool>("full_screen"))
   {
     settings->setFullScreen();
   }
 #endif
 
-  settings->setPowerManagementEnabled(params.getValueForKey<bool>("app.power_management"));
-  settings->setHighDensityDisplayEnabled(params.getValueForKey<bool>("app.retina"));
+  settings->setPowerManagementEnabled(params.getValueForKey<bool>("power_management"));
+  settings->setHighDensityDisplayEnabled(params.getValueForKey<bool>("retina"));
 
 #if defined (CINDER_COCOA_TOUCH)
   // Night shiftなどで処理速度が落ちるので
@@ -357,7 +357,7 @@ void setupApp(ci::app::App::Settings* settings) noexcept
   settings->disableFrameRate();
 #else
   // PC版は設定で変更可能
-  float frame_rate = params.getValueForKey<float>("app.frame_rate");
+  float frame_rate = params.getValueForKey<float>("frame_rate");
   (frame_rate > 0.0f) ? settings->setFrameRate(frame_rate)
                       : settings->disableFrameRate();
 #endif
