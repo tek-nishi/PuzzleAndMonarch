@@ -15,6 +15,7 @@
 #include "Core.hpp"
 // #include "Sandbox.hpp"
 #include "Debug.hpp"
+#include "PackedFile.hpp"
 
 
 namespace ngs {
@@ -40,6 +41,7 @@ public:
     ci::Rand::randomize();
 
 #if defined (DEBUG)
+    initial_window_size_ = getWindowSize();
     debug_events_ = Debug::keyEvent(params_["app.debug"]);
 #endif
 
@@ -66,12 +68,6 @@ public:
                                     }
                                     DOUT << "SignalWillRotate" << std::endl;
                                   });
-
-    // getSignalWillEnterForeground().connect([this]() noexcept
-    //                                        {
-    //                                          DOUT << "WillEnterForeground" << std::endl;
-    //                                        });
-
 #endif
     
     // アクティブになった時にタッチ情報を初期化
@@ -225,8 +221,7 @@ private:
     case ci::app::KeyEvent::KEY_0:
       {
         // 初期状態
-        auto size = Json::getVec<glm::ivec2>(params_["app.size"]);
-        changeWindowSize(size);
+        changeWindowSize(initial_window_size_);
       }
       break;
 
@@ -307,6 +302,7 @@ private:
   }
 
 
+
   // 変数定義(実験的にクラス定義の最後でまとめている)
   ci::JsonTree params_;
   Event<Arguments> event_;
@@ -319,6 +315,8 @@ private:
 #if defined (DEBUG)
   bool paused_      = false;
   bool step_update_ = false;
+
+  glm::ivec2 initial_window_size_;
 
   std::map<int, std::string> debug_events_;
 #endif
@@ -334,7 +332,7 @@ private:
 void setupApp(ci::app::App::Settings* settings) noexcept
 {
   // FIXME:ここで設定ファイルを読むなんて...
-  auto params = ngs::Params::load("params.json");
+  auto params = ngs::Params::load("settings.json");
 
   settings->setWindowSize(ngs::Json::getVec<ci::ivec2>(params["app.size"]));
   settings->setTitle(PREPRO_TO_STR(PRODUCT_NAME));
