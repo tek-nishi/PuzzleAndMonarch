@@ -11,7 +11,6 @@
 * TODO 得点時の演出を派手に
 * TODO マーカーの黄色と赤が逆？
 * TODO 高い位置からの影は色を薄くしたい
-* TODO モデル読み込みはファイルを一気に読み込んでから処理
 * TODO Demoプレイ
 * TODO パネルのうらが真っ暗
 * TODO iPad:Shareのpopoverをボタン位置と合わせる
@@ -40,6 +39,8 @@
 * TODO アプリアイコン
 * TODO iOS:GameCenter対応
 * TODO iOS:実績を実装
+* DONE モデル読み込みはファイルを一気に読み込んでから処理
+CLOSED: [2018-05-05 土 18:30]
 * DONE 記録を消す時の確認ダイアログ
 CLOSED: [2018-05-04 Fri 18:17]
 * DONE Introはゲーム導入テキストを数種類用意する
