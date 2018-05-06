@@ -16,20 +16,10 @@ namespace ngs {
 class Title
   : public Task
 {
-  Event<Arguments>& event_;
-  ConnectionHolder holder_;
-
-  CountExec count_exec_;
-
-  UI::Canvas canvas_;
-
-  bool active_ = true;
-
-
 
 public:
   Title(const ci::JsonTree& params, Event<Arguments>& event, UI::Drawer& drawer, TweenCommon& tween_common,
-        bool first_time, bool saved) noexcept
+        bool first_time, bool saved, bool ranking) noexcept
     : event_(event),
       canvas_(event, drawer, tween_common,
               params["ui.camera"],
@@ -147,11 +137,15 @@ public:
     {
       // Saveデータがない場合関連するボタンを消す
       {
-        const auto& widget = canvas_.at("Ranking");
+        const auto& widget = canvas_.at("Records");
         widget->enable(false);
       }
+    }
+    if (!ranking)
+    {
+      // Rankingに記録がない場合もボタンを消す
       {
-        const auto& widget = canvas_.at("Records");
+        const auto& widget = canvas_.at("Ranking");
         widget->enable(false);
       }
     }
@@ -179,6 +173,16 @@ private:
     count_exec_.update(delta_time);
     return active_;
   }
+
+  
+  Event<Arguments>& event_;
+  ConnectionHolder holder_;
+
+  CountExec count_exec_;
+
+  UI::Canvas canvas_;
+
+  bool active_ = true;
 
 };
 

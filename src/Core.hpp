@@ -31,14 +31,6 @@ namespace ngs {
 class Core
   : private boost::noncopyable
 {
-  void update(const Connection&, const Arguments& args) noexcept
-  {
-    auto current_time = boost::any_cast<double>(args.at("current_time"));
-    auto delta_time   = boost::any_cast<double>(args.at("delta_time"));
-
-    tasks_.update(current_time, delta_time);
-  }
-
 
 public:
   Core(const ci::JsonTree& params, Event<Arguments>& event) noexcept
@@ -53,8 +45,7 @@ public:
     holder_ += event_.connect("Intro:finished",
                               [this](const Connection&, const Arguments&) noexcept
                               {
-                                tasks_.pushBack<Title>(params_, event_, drawer_, tween_common_,
-                                                       true, archive_.isSaved());
+                                startTitle(true);
                               });
 
     // Title→GameMain
@@ -83,8 +74,7 @@ public:
     holder_ += event_.connect("Credits:Finished",
                               [this](const Connection&, const Arguments&) noexcept
                               {
-                                tasks_.pushBack<Title>(params_, event_, drawer_, tween_common_,
-                                                       false, archive_.isSaved());
+                                startTitle(false);
                               });
     // Title→Settings
     holder_ += event_.connect("Settings:begin",
@@ -107,8 +97,7 @@ public:
                                 archive_.setRecord("se-enable",  boost::any_cast<bool>(args.at("se-enable")));
                                 archive_.save();
 
-                                tasks_.pushBack<Title>(params_, event_, drawer_, tween_common_,
-                                                       false, archive_.isSaved());
+                                startTitle(false);
                               });
     // Title→Records
     holder_ += event_.connect("Records:begin",
@@ -136,8 +125,7 @@ public:
     holder_ += event_.connect("Records:Finished",
                               [this](const Connection&, const Arguments&) noexcept
                               {
-                                tasks_.pushBack<Title>(params_, event_, drawer_, tween_common_,
-                                                       false, archive_.isSaved());
+                                startTitle(false);
                               });
     // Title→Ranking
     holder_ += event_.connect("Ranking:begin",
@@ -155,8 +143,7 @@ public:
     holder_ += event_.connect("Ranking:Finished",
                               [this](const Connection&, const Arguments&) noexcept
                               {
-                                tasks_.pushBack<Title>(params_, event_, drawer_, tween_common_,
-                                                       false, archive_.isSaved());
+                                startTitle(false);
                               });
 
     // 本編開始
@@ -169,8 +156,7 @@ public:
     holder_ += event_.connect("Game:Aborted",
                               [this](const Connection&, const Arguments&) noexcept
                               {
-                                tasks_.pushBack<Title>(params_, event_, drawer_, tween_common_,
-                                                       false, archive_.isSaved());
+                                startTitle(false);
                               });
     // GameMain→Result
     holder_ += event_.connect("Result:begin",
@@ -196,8 +182,7 @@ public:
                                 }
                                 else
                                 {
-                                  tasks_.pushBack<Title>(params_, event_, drawer_, tween_common_,
-                                                                           false, archive_.isSaved());
+                                  startTitle(false);
                                 }
                               });
 
@@ -251,6 +236,22 @@ public:
 
 
 private:
+  void update(const Connection&, const Arguments& args)
+  {
+    auto current_time = boost::any_cast<double>(args.at("current_time"));
+    auto delta_time   = boost::any_cast<double>(args.at("delta_time"));
+
+    tasks_.update(current_time, delta_time);
+  }
+
+
+  void startTitle(bool first_time)
+  {
+    tasks_.pushBack<Title>(params_, event_, drawer_, tween_common_,
+                           first_time, archive_.isSaved(), archive_.existsRanking());
+  }
+
+
   // メンバ変数を最後尾で定義する実験
   const ci::JsonTree& params_;
 
@@ -259,8 +260,8 @@ private:
 
   TaskContainer tasks_;
 
+  // ゲーム内記録
   Archive archive_;
-
 
   // UI
   UI::Drawer drawer_;

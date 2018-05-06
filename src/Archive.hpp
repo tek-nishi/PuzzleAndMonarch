@@ -104,8 +104,6 @@ public:
   // Gameの記録が保存されているか？
   bool isSaved() const noexcept
   {
-    // const auto& json = getRecordArray("games");
-    // return json.hasChildren();
     return getRecord<bool>("saved");
   }
 
