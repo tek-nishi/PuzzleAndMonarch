@@ -90,15 +90,15 @@
                 },
                 {
                   "identifier": "r1",
-                  "rect": [ 0, 1, 0, 1 ],
+                  "rect": [ 0, 0, 0, 0 ],
                   "anchor": [
-                    [ 1.2, 0 ],
+                    [ 1.2, 0.25 ],
                     [ 1.2, 1 ]
                   ],
                   "scale": [ 1, 1 ],
                   "pivot": [ 0.5, 0.5 ],
 
-                  "font": "rank",
+                  "font": "icon",
                   "text": "I",
                   "layout": [ 0, 0.5 ],
                   "color": [ 1, 1, 1 ]
@@ -153,13 +153,13 @@
                   "identifier": "r2",
                   "rect": [ 0, 0, 0, 0 ],
                   "anchor": [
-                    [ 1.2, 0 ],
+                    [ 1.2, 0.25 ],
                     [ 1.2, 1 ]
                   ],
                   "scale": [ 1, 1 ],
                   "pivot": [ 0.5, 0.5 ],
 
-                  "font": "rank",
+                  "font": "icon",
                   "text": "I",
                   "layout": [ 0, 0.5 ],
                   "color": [ 1, 1, 1 ]
@@ -212,15 +212,15 @@
                 },
                 {
                   "identifier": "r3",
-                  "rect": [ 0, 1, 0, 1 ],
+                  "rect": [ 0, 0, 0, 0 ],
                   "anchor": [
-                    [ 1.2, 0 ],
+                    [ 1.2, 0.25 ],
                     [ 1.2, 1 ]
                   ],
                   "scale": [ 1, 1 ],
                   "pivot": [ 0.5, 0.5 ],
                   
-                  "font": "rank",
+                  "font": "icon",
                   "text": "I",
                   "layout": [ 0, 0.5 ],
                   "color": [ 1, 1, 1 ]
@@ -273,15 +273,15 @@
                 },
                 {
                   "identifier": "r4",
-                  "rect": [ 0, 1, 0, 1 ],
+                  "rect": [ 0, 0, 0, 0 ],
                   "anchor": [
-                    [ 1.2, 0 ],
+                    [ 1.2, 0.25 ],
                     [ 1.2, 1 ]
                   ],
                   "scale": [ 1, 1 ],
                   "pivot": [ 0.5, 0.5 ],
 
-                  "font": "rank",
+                  "font": "icon",
                   "text": "I",
                   "layout": [ 0, 0.5 ],
                   "color": [ 1, 1, 1 ]
@@ -334,15 +334,15 @@
                 },
                 {
                   "identifier": "r5",
-                  "rect": [ 0, 1, 0, 1 ],
+                  "rect": [ 0, 0, 0, 0 ],
                   "anchor": [
-                    [ 1.2, 0 ],
+                    [ 1.2, 0.25 ],
                     [ 1.2, 1 ]
                   ],
                   "scale": [ 1, 1 ],
                   "pivot": [ 0.5, 0.5 ],
                   
-                  "font": "rank",
+                  "font": "icon",
                   "text": "I",
                   "layout": [ 0, 0.5 ],
                   "color": [ 1, 1, 1 ]
@@ -395,15 +395,15 @@
                 },
                 {
                   "identifier": "r6",
-                  "rect": [ 0, 1, 0, 1 ],
+                  "rect": [ 0, 0, 0, 0 ],
                   "anchor": [
-                    [ 1.2, 0 ],
+                    [ 1.2, 0.25 ],
                     [ 1.2, 1 ]
                   ],
                   "scale": [ 1, 1 ],
                   "pivot": [ 0.5, 0.5 ],
 
-                  "font": "rank",
+                  "font": "icon",
                   "text": "I",
                   "layout": [ 0, 0.5 ],
                   "color": [ 1, 1, 1 ]
@@ -456,15 +456,15 @@
                 },
                 {
                   "identifier": "r7",
-                  "rect": [ 0, 1, 0, 1 ],
+                  "rect": [ 0, 0, 0, 0 ],
                   "anchor": [
-                    [ 1.2, 0 ],
+                    [ 1.2, 0.25 ],
                     [ 1.2, 1 ]
                   ],
                   "scale": [ 1, 1 ],
                   "pivot": [ 0.5, 0.5 ],
 
-                  "font": "rank",
+                  "font": "icon",
                   "text": "I",
                   "layout": [ 0, 0.5 ],
                   "color": [ 1, 1, 1 ]
@@ -516,15 +516,15 @@
                 },
                 {
                   "identifier": "r8",
-                  "rect": [ 0, 1, 0, 1 ],
+                  "rect": [ 0, 0, 0, 0 ],
                   "anchor": [
-                    [ 1.2, 0 ],
+                    [ 1.2, 0.25 ],
                     [ 1.2, 1 ]
                   ],
                   "scale": [ 1, 1 ],
                   "pivot": [ 0.5, 0.5 ],
 
-                  "font": "rank",
+                  "font": "icon",
                   "text": "I",
                   "layout": [ 0, 0.5 ],
                   "color": [ 1, 1, 1 ]
@@ -577,15 +577,15 @@
                 },
                 {
                   "identifier": "r9",
-                  "rect": [ 0, 1, 0, 1 ],
+                  "rect": [ 0, 0, 0, 0 ],
                   "anchor": [
-                    [ 1.2, 0 ],
+                    [ 1.2, 0.25 ],
                     [ 1.2, 1 ]
                   ],
                   "scale": [ 1, 1 ],
                   "pivot": [ 0.5, 0.5 ],
 
-                  "font": "rank",
+                  "font": "icon",
                   "text": "I",
                   "layout": [ 0, 0.5 ],
                   "color": [ 1, 1, 1 ]
@@ -638,15 +638,15 @@
                 },
                 {
                   "identifier": "r10",
-                  "rect": [ 0, 1, 0, 1 ],
+                  "rect": [ 0, 0, 0, 0 ],
                   "anchor": [
-                    [ 1.2, 0 ],
+                    [ 1.2, 0.25 ],
                     [ 1.2, 1 ]
                   ],
                   "scale": [ 1, 1 ],
                   "pivot": [ 0.5, 0.5 ],
 
-                  "font": "rank",
+                  "font": "icon",
                   "text": "I",
                   "layout": [ 0, 0.5 ],
                   "color": [ 1, 1, 1 ]
@@ -1044,13 +1044,13 @@
               "identifier": "score:10",
               "rect": [ 3, 1.5, 3, 1.5 ],
               "anchor": [
-                [ 0, 0.02 ],
-                [ 0, 0.1 ]
+                [ 0, 0.024 ],
+                [ 0, 0.095 ]
               ],
               "scale": [ 1, 1 ],
               "pivot": [ 0, 0.5 ],
 
-              "font": "rank",
+              "font": "icon",
               "text": "I",
               "layout": [ 0, 0 ],
               "color": [ 1, 1, 1 ]

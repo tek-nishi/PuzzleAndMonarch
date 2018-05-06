@@ -403,7 +403,7 @@
         },
         {
           "identifier": "score:21",
-          "rect": [ -50, -67, 18, -47 ],
+          "rect": [ -50, -63, 18, -47 ],
           "anchor": [
             [ 0, 1 ],
             [ 0, 1 ]
@@ -411,7 +411,7 @@
           "scale": [ 1, 1 ],
           "pivot": [ 0.5, 0.5 ],
 
-          "font": "rank",
+          "font": "icon",
           "text": "",
           "layout": [ 1, 0 ],
           "color": [ 1, 1, 1 ]

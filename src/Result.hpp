@@ -12,6 +12,7 @@
 #include "Share.h"
 #include "Capture.h"
 #include "EventSupport.hpp"
+#include "ConvertRank.hpp" 
 
 
 namespace ngs {
@@ -246,7 +247,7 @@ private:
       option.delay(params.getValueForKey<float>("result.disp_delay"));
       option.updateFn([this]() noexcept
                       {
-                        canvas_.setWidgetText("score:21", ranking_text_[disp_rank_]);
+                        convertRankToText(disp_rank_, canvas_, "score:21", ranking_text_);
                       });
     }
   }

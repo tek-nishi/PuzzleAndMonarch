@@ -796,15 +796,9 @@ private:
   // ランキングを決める
   u_int calcRanking(int score) const noexcept
   {
-    auto ranking_scores = Json::getArray<int>(params_["ranking_scores"]);
-    u_int ranking = u_int(ranking_scores.size());
-    for (auto s : ranking_scores)
-    {
-      if (score >= s) break;
-      ranking -= 1;
-    }
-
-    return ranking;
+    // NOTICE ランキングは線形に上昇する
+    int rate = params_.getValueForKey<int>("ranking_rate");
+    return score / rate;
   }
 
   // スコアを送信

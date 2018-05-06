@@ -8,6 +8,7 @@
 #include "CountExec.hpp"
 #include "UICanvas.hpp"
 #include "TweenUtil.hpp"
+#include "ConvertRank.hpp" 
 #include "Share.h"
 #include "Capture.h"
 
@@ -258,7 +259,7 @@ private:
         char id[16];
         std::sprintf(id, "r%d", int(i + 1));
         auto rank = json.getValueForKey<u_int>("rank");
-        canvas_.setWidgetText(id, ranking_text_[rank]);
+        convertRankToText(rank, canvas_, id, ranking_text_);
       }
     }
 
@@ -277,7 +278,7 @@ private:
     }
   }
 
-  void applyScore(const Arguments& args) noexcept
+  void applyScore(const Arguments& args)
   {
     const auto& scores = boost::any_cast<const std::vector<u_int>&>(args.at("scores"));
     int i = 1;
@@ -292,8 +293,10 @@ private:
       
     canvas_.setWidgetText("score:8",  std::to_string(boost::any_cast<u_int>(args.at("total_panels"))));
     canvas_.setWidgetText("score:9",  std::to_string(boost::any_cast<u_int>(args.at("total_score"))));
-    canvas_.setWidgetText("score:10", ranking_text_[boost::any_cast<u_int>(args.at("total_ranking"))]);
+    auto rank = boost::any_cast<u_int>(args.at("total_ranking"));
+    convertRankToText(rank, canvas_, "score:10", ranking_text_);
   }
+
 };
 
 }
