@@ -1,2 +1,27 @@
 {
+  "erased": [
+    {
+      "identifier": "erased",
+      "tween": [
+        {
+          "param": "alpha",
+          "type": "float",
+          "body": [
+            {
+              "duration": 3,
+              "enable_start": true,
+              "ease_func": "None",
+              "end": 1
+            },
+            {
+              "duration": 0.3,
+              "disable_end": true,
+              "ease_func": "None",
+              "end": 0
+            }
+          ]
+        }
+      ]
+    }
+  ]
 }

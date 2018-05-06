@@ -134,6 +134,7 @@ public:
                                 enableTrashButton(false);
 
                                 canvas_.active(false);
+                                canvas_.startTween("erased");
                                 canvas_.startCommonTween("dust", "out-to-right");
                                 count_exec_.add(wipe_delay,
                                                 [this]() noexcept

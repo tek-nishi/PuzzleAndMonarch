@@ -147,6 +147,19 @@
         },
 
         {
+          "identifier": "erased",
+          "rect": [ 0, 0, 0, 15 ],
+          "anchor": [
+            [ 0.5, 0.37 ],
+            [ 0.5, 0.37 ]
+          ],
+          "enable": false,
+
+          "font": "jp",
+          "text": "記録を消去しました"
+        },
+
+        {
           "identifier": "touch",
           "rect": [ -10, 0, 10, 20 ],
           "anchor": [
