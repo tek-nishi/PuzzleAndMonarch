@@ -86,15 +86,6 @@ public:
                                 signalSettings();
                               });
 
-
-    // holder_ += event_.connect("Trash:touch_ended",
-    //                           [this](const Connection&, const Arguments&) noexcept
-    //                           {
-    //                             // 記録削除
-    //                             event_.signal("Settings:Trash", Arguments());
-    //                             DOUT << "Trash." << std::endl;
-    //                           });
-
     // 記録削除画面へ
     holder_ += event_.connect("Trash:touch_ended",
                               [this, wipe_delay, wipe_duration](const Connection&, const Arguments&) noexcept

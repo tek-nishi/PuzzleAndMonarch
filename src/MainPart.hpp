@@ -615,6 +615,19 @@ public:
                                 view_.setColor(duration, ci::ColorA::white());
                               });
 
+    holder_ += event_.connect("Trash:touch_ended",
+                              [this](const Connection&, const Arguments&) noexcept
+                              {
+                                auto color = transition_color_;
+                                color.g *= 0.7f;
+                                color.b *= 0.7f;
+                                view_.setColor(transition_duration_, color, 0.6f);
+                              });
+    holder_ += event_.connect("back:touch_ended",
+                              [this](const Connection&, const Arguments&) noexcept
+                              {
+                                view_.setColor(transition_duration_, transition_color_, 0.6f);
+                              });
     holder_ += event_.connect("Settings:Trash",
                               [this](const Connection&, const Arguments&) noexcept
                               {
