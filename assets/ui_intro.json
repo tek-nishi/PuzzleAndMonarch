@@ -5,8 +5,6 @@
     [ 0, 0 ],
     [ 1, 1 ]
   ],
-  "scale": [ 1, 1 ],
-  "pivot": [ 0.5, 0.5 ],
 
   "childlen": [
     {
@@ -16,12 +14,9 @@
         [ 0.5, 0.5 ],
         [ 0.5, 0.5 ]
       ],
-      "scale": [ 1, 1 ],
-      "pivot": [ 0.5, 0.5 ],
       
       "font": "jp",
-      "text": "HOGE HOGE",
-      "color": [ 1, 1, 1 ]
+      "text": "HOGE HOGE"
     },
     {
       "identifier": "1",
@@ -30,12 +25,9 @@
         [ 0.5, 0.5 ],
         [ 0.5, 0.5 ]
       ],
-      "scale": [ 1, 1 ],
-      "pivot": [ 0.5, 0.5 ],
       
       "font": "jp",
-      "text": "FUGA FUGA",
-      "color": [ 1, 1, 1 ]
+      "text": "FUGA FUGA"
     }
   ]
 }

@@ -16,13 +16,10 @@
         [ 0.5, 0.75 ],
         [ 0.5, 0.75 ]
       ],
-      "scale": [ 1, 1 ],
-      "pivot": [ 0.5, 0.5 ],
 
       "font": "logo",
       "text": "Puzzle",
-      "layout": [ 1, 0.5 ],
-      "color": [ 1, 1, 1 ]
+      "layout": [ 1, 0.5 ]
     },
     {
       "identifier": "monarch",
@@ -31,13 +28,10 @@
         [ 0.5, 0.75 ],
         [ 0.5, 0.75 ]
       ],
-      "scale": [ 1, 1 ],
-      "pivot": [ 0.5, 0.5 ],
 
       "font": "logo",
       "text": "Monarch",
-      "layout": [ 0, 0.5 ],
-      "color": [ 1, 1, 1 ]
+      "layout": [ 0, 0.5 ]
     },
     {
       "identifier": "flush",
@@ -46,12 +40,9 @@
         [ 0.5, 0.75 ],
         [ 0.5, 0.75 ]
       ],
-      "scale": [ 1, 1 ],
-      "pivot": [ 0.5, 0.5 ],
 
       "font": "icon",
-      "text": "",
-      "color": [ 1, 1, 1 ]
+      "text": ""
     },
     {
       "identifier": "serial",
@@ -60,13 +51,10 @@
         [ 0.5, 0.75 ],
         [ 0.5, 0.75 ]
       ],
-      "scale": [ 1, 1 ],
-      "pivot": [ 0.5, 0.5 ],
 
       "font": "en",
       "text": "ngs-0012",
-      "layout": [ 1, 1 ],
-      "color": [ 1, 1, 1 ]
+      "layout": [ 1, 1 ]
     },
 
     {
@@ -76,12 +64,9 @@
         [ 0.5, 0.35 ],
         [ 0.5, 0.35 ]
       ],
-      "scale": [ 1, 1 ],
-      "pivot": [ 0.5, 0.5 ],
 
       "radius": 1,
       "line_width": 3.5,
-      "color": [ 1, 1, 1 ],
 
       "event": "play",
       "se":    "play",
@@ -95,12 +80,9 @@
             [ 0.3, 0.18 ],
             [ 0.85, 0.82 ]
           ],
-          "scale": [ 1, 1 ],
-          "pivot": [ 0.5, 0.5 ],
           
           "font": "icon",
-          "text": "",
-          "color": [ 1, 1, 1 ]
+          "text": ""
         }
       ]
     },
@@ -111,13 +93,10 @@
         [ 0.5, 0.35 ],
         [ 0.5, 0.35 ]
       ],
-      "scale": [ 1, 1 ],
-      "pivot": [ 0.5, 0.5 ],
       "alpha": 0,
 
       "radius": 1,
-      "line_width": 2.5,
-      "color": [ 1, 1, 1 ]
+      "line_width": 2.5
     },
 
     {
@@ -127,12 +106,9 @@
         [ 0.5, 0.07 ],
         [ 0.5, 0.07 ]
       ],
-      "scale": [ 1, 1 ],
-      "pivot": [ 0.5, 1 ],
 
       "font": "en",
-      "text": "2018 new game style",
-      "color": [ 1, 1, 1 ]
+      "text": "2018 new game style"
     },
 
     {
@@ -142,12 +118,9 @@
         [ 0.93, 0.05 ],
         [ 0.93, 0.05 ]
       ],
-      "scale": [ 1, 1 ],
-      "pivot": [ 0.5, 0.5 ],
 
       "radius": 1,
       "line_width": 1.5,
-      "color": [ 1, 1, 1 ],
 
       "event": "game_center",
       "se":    "selected",
@@ -159,12 +132,9 @@
             [ 0.15, 0.14 ],
             [ 0.92, 0.88 ]
           ],
-          "scale": [ 1, 1 ],
-          "pivot": [ 0.5, 0.5 ],
           
           "font": "icon",
-          "text": "",
-          "color": [ 1, 1, 1 ]
+          "text": ""
         }
       ]
     },
@@ -175,12 +145,9 @@
         [ 0.93, 0.05 ],
         [ 0.93, 0.05 ]
       ],
-      "scale": [ 1, 1 ],
-      "pivot": [ 0.5, 0.5 ],
 
       "radius": 1,
       "line_width": 1.5,
-      "color": [ 1, 1, 1 ],
 
       "event": "ranking",
       "se":    "selected",
@@ -192,12 +159,9 @@
             [ 0.08, 0.25 ],
             [ 1, 0.92 ]
           ],
-          "scale": [ 1, 1 ],
-          "pivot": [ 0.5, 0.5 ],
 
           "font": "icon",
-          "text": "",
-          "color": [ 1, 1, 1 ]
+          "text": ""
         }
       ]
     },
@@ -208,12 +172,9 @@
         [ 0.93, 0.05 ],
         [ 0.93, 0.05 ]
       ],
-      "scale": [ 1, 1 ],
-      "pivot": [ 0.5, 0.5 ],
 
       "radius": 1,
       "line_width": 1.5,
-      "color": [ 1, 1, 1 ],
 
       "event": "records",
       "se":    "selected",
@@ -225,12 +186,9 @@
             [ 0.09, 0.23 ],
             [ 1, 0.89 ]
           ],
-          "scale": [ 1, 1 ],
-          "pivot": [ 0.5, 0.5 ],
 
           "font": "icon",
-          "text": "",
-          "color": [ 1, 1, 1 ]
+          "text": ""
         }
       ]
     },
@@ -241,12 +199,9 @@
         [ 0.93, 0.05 ],
         [ 0.93, 0.05 ]
       ],
-      "scale": [ 1, 1 ],
-      "pivot": [ 0.5, 0.5 ],
 
       "radius": 1,
       "line_width": 1.5,
-      "color": [ 1, 1, 1 ],
 
       "event": "settings",
       "se":    "selected",
@@ -258,12 +213,9 @@
             [ 0, 0 ],
             [ 1, 1 ]
           ],
-          "scale": [ 1, 1 ],
-          "pivot": [ 0.5, 0.5 ],
           
           "font": "icon",
-          "text": "",
-          "color": [ 1, 1, 1 ]
+          "text": ""
         }
       ]
     },
@@ -274,12 +226,9 @@
         [ 0.93, 0.05 ],
         [ 0.93, 0.05 ]
       ],
-      "scale": [ 1, 1 ],
-      "pivot": [ 0.5, 0.5 ],
 
       "radius": 1,
       "line_width": 1.5,
-      "color": [ 1, 1, 1 ],
 
       "event": "credits",
       "se":    "selected",
@@ -291,11 +240,9 @@
             [ 0.1, 0.06 ],
             [ 1, 0.94 ]
           ],
-          "scale": [ 1, 1 ],
-          "pivot": [ 0.5, 0.5 ],
+
           "font": "icon",
-          "text": "",
-          "color": [ 1, 1, 1 ]
+          "text": ""
         }
       ]
     }
