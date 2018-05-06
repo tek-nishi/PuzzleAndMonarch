@@ -17,7 +17,8 @@ class Archive
   void create() noexcept
   {
     auto games = ci::JsonTree::makeArray("games");
-    auto g = ci::JsonTree::makeObject().addChild(ci::JsonTree("score", uint32_t(50)))
+    // FIXME 初期ランクがハードコーディング
+    auto g = ci::JsonTree::makeObject().addChild(ci::JsonTree("score", uint32_t(500)))
                                        .addChild(ci::JsonTree("rank",  uint32_t(0)))
     ;
     

@@ -798,7 +798,8 @@ private:
   {
     // NOTICE ランキングは線形に上昇する
     int rate = params_.getValueForKey<int>("ranking_rate");
-    return score / rate;
+    // 0は「ランク無し」
+    return score / rate + 1;
   }
 
   // スコアを送信
