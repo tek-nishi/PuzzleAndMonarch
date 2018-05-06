@@ -615,9 +615,11 @@ public:
                                 view_.setColor(duration, ci::ColorA::white());
                               });
 
+    // 設定画面
     holder_ += event_.connect("Trash:touch_ended",
                               [this](const Connection&, const Arguments&) noexcept
                               {
+                                // 記録を消す画面を赤っぽくする
                                 auto color = transition_color_;
                                 color.g *= 0.7f;
                                 color.b *= 0.7f;
@@ -626,6 +628,13 @@ public:
     holder_ += event_.connect("back:touch_ended",
                               [this](const Connection&, const Arguments&) noexcept
                               {
+                                // 記録を消す画面から戻る
+                                view_.setColor(transition_duration_, transition_color_, 0.6f);
+                              });
+    holder_ += event_.connect("erase-record:touch_ended",
+                              [this](const Connection&, const Arguments&) noexcept
+                              {
+                                // 記録を消す画面から戻る
                                 view_.setColor(transition_duration_, transition_color_, 0.6f);
                               });
     holder_ += event_.connect("Settings:Trash",
