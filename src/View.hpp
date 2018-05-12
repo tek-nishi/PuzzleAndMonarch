@@ -641,6 +641,7 @@ private:
     {
       auto pos = light_camera_.getEyePoint();
       auto p = glm::vec4(pos, 0);
+      field_shader_->uniform("uLightPosition", p);
       bg_shader_->uniform("uLightPosition", p);
       // bg_shader_->uniform("uShininess", 80.0f);
     }
