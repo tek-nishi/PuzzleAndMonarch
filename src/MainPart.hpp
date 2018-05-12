@@ -827,7 +827,8 @@ private:
 
       calcBgPosition(),
 
-      &camera_.body()
+      &camera_.body(),
+      field_camera_.getTargetPosition(),
     };
 
     view_.drawField(info);

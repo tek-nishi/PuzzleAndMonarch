@@ -213,6 +213,11 @@ public:
     target_ease_rate_ = initial_ease_rate_;
   }
 
+  const glm::vec3& getTargetPosition() const noexcept
+  {
+    return target_position_;
+  }
+
 
 
 private:

@@ -50,6 +50,7 @@ public:
     glm::vec3 bg_pos;
 
     const ci::CameraPersp* main_camera;
+    glm::vec3 target_pos;
   };
 
 
@@ -639,8 +640,8 @@ private:
     bg_shader_->uniform("uShadowMatrix", mat);
 
     {
-      auto pos = light_camera_.getEyePoint();
-      auto p = glm::vec4(pos, 0);
+      // auto pos = light_camera_.getEyePoint();
+      auto p = glm::vec4(0, 100, 0, 0);
       field_shader_->uniform("uLightPosition", p);
       bg_shader_->uniform("uLightPosition", p);
       // bg_shader_->uniform("uShininess", 80.0f);
