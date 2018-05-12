@@ -523,11 +523,17 @@ private:
   }
 
   // OBJ形式を読み込む
-  static ci::gl::VboMeshRef loadObj(const std::string& path) noexcept
+  static ci::gl::VboMeshRef loadObj(const std::string& path)
   {
-    // 面法線は無しで
-    ci::ObjLoader loader(Asset::load(path), false);
-    auto mesh = ci::gl::VboMesh::create(ci::TriMesh(loader));
+    ci::ObjLoader loader{ Asset::load(path) };
+    auto tri_mesh = ci::TriMesh{ loader };
+    auto mesh = ci::gl::VboMesh::create(tri_mesh);
+
+    DOUT << path
+    << ": N: " << tri_mesh.hasNormals()
+    << " C: " << tri_mesh.hasColors()
+    << " T: " << tri_mesh.hasTexCoords()
+    << std::endl;
 
     return mesh;
   }
@@ -632,6 +638,12 @@ private:
     field_shader_->uniform("uShadowMatrix", mat);
     bg_shader_->uniform("uShadowMatrix", mat);
 
+    {
+      auto pos = light_camera_.getEyePoint();
+      auto p = glm::vec4(pos, 0);
+      bg_shader_->uniform("uLightPosition", p);
+      // bg_shader_->uniform("uShininess", 80.0f);
+    }
     ci::gl::ScopedGlslProg prog(field_shader_);
     ci::gl::ScopedTextureBind texScope(shadow_map_);
 
