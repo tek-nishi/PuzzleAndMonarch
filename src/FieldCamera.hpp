@@ -155,6 +155,7 @@ public:
         { 0,  PANEL_SIZE / 2, 0 },
       };
 
+      // 次のパネルが画面内に収まるか調べる
       bool in_view = true;
       for (const auto& ofs : tbl)
       {
@@ -173,14 +174,30 @@ public:
         return;
       }
 
+      // 甘めに調整するモード発動
+      ease_distance_rate_ = 0.6f;
       skip_easing_ = false;
     }
 
-    field_center_.x = map_center_.x;
-    field_center_.z = map_center_.z;
+    if (ease_distance_rate_ > 0.1f)
+    {
+      auto c = glm::mix(map_center_, target_position_, ease_distance_rate_);
+      field_center_.x = c.x;
+      field_center_.z = c.z;
 
-    field_distance_ = ci::clamp(std::max(distance, distance_),
-                                distance_range_.x, distance_range_.y);
+      auto d = glm::mix(distance, distance_, ease_distance_rate_);
+      field_distance_ = ci::clamp(std::max(d, distance_),
+                                  distance_range_.x, distance_range_.y);
+      ease_distance_rate_ *= 0.8f;
+    }
+    else
+    {
+      field_center_.x = map_center_.x;
+      field_center_.z = map_center_.z;
+
+      field_distance_ = ci::clamp(std::max(distance, distance_),
+                                  distance_range_.x, distance_range_.y);
+    }
   }
 
   // 内容を他のクラスへ反映 
@@ -245,6 +262,8 @@ private:
   bool force_camera_ = false;
   // カメラを動かしたので補間をスキップする
   bool skip_easing_ = false;
+  // 補間具合
+  float ease_distance_rate_= 0;
 
   // Fieldの中心座標
   glm::vec3 field_center_;
