@@ -691,6 +691,20 @@ public:
                                 view_.setPolygonUnits(value);
                               });
 
+    holder_ += event_.connect("debug-specular-color",
+                              [this](const Connection&, Arguments& args) noexcept
+                              {
+                                auto value = boost::any_cast<ci::ColorA>(args.at("value"));
+                                view_.setSpecular(value);
+                              });
+
+    holder_ += event_.connect("debug-shininess",
+                              [this](const Connection&, Arguments& args) noexcept
+                              {
+                                auto value = boost::any_cast<float>(args.at("value"));
+                                view_.setShininess(value);
+                              });
+
     holder_ += event_.connect("debug-score-test",
                               [this](const Connection&, Arguments&) noexcept
                               {

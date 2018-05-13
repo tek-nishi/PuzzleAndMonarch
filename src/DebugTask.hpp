@@ -42,6 +42,11 @@ class DebugTask
   float polygon_factor_;
   float polygon_units_;
 
+  ci::ColorA specular_;
+  float shininess_;
+
+
+
 
   void createSettings() noexcept
   {
@@ -87,6 +92,26 @@ class DebugTask
                 event_.signal("debug-polygon-units", args);
               });
 
+    settings_->addSeparator();
+
+    settings_->addParam("Specular", &specular_)
+    .updateFn([this]() noexcept
+              {
+                Arguments args{
+                  { "value", specular_ }
+                };
+                event_.signal("debug-specular-color", args);
+              });
+
+    settings_->addParam("Shininess", &shininess_)
+    .step(0.5f)
+    .updateFn([this]() noexcept
+              {
+                Arguments args{
+                  { "value", shininess_ }
+                };
+                event_.signal("debug-shininess", args);
+              });
 
     settings_->show(false);
 
@@ -183,6 +208,9 @@ public:
     auto polygon_offset = Json::getVec<glm::vec2>(params["field.polygon_offset"]);
     polygon_factor_ = polygon_offset.x;
     polygon_units_  = polygon_offset.y;
+
+    specular_ = Json::getColorA<float>(params["field.specular"]);
+    shininess_ = params.getValueForKey<float>("field.shininess");
 
     holder_ += event_.connect("draw", 99,
                               std::bind(&DebugTask::draw,

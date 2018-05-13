@@ -118,6 +118,8 @@ public:
 
       field_shader_->uniform("uShadowMap", 0);
       field_shader_->uniform("uShadowIntensity", params.getValueForKey<float>("shadow_intensity"));
+      field_shader_->uniform("uSpecular", Json::getColorA<float>(params["specular"]));
+      field_shader_->uniform("uShininess", params.getValueForKey<float>("shininess"));
     }
     {
       auto name = params.getValueForKey<std::string>("bg_shader");
@@ -131,6 +133,8 @@ public:
       bg_shader_->uniform("uShadowMap", 0);
       bg_shader_->uniform("uTex1", 1);
       bg_shader_->uniform("uShadowIntensity", params.getValueForKey<float>("shadow_intensity"));
+      bg_shader_->uniform("uSpecular", Json::getColorA<float>(params["specular"]));
+      bg_shader_->uniform("uShininess", params.getValueForKey<float>("shininess"));
     }
     {
       auto name = params.getValueForKey<std::string>("shadow_shader");
@@ -503,6 +507,17 @@ public:
   void setPolygonUnits(float value) noexcept
   {
     polygon_offset_.y = value;
+  }
+
+
+  void setSpecular(const ci::ColorA& color) noexcept
+  {
+    field_shader_->uniform("uSpecular", color);
+  }
+
+  void setShininess(float shininess) noexcept
+  {
+    field_shader_->uniform("uShininess", shininess);
   }
 
 #endif

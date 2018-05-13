@@ -16,8 +16,9 @@ uniform vec2 u_pos;
 uniform vec4 u_bright;
 uniform vec4 u_dark;
 
-float uShininess = 80;
 uniform vec4 uLightPosition;
+uniform float uShininess;
+uniform vec4 uSpecular;
 
 in vec4 vPosition;
 in vec3 vNormal;
@@ -45,7 +46,7 @@ void main(void)
   // スペキュラは反射ベクトルを求める方式
   vec3 reflect   = reflect(-light, fnormal);
   float specular = pow(max(dot(reflect, view), 0.0), uShininess);
-  vec4 spec_color = vec4(0.2, 0.2, 0.2, 1) * specular;
+  vec4 spec_color = uSpecular * specular;
 
   vec2 pos = floor(u_pos + TexCoord0 * u_checker_size);
   float mask = mod(pos.x + mod(pos.y, 2.0), 2.0);
