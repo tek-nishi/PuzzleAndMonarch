@@ -414,7 +414,7 @@
     "canvas": "ui_intro.json",
     "tweens": "tw_intro.json",
 
-    "touch_delay": 1,
+    "touch_delay": 0.5,
     "finish_delay": 0.5,
 
     "distance": 600,
