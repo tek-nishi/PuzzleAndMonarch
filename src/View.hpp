@@ -136,6 +136,8 @@ public:
       bg_shader_->uniform("uSpecular", Json::getColorA<float>(params["specular"]));
       bg_shader_->uniform("uShininess", params.getValueForKey<float>("shininess"));
     }
+    specular_light_ = Json::getVec<glm::vec4>(params["specular_pos"]);
+
     {
       auto name = params.getValueForKey<std::string>("shadow_shader");
       shadow_shader_ = createShader(name, name);
@@ -520,6 +522,13 @@ public:
     field_shader_->uniform("uShininess", shininess);
   }
 
+  void setSpecularLight(const glm::vec3& position) noexcept
+  {
+    specular_light_.x = position.x;
+    specular_light_.y = position.y;
+    specular_light_.z = position.z;
+  }
+
 #endif
 
 
@@ -654,13 +663,9 @@ private:
     field_shader_->uniform("uShadowMatrix", mat);
     bg_shader_->uniform("uShadowMatrix", mat);
 
-    {
-      // auto pos = light_camera_.getEyePoint();
-      auto p = glm::vec4(0, 100, 0, 0);
-      field_shader_->uniform("uLightPosition", p);
-      bg_shader_->uniform("uLightPosition", p);
-      // bg_shader_->uniform("uShininess", 80.0f);
-    }
+    field_shader_->uniform("uLightPosition", specular_light_);
+    bg_shader_->uniform("uLightPosition", specular_light_);
+
     ci::gl::ScopedGlslProg prog(field_shader_);
     ci::gl::ScopedTextureBind texScope(shadow_map_);
 
@@ -906,6 +911,9 @@ private:
   ci::CameraPersp light_camera_;
   glm::vec3 light_pos_;
 
+  // スペキュラ効果用の光源
+  glm::vec4 specular_light_;
+
   // 画面演出用情報
   float panel_height_;
   glm::vec2 put_duration_;
@@ -961,7 +969,6 @@ private:
 
   // FIXME 途中の削除が多いのでvectorは向いていない??
   std::list<Effect> effects_;
-
 
   // 雲演出
   std::vector<ci::gl::VboMeshRef> cloud_models_;

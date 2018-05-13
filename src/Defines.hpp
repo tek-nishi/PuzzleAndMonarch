@@ -42,7 +42,6 @@
 
 #endif
 
-
 namespace ngs {
 
 // 符号無し整数の別名定義

@@ -44,7 +44,7 @@ class DebugTask
 
   ci::ColorA specular_;
   float shininess_;
-
+  glm::vec3 specular_pos_;
 
 
 
@@ -112,6 +112,16 @@ class DebugTask
                 };
                 event_.signal("debug-shininess", args);
               });
+
+    settings_->addParam("Position", &specular_pos_)
+    .updateFn([this]() noexcept
+              {
+                Arguments args{
+                  { "value", specular_pos_ }
+                };
+                event_.signal("debug-specular-pos", args);
+              });
+
 
     settings_->show(false);
 
@@ -211,6 +221,7 @@ public:
 
     specular_ = Json::getColorA<float>(params["field.specular"]);
     shininess_ = params.getValueForKey<float>("field.shininess");
+    specular_pos_ = Json::getVec<glm::vec3>(params["field.specular_pos"]);
 
     holder_ += event_.connect("draw", 99,
                               std::bind(&DebugTask::draw,

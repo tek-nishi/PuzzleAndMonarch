@@ -705,6 +705,13 @@ public:
                                 view_.setShininess(value);
                               });
 
+    holder_ += event_.connect("debug-specular-pos",
+                              [this](const Connection&, Arguments& args) noexcept
+                              {
+                                auto value = boost::any_cast<glm::vec3>(args.at("value"));
+                                view_.setSpecularLight(value);
+                              });
+
     holder_ += event_.connect("debug-score-test",
                               [this](const Connection&, Arguments&) noexcept
                               {
