@@ -9,7 +9,8 @@
       [ "f", "debug-font" ],
       [ "s", "debug-settings" ],
       [ "k", "debug-shadowmap" ],
-      [ "t", "debug-score-test" ]
+      [ "t", "debug-score-test" ],
+      [ "b", "debug-disp-clouds" ]
     ],
 
     "app_size": [
@@ -337,8 +338,7 @@
     "cloud_scale": [ 300, 1, 300 ],
     "cloud_dir": [ 0.5, 0, 0.4 ],
     "cloud_speed": [ 5, 10 ],
-    "cloud_area": 250,
-    "cloud_disp":true 
+    "cloud_area": 250
   },
 
   "ui": {

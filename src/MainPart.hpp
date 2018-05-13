@@ -725,6 +725,12 @@ public:
                                 game_->testCalcResults(); 
                               });
 
+    holder_ += event_.connect("debug-disp-clouds",
+                              [this](const Connection&, Arguments&) noexcept
+                              {
+                                view_.toggleCloud();
+                              });
+
     holder_ += event_.connect("Test:PutPanel",
                               [this](const Connection&, Arguments& args) noexcept
                               {

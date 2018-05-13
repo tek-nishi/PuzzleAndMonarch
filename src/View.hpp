@@ -465,9 +465,13 @@ public:
   }
 
 
-  void dispCloud(bool disp) noexcept
+  void toggleCloud() noexcept
   {
-    disp_cloud_ = disp;
+    disp_cloud_ = !disp_cloud_;
+    if (disp_cloud_)
+    {
+      setCloudAlpha(1.0f);
+    }
   }
 
   void setCloudAlpha(float alpha) noexcept
@@ -855,7 +859,13 @@ private:
     }
   }
 
+  // 雲の配置
+  //   なるべく均等に配置されるようにする
+  void layoutClouds() noexcept
+  {
 
+  }
+  
 
 
   // パネル
