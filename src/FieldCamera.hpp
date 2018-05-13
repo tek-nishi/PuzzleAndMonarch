@@ -149,10 +149,10 @@ public:
     if (skip_easing_)
     {
       static glm::vec3 tbl[] = {
-        { -PANEL_SIZE / 2, 0, 0 },
-        {  PANEL_SIZE / 2, 0, 0 },
-        { 0, -PANEL_SIZE / 2, 0 },
-        { 0,  PANEL_SIZE / 2, 0 },
+        { -PANEL_SIZE / 2, 0,               0 },
+        {  PANEL_SIZE / 2, 0,               0 },
+        {               0, 0, -PANEL_SIZE / 2 },
+        {               0, 0,  PANEL_SIZE / 2 },
       };
 
       // 次のパネルが画面内に収まるか調べる
