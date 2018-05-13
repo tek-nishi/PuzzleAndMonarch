@@ -313,9 +313,9 @@
     "bg_bright":  [ 0.6, 0.6, 0.6, 1 ],
     "bg_dark":    [ 0.25, 0.25, 0.25, 1 ],
 
-    "specular": [ 0.2, 0.2, 0.2, 1 ],
+    "specular": [ 0.15, 0.15, 0.15, 1 ],
     "specular_pos": [ 0, 100, 0, 0 ],
-    "shininess": 80,
+    "shininess": 120,
 
     "cloud_models": [
       "cloud_t1.obj", 
