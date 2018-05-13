@@ -41,6 +41,7 @@ struct Game
     //   waiting_panels.push_back(i);
     // }
 
+    // パネルを準備
     preparationPanel();
   }
 
@@ -91,44 +92,9 @@ struct Game
 
 
   // 本編準備
-  void preparationPlay() noexcept
+  void preparationPlay(bool tutorial) noexcept
   {
-#if 0
-    // 開始パネルを探す
-    std::vector<int> start_panels;
-    for (int i = 0; i < panels_.size(); ++i)
-    {
-      if (panels_[i].getAttribute() & Panel::START)
-      {
-        start_panels.push_back(i);
-      }
-    }
-    assert(!start_panels.empty());
-
-    if (start_panels.size() > 1)
-    {
-      // 開始パネルが何枚かある時はシャッフル
-      std::shuffle(std::begin(start_panels), std::end(start_panels), engine_);
-    }
-
-    {
-      // 最初に置くパネルを取り除いてからシャッフル
-      auto it = std::find(std::begin(waiting_panels), std::end(waiting_panels), start_panels[0]);
-      if (it != std::end(waiting_panels)) waiting_panels.erase(it);
-
-      std::shuffle(std::begin(waiting_panels), std::end(waiting_panels), engine_);
-    }
-
-#if defined (DEBUG)
-    auto force_panel = params_.getValueForKey<int>("force_panel");
-    if (force_panel > 0)
-    {
-      // パネル枚数を強制的に変更
-      waiting_panels.resize(force_panel);
-    }
-#endif
-
-#endif
+    if (tutorial) orderForTutorial();
 
     // 最初のパネルを設置
     putPanel(start_panel_, { 0, 0 }, ci::randInt(4));
@@ -842,6 +808,28 @@ private:
       event_.signal("Game:PutPanel", args);
     }
   }
+
+  // チュートリアル用のパネル順にする
+  void orderForTutorial() noexcept
+  {
+    DOUT << "Tutorial order." << std::endl;
+
+    // 並びが固定されているパネル順
+    auto panels = Json::getArray<int>(params_["tutorial"]);
+
+    // panelsに含まれていないパネルをコピー
+    for (auto p : waiting_panels)
+    {
+      if (std::find(std::begin(panels), std::end(panels), p) == std::end(panels)) 
+      {
+        panels.push_back(p);
+      }
+    }
+
+    assert(panels.size() == waiting_panels.size());
+    waiting_panels = panels;
+  }
+
 
 
   // NOTICE 変数をクラス定義の最後に書くテスト

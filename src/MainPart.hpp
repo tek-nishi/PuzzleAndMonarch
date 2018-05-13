@@ -289,7 +289,7 @@ public:
                               [this](const Connection&, const Arguments&) noexcept
                               {
                                 field_camera_.restoreEaseRate();
-                                game_->preparationPlay();
+                                game_->preparationPlay(isTutorial());
                                 // カメラを初期位置へ
                                 prohibited_ = false;
                               });
@@ -995,7 +995,7 @@ private:
     // Game再生成
     game_.reset();            // TIPS メモリを２重に確保したくないので先にresetする
     game_ = std::make_unique<Game>(params_["game"], event_, panels_);
-    game_->preparationPlay();
+    game_->preparationPlay(isTutorial());
   }
 
   // カメラから見える範囲のBGを計算
@@ -1276,7 +1276,19 @@ private:
     }
   }
 
-  
+  bool isTutorial() const
+  {
+    auto tutorial = !archive_.getRecord<bool>("tutorial-finish")
+#if defined (DEBUG)
+    || Json::getValue(params_, "game.force_tutorial", false)
+#endif
+    ;
+
+    return tutorial;
+  }
+
+
+
   // FIXME 変数を後半に定義する実験
   const ci::JsonTree& params_;
 
