@@ -990,6 +990,7 @@ private:
     paused_ = false;
     count_exec_.pause(false);
     fixed_exec_.clear();
+    tutorial_pos_.clear();
 
     // Game再生成
     game_.reset();            // TIPS メモリを２重に確保したくないので先にresetする
