@@ -104,7 +104,7 @@ public:
     blank_model    = ci::gl::VboMesh::create(PLY::load(params.getValueForKey<std::string>("blank_model")));
     selected_model = ci::gl::VboMesh::create(PLY::load(params.getValueForKey<std::string>("selected_model")));
     cursor_model   = ci::gl::VboMesh::create(PLY::load(params.getValueForKey<std::string>("cursor_model")));
-    bg_model       = loadObj(params.getValueForKey<std::string>("bg_model"));
+    bg_model       = createVboMesh(params.getValueForKey<std::string>("bg_model"));
     effect_model   = ci::gl::VboMesh::create(PLY::load(params.getValueForKey<std::string>("effect_model")));
 
     {
@@ -151,35 +151,31 @@ public:
       light_camera_.setPerspective(fov, shadow_fbo_->getAspectRatio(), near_z, far_z);
     }
 
-    for (const auto& cloud : params["cloud_models"])
-    {
-      const auto& p = cloud.getValue<std::string>();
-      cloud_models_.push_back(loadObj(p));
-    }
+    // 空に浮かぶ雲
+    cloud_scale_ = Json::getVec<glm::vec3>(params["cloud_scale"]);
+    cloud_area_  = params.getValueForKey<float>("cloud_area");
+    cloud_color_ = Json::getColorA<float>(params["cloud_color"]);
 
     {
-      auto x_pos = Json::getVec<glm::vec2>(params["cloud_pos"][0]);
-      auto y_pos = Json::getVec<glm::vec2>(params["cloud_pos"][1]);
-      auto z_pos = Json::getVec<glm::vec2>(params["cloud_pos"][2]);
+      // モデル準備
+      std::vector<std::pair<glm::vec3, float>> cloud_bc;
 
-      auto dir   = glm::normalize(Json::getVec<glm::vec3>(params["cloud_dir"]));
-      auto speed = Json::getVec<glm::vec2>(params["cloud_speed"]);
-
-      auto num = params.getValueForKey<int>("cloud_num");
-      for (int i = 0; i < num; ++i)
+      for (const auto& cloud : params["cloud_models"])
       {
-        glm::vec3 p { ci::randFloat(x_pos.x, x_pos.y),
-                      ci::randFloat(y_pos.x, y_pos.y),
-                      ci::randFloat(z_pos.x, z_pos.y) };
-        auto v = dir * ci::randFloat(speed.x, speed.y);
+        const auto& p = cloud.getValue<std::string>();
 
-        clouds_.push_back({ p, v });
+        auto tri_mesh = loadObj(p);
+        cloud_models_.push_back(ci::gl::VboMesh::create(tri_mesh));
+        auto bc = calcBoundingCircle(tri_mesh);
+        bc.first  *= cloud_scale_.x;
+        bc.second *= cloud_scale_.x;
+        cloud_bc.push_back(bc);
       }
 
-      cloud_scale_ = Json::getVec<glm::vec3>(params["cloud_scale"]);
-      cloud_area_  = params.getValueForKey<float>("cloud_area");
-      cloud_color_ = Json::getColorA<float>(params["cloud_color"]);
+      // 雲のレイアウト
+      layoutClouds(params, int(cloud_models_.size()), cloud_bc);
     }
+
     {
       auto name = params.getValueForKey<std::string>("cloud_shader");
       cloud_shader_ = createShader(name, name);
@@ -551,21 +547,45 @@ private:
     return panel_models[number];
   }
 
-  // OBJ形式を読み込む
-  static ci::gl::VboMeshRef loadObj(const std::string& path)
+
+  // OBJ形式→TriMesh
+  static ci::TriMesh loadObj(const std::string& path)
   {
     ci::ObjLoader loader{ Asset::load(path) };
-    auto tri_mesh = ci::TriMesh{ loader };
-    auto mesh = ci::gl::VboMesh::create(tri_mesh);
+    auto mesh = ci::TriMesh{ loader };
 
-    DOUT << path
-    << ": N: " << tri_mesh.hasNormals()
-    << " C: " << tri_mesh.hasColors()
-    << " T: " << tri_mesh.hasTexCoords()
-    << std::endl;
+    // DOUT << path
+    // << ": N: " << mesh.hasNormals()
+    // << " C: "  << mesh.hasColors()
+    // << " T: "  << mesh.hasTexCoords()
+    // << std::endl;
 
     return mesh;
   }
+
+  // OBJ形式からVboMeshを生成
+  static ci::gl::VboMeshRef createVboMesh(const std::string& path)
+  {
+    return ci::gl::VboMesh::create(loadObj(path));
+  }
+
+  // TriMeshの外接円をなんとなく求める
+  static std::pair<glm::vec3, float> calcBoundingCircle(const ci::TriMesh& mesh)
+  {
+    auto aabb = mesh.calcBoundingBox();
+    const auto& center  = aabb.getCenter();
+    const auto& extents = aabb.getExtents();
+
+    float radius = std::max(extents.x, extents.y);
+
+    DOUT << "center:" << center
+         << " extents:" << extents
+         << " radius: " << radius 
+         << std::endl;
+
+    return { center, radius };
+  }
+
 
   // 影レンダリング用の設定
   void setupShadowMap(const glm::ivec2& fbo_size) noexcept
@@ -861,11 +881,65 @@ private:
 
   // 雲の配置
   //   なるべく均等に配置されるようにする
-  void layoutClouds() noexcept
+  void layoutClouds(const ci::JsonTree& params,
+                    int cloud_kinds,
+                    const std::vector<std::pair<glm::vec3, float>>& bounding_circle) noexcept
   {
+    auto x_pos = Json::getVec<glm::vec2>(params["cloud_pos"][0]);
+    auto y_pos = Json::getVec<glm::vec2>(params["cloud_pos"][1]);
+    auto z_pos = Json::getVec<glm::vec2>(params["cloud_pos"][2]);
 
+    auto dir   = glm::normalize(Json::getVec<glm::vec3>(params["cloud_dir"]));
+    auto speed = Json::getVec<glm::vec2>(params["cloud_speed"]);
+
+    auto num = params.getValueForKey<int>("cloud_num");
+    for (int i = 0; i < num; ++i)
+    {
+      glm::vec3 p { ci::randFloat(x_pos.x, x_pos.y),
+                    ci::randFloat(y_pos.x, y_pos.y),
+                    ci::randFloat(z_pos.x, z_pos.y) };
+      auto v = dir * ci::randFloat(speed.x, speed.y);
+
+      clouds_.push_back({ p, v });
+    }
+
+    // 総当たりで相互の距離を調整する
+    for (int i = 0; i < clouds_.size(); ++i)
+    {
+      const auto& p1  = clouds_[i].first;
+      const auto& bc1 = bounding_circle[i % cloud_kinds];
+      auto pos1 = p1 + bc1.first;
+      float r1  = bc1.second;
+
+      for (int j = 0; j < clouds_.size(); ++j)
+      {
+        if (i == j) continue;
+
+        auto& p2  = clouds_[j].first;
+        const auto& bc2 = bounding_circle[j % cloud_kinds];
+        auto pos2 = p2 + bc2.first;
+        float r2  = bc2.second;
+
+        auto d = glm::distance2(pos1, pos2);
+        if (d < (r1 + r2) * (r1 + r2))
+        {
+          if (d > 0.0f)
+          {
+            // 重ならない位置へ移動
+            auto v = glm::normalize(pos2 - pos1);
+            auto np2 = pos1 + v * (r1 + r2);
+            p2 = np2 - bc2.first;
+          }
+          else
+          {
+            // 完全に重なっていた場合
+            auto np2 = pos1 + glm::vec3{ r1 + r2, 0.0f, 0.0f };
+            p2 = np2 - bc2.first;
+          }
+        }
+      }
+    }
   }
-  
 
 
   // パネル
