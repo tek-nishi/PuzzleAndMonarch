@@ -27,6 +27,10 @@
 * TODO アプリアイコン
 * TODO iOS:GameCenter対応
 * TODO iOS:実績を実装
+* DONE いいねの演出を長めに
+CLOSED: [2018-05-18 金 17:59]
+* DONE Tutorialの起動はparamsの設定で制御可能に
+CLOSED: [2018-05-18 金 17:59]
 * DONE 拡大時と縮小時の挙動をGoに似せてみる
 CLOSED: [2018-05-18 金 17:45]
 * DONE 見た目だけを作り込むプロジェクトを作成

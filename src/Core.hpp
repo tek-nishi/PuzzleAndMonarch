@@ -54,10 +54,9 @@ public:
                               {
                                 tasks_.pushBack<GameMain>(params_, event_, drawer_, tween_common_);
 
+                                // NOTICE paramsの設定で強制的にTutorialが起動
                                 if (!archive_.getRecord<bool>("tutorial-finish")
-#if defined (DEBUG)
                                     || Json::getValue(params_, "game.force_tutorial", false)
-#endif
                                    )
                                 {
                                   DOUT << "Tutorial started." << std::endl;
