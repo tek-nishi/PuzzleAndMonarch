@@ -18,6 +18,7 @@ public:
       distance_(params.getValueForKey<float>("camera.distance")),
       target_position_(Json::getVec<glm::vec3>(params["target_position"])),
       distance_range_(Json::getVec<glm::vec2>(params["camera_distance_range"])),
+      angle_range_(toRadians(Json::getVec<glm::vec2>(params["camera_angle_range"]))),
       ease_rate_(Json::getVec<glm::dvec2>(params["camera_ease_rate"])),
       target_ease_rate_(ease_rate_),
       initial_ease_rate_(ease_rate_),
@@ -203,7 +204,10 @@ public:
   // 内容を他のクラスへ反映 
   void applyDetail(ci::CameraPersp& camera, View& view) 
   {
-    glm::quat q(glm::vec3{ rotation_.x, rotation_.y, 0 });
+    float d = ci::clamp(distance_, distance_range_.x, distance_range_.y) - distance_range_.x;
+    float t = d / (distance_range_.y - distance_range_.x);
+    float x = glm::mix(angle_range_.x, angle_range_.y, t);
+    glm::quat q(glm::vec3{ rotation_.x + x, rotation_.y, 0 });
     glm::vec3 p = q * glm::vec3{ 0, 0, -distance_ };
     camera.lookAt(p + target_position_, target_position_);
     eye_position_ = camera.getEyePoint();
@@ -249,6 +253,7 @@ private:
 
   // ピンチング操作時の距離の範囲
   glm::vec2 distance_range_;
+  glm::vec2 angle_range_;
 
   // 補間用係数
   glm::dvec2 ease_rate_;
