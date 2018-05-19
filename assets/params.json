@@ -395,7 +395,7 @@
     "shader": {
       "font": {
         "name": "font2",
-        "u_buffer": 0.47,
+        "u_buffer": 0.49,
         "u_gamma": 0.025
       }
     },
