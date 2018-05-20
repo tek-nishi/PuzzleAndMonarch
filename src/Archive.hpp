@@ -108,7 +108,7 @@ public:
   }
 
   // ランキングデータがあるか
-  bool existsRanking() const noexcept
+  bool existsRanking() const
   {
     const auto& games = records_["games"];
 
@@ -120,6 +120,18 @@ public:
     return false;
   }
 
+  // 記録されている数を調べる
+  int countRanking() const
+  {
+    int number = 0;
+    const auto& games = records_["games"];
+    for (const auto& g : games)
+    {
+      if (!g.hasChild("path")) break;
+      number += 1;
+    }
+    return number;
+  }
 
   // プレイ結果を記録
   void recordGameResults(const Score& score, bool high_score) noexcept

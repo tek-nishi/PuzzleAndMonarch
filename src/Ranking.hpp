@@ -172,7 +172,8 @@ public:
     // TOP10を閲覧
     if (!rank_in_)
     {
-      for (int i = 0; i < ranking_records_; ++i)
+      auto num = boost::any_cast<int>(args.at("record_num"));
+      for (int i = 0; i < num; ++i)
       {
         char id[64];
 

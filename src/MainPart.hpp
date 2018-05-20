@@ -1202,6 +1202,7 @@ private:
                     });
   }
 
+
   // チュートリアル向けの座標計算
   // 各種座標をNormalized Device Coordinates変換して送信
   void sendFieldPositions()
