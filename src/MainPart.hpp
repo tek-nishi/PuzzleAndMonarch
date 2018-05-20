@@ -316,7 +316,14 @@ public:
                                                 {
                                                   prohibited_ = false;
                                                 });
+                                // NOTICE 開始演出終わりに残り時間が正しく表示されているために必要
                                 game_->updateGameUI();
+
+                                if (isTutorial())
+                                {
+                                  // チュートリアル開始
+                                  event_.signal("Tutorial:begin", Arguments());
+                                }
                               });
 
     holder_ += event_.connect("Game:Start",
@@ -1285,9 +1292,7 @@ private:
   bool isTutorial() const
   {
     auto tutorial = !archive_.getRecord<bool>("tutorial-finish")
-#if defined (DEBUG)
     || Json::getValue(params_, "game.force_tutorial", false)
-#endif
     ;
 
     return tutorial;

@@ -53,16 +53,16 @@ public:
                               [this](const Connection&, const Arguments&) noexcept
                               {
                                 tasks_.pushBack<GameMain>(params_, event_, drawer_, tween_common_);
+                              });
 
-                                // NOTICE paramsの設定で強制的にTutorialが起動
-                                if (!archive_.getRecord<bool>("tutorial-finish")
-                                    || Json::getValue(params_, "game.force_tutorial", false)
-                                   )
-                                {
+    // Tutorial起動
+    holder_ += event_.connect("Tutorial:begin",
+                              [this](const Connection&, const Arguments&) noexcept
+                              {
                                   DOUT << "Tutorial started." << std::endl;
                                   tasks_.pushBack<Tutorial>(params_, event_, drawer_, tween_common_);
-                                }
                               });
+
     // Title→Credits
     holder_ += event_.connect("Credits:begin",
                               [this](const Connection&, const Arguments&) noexcept
