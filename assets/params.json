@@ -307,7 +307,7 @@
 
     "shadow_shader":    "shadow",
     "shadow_map":       [ 1024, 1024 ],
-    "polygon_offset":   [ 0.2, 4.2 ],
+    "polygon_offset":   [ 0.2, 0.5 ],
 
     "field": {
       "shader": "field",
@@ -518,7 +518,7 @@
     "canvas": "ui_tutorial.json",
     "tweens": "tw_tutorial.json",
 
-    "direction_delay": 2.5,
+    "direction_delay": 1.8,
 
     "text": [
       "タップで移動",
