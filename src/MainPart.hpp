@@ -49,7 +49,7 @@ public:
       camera_(params["field.camera"]),
       panel_height_(params.getValueForKey<float>("field.panel_height")),
       putdown_time_(Json::getVec<glm::vec2>(params["field.putdown_time"])),
-      bg_height_(params_.getValueForKey<float>("field.bg_height")),
+      bg_height_(params_.getValueForKey<float>("field.bg.height")),
       view_(params["field"]),
       ranking_records_(params.getValueForKey<u_int>("game.ranking_records")),
       transition_duration_(params.getValueForKey<float>("ui.transition.duration")),
@@ -685,6 +685,20 @@ public:
                                 disp_shadowmap_ = !disp_shadowmap_;
                               });
 
+    holder_ += event_.connect("debug-field-shadow-intensity",
+                              [this](const Connection&, Arguments& args) noexcept
+                              {
+                                auto value = boost::any_cast<float>(args.at("value"));
+                                view_.setFieldShadowIntensity(value);
+                              });
+    
+    holder_ += event_.connect("debug-bg-shadow-intensity",
+                              [this](const Connection&, Arguments& args) noexcept
+                              {
+                                auto value = boost::any_cast<float>(args.at("value"));
+                                view_.setBgShadowIntensity(value);
+                              });
+
     holder_ += event_.connect("debug-polygon-factor",
                               [this](const Connection&, Arguments& args) noexcept
                               {
@@ -698,25 +712,53 @@ public:
                                 view_.setPolygonUnits(value);
                               });
 
-    holder_ += event_.connect("debug-specular-color",
+    holder_ += event_.connect("debug-field-specular",
                               [this](const Connection&, Arguments& args) noexcept
                               {
                                 auto value = boost::any_cast<ci::ColorA>(args.at("value"));
-                                view_.setSpecular(value);
+                                view_.setFieldSpecular(value);
                               });
 
-    holder_ += event_.connect("debug-shininess",
+    holder_ += event_.connect("debug-field-shininess",
                               [this](const Connection&, Arguments& args) noexcept
                               {
                                 auto value = boost::any_cast<float>(args.at("value"));
-                                view_.setShininess(value);
+                                view_.setFieldShininess(value);
                               });
 
-    holder_ += event_.connect("debug-specular-pos",
+    holder_ += event_.connect("debug-field-ambient",
+                              [this](const Connection&, Arguments& args) noexcept
+                              {
+                                auto value = boost::any_cast<float>(args.at("value"));
+                                view_.setFieldAmbient(value);
+                              });
+
+    holder_ += event_.connect("debug-bg-specular",
+                              [this](const Connection&, Arguments& args) noexcept
+                              {
+                                auto value = boost::any_cast<ci::ColorA>(args.at("value"));
+                                view_.setBgSpecular(value);
+                              });
+
+    holder_ += event_.connect("debug-bg-shininess",
+                              [this](const Connection&, Arguments& args) noexcept
+                              {
+                                auto value = boost::any_cast<float>(args.at("value"));
+                                view_.setBgShininess(value);
+                              });
+
+    holder_ += event_.connect("debug-bg-ambient",
+                              [this](const Connection&, Arguments& args) noexcept
+                              {
+                                auto value = boost::any_cast<float>(args.at("value"));
+                                view_.setBgAmbient(value);
+                              });
+    
+    holder_ += event_.connect("debug-light-position",
                               [this](const Connection&, Arguments& args) noexcept
                               {
                                 auto value = boost::any_cast<glm::vec3>(args.at("value"));
-                                view_.setSpecularLight(value);
+                                view_.setLightPosition(value);
                               });
 
     holder_ += event_.connect("debug-score-test",

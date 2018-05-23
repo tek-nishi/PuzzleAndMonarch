@@ -11,8 +11,11 @@
 #include <cinder/gl/Texture.h>
 #include <cinder/ObjLoader.h>
 #include <cinder/ImageIo.h>
+#include <cinder/Timeline.h>
 #include "PLY.hpp"
 #include "Shader.hpp"
+#include "Utility.hpp"
+#include "EaseFunc.hpp"
 
 
 namespace ngs {
@@ -58,8 +61,8 @@ public:
   View(const ci::JsonTree& params) noexcept
     : polygon_offset_(Json::getVec<glm::vec2>(params["polygon_offset"])),
       panel_height_(params.getValueForKey<float>("panel_height")),
-      bg_scale_(Json::getVec<glm::vec3>(params["bg_scale"])),
-      bg_texture_(ci::gl::Texture2d::create(ci::loadImage(Asset::load(params.getValueForKey<std::string>("bg_texture"))))),
+      bg_scale_(Json::getVec<glm::vec3>(params["bg.scale"])),
+      bg_texture_(ci::gl::Texture2d::create(ci::loadImage(Asset::load(params.getValueForKey<std::string>("bg.texture"))))),
       put_duration_(Json::getVec<glm::vec2>(params["put_duration"])),
       put_ease_(params.getValueForKey<std::string>("put_ease")),
       pause_duration_(Json::getVec<glm::vec2>(params["pause_duration"])),
@@ -104,7 +107,7 @@ public:
     blank_model    = ci::gl::VboMesh::create(PLY::load(params.getValueForKey<std::string>("blank_model")));
     selected_model = ci::gl::VboMesh::create(PLY::load(params.getValueForKey<std::string>("selected_model")));
     cursor_model   = ci::gl::VboMesh::create(PLY::load(params.getValueForKey<std::string>("cursor_model")));
-    bg_model       = createVboMesh(params.getValueForKey<std::string>("bg_model"));
+    bg_model       = createVboMesh(params.getValueForKey<std::string>("bg.model"));
     effect_model   = ci::gl::VboMesh::create(PLY::load(params.getValueForKey<std::string>("effect_model")));
 
     {
@@ -113,30 +116,34 @@ public:
     }
 
     {
-      auto name = params.getValueForKey<std::string>("field_shader");
+      auto name = params.getValueForKey<std::string>("field.shader");
       field_shader_ = createShader(name, name);
 
       field_shader_->uniform("uShadowMap", 0);
-      field_shader_->uniform("uShadowIntensity", params.getValueForKey<float>("shadow_intensity"));
-      field_shader_->uniform("uSpecular", Json::getColorA<float>(params["specular"]));
-      field_shader_->uniform("uShininess", params.getValueForKey<float>("shininess"));
+      field_shader_->uniform("uShadowIntensity", params.getValueForKey<float>("field.shadow_intensity"));
+
+      field_shader_->uniform("uSpecular", Json::getColorA<float>(params["field.specular"]));
+      field_shader_->uniform("uShininess", params.getValueForKey<float>("field.shininess"));
+      field_shader_->uniform("uAmbient", params.getValueForKey<float>("field.ambient"));
     }
     {
-      auto name = params.getValueForKey<std::string>("bg_shader");
+      auto name = params.getValueForKey<std::string>("bg.shader");
       bg_shader_ = createShader(name, name);
 
       float checker_size = bg_scale_.x / (PANEL_SIZE / 2);
       bg_shader_->uniform("u_checker_size", checker_size);
       
-      bg_shader_->uniform("u_bright", Json::getVec<glm::vec4>(params["bg_bright"]));
-      bg_shader_->uniform("u_dark",   Json::getVec<glm::vec4>(params["bg_dark"]));
-      bg_shader_->uniform("uShadowMap", 0);
+      bg_shader_->uniform("u_bright", Json::getVec<glm::vec4>(params["bg.bright"]));
+      bg_shader_->uniform("u_dark",   Json::getVec<glm::vec4>(params["bg.dark"]));
       bg_shader_->uniform("uTex1", 1);
-      bg_shader_->uniform("uShadowIntensity", params.getValueForKey<float>("shadow_intensity"));
-      bg_shader_->uniform("uSpecular", Json::getColorA<float>(params["specular"]));
-      bg_shader_->uniform("uShininess", params.getValueForKey<float>("shininess"));
+
+      bg_shader_->uniform("uShadowMap", 0);
+      bg_shader_->uniform("uShadowIntensity", params.getValueForKey<float>("bg.shadow_intensity"));
+
+      bg_shader_->uniform("uSpecular", Json::getColorA<float>(params["bg.specular"]));
+      bg_shader_->uniform("uShininess", params.getValueForKey<float>("bg.shininess"));
+      bg_shader_->uniform("uAmbient", params.getValueForKey<float>("bg.ambient"));
     }
-    specular_light_ = Json::getVec<glm::vec4>(params["specular_pos"]);
 
     {
       auto name = params.getValueForKey<std::string>("shadow_shader");
@@ -501,6 +508,16 @@ public:
     ci::gl::draw(shadow_map_, ci::Rectf(0, 0, size, size));
   }
 
+  void setFieldShadowIntensity(float value)
+  {
+    field_shader_->uniform("uShadowIntensity", value);
+  }
+
+  void setBgShadowIntensity(float value)
+  {
+    bg_shader_->uniform("uShadowIntensity", value);
+  }
+  
   void setPolygonFactor(float value) noexcept
   {
     polygon_offset_.x = value;
@@ -512,21 +529,41 @@ public:
   }
 
 
-  void setSpecular(const ci::ColorA& color) noexcept
+  void setFieldSpecular(const ci::ColorA& color) noexcept
   {
     field_shader_->uniform("uSpecular", color);
   }
 
-  void setShininess(float shininess) noexcept
+  void setFieldShininess(float shininess) noexcept
   {
     field_shader_->uniform("uShininess", shininess);
   }
 
-  void setSpecularLight(const glm::vec3& position) noexcept
+  void setFieldAmbient(float value) noexcept
   {
-    specular_light_.x = position.x;
-    specular_light_.y = position.y;
-    specular_light_.z = position.z;
+    field_shader_->uniform("uAmbient", value);
+  }
+
+  void setBgSpecular(const ci::ColorA& color) noexcept
+  {
+    bg_shader_->uniform("uSpecular", color);
+  }
+
+  void setBgShininess(float shininess) noexcept
+  {
+    bg_shader_->uniform("uShininess", shininess);
+  }
+
+  void setBgAmbient(float value) noexcept
+  {
+    bg_shader_->uniform("uAmbient", value);
+  }
+  
+
+  void setLightPosition(const glm::vec3& position) noexcept
+  {
+    light_pos_ = position;
+    setupShadowCamera(glm::vec3());
   }
 
 #endif
@@ -687,8 +724,13 @@ private:
     field_shader_->uniform("uShadowMatrix", mat);
     bg_shader_->uniform("uShadowMatrix", mat);
 
-    field_shader_->uniform("uLightPosition", specular_light_);
-    bg_shader_->uniform("uLightPosition", specular_light_);
+    {
+      // NOTICE 点光源の位置は視野座標系に変換しとく
+      auto v = info.main_camera->getViewMatrix() * glm::vec4(light_pos_, 1);
+
+      field_shader_->uniform("uLightPosition", v);
+      bg_shader_->uniform("uLightPosition", v);
+    }
 
     ci::gl::ScopedGlslProg prog(field_shader_);
     ci::gl::ScopedTextureBind texScope(shadow_map_);
@@ -995,9 +1037,6 @@ private:
   ci::CameraPersp light_camera_;
   glm::vec3 light_pos_;
 
-  // スペキュラ効果用の光源
-  glm::vec4 specular_light_;
-
   // 画面演出用情報
   float panel_height_;
   glm::vec2 put_duration_;
@@ -1072,44 +1111,6 @@ private:
   // リセットされたくない
   ci::TimelineRef transition_timeline_;
 };
-
-
-#if defined (DEBUG)
-
-// パネルのエッジを表示
-void drawPanelEdge(const Panel& panel, const glm::vec3& pos, u_int rotation) noexcept
-{
-  static const float r_tbl[] = {
-    0.0f,
-    -180.0f * 0.5f,
-    -180.0f,
-    -180.0f * 1.5f 
-  };
-
-  ci::gl::pushModelView();
-  ci::gl::translate(pos.x, pos.y, pos.z);
-  ci::gl::rotate(toRadians(glm::vec3(0.0f, r_tbl[rotation], 0.0f)));
-
-  ci::gl::lineWidth(10);
-
-  const auto& edge = panel.getEdge();
-  for (auto e : edge) {
-    ci::Color col;
-    if (e & Panel::PATH)   col = ci::Color(1.0, 1.0, 0.0);
-    if (e & Panel::FOREST) col = ci::Color(0.0, 0.5, 0.0);
-    if (e & Panel::GRASS)  col = ci::Color(0.0, 1.0, 0.0);
-    ci::gl::color(col);
-
-    ci::gl::drawLine(glm::vec3(-10.1, 1, 10.1), glm::vec3(10.1, 1, 10.1));
-    ci::gl::rotate(toRadians(glm::vec3(0.0f, 90.0f, 0.0f)));
-  }
-
-  ci::gl::popModelView();
-
-  ci::gl::color(ci::Color(1, 1, 1));
-}
-
-#endif
 
 }
 

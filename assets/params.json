@@ -144,7 +144,7 @@
     },
 
     "light": {
-      "pos": [ 0, 300, 0 ],
+      "pos": [ 34.38, 297.85, -10.07 ],
       "fov": 60,
       "near_z": 5,
       "far_z":  500
@@ -244,7 +244,6 @@
     "blank_model":    "blank.ply",
     "selected_model": "selected.ply",
     "cursor_model":   "cursor.ply",
-    "bg_model":       "ground.obj",
     "effect_model":   "effect.ply",
 
     "disp_ease_duration": [ 0.3, 0.2 ],
@@ -306,22 +305,35 @@
     "pause_transition_delay": 0.5,
     "game_abort_delay": 0.35,
 
-    "field_shader": "field",
-    "shadow_shader": "shadow",
-    "shadow_map": [ 1024, 1024 ],
-    "shadow_intensity": 0.75,
-    "polygon_offset": [ 0.2, 4.2 ],
+    "shadow_shader":    "shadow",
+    "shadow_map":       [ 1024, 1024 ],
+    "polygon_offset":   [ 0.2, 4.2 ],
 
-    "bg_shader":  "bg",
-    "bg_height":  -7,
-    "bg_scale":   [ 250, 1, 250 ],
-    "bg_texture": "ground.png",
-    "bg_bright":  [ 0.6, 0.6, 0.6, 1 ],
-    "bg_dark":    [ 0.25, 0.25, 0.25, 1 ],
+    "field": {
+      "shader": "field",
 
-    "specular": [ 0.1, 0.1, 0.1, 1 ],
-    "specular_pos": [ 0, 100, 0, 0 ],
-    "shininess": 120,
+      "shadow_intensity": 0.86,
+
+      "specular":  [ 0.1255, 0.1255, 0.1255, 1 ],
+      "shininess": 62,
+      "ambient":   0.68
+    },
+
+    "bg": {
+      "model":   "ground.obj",
+      "shader":  "bg",
+      "height":  -7,
+      "scale":   [ 250, 1, 250 ],
+      "texture": "ground.png",
+      "bright":  [ 0.5, 0.5, 0.5, 1 ],
+      "dark":    [ 0.15, 0.15, 0.15, 1 ],
+
+      "shadow_intensity": 0.60,
+
+      "specular":  [ 0.21, 0.21, 0.21, 1 ],
+      "shininess": 88,
+      "ambient":   0.32
+    },
 
     "cloud_models": [
       "cloud_t1.obj", 

@@ -42,15 +42,22 @@ class DebugTask
   float polygon_factor_;
   float polygon_units_;
 
-  ci::ColorA specular_;
-  float shininess_;
-  glm::vec3 specular_pos_;
+  glm::vec3 light_pos_;
 
+  float field_shadow_intensity_;
+  ci::ColorA field_specular_;
+  float field_shininess_;
+  float field_ambient_;
+
+  float bg_shadow_intensity_;
+  ci::ColorA bg_specular_;
+  float bg_shininess_;
+  float bg_ambient_;
 
 
   void createSettings() noexcept
   {
-    settings_ = ci::params::InterfaceGl::create("Settings", glm::ivec2(480, 600));
+    settings_ = ci::params::InterfaceGl::create("Settings", glm::ivec2(560, 800));
 
     settings_->addParam("Font:buffer", &font_buffer_)
     .precision(2)
@@ -70,6 +77,7 @@ class DebugTask
 
     settings_->addSeparator();
 
+    // 影
     settings_->addParam("Shadow:factor", &polygon_factor_)
     .precision(2)
     .step(0.01f)
@@ -94,34 +102,99 @@ class DebugTask
 
     settings_->addSeparator();
 
-    settings_->addParam("Specular", &specular_)
+    // ライティング
+    settings_->addParam("Light:Position", &light_pos_)
     .updateFn([this]() noexcept
               {
                 Arguments args{
-                  { "value", specular_ }
+                  { "value", light_pos_ }
                 };
-                event_.signal("debug-specular-color", args);
+                event_.signal("debug-light-position", args);
               });
 
-    settings_->addParam("Shininess", &shininess_)
+    settings_->addSeparator();
+
+    settings_->addParam("Field:Shadow intensity", &field_shadow_intensity_)
+    .precision(2)
+    .step(0.01f)
+    .updateFn([this]() noexcept
+              {
+                Arguments args{
+                  { "value", field_shadow_intensity_ }
+                };
+                event_.signal("debug-field-shadow-intensity", args);
+              });
+
+    settings_->addParam("Field:Specular", &field_specular_)
+    .updateFn([this]() noexcept
+              {
+                Arguments args{
+                  { "value", field_specular_ }
+                };
+                event_.signal("debug-field-specular", args);
+              });
+
+    settings_->addParam("Field:Shininess", &field_shininess_)
     .step(0.5f)
     .updateFn([this]() noexcept
               {
                 Arguments args{
-                  { "value", shininess_ }
+                  { "value", field_shininess_ }
                 };
-                event_.signal("debug-shininess", args);
+                event_.signal("debug-field-shininess", args);
               });
 
-    settings_->addParam("Position", &specular_pos_)
+    settings_->addParam("Field:Ambient", &field_ambient_)
+    .step(0.01f)
     .updateFn([this]() noexcept
               {
                 Arguments args{
-                  { "value", specular_pos_ }
+                  { "value", field_ambient_ }
                 };
-                event_.signal("debug-specular-pos", args);
+                event_.signal("debug-field-ambient", args);
+              });
+    
+    settings_->addSeparator();
+
+    settings_->addParam("Bg:Shadow intensity", &bg_shadow_intensity_)
+    .precision(2)
+    .step(0.01f)
+    .updateFn([this]() noexcept
+              {
+                Arguments args{
+                  { "value", bg_shadow_intensity_ }
+                };
+                event_.signal("debug-bg-shadow-intensity", args);
               });
 
+    settings_->addParam("Bg:Specular", &bg_specular_)
+    .updateFn([this]() noexcept
+              {
+                Arguments args{
+                  { "value", bg_specular_ }
+                };
+                event_.signal("debug-bg-specular", args);
+              });
+
+    settings_->addParam("Bg:Shininess", &bg_shininess_)
+    .step(0.5f)
+    .updateFn([this]() noexcept
+              {
+                Arguments args{
+                  { "value", bg_shininess_ }
+                };
+                event_.signal("debug-bg-shininess", args);
+              });
+
+    settings_->addParam("Bg:Ambient", &bg_ambient_)
+    .step(0.01f)
+    .updateFn([this]() noexcept
+              {
+                Arguments args{
+                  { "value", bg_ambient_ }
+                };
+                event_.signal("debug-bg-ambient", args);
+              });
 
     settings_->show(false);
 
@@ -219,9 +292,18 @@ public:
     polygon_factor_ = polygon_offset.x;
     polygon_units_  = polygon_offset.y;
 
-    specular_ = Json::getColorA<float>(params["field.specular"]);
-    shininess_ = params.getValueForKey<float>("field.shininess");
-    specular_pos_ = Json::getVec<glm::vec3>(params["field.specular_pos"]);
+    light_pos_ = Json::getVec<glm::vec3>(params["field.light.pos"]);
+
+    field_shadow_intensity_ = params.getValueForKey<float>("field.field.shadow_intensity");
+    bg_shadow_intensity_    = params.getValueForKey<float>("field.bg.shadow_intensity");
+
+    field_specular_  = Json::getColorA<float>(params["field.field.specular"]);
+    field_shininess_ = params.getValueForKey<float>("field.field.shininess");
+    field_ambient_   = params.getValueForKey<float>("field.field.ambient");
+
+    bg_specular_  = Json::getColorA<float>(params["field.bg.specular"]);
+    bg_shininess_ = params.getValueForKey<float>("field.bg.shininess");
+    bg_ambient_   = params.getValueForKey<float>("field.bg.ambient");
 
     holder_ += event_.connect("draw", 99,
                               std::bind(&DebugTask::draw,

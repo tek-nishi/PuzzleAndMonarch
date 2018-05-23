@@ -28,8 +28,8 @@ const mat4 biasMatrix = mat4( 0.5, 0.0, 0.0, 0.0,
 
 void main(void)
 {
-	vColor			 = ciColor;
   vShadowCoord = (biasMatrix * uShadowMatrix * ciModelMatrix) * ciPosition;
+	vColor			 = ciColor;
 
   vPosition = ciModelView * ciPosition;
   vNormal   = ciNormalMatrix * ciNormal;
