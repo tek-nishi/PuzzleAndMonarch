@@ -185,6 +185,10 @@ public:
 
                                auto se_enable  = boost::any_cast<bool>(args.at("se-enable"));
                                enableCategory("se", se_enable);
+
+                               DOUT << "bgm: " << bgm_enable
+                                    << " se: " << se_enable
+                                    << std::endl;
                              });
 
     holder_ += event.connect("UI:sound",

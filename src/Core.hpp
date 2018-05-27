@@ -210,22 +210,22 @@ public:
     // アプリの起動回数を更新して保存
     archive_.addRecord("startup-times", uint32_t(1));
     archive_.save();
-
-    {
-      // Sound初期設定
-      auto bgm_enable = archive_.getRecord<bool>("bgm-enable");
-      auto se_enable  = archive_.getRecord<bool>("se-enable");
-      Arguments args = {
-        { "bgm-enable", bgm_enable },
-        { "se-enable",  se_enable }
-      };
-      event_.signal("Settings:Changed", args);
-    }
     
     // 最初のタスクを登録
     tasks_.pushBack<Sound>(params_, event_);
     tasks_.pushBack<MainPart>(params_, event_, archive_);
     tasks_.pushBack<Intro>(params_, event_, drawer_, tween_common_);
+
+    {
+      // Sound初期設定
+      auto bgm_enable = archive_.getRecord<bool>("bgm-enable");
+      auto se_enable  = archive_.getRecord<bool>("se-enable");
+      Arguments args{
+        { "bgm-enable", bgm_enable },
+        { "se-enable",  se_enable }
+      };
+      event_.signal("Settings:Changed", args);
+    }
 
 #if defined (DEBUG)
     tasks_.pushBack<DebugTask>(params_, event_, drawer_);
