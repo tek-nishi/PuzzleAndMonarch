@@ -193,6 +193,10 @@ public:
     {
       auto name = params.getValueForKey<std::string>("effect_shader");
       effect_shader_ = createShader(name, name);
+
+      effect_shader_->uniform("uSpecular", Json::getColorA<float>(params["field.specular"]));
+      effect_shader_->uniform("uShininess", params.getValueForKey<float>("field.shininess"));
+      effect_shader_->uniform("uAmbient", params.getValueForKey<float>("field.ambient"));
     }
   }
 
@@ -233,6 +237,7 @@ public:
     field_shader_->uniform("u_color", color);
     bg_shader_->uniform("u_color", color);
     cloud_shader_->uniform("uColor", cloud_color_ * color);
+    effect_shader_->uniform("u_color", color);
   }
 
   void setColor(float duration, const ci::ColorA& color, float delay = 0.0f) noexcept
@@ -243,6 +248,7 @@ public:
                       field_shader_->uniform("u_color", field_color_());
                       bg_shader_->uniform("u_color", field_color_());
                       cloud_shader_->uniform("uColor", cloud_color_ * field_color_());
+                      effect_shader_->uniform("u_color", field_color_());
                     });
     option.delay(delay);
   }
@@ -526,16 +532,19 @@ public:
   void setFieldSpecular(const ci::ColorA& color) noexcept
   {
     field_shader_->uniform("uSpecular", color);
+    effect_shader_->uniform("uSpecular", color);
   }
 
   void setFieldShininess(float shininess) noexcept
   {
     field_shader_->uniform("uShininess", shininess);
+    effect_shader_->uniform("uShininess", shininess);
   }
 
   void setFieldAmbient(float value) noexcept
   {
     field_shader_->uniform("uAmbient", value);
+    effect_shader_->uniform("uAmbient", value);
   }
 
   void setBgSpecular(const ci::ColorA& color) noexcept
@@ -724,6 +733,7 @@ private:
 
       field_shader_->uniform("uLightPosition", v);
       bg_shader_->uniform("uLightPosition", v);
+      effect_shader_->uniform("uLightPosition", v);
     }
 
     ci::gl::ScopedGlslProg prog(field_shader_);
@@ -864,8 +874,7 @@ private:
   // 演出表示
   void drawEffect() noexcept
   {
-    // FIXME 演出も光源付きの方がいい感じ
-    // ci::gl::ScopedGlslProg prog(effect_shader_);
+    ci::gl::ScopedGlslProg prog(effect_shader_);
     ci::gl::ScopedModelMatrix m;
 
     for (auto it = std::begin(effects_); it != std::end(effects_); )
