@@ -8,6 +8,7 @@
 #include <deque>
 #include <cinder/TriMesh.h>
 #include <cinder/gl/Vbo.h>
+#include <cinder/gl/Batch.h>
 #include <cinder/gl/Texture.h>
 #include <cinder/ObjLoader.h>
 #include <cinder/ImageIo.h>
@@ -108,7 +109,6 @@ public:
     selected_model = ci::gl::VboMesh::create(PLY::load(params.getValueForKey<std::string>("selected_model")));
     cursor_model   = ci::gl::VboMesh::create(PLY::load(params.getValueForKey<std::string>("cursor_model")));
     bg_model       = createVboMesh(params.getValueForKey<std::string>("bg.model"));
-    effect_model   = ci::gl::VboMesh::create(PLY::load(params.getValueForKey<std::string>("effect_model")));
 
     {
       auto size = Json::getVec<glm::ivec2>(params["shadow_map"]);
@@ -198,6 +198,7 @@ public:
       effect_shader_->uniform("uShininess", params.getValueForKey<float>("field.shininess"));
       effect_shader_->uniform("uAmbient", params.getValueForKey<float>("field.ambient"));
     }
+    effect_model = ci::gl::Batch::create(PLY::load(params.getValueForKey<std::string>("effect_model")), effect_shader_);
   }
 
   ~View() = default;
@@ -874,7 +875,7 @@ private:
   // 演出表示
   void drawEffect() noexcept
   {
-    ci::gl::ScopedGlslProg prog(effect_shader_);
+    // ci::gl::ScopedGlslProg prog(effect_shader_);
     ci::gl::ScopedModelMatrix m;
 
     for (auto it = std::begin(effects_); it != std::end(effects_); )
@@ -887,7 +888,7 @@ private:
 
       auto mtx = glm::translate(it->pos) * glm::eulerAngleXYZ(it->rot.x, it->rot.y, it->rot.z);
       ci::gl::setModelMatrix(mtx);
-      ci::gl::draw(effect_model);
+      effect_model->draw();
 
       ++it;
     }
@@ -1023,7 +1024,7 @@ private:
   std::list<Blank> blank_panels_;
 
   // 得点時演出用
-  ci::gl::VboMeshRef effect_model;
+  ci::gl::BatchRef effect_model;
 
   ci::gl::GlslProgRef field_shader_;
   ci::Anim<ci::ColorA> field_color_ = ci::ColorA::white();
