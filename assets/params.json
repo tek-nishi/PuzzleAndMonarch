@@ -307,7 +307,7 @@
 
     "shadow_shader":    "shadow",
     "shadow_map":       [ 1024, 1024 ],
-    "polygon_offset":   [ 0.2, 0.5 ],
+    "polygon_offset":   [ 1.0, 0.5 ],
 
     "field": {
       "shader": "field",
