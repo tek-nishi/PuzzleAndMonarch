@@ -4,7 +4,7 @@
 // テスト用タスク
 //
 
-#if defined (DEBUG)
+#if defined (DEBUG) && !defined (CINDER_COCOA_TOUCH)
 
 #include <cinder/params/Params.h>
 #include "Task.hpp"
@@ -33,7 +33,6 @@ class DebugTask
   u_int disp_index_ = 0;
   
   
-#if !defined (CINDER_COCOA_TOUCH)
   ci::params::InterfaceGlRef settings_;
 
   float font_buffer_ = 0.5f;
@@ -182,15 +181,8 @@ class DebugTask
   {
     settings_->draw();
   }
-
-#else
-
-  void createSettings() noexcept {}
-  void drawSettings() noexcept {}
-
-#endif
-
   
+
   bool update(double current_time, double delta_time) noexcept override
   {
     return active_;
@@ -244,9 +236,7 @@ class DebugTask
       previewFont();
     }
 
-#if !defined (CINDER_COCOA_TOUCH)
     drawSettings();
-#endif
   }
 
   void resize(const Connection&, const Arguments&) noexcept
@@ -299,7 +289,6 @@ public:
                                 ++disp_index_;
                               });
 
-#if !defined (CINDER_COCOA_TOUCH)
     holder_ += event_.connect("debug-settings",
                               [this](const Connection&, const Arguments&) noexcept
                               {
@@ -307,7 +296,6 @@ public:
                               });
 
     createSettings();
-#endif
   }
 
   ~DebugTask() = default;

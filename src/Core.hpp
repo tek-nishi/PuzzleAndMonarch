@@ -227,7 +227,7 @@ public:
       event_.signal("Settings:Changed", args);
     }
 
-#if defined (DEBUG)
+#if defined (DEBUG) && !defined (CINDER_COCOA_TOUCH)
     tasks_.pushBack<DebugTask>(params_, event_, drawer_);
 #endif
   }
