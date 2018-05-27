@@ -10,9 +10,12 @@ uniform float uShadowIntensity;
 in vec4 vColor;
 in vec4 vShadowCoord;
 
+// NOTICE カメラのViewMatrixで変換
+uniform vec4 uLightPosition;
+
+uniform float uAmbient;
 uniform float uShininess;
 uniform vec4 uSpecular;
-uniform vec4 uLightPosition;
 
 uniform vec4 u_color; 
 
@@ -32,14 +35,18 @@ void main(void)
 		Shadow = mix(uShadowIntensity, 1.0, textureProj(uShadowMap, ShadowCoord, -0.0005));
 	}
 
-  vec3 light   = normalize((uLightPosition * vPosition.w - uLightPosition.w * vPosition).xyz);
+  // ライティング
+  vec3 light   = normalize(uLightPosition.xyz * vPosition.w - vPosition.xyz * uLightPosition.w);
   vec3 view    = -normalize(vPosition.xyz);
   vec3 fnormal = normalize(vNormal);
 
+  // 平行光源
+  float diffuse = max(dot(light, fnormal), uAmbient);
+
   // スペキュラは反射ベクトルを求める方式
-  vec3 reflect   = reflect(-light, fnormal);
-  float specular = pow(max(dot(reflect, view), 0.0), uShininess);
+  vec3 reflect    = reflect(-light, fnormal);
+  float specular  = pow(max(dot(reflect, view), 0.0), uShininess);
   vec4 spec_color = uSpecular * specular;
 
-	Color = (vColor + spec_color) * u_color * Shadow;
+	Color = (vColor * diffuse + spec_color) * u_color * Shadow;
 }
