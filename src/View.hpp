@@ -188,6 +188,12 @@ public:
       cloud_shader_->uniform("uThreshold", params.getValueForKey<float>("cloud_threshold"));
     }
     cloud_texture_ = ci::gl::Texture2d::create(ci::loadImage(Asset::load(params.getValueForKey<std::string>("cloud_texture"))));
+
+    // エフェクト
+    {
+      auto name = params.getValueForKey<std::string>("effect_shader");
+      effect_shader_ = createShader(name, name);
+    }
   }
 
   ~View() = default;
@@ -858,6 +864,8 @@ private:
   // 演出表示
   void drawEffect() noexcept
   {
+    // FIXME 演出も光源付きの方がいい感じ
+    // ci::gl::ScopedGlslProg prog(effect_shader_);
     ci::gl::ScopedModelMatrix m;
 
     for (auto it = std::begin(effects_); it != std::end(effects_); )
@@ -1015,6 +1023,9 @@ private:
   ci::gl::Texture2dRef bg_texture_;
 
   ci::gl::GlslProgRef shadow_shader_;
+
+  // エフェクト用
+  ci::gl::GlslProgRef effect_shader_;
 
   // 影レンダリング用
   ci::gl::Texture2dRef shadow_map_;

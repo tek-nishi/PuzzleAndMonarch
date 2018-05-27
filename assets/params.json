@@ -347,7 +347,9 @@
     "cloud_scale": [ 300, 1, 300 ],
     "cloud_dir": [ 0.5, 0, 0.4 ],
     "cloud_speed": [ 5, 10 ],
-    "cloud_area": 250
+    "cloud_area": 250,
+
+    "effect_shader": "effect"
   },
 
   "ui": {
