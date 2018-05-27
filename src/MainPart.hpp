@@ -683,20 +683,6 @@ public:
                                 disp_shadowmap_ = !disp_shadowmap_;
                               });
 
-    holder_ += event_.connect("debug-field-shadow-intensity",
-                              [this](const Connection&, Arguments& args) noexcept
-                              {
-                                auto value = boost::any_cast<float>(args.at("value"));
-                                view_.setFieldShadowIntensity(value);
-                              });
-    
-    holder_ += event_.connect("debug-bg-shadow-intensity",
-                              [this](const Connection&, Arguments& args) noexcept
-                              {
-                                auto value = boost::any_cast<float>(args.at("value"));
-                                view_.setBgShadowIntensity(value);
-                              });
-
     holder_ += event_.connect("debug-polygon-factor",
                               [this](const Connection&, Arguments& args) noexcept
                               {

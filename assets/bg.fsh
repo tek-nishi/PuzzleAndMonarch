@@ -8,8 +8,6 @@ $precision$
 uniform sampler2DShadow uShadowMap;
 uniform sampler2D	uTex1;
 
-uniform float uShadowIntensity;
-
 uniform vec4 u_color;
 uniform float u_checker_size;
 uniform vec2 u_pos;
@@ -35,11 +33,11 @@ out vec4 oColor;
 void main(void)
 {
 	vec4 ShadowCoord = vShadowCoord / vShadowCoord.w;
-	float Shadow = 1.0;
+	float shadow = 1.0;
 	
 	// if ( ShadowCoord.z > -1 && ShadowCoord.z < 1 )
   {
-		Shadow = mix(uShadowIntensity, 1.0, textureProj(uShadowMap, ShadowCoord, -0.0005));
+		shadow = mix(0.0, 1.0, textureProj(uShadowMap, ShadowCoord, -0.0005));
 	}
 
   // ライティング
@@ -48,7 +46,7 @@ void main(void)
   vec3 fnormal = normalize(vNormal);
 
   // 平行光源
-  float diffuse = max(dot(light, fnormal), uAmbient);
+  float diffuse = max(dot(light, fnormal) * shadow, uAmbient);
 
   // スペキュラは反射ベクトルを求める方式
   vec3 reflect    = reflect(-light, fnormal);
@@ -57,5 +55,5 @@ void main(void)
 
   vec2 pos = floor(u_pos + TexCoord0 * u_checker_size);
   float mask = mod(pos.x + mod(pos.y, 2.0), 2.0);
-  oColor = (texture(uTex1, TexCoord0) * mix(u_dark, u_bright, mask) * diffuse + spec_color) * u_color * Shadow;
+  oColor = (texture(uTex1, TexCoord0) * mix(u_dark, u_bright, mask) * diffuse + spec_color) * u_color;
 }

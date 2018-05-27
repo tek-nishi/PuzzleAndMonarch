@@ -5,7 +5,6 @@ $version$
 $precision$
 
 uniform sampler2DShadow uShadowMap;
-uniform float uShadowIntensity;
 
 in vec4 vColor;
 in vec4 vShadowCoord;
@@ -28,11 +27,11 @@ out vec4 Color;
 void main(void)
 {
 	vec4 ShadowCoord = vShadowCoord / vShadowCoord.w;
-	float Shadow = 1.0;
+	float shadow = 1.0;
 	
 	// if ( ShadowCoord.z > -1 && ShadowCoord.z < 1 )
   {
-		Shadow = mix(uShadowIntensity, 1.0, textureProj(uShadowMap, ShadowCoord, -0.0005));
+		shadow = mix(0.0, 1.0, textureProj(uShadowMap, ShadowCoord, -0.0005));
 	}
 
   // ライティング
@@ -40,13 +39,13 @@ void main(void)
   vec3 view    = -normalize(vPosition.xyz);
   vec3 fnormal = normalize(vNormal);
 
-  // 平行光源
-  float diffuse = max(dot(light, fnormal), uAmbient);
+  // 平行光源+影
+  float diffuse = max(dot(light, fnormal) * shadow, uAmbient);
 
   // スペキュラは反射ベクトルを求める方式
   vec3 reflect    = reflect(-light, fnormal);
   float specular  = pow(max(dot(reflect, view), 0.0), uShininess);
   vec4 spec_color = uSpecular * specular;
 
-	Color = (vColor * diffuse + spec_color) * u_color * Shadow;
+	Color = (vColor * diffuse + spec_color) * u_color;
 }

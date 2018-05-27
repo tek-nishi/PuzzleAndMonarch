@@ -312,11 +312,9 @@
     "field": {
       "shader": "field",
 
-      "shadow_intensity": 0.86,
-
       "specular":  [ 0.1255, 0.1255, 0.1255, 1 ],
       "shininess": 62,
-      "ambient":   0.68
+      "ambient":   0.8
     },
 
     "bg": {
@@ -328,11 +326,9 @@
       "bright":  [ 0.5, 0.5, 0.5, 1 ],
       "dark":    [ 0.15, 0.15, 0.15, 1 ],
 
-      "shadow_intensity": 0.60,
-
       "specular":  [ 0.21, 0.21, 0.21, 1 ],
       "shininess": 88,
-      "ambient":   0.32
+      "ambient":   0.6
     },
 
     "cloud_models": [

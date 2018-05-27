@@ -120,7 +120,6 @@ public:
       field_shader_ = createShader(name, name);
 
       field_shader_->uniform("uShadowMap", 0);
-      field_shader_->uniform("uShadowIntensity", params.getValueForKey<float>("field.shadow_intensity"));
 
       field_shader_->uniform("uSpecular", Json::getColorA<float>(params["field.specular"]));
       field_shader_->uniform("uShininess", params.getValueForKey<float>("field.shininess"));
@@ -138,7 +137,6 @@ public:
       bg_shader_->uniform("uTex1", 1);
 
       bg_shader_->uniform("uShadowMap", 0);
-      bg_shader_->uniform("uShadowIntensity", params.getValueForKey<float>("bg.shadow_intensity"));
 
       bg_shader_->uniform("uSpecular", Json::getColorA<float>(params["bg.specular"]));
       bg_shader_->uniform("uShininess", params.getValueForKey<float>("bg.shininess"));
@@ -506,16 +504,6 @@ public:
     ci::gl::color(1.0f, 1.0f, 1.0f);
     float size = 0.5f * std::min(ci::app::getWindowWidth(), ci::app::getWindowHeight());
     ci::gl::draw(shadow_map_, ci::Rectf(0, 0, size, size));
-  }
-
-  void setFieldShadowIntensity(float value)
-  {
-    field_shader_->uniform("uShadowIntensity", value);
-  }
-
-  void setBgShadowIntensity(float value)
-  {
-    bg_shader_->uniform("uShadowIntensity", value);
   }
   
   void setPolygonFactor(float value) noexcept
