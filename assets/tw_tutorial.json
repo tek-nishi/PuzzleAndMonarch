@@ -79,7 +79,7 @@
 
   "pause": [
     {
-      "identifier": "blank",
+      "identifier": "root",
       "tween": [
         {
           "param": "alpha",
@@ -91,6 +91,26 @@
               "disable_end": true,
               "ease_func": "None",
               "end": 0
+            }
+          ]
+        }
+      ]
+    }
+  ],
+
+  "resume": [
+    {
+      "identifier": "root",
+      "tween": [
+        {
+          "param": "alpha",
+          "type": "float",
+          "body": [
+            {
+              "duration": 0.3,
+              "enable_start": true,
+              "ease_func": "None",
+              "end": 1
             }
           ]
         }
@@ -133,6 +153,37 @@
               "ease_func": "OutQuint",
               "start": [ -20, 30, 0, 30 ],
               "end": [ -20, 45, 0, 45 ]
+            }
+          ]
+        }
+      ]
+    }
+  ],
+
+  "complete": [
+    {
+      "identifier": "complete",
+      "tween": [
+        {
+          "param": "alpha",
+          "type": "float",
+          "body": [
+            {
+              "duration": 0.4,
+              "delay": 1,
+              "copy_start": true,
+              "enable_start": true,
+              "ease_func": "None",
+              "start": 0,
+              "end": 1
+            },
+            {
+              "duration": 0.8,
+              "delay": 2,
+              "disable_end": true,
+              "ease_func": "None",
+              "start": 1,
+              "end": 0
             }
           ]
         }

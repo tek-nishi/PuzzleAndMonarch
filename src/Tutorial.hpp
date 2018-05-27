@@ -9,6 +9,7 @@
 #include "UICanvas.hpp"
 #include "TweenUtil.hpp"
 #include "EventSupport.hpp"
+#include "CountExec.hpp"
 
 
 namespace ngs {
@@ -44,22 +45,14 @@ public:
                               [this](const Connection&, const Arguments&)
                               {
                                 pause_ = true;
-
                                 // Pause中はチュートリアルの指示を消す
-                                if (disp_)
-                                {
-                                  canvas_.startTween("pause");
-                                }
+                                canvas_.startTween("pause");
                               });
     holder_ += event_.connect("GameMain:resume",
                               [this](const Connection&, const Arguments&)
                               {
                                 pause_ = false;
-
-                                if (disp_)
-                                {
-                                  canvas_.startTween("start");
-                                }
+                                canvas_.startTween("resume");
                               });
 
     // 各種操作
@@ -173,8 +166,9 @@ private:
   bool update(double current_time, double delta_time) noexcept override
   {
     if (pause_) return active_;
-
+    
     // 更新関数を呼ぶ
+    count_exec_.update(delta_time);
     if (update_) update_();
 
     // 必須操作が無いと催促する感じ
@@ -185,6 +179,7 @@ private:
       {
         current_direction_delay_ = direction_delay_;
 
+        // 未操作項目を探す
         bool disp = false;
         for (int i = 0; i < text_.size(); ++i)
         {
@@ -200,6 +195,7 @@ private:
         disp_ = disp;
         if (disp)
         {
+          // 見つかった
           assert(disp_type_ < text_.size());
           canvas_.startTween("start");
         }
@@ -207,14 +203,20 @@ private:
         {
           if (operation_.size() < text_.size())
           {
-            // まだ途中
+            // まだ途中なので適当な間を置いて再チェック
             current_direction_delay_ = 1.0;
           }
-          else
+          else if (!completed_)
           {
             // すべて表示した
+            completed_ = true;
             event_.signal("Tutorial:Complete", Arguments());
-            finishTask();
+            canvas_.startTween("complete");
+            count_exec_.add(5,
+                            [this]()
+                            {
+                              finishTask();
+                            });
           }
         }
       }
@@ -227,8 +229,6 @@ private:
   // タスク終了
   void finishTask()
   {
-    DOUT << "Tutorial:Finish" << std::endl;
-    event_.signal("Tutorial:Finish", Arguments());
     active_ = false;
   }
 
@@ -237,16 +237,17 @@ private:
   {
     if (disp_ && (disp_type_ == type))
     {
+      // 指示を表示中なら完了演出を始める
       disp_ = false;
       canvas_.startTween("end");
       canvas_.setWidgetParam("like", "offset", cur_ofs_);
       canvas_.startTween("like");
-    }
 
-    if (!operation_.count(type))
-    {
-      // 最初に条件を満たした時だけ猶予時間
-      current_direction_delay_ = direction_delay_;
+      if (!operation_.count(type))
+      {
+        // 最初に条件を満たした時は少し長めの待ち時間
+        current_direction_delay_ = direction_delay_;
+      }
     }
     operation_.insert(type);
   }
@@ -254,6 +255,8 @@ private:
   
   Event<Arguments>& event_;
   ConnectionHolder holder_;
+
+  CountExec count_exec_;
 
   UI::Canvas canvas_;
 
@@ -275,8 +278,9 @@ private:
   // 更新関数
   std::function<void ()> update_;
 
-  bool pause_  = false;
-  bool active_ = true;
+  bool pause_     = false;
+  bool completed_ = false;
+  bool active_    = true;
 };
 
 }

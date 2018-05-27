@@ -205,8 +205,10 @@ public:
                                 // if (!std::get<0>(result)) return;
                                 // const auto& grid_pos = std::get<1>(result);
                                 // 可能であればパネルを移動
-                                calcNewFieldPos(grid_pos_);
-                                event_.signal("Game:PanelMove", Arguments());
+                                if (calcNewFieldPos(grid_pos_))
+                                {
+                                  event_.signal("Game:PanelMove", Arguments());
+                                }
                               });
 
     holder_ += event_.connect("multi_touch_moved",
@@ -419,10 +421,6 @@ public:
 
     // Tutorial
     holder_ += event.connect("Tutorial:Begin",
-                             [this](const Connection&, Arguments&)
-                             {
-                             });
-    holder_ += event.connect("Tutorial:Finish",
                              [this](const Connection&, Arguments&)
                              {
                              });
@@ -957,19 +955,20 @@ private:
   }
 
   // 升目位置からPanel位置を計算する
-  void calcNewFieldPos(const glm::ivec2& grid_pos) noexcept
+  bool calcNewFieldPos(const glm::ivec2& grid_pos) noexcept
   {
-    if (game_->isBlank(grid_pos))
-    {
-      field_pos_ = grid_pos;
-      can_put_   = game_->canPutToBlank(field_pos_);
-      game_->moveHandPanel(grid_pos);
+    if (!game_->isBlank(grid_pos)) return false;
 
-      // 少し宙に浮いた状態
-      cursor_pos_ = glm::vec3(field_pos_.x * PANEL_SIZE, panel_height_, field_pos_.y * PANEL_SIZE);
-      startMovePanelEase();
-      game_event_.insert("Panel:move");
-    }
+    field_pos_ = grid_pos;
+    can_put_   = game_->canPutToBlank(field_pos_);
+    game_->moveHandPanel(grid_pos);
+
+    // 少し宙に浮いた状態
+    cursor_pos_ = glm::vec3(field_pos_.x * PANEL_SIZE, panel_height_, field_pos_.y * PANEL_SIZE);
+    startMovePanelEase();
+    game_event_.insert("Panel:move");
+
+    return true;
   }
 
   // フィールドの広さから注視点と距離を計算
