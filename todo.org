@@ -1,7 +1,6 @@
 * TODO アプリ開始時は最後のプレイ結果を表示
 * TODO チュートリアル最後に道を１本たす
 * TODO ランキング画面で「完成していない箇所」は少し暗くなる演出を
-* TODO easningでのremoveは必要か調べる
 * TODO エフェクト描画はdrawInstancedで
 * TODO 全体的な画面の明るさやパネルの色味を調整する
 * TODO 世界観を作る
@@ -28,6 +27,8 @@
 * TODO アプリアイコン
 * TODO iOS:GameCenter対応
 * TODO iOS:実績を実装
+* DONE easningでのremoveは必要か調べる
+CLOSED: [2018-05-29 Tue 00:48]
 * DONE 得点時の演出を派手に
 CLOSED: [2018-05-29 Tue 00:39]
 * DONE 影の計算のないエフェクト用シェーダーを追加

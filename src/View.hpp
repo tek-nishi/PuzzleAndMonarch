@@ -384,7 +384,6 @@ public:
       return;
     }
 
-    timeline_->removeTarget(&p->y);
     timeline_->applyPtr(&p->y, 0.0f, blank_touch_begin_pos_, blank_touch_begin_duration_, getEaseFunc(blank_touch_begin_ease_));
   }
 
@@ -397,7 +396,6 @@ public:
       return;
     }
 
-    timeline_->removeTarget(&p->y);
     timeline_->applyPtr(&p->y, blank_touch_end_pos1_, blank_touch_end_duration1_, getEaseFunc(blank_touch_end_ease1_));
     timeline_->appendToPtr(&p->y, 0.0f, blank_touch_end_duration2_, getEaseFunc(blank_touch_end_ease2_));
   }
@@ -410,7 +408,6 @@ public:
       return;
     }
 
-    timeline_->removeTarget(&p->y);
     timeline_->applyPtr(&p->y, 0.0f, blank_touch_cancel_duration_, getEaseFunc(blank_touch_cancel_ease_));
   }
 
@@ -457,8 +454,6 @@ public:
   {
     for (auto& panel : blank_panels_)
     {
-      timeline_->removeTarget(&panel.position);
-
       // Blank Panel消滅演出
       timeline_->applyPtr(&panel.position,
                           panel.position + blank_disappear_pos_,

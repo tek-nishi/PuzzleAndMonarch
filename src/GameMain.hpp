@@ -246,7 +246,6 @@ private:
         std::sprintf(id, "score:%d", i + 1);
         canvas_.setWidgetParam(id, "text", std::to_string(score));
 
-        timeline_->removeTarget(&scores_color_[i]);
         auto option = timeline_->applyPtr(&scores_color_[i],
                                           ci::Color(1, 0, 0), ci::Color::white(),
                                           0.8);
