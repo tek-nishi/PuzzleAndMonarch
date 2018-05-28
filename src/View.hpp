@@ -64,6 +64,11 @@ public:
       panel_height_(params.getValueForKey<float>("panel_height")),
       bg_scale_(Json::getVec<glm::vec3>(params["bg.scale"])),
       bg_texture_(ci::gl::Texture2d::create(ci::loadImage(Asset::load(params.getValueForKey<std::string>("bg.texture"))))),
+      complete_diffuse_(params.getValueForKey<float>("complete_diffuse")),
+      complete_begin_duration_(params.getValueForKey<float>("complete_begin_duration")),
+      complete_end_duration_(params.getValueForKey<float>("complete_end_duration")),
+      complete_begin_ease_(params.getValueForKey<std::string>("complete_begin_ease")),
+      complete_end_ease_(params.getValueForKey<std::string>("complete_end_ease")),
       put_duration_(Json::getVec<glm::vec2>(params["put_duration"])),
       put_ease_(params.getValueForKey<std::string>("put_ease")),
       pause_duration_(Json::getVec<glm::vec2>(params["pause_duration"])),
@@ -224,6 +229,7 @@ public:
     timeline_->clear();
     force_timeline_->clear();
     field_panels_.clear();
+    field_panel_indices_.clear();
     blank_panels_.clear();
     effects_.clear();
 
@@ -281,10 +287,12 @@ public:
     Panel panel = {
       pos,
       { p.x, 0, p.y },
-      { 0, ci::toRadians(r_tbl[rotation]), 0 }, 
+      { 0, ci::toRadians(r_tbl[rotation]), 0 },
+      1.0f,
       index
     };
 
+    field_panel_indices_.insert({ pos, field_panels_.size() });
     field_panels_.push_back(panel);
   }
 
@@ -431,6 +439,15 @@ public:
                        {
                          effect.active = false;
                        });
+    }
+
+    if (field_panel_indices_.count(pos))
+    {
+      auto index = field_panel_indices_.at(pos);
+      auto& value = field_panels_[index].diffuse_power;
+
+      timeline_->applyPtr(&value, complete_diffuse_, complete_begin_duration_, getEaseFunc(complete_begin_ease_));
+      timeline_->appendToPtr(&value, 1.0f, complete_end_duration_, getEaseFunc(complete_end_ease_));
     }
   }
 
@@ -701,7 +718,7 @@ private:
 
     ci::gl::ScopedGlslProg prog(shadow_shader_);
 
-    drawFieldPanels();
+    drawFieldPanels(false);
     drawFieldBlank();
 
     if (info.playing)
@@ -740,7 +757,8 @@ private:
     ci::gl::ScopedGlslProg prog(field_shader_);
     ci::gl::ScopedTextureBind texScope(shadow_map_);
 
-    drawFieldPanels();
+    drawFieldPanels(true);
+    field_shader_->uniform("uDiffusePower", 1.0f);
     drawFieldBlank();
 
     if (info.playing)
@@ -796,7 +814,7 @@ private:
   }
 
   // Fieldのパネルを全て表示
-  void drawFieldPanels() noexcept
+  void drawFieldPanels(bool diffuse) noexcept
   {
     ci::gl::ScopedModelMatrix m;
 
@@ -817,6 +835,11 @@ private:
       auto mtx = glm::translate(p.position)
                  * glm::eulerAngleXYZ(p.rotation.x + ofs.x, p.rotation.y, p.rotation.z + ofs.y);
       ci::gl::setModelMatrix(mtx);
+
+      if (diffuse)
+      {
+        field_shader_->uniform("uDiffusePower", p.diffuse_power);
+      }
 
       const auto& model = getPanelModel(p.index);
       ci::gl::draw(model);
@@ -1011,10 +1034,20 @@ private:
     glm::ivec2 field_pos;
     glm::vec3 position;
     glm::vec3 rotation;
+    float diffuse_power;
     int index;
   };
   // NOTICE 追加時にメモリ上で再配置されるのを避けるためstd::vectorではない
   std::deque<Panel> field_panels_;
+  // 光る演出用
+  std::map<glm::ivec2, size_t, LessVec<glm::ivec2>> field_panel_indices_;
+
+  // 光る演出タイミング
+  float complete_diffuse_;
+  float complete_begin_duration_;
+  float complete_end_duration_;
+  std::string complete_begin_ease_;
+  std::string complete_end_ease_;
 
   struct Blank
   {

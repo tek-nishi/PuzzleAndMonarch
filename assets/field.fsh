@@ -18,6 +18,8 @@ uniform vec4 uSpecular;
 
 uniform vec4 u_color; 
 
+uniform float uDiffusePower;
+
 in vec4 vPosition;
 in vec3 vNormal;
 
@@ -40,7 +42,7 @@ void main(void)
   vec3 fnormal = normalize(vNormal);
 
   // 平行光源+影
-  float diffuse = max(dot(light, fnormal) * shadow, uAmbient);
+  float diffuse = max(dot(light, fnormal) * shadow * uDiffusePower, uAmbient);
 
   // スペキュラは反射ベクトルを求める方式
   vec3 reflect    = reflect(-light, fnormal);

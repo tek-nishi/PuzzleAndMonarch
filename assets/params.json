@@ -349,7 +349,12 @@
     "cloud_speed": [ 5, 10 ],
     "cloud_area": 250,
 
-    "effect_shader": "effect"
+    "effect_shader": "effect",
+    "complete_diffuse": 1.3,
+    "complete_begin_duration": 0.5,
+    "complete_begin_ease": "OutBack",
+    "complete_end_duration": 0.9,
+    "complete_end_ease": "InCubic"
   },
 
   "ui": {
