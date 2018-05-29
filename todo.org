@@ -1,6 +1,5 @@
 * TODO アプリ開始時は最後のプレイ結果を表示
 * TODO エフェクト描画はdrawInstancedで
-* TODO 全体的な画面の明るさやパネルの色味を調整する
 * TODO 世界観を作る
 * TODO 雲モデルのブラッシュアップ
 * TODO コントロールセンターなどでのポーズは演出を短く
@@ -9,14 +8,11 @@
 * TODO 回転操作時の処理負荷を減らす
 * TODO シェーダーの計算量を減らす(vec4→vec3)
 * TODO Creditsに関ゲ部追加
-* TODO パネルのうらが真っ暗
 * TODO ローカライズ
-* TODO 道がわかりずらい
 * TODO モデルデータが重い
 * TODO Panelのデータをテキストに
 * TODO 全く見た目の違うパネルセット
 * TODO 実績で「長さ10の道を作る」「広さ5の森を作る」などを用意
-* TODO 本格的に見た目を決める
 * TODO BGM作る
 * TODO SE作る
 * TODO AppStore提出に必要な書類や素材
@@ -25,6 +21,14 @@
 * TODO アプリアイコン
 * TODO iOS:GameCenter対応
 * TODO iOS:実績を実装
+* DONE 本格的に見た目を決める
+CLOSED: [2018-05-29 火 23:29]
+* DONE パネルのうらが真っ暗
+CLOSED: [2018-05-29 火 23:29]
+* DONE 全体的な画面の明るさやパネルの色味を調整する
+CLOSED: [2018-05-29 火 23:29]
+* DONE 道がわかりずらい
+CLOSED: [2018-05-29 火 23:28]
 * DONE チュートリアル最後に道を１本たす
 CLOSED: [2018-05-29 Tue 08:22]
 * DONE easningでのremoveは必要か調べる
