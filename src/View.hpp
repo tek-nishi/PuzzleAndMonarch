@@ -591,10 +591,20 @@ private:
   {
     if (!panel_models[number])
     {
-      auto tri_mesh = PLY::load(panel_path[number]);
-      // panel_aabb[number] = tri_mesh.calcBoundingBox();
-      auto mesh = ci::gl::VboMesh::create(tri_mesh);
-      panel_models[number] = mesh;
+      const auto& path = panel_path[number];
+      if (!panel_model_cache_.count(path))
+      {
+        auto tri_mesh = PLY::load(path);
+        // panel_aabb[number] = tri_mesh.calcBoundingBox();
+        auto mesh = ci::gl::VboMesh::create(tri_mesh);
+        panel_models[number] = mesh;
+        panel_model_cache_.insert({ path, mesh });
+      }
+      else
+      {
+        DOUT << "Use cache: " << path << std::endl;
+        panel_models[number] = panel_model_cache_.at(path);
+      }
     }
 
     return panel_models[number];
@@ -1011,6 +1021,9 @@ private:
   // パネル
   std::vector<std::string> panel_path;
   std::vector<ci::gl::VboMeshRef> panel_models;
+  // NOTE 同じパスのモデルデータのキャッシュ
+  std::map<std::string, ci::gl::VboMeshRef> panel_model_cache_;
+
   // AABBは全パネル共通
   ci::AxisAlignedBox panel_aabb_;
 
