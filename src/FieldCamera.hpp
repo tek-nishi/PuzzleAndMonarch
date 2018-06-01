@@ -212,7 +212,7 @@ public:
     camera.lookAt(p + target_position_, target_position_);
     eye_position_ = camera.getEyePoint();
 
-    view.setupShadowCamera(map_center_);
+    view.setupShadowCamera(target_position_);
   }
 
 
