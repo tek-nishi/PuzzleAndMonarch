@@ -438,9 +438,10 @@ public:
                        });
     }
 
+    // パネル発光演出
     if (field_panel_indices_.count(pos))
     {
-      auto index = field_panel_indices_.at(pos);
+      auto index  = field_panel_indices_.at(pos);
       auto& value = field_panels_[index].diffuse_power;
 
       timeline_->applyPtr(&value, complete_diffuse_, complete_begin_duration_, getEaseFunc(complete_begin_ease_));

@@ -15,20 +15,6 @@ namespace ngs {
 class GameMain
   : public Task
 {
-  Event<Arguments>& event_;
-  ConnectionHolder holder_;
-
-  CountExec count_exec_;
-
-  UI::Canvas canvas_;
-  ci::TimelineRef timeline_;
-
-  std::vector<u_int> scores_;
-  std::vector<ci::Color> scores_color_;
-  
-
-  bool active_ = true;
-
 
 public:
   GameMain(const ci::JsonTree& params, Event<Arguments>& event, UI::Drawer& drawer, TweenCommon& tween_common) noexcept
@@ -205,6 +191,12 @@ public:
 
     canvas_.active(false);
     canvas_.startTween("start");
+
+    // like演出準備
+    like_func_ = [](const glm::ivec2&)
+                 {
+                   return glm::vec3();
+                 };
   }
 
   ~GameMain() = default;
@@ -215,6 +207,8 @@ private:
   {
     count_exec_.update(delta_time);
     timeline_->step(delta_time);
+
+    like_func_(like_pos_);
 
     return active_;
   }
@@ -258,6 +252,49 @@ private:
     }
   }
 
+
+  // 森や街が完成した時の演出
+  void completedEffect(const std::vector<glm::ivec2>& positions)
+  {
+    // 一番真ん中を探す
+    auto center = std::accumulate(std::begin(positions), std::end(positions), glm::ivec2()) / 2;
+
+
+    // 中心から一番近いパネルに「いいね!!」を表示
+    u_int near_l = std::numeric_limits<u_int>::max();
+    glm::ivec2 c;
+    for (const auto& p : positions)
+    {
+      auto d = p - center;
+      u_int l = d.x * d.x + d.y * d.y;
+      if (l < near_l)
+      {
+        near_l = l;
+        c = p;
+      }
+    }
+
+    like_pos_ = c;
+  }
+
+  
+
+  Event<Arguments>& event_;
+  ConnectionHolder holder_;
+
+  CountExec count_exec_;
+
+  UI::Canvas canvas_;
+  ci::TimelineRef timeline_;
+
+  std::vector<u_int> scores_;
+  std::vector<ci::Color> scores_color_;
+
+  bool active_ = true;
+
+  // いいね!!
+  glm::vec2 like_pos_;
+  std::function<glm::vec3 (const glm::ivec2&)> like_func_;
 };
 
 }
