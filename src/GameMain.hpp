@@ -280,8 +280,7 @@ private:
   void completedEffect(const std::vector<glm::ivec2>& positions)
   {
     // 一番真ん中を探す
-    auto center = std::accumulate(std::begin(positions), std::end(positions), glm::ivec2()) / 2;
-
+    auto center = std::accumulate(std::begin(positions), std::end(positions), glm::ivec2()) / int(positions.size());
 
     // 中心から一番近いパネルに「いいね!!」を表示
     u_int near_l = std::numeric_limits<u_int>::max();
