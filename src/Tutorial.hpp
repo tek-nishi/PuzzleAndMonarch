@@ -40,6 +40,9 @@ public:
       text_(Json::getArray<std::string>(params["tutorial.text"])),
       offset_(Json::getVecArray<glm::vec2>(params["tutorial.offset"]))
   {
+    // TIPS コールバック関数にダミーを割り当てておく
+    update_ = []() {};
+
     // Pause操作
     holder_ += event_.connect("GameMain:pause",
                               [this](const Connection&, const Arguments&)
@@ -169,7 +172,7 @@ private:
     
     // 更新関数を呼ぶ
     count_exec_.update(delta_time);
-    if (update_) update_();
+    update_();
 
     // 必須操作が無いと催促する感じ
     if (!disp_)
