@@ -183,6 +183,21 @@ public:
                                 canvas_.setWidgetParam("put_timer:body", "alpha", alpha);
                               });
 
+    // Like演出
+    holder_ += event_.connect("Game:convertPos",
+                              [this](const Connection&, const Arguments& args)
+                              {
+                                DOUT << "Game:convertPos" << std::endl;
+                                like_func_ = boost::any_cast<const std::function<glm::vec3 (const glm::ivec2&)>&>(args.at("callback"));
+                              });
+    holder_ += event_.connect("Game:completed",
+                              [this](const Connection&, const Arguments& args)
+                              {
+                                DOUT << "Game:completed" << std::endl;
+                                const auto& positions = boost::any_cast<const std::vector<glm::ivec2>&>(args.at("positions"));
+                                completedEffect(positions);
+                              });
+
     setupCommonTweens(event_, holder_, canvas_, "pause");
     setupCommonTweens(event_, holder_, canvas_, "resume");
     setupCommonTweens(event_, holder_, canvas_, "abort");
@@ -208,7 +223,9 @@ private:
     count_exec_.update(delta_time);
     timeline_->step(delta_time);
 
-    like_func_(like_pos_);
+    auto ndc_pos = like_func_(like_pos_);
+    auto ofs = canvas_.ndcToPos(ndc_pos);
+    canvas_.setWidgetParam("like", "offset", ofs);
 
     return active_;
   }

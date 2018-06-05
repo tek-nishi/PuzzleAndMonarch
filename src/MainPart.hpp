@@ -344,6 +344,17 @@ public:
                                   };
                                   event_.signal("Tutorial:callback", args);
                                 }
+                                {
+                                  // Like演出用に関数ポインタを送信
+                                  std::function<glm::vec3 (const glm::ivec2&)> func = std::bind(&MainPart::calcFieldPosition,
+                                                                                                this,
+                                                                                                std::placeholders::_1);
+
+                                  Arguments args{
+                                    { "callback", func }
+                                  };
+                                  event_.signal("Game:convertPos", args);
+                                }
                               });
 
     holder_ += event_.connect("Game:Aborted",
@@ -436,6 +447,14 @@ public:
                                  {
                                    view_.startEffect(p);
                                  }
+
+                                 // UI演出
+                                 {
+                                   Arguments comp_args{
+                                     { "positions", cc },
+                                   };
+                                   event_.signal("Game:completed", comp_args);
+                                 }
                                }
                                game_event_.insert("Comp:forests");
                              });
@@ -449,6 +468,14 @@ public:
                                  for (const auto& p : cc)
                                  {
                                    view_.startEffect(p);
+                                 }
+
+                                 // UI演出
+                                 {
+                                   Arguments comp_args{
+                                     { "positions", cc },
+                                   };
+                                   event_.signal("Game:completed", comp_args);
                                  }
                                }
                                game_event_.insert("Comp:path");
@@ -477,6 +504,14 @@ public:
                                  {
                                    view_.startEffect(p + o);
                                  }
+                               }
+
+                               // UI演出
+                               {
+                                 Arguments comp_args{
+                                   { "positions", completed },
+                                 };
+                                 event_.signal("Game:completed", comp_args);
                                }
                                game_event_.insert("Comp:church");
                              });
@@ -1324,6 +1359,15 @@ private:
     ;
 
     return tutorial;
+  }
+
+
+  // パネル座標をNDCに変換
+  glm::vec3 calcFieldPosition(const glm::ivec2& pos) const
+  {
+    auto p = vec2ToVec3(pos * int(PANEL_SIZE));
+    const auto& camera = camera_.body();
+    return camera.worldToNdc(p);
   }
 
 
