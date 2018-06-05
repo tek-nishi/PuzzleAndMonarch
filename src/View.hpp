@@ -30,10 +30,12 @@ class View
   : private boost::noncopyable
 {
   // 演出用の定義
-  struct Effect {
+  struct Effect
+  {
     bool active;
     glm::vec3 pos;
-    glm::vec3 rot;
+    glm::vec3 scale;
+    ci::ColorA color;
   };
 
 
@@ -203,7 +205,7 @@ public:
       effect_shader_->uniform("uShininess", params.getValueForKey<float>("field.shininess"));
       effect_shader_->uniform("uAmbient", params.getValueForKey<float>("field.ambient"));
     }
-    effect_model = ci::gl::Batch::create(PLY::load(params.getValueForKey<std::string>("effect_model")), effect_shader_);
+    effect_model_ = createVboMesh(params.getValueForKey<std::string>("effect_model"));
   }
 
   ~View() = default;
@@ -420,12 +422,19 @@ public:
     {
       glm::vec3 ofs{
         ci::randFloat(-PANEL_SIZE / 2, PANEL_SIZE / 2),
-        0,
+        1,
         ci::randFloat(-PANEL_SIZE / 2, PANEL_SIZE / 2)
       };
+      glm::vec3 scale(ci::randFloat(1.0f, 2.0f));
+      glm::vec3 hsv{
+        ci::randFloat(0.12f, 0.16f),
+        ci::randFloat(0.7f, 1.0f),
+        1.0f
+      };
+      auto color = ci::hsvToRgb(hsv);
 
       // ランダムに落下する立方体
-      effects_.push_back({ true, gpos + ofs, glm::vec3() });
+      effects_.push_back({ true, gpos + ofs, scale, color });
       auto& effect = effects_.back();
 
       auto end_pos = gpos + ofs + glm::vec3(0, ci::randFloat(15.0f, 30.0f), 0);
@@ -904,7 +913,7 @@ private:
   // 演出表示
   void drawEffect() noexcept
   {
-    // ci::gl::ScopedGlslProg prog(effect_shader_);
+    ci::gl::ScopedGlslProg prog(effect_shader_);
     ci::gl::ScopedModelMatrix m;
 
     for (auto it = std::begin(effects_); it != std::end(effects_); )
@@ -915,9 +924,11 @@ private:
         continue;
       }
 
-      auto mtx = glm::translate(it->pos) * glm::eulerAngleXYZ(it->rot.x, it->rot.y, it->rot.z);
+      effect_shader_->uniform("uColor", it->color);
+
+      auto mtx = glm::translate(it->pos) * glm::scale(it->scale);
       ci::gl::setModelMatrix(mtx);
-      effect_model->draw();
+      ci::gl::draw(effect_model_);
 
       ++it;
     }
@@ -1066,7 +1077,7 @@ private:
   std::list<Blank> blank_panels_;
 
   // 得点時演出用
-  ci::gl::BatchRef effect_model;
+  ci::gl::VboMeshRef effect_model_;
 
   ci::gl::GlslProgRef field_shader_;
   ci::Anim<ci::ColorA> field_color_ = ci::ColorA::white();

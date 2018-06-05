@@ -12,8 +12,8 @@ uniform float uShininess;
 uniform vec4 uSpecular;
 
 uniform vec4 u_color; 
+uniform vec4 uColor; 
 
-in vec4 vColor;
 in vec4 vPosition;
 in vec3 vNormal;
 
@@ -35,5 +35,5 @@ void main(void)
   float specular  = pow(max(dot(reflect, view), 0.0), uShininess);
   vec4 spec_color = uSpecular * specular;
 
-	Color = (vColor * diffuse + spec_color) * u_color;
+	Color = (uColor * diffuse + spec_color) * u_color;
 }
