@@ -282,8 +282,110 @@
         },
 
         {
-          "identifier": "like",
-          "rect": [ -20, 25, 0, 25 ],
+          "identifier": "like1",
+          "rect": [ -20, 20, 0, 20 ],
+          "anchor": [
+            [ 0.5, 0.5 ],
+            [ 0.5, 0.5 ]
+          ],
+          "enable": false,
+
+          "childlen": [
+            {
+              "rect": [ 0, 0, 10, 15 ],
+              "anchor": [
+                [ 0.5, 0 ],
+                [ 0.5, 0 ]
+              ],
+
+              "layout": [ 0, 0 ],
+              "font": "jp",
+              "text": "いいね!!"
+            },
+            {
+              "rect": [ -10, 0, 0, 15 ],
+              "anchor": [
+                [ 0.5, 0 ],
+                [ 0.5, 0 ]
+              ],
+
+              "layout": [ 1, 0 ],
+              "font": "icon",
+              "text": ""
+            }
+          ]
+        },
+        {
+          "identifier": "like2",
+          "rect": [ -20, 20, 0, 20 ],
+          "anchor": [
+            [ 0.5, 0.5 ],
+            [ 0.5, 0.5 ]
+          ],
+          "enable": false,
+
+          "childlen": [
+            {
+              "rect": [ 0, 0, 10, 15 ],
+              "anchor": [
+                [ 0.5, 0 ],
+                [ 0.5, 0 ]
+              ],
+
+              "layout": [ 0, 0 ],
+              "font": "jp",
+              "text": "いいね!!"
+            },
+            {
+              "rect": [ -10, 0, 0, 15 ],
+              "anchor": [
+                [ 0.5, 0 ],
+                [ 0.5, 0 ]
+              ],
+
+              "layout": [ 1, 0 ],
+              "font": "icon",
+              "text": ""
+            }
+          ]
+        },
+        {
+          "identifier": "like3",
+          "rect": [ -20, 20, 0, 20 ],
+          "anchor": [
+            [ 0.5, 0.5 ],
+            [ 0.5, 0.5 ]
+          ],
+          "enable": false,
+
+          "childlen": [
+            {
+              "rect": [ 0, 0, 10, 15 ],
+              "anchor": [
+                [ 0.5, 0 ],
+                [ 0.5, 0 ]
+              ],
+
+              "layout": [ 0, 0 ],
+              "font": "jp",
+              "text": "いいね!!"
+            },
+            {
+              "rect": [ -10, 0, 0, 15 ],
+              "anchor": [
+                [ 0.5, 0 ],
+                [ 0.5, 0 ]
+              ],
+
+              "layout": [ 1, 0 ],
+              "font": "icon",
+              "text": ""
+            }
+          ]
+        },
+        {
+          "identifier": "like4",
+          "rect": [ -20, 20, 0, 20 ],
           "anchor": [
             [ 0.5, 0.5 ],
             [ 0.5, 0.5 ]

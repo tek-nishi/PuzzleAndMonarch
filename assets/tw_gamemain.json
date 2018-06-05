@@ -157,9 +157,9 @@
     }
   ],
 
-  "like": [
+  "like1": [
     {
-      "identifier": "like",
+      "identifier": "like1",
       "tween": [
         {
           "param": "alpha",
@@ -190,8 +190,131 @@
               "duration": 0.8,
               "copy_start": true,
               "ease_func": "OutQuint",
-              "start": [ -20, 30, 0, 30 ],
-              "end": [ -20, 45, 0, 45 ]
+              "start": [ -20, 28, 0, 28 ],
+              "end": [ -20, 42, 0, 42 ]
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "like2": [
+    {
+      "identifier": "like2",
+      "tween": [
+        {
+          "param": "alpha",
+          "type": "float",
+          "body": [
+            {
+              "duration": 0.4,
+              "copy_start": true,
+              "enable_start": true,
+              "ease_func": "None",
+              "start": 1,
+              "end": 1
+            },
+            {
+              "duration": 0.8,
+              "disable_end": true,
+              "ease_func": "None",
+              "start": 1,
+              "end": 0
+            }
+          ]
+        },
+        {
+          "param": "rect",
+          "type": "rect",
+          "body": [
+            {
+              "duration": 0.8,
+              "copy_start": true,
+              "ease_func": "OutQuint",
+              "start": [ -20, 28, 0, 28 ],
+              "end": [ -20, 43, 0, 43 ]
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "like3": [
+    {
+      "identifier": "like3",
+      "tween": [
+        {
+          "param": "alpha",
+          "type": "float",
+          "body": [
+            {
+              "duration": 0.4,
+              "copy_start": true,
+              "enable_start": true,
+              "ease_func": "None",
+              "start": 1,
+              "end": 1
+            },
+            {
+              "duration": 0.8,
+              "disable_end": true,
+              "ease_func": "None",
+              "start": 1,
+              "end": 0
+            }
+          ]
+        },
+        {
+          "param": "rect",
+          "type": "rect",
+          "body": [
+            {
+              "duration": 0.8,
+              "copy_start": true,
+              "ease_func": "OutQuint",
+              "start": [ -20, 28, 0, 28 ],
+              "end": [ -20, 43, 0, 43 ]
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "like4": [
+    {
+      "identifier": "like4",
+      "tween": [
+        {
+          "param": "alpha",
+          "type": "float",
+          "body": [
+            {
+              "duration": 0.4,
+              "copy_start": true,
+              "enable_start": true,
+              "ease_func": "None",
+              "start": 1,
+              "end": 1
+            },
+            {
+              "duration": 0.8,
+              "disable_end": true,
+              "ease_func": "None",
+              "start": 1,
+              "end": 0
+            }
+          ]
+        },
+        {
+          "param": "rect",
+          "type": "rect",
+          "body": [
+            {
+              "duration": 0.8,
+              "copy_start": true,
+              "ease_func": "OutQuint",
+              "start": [ -20, 28, 0, 28 ],
+              "end": [ -20, 43, 0, 43 ]
             }
           ]
         }

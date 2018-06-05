@@ -200,8 +200,17 @@ public:
                                 // 演出開始
                                 auto ndc_pos = like_func_(like_pos_);
                                 auto ofs = canvas_.ndcToPos(ndc_pos);
-                                canvas_.setWidgetParam("like", "offset", ofs);
-                                canvas_.startTween("like");
+
+                                const static std::string tbl[] = {
+                                  "like1",
+                                  "like2",
+                                  "like3",
+                                  "like4",
+                                };
+
+                                canvas_.setWidgetParam(tbl[like_index_], "offset", ofs);
+                                canvas_.startTween(tbl[like_index_]);
+                                like_index_ = (like_index_ + 1) & 0b11;
                               });
 
     setupCommonTweens(event_, holder_, canvas_, "pause");
@@ -317,6 +326,7 @@ private:
   // いいね!!
   glm::vec2 like_pos_;
   std::function<glm::vec3 (const glm::ivec2&)> like_func_;
+  u_int like_index_ = 0;
 };
 
 }
