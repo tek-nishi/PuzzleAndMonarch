@@ -449,6 +449,7 @@ public:
                                  }
 
                                  // UI演出
+                                 if (!isTutorial())
                                  {
                                    Arguments comp_args{
                                      { "positions", cc },
@@ -471,6 +472,7 @@ public:
                                  }
 
                                  // UI演出
+                                 if (!isTutorial())
                                  {
                                    Arguments comp_args{
                                      { "positions", cc },
@@ -507,6 +509,7 @@ public:
                                }
 
                                // UI演出
+                               if (!isTutorial())
                                {
                                  Arguments comp_args{
                                    { "positions", completed },

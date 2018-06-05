@@ -196,6 +196,12 @@ public:
                                 DOUT << "Game:completed" << std::endl;
                                 const auto& positions = boost::any_cast<const std::vector<glm::ivec2>&>(args.at("positions"));
                                 completedEffect(positions);
+
+                                // 演出開始
+                                auto ndc_pos = like_func_(like_pos_);
+                                auto ofs = canvas_.ndcToPos(ndc_pos);
+                                canvas_.setWidgetParam("like", "offset", ofs);
+                                canvas_.startTween("like");
                               });
 
     setupCommonTweens(event_, holder_, canvas_, "pause");
@@ -223,9 +229,9 @@ private:
     count_exec_.update(delta_time);
     timeline_->step(delta_time);
 
-    auto ndc_pos = like_func_(like_pos_);
-    auto ofs = canvas_.ndcToPos(ndc_pos);
-    canvas_.setWidgetParam("like", "offset", ofs);
+    // auto ndc_pos = like_func_(like_pos_);
+    // auto ofs = canvas_.ndcToPos(ndc_pos);
+    // canvas_.setWidgetParam("like", "offset", ofs);
 
     return active_;
   }
