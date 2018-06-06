@@ -67,6 +67,14 @@ public:
       panel_height_(params.getValueForKey<float>("panel_height")),
       bg_scale_(Json::getVec<glm::vec3>(params["bg.scale"])),
       bg_texture_(ci::gl::Texture2d::create(ci::loadImage(Asset::load(params.getValueForKey<std::string>("bg.texture"))))),
+      effect_y_ofs_(Json::getVec<glm::vec2>(params["effect.y_ofs"])),
+      effect_y_move_(Json::getVec<glm::vec2>(params["effect.y_move"])),
+      effect_duration_(Json::getVec<glm::vec2>(params["effect.duration"])),
+      effect_delay_(Json::getVec<glm::vec2>(params["effect.delay"])),
+      effect_scale_(Json::getVec<glm::vec2>(params["effect.scale"])),
+      effect_h_(Json::getVec<glm::vec2>(params["effect.h"])),
+      effect_s_(Json::getVec<glm::vec2>(params["effect.s"])),
+      effect_ease_(params.getValueForKey<std::string>("effect.ease")),
       complete_diffuse_(params.getValueForKey<float>("complete_diffuse")),
       complete_begin_duration_(params.getValueForKey<float>("complete_begin_duration")),
       complete_end_duration_(params.getValueForKey<float>("complete_end_duration")),
@@ -199,14 +207,14 @@ public:
 
     // エフェクト
     {
-      auto name = params.getValueForKey<std::string>("effect_shader");
+      auto name = params.getValueForKey<std::string>("effect.shader");
       effect_shader_ = createShader(name, name);
 
       effect_shader_->uniform("uSpecular", Json::getColorA<float>(params["field.specular"]));
       effect_shader_->uniform("uShininess", params.getValueForKey<float>("field.shininess"));
       effect_shader_->uniform("uAmbient", params.getValueForKey<float>("field.ambient"));
     }
-    effect_model_ = createVboMesh(params.getValueForKey<std::string>("effect_model"));
+    effect_model_ = createVboMesh(params.getValueForKey<std::string>("effect.model"));
   }
 
   ~View() = default;
@@ -423,27 +431,27 @@ public:
     {
       glm::vec3 ofs{
         ci::randFloat(-PANEL_SIZE / 2, PANEL_SIZE / 2),
-        ci::randFloat(1.0f, 3.0f),
+        randFromVec2(effect_y_ofs_),
         ci::randFloat(-PANEL_SIZE / 2, PANEL_SIZE / 2)
       };
       effects_.push_back({ true, false, gpos + ofs });
       auto& effect = effects_.back();
 
-      auto end_pos = gpos + ofs + glm::vec3(0, ci::randFloat(15.0f, 30.0f), 0);
+      auto end_pos = gpos + ofs + glm::vec3(0, randFromVec2(effect_y_move_), 0);
 
-      float duration = ci::randFloat(1.25f, 1.75f);
-      float delay    = ci::randFloat(0.0f, 1.0f);
+      float duration = randFromVec2(effect_duration_);
+      float delay    = randFromVec2(effect_delay_);
 
-      auto options = timeline_->applyPtr(&effect.pos, end_pos, duration);
+      auto options = timeline_->applyPtr(&effect.pos, end_pos, duration, getEaseFunc(effect_ease_));
 
       options.delay(delay);
-      options.startFn([&effect]() noexcept
+      options.startFn([&effect, this]() noexcept
                       {
                         effect.disp  = true;
-                        effect.scale = glm::vec3(ci::randFloat(1.0f, 2.0f));
+                        effect.scale = glm::vec3(randFromVec2(effect_scale_));
                         glm::vec3 hsv{
-                          ci::randFloat(0.12f, 0.16f),
-                          ci::randFloat(0.7f, 1.0f),
+                          randFromVec2(effect_h_), 
+                          randFromVec2(effect_s_),
                           1.0f
                         };
                         effect.color = ci::hsvToRgb(hsv);
@@ -1086,9 +1094,6 @@ private:
   };
   std::list<Blank> blank_panels_;
 
-  // 得点時演出用
-  ci::gl::VboMeshRef effect_model_;
-
   ci::gl::GlslProgRef field_shader_;
   ci::Anim<ci::ColorA> field_color_ = ci::ColorA::white();
 
@@ -1097,8 +1102,18 @@ private:
 
   ci::gl::GlslProgRef shadow_shader_;
 
-  // エフェクト用
+
+  // 得点時演出用
+  ci::gl::VboMeshRef effect_model_;
   ci::gl::GlslProgRef effect_shader_;
+  glm::vec2 effect_y_ofs_;
+  glm::vec2 effect_y_move_;
+  glm::vec2 effect_delay_;
+  glm::vec2 effect_duration_;
+  glm::vec2 effect_scale_;
+  glm::vec2 effect_h_;
+  glm::vec2 effect_s_;
+  std::string effect_ease_;
 
   // 影レンダリング用
   ci::gl::Texture2dRef shadow_map_;

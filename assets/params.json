@@ -244,7 +244,6 @@
     "blank_model":    "blank.ply",
     "selected_model": "selected.ply",
     "cursor_model":   "cursor.ply",
-    "effect_model":   "effect.obj",
 
     "disp_ease_duration": [ 0.3, 0.2 ],
     "disp_ease_name": "OutExpo",
@@ -349,7 +348,20 @@
     "cloud_speed": [ 5, 10 ],
     "cloud_area": 250,
 
-    "effect_shader": "effect",
+    "effect": {
+      "model":  "effect.obj",
+      "shader": "effect",
+
+      "y_ofs": [ 1, 3 ],
+      "y_move": [ 15, 30 ],
+      "duration": [ 1.25, 1.75 ],
+      "delay": [ 0, 1 ],
+      "scale": [ 1, 2 ],
+      "h": [ 0.12, 0.16 ],
+      "s": [ 0.8, 1.0 ],
+      "ease": "None"
+    },
+
     "complete_diffuse": 1.3,
     "complete_begin_duration": 0.5,
     "complete_begin_ease": "OutBack",

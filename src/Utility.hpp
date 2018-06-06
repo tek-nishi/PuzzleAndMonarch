@@ -133,4 +133,10 @@ glm::vec3 vec2ToVec3(const T& v)
   return { v.x, 0, v.y };
 }
 
+
+float randFromVec2(const glm::vec2& v)
+{
+  return ci::randFloat(v.x, v.y);
+}
+
 }
