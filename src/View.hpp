@@ -1001,10 +1001,12 @@ private:
     auto num = params.getValueForKey<int>("cloud_num");
     for (int i = 0; i < num; ++i)
     {
-      glm::vec3 p { ci::randFloat(x_pos.x, x_pos.y),
-                    ci::randFloat(y_pos.x, y_pos.y),
-                    ci::randFloat(z_pos.x, z_pos.y) };
-      auto v = dir * ci::randFloat(speed.x, speed.y);
+      glm::vec3 p{
+        randFromVec2(x_pos),
+        randFromVec2(y_pos),
+        randFromVec2(z_pos)
+      };
+      auto v = dir * randFromVec2(speed);
 
       clouds_.push_back({ p, v });
     }
