@@ -33,6 +33,7 @@ class View
   struct Effect
   {
     bool active;
+    bool disp;
     glm::vec3 pos;
     glm::vec3 scale;
     ci::ColorA color;
@@ -422,25 +423,31 @@ public:
     {
       glm::vec3 ofs{
         ci::randFloat(-PANEL_SIZE / 2, PANEL_SIZE / 2),
-        1,
+        ci::randFloat(1.0f, 3.0f),
         ci::randFloat(-PANEL_SIZE / 2, PANEL_SIZE / 2)
       };
-      glm::vec3 scale(ci::randFloat(1.0f, 2.0f));
-      glm::vec3 hsv{
-        ci::randFloat(0.12f, 0.16f),
-        ci::randFloat(0.7f, 1.0f),
-        1.0f
-      };
-      auto color = ci::hsvToRgb(hsv);
-
-      // ランダムに落下する立方体
-      effects_.push_back({ true, gpos + ofs, scale, color });
+      effects_.push_back({ true, false, gpos + ofs });
       auto& effect = effects_.back();
 
       auto end_pos = gpos + ofs + glm::vec3(0, ci::randFloat(15.0f, 30.0f), 0);
 
       float duration = ci::randFloat(1.25f, 1.75f);
+      float delay    = ci::randFloat(0.0f, 1.0f);
+
       auto options = timeline_->applyPtr(&effect.pos, end_pos, duration);
+
+      options.delay(delay);
+      options.startFn([&effect]() noexcept
+                      {
+                        effect.disp  = true;
+                        effect.scale = glm::vec3(ci::randFloat(1.0f, 2.0f));
+                        glm::vec3 hsv{
+                          ci::randFloat(0.12f, 0.16f),
+                          ci::randFloat(0.7f, 1.0f),
+                          1.0f
+                        };
+                        effect.color = ci::hsvToRgb(hsv);
+                      });
       options.finishFn([&effect]() noexcept
                        {
                          effect.active = false;
@@ -924,11 +931,14 @@ private:
         continue;
       }
 
-      effect_shader_->uniform("uColor", it->color);
+      if (it->disp)
+      {
+        effect_shader_->uniform("uColor", it->color);
 
-      auto mtx = glm::translate(it->pos) * glm::scale(it->scale);
-      ci::gl::setModelMatrix(mtx);
-      ci::gl::draw(effect_model_);
+        auto mtx = glm::translate(it->pos) * glm::scale(it->scale);
+        ci::gl::setModelMatrix(mtx);
+        ci::gl::draw(effect_model_);
+      }
 
       ++it;
     }
