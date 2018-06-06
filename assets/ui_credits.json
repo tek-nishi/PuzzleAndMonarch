@@ -82,7 +82,7 @@
           "pivot": [ 0.5, 0.5 ],
 
           "font": "en",
-          "text": "Cinder 0.9.1  Boost 1.66.0  glm 0.9.8.5",
+          "text": "Cinder 0.9.1  Boost 1.67.0  glm 0.9.8.5",
           "color": [ 1, 1, 1 ]
         },
         {

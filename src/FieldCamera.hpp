@@ -127,6 +127,8 @@ public:
                      const ci::CameraPersp& camera)
   {
     map_center_ = center;
+    // FIXME マジックナンバー
+    radius += PANEL_SIZE / 4;
 
     float half_fov = ci::toRadians(fov * 0.5f);
     float distance = radius / std::sin(half_fov);
