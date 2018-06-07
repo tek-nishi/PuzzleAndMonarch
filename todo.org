@@ -18,6 +18,7 @@
 * TODO iPhone 5sでの動作確認
 * TODO カルカソンヌ公式に許可を取る
 * TODO アプリアイコン
+* TODO macOS:バックグラウンドで放置しとくとDisplayがnullになって落ちる
 * TODO iOS:GameCenter対応
 * TODO iOS:実績を実装
 * DONE カメラ今より若干引く(縦画面を考慮)
