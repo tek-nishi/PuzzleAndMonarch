@@ -186,14 +186,6 @@ public:
                                 }
                               });
 
-    holder_ += event_.connect("Tutorial:Complete",
-                              [this](const Connection&, const Arguments&)
-                              {
-                                // Tutorialコンプリート
-                                archive_.setRecord("tutorial-finish", true);
-                                DOUT << "Tutorial completed." << std::endl;
-                              });
-
     // ???
     holder_ += event_.connect("Share:completed",
                               [this](const Connection&, const Arguments&) noexcept

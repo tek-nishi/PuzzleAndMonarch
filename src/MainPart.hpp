@@ -335,6 +335,7 @@ public:
                                 view_.updateBlank(game_->getBlankPositions());
                                 calcNextPanelPosition();
 
+                                completed_tutorial_ = false;
                                 {
                                   // Tutorial向けに関数ポインタを送信
                                   std::function<void ()> func = std::bind(&MainPart::sendFieldPositions, this);
@@ -400,6 +401,12 @@ public:
                                 calcViewRange(false);
                                 view_.setColor(transition_duration_, transition_color_);
                                 view_.endPlay();
+
+                                // チュートリアル完了判定
+                                if (completed_tutorial_)
+                                {
+                                  archive_.setRecord("tutorial-finish", true);
+                                }
 
                                 // スコア計算
                                 auto score      = calcGameScore(args);
@@ -687,6 +694,14 @@ public:
                                 eraseRecords();
                               });
     
+    holder_ += event_.connect("Tutorial:Complete",
+                              [this](const Connection&, const Arguments&)
+                              {
+                                // Tutorialコンプリート
+                                completed_tutorial_ = true;
+                                DOUT << "Tutorial completed." << std::endl;
+                              });
+
     // Transition
     static const std::vector<std::pair<const char*, const char*>> transition = {
       { "Credits:begin",  "Credits:Finished" },
@@ -1358,7 +1373,7 @@ private:
   bool isTutorial() const
   {
     auto tutorial = !archive_.getRecord<bool>("tutorial-finish")
-    || Json::getValue(params_, "game.force_tutorial", false)
+                  || Json::getValue(params_, "game.force_tutorial", false)
     ;
 
     return tutorial;
@@ -1438,6 +1453,7 @@ private:
   AutoRotateCamera rotate_camera_;
 
   // Tutorial向け
+  bool completed_tutorial_ = false;
   std::map<std::string, glm::vec3> tutorial_pos_;
 
 
