@@ -55,7 +55,8 @@ public:
 
     reset();
 
-    rotation_ = initial_rotation_;
+    rotation_   = initial_rotation_;
+    rotation_y_ = rotation_.y;
     distance_ = initial_distance_;
     target_position_ = initial_target_position_;
   }
@@ -78,7 +79,6 @@ public:
     // 外積から回転量が決まる
     float cross = prev_pos.x * pos.z - prev_pos.z * pos.x;
     rotation_y_ += std::asin(cross);
-    // rotation_.y += 
   }
 
   void addYaw(float r) noexcept
