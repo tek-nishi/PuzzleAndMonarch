@@ -684,7 +684,7 @@ private:
                .compareMode(GL_COMPARE_REF_TO_TEXTURE)
                .magFilter(GL_LINEAR)
                .minFilter(GL_LINEAR)
-               .wrap(GL_CLAMP_TO_EDGE)	
+               .wrap(GL_REPEAT)	
                .compareFunc(GL_LEQUAL)
     ;
 
