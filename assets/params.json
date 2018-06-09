@@ -335,7 +335,11 @@
       "cloud_t1.obj", 
       "cloud_t2.obj", 
       "cloud_t3.obj",
-      "cloud_t4.obj" 
+      "cloud_t4.obj",
+      "cloud_t5.obj",
+      "cloud_t6.obj",
+      "cloud_t7.obj",
+      "cloud_t8.obj"
     ],
     "cloud_texture": "clouds.png",
     "cloud_shader": "shadow_tex",
