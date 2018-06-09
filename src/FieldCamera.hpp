@@ -83,7 +83,7 @@ public:
 
   void addYaw(float r) noexcept
   {
-    rotation_.y += r;
+    rotation_y_ += r;
   }
 
 
