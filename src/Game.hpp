@@ -36,10 +36,6 @@ struct Game
     // パネルを通し番号で用意
     waiting_panels.resize(panels_.size());
     std::iota(std::begin(waiting_panels), std::end(waiting_panels), 0);
-    // for (int i = 0; i < panels_.size(); ++i)
-    // {
-    //   waiting_panels.push_back(i);
-    // }
 
     // パネルを準備
     preparationPanel();
@@ -92,15 +88,17 @@ struct Game
 
 
   // 本編準備
+  void putFirstPanel() noexcept
+  {
+    // 最初のパネルを設置
+    putPanel(start_panel_, { 0, 0 }, ci::randInt(4));
+  }
+
   void preparationPlay(bool tutorial) noexcept
   {
     if (tutorial) orderForTutorial();
 
-    // 最初のパネルを設置
-    putPanel(start_panel_, { 0, 0 }, ci::randInt(4));
-
     // 次のパネルを決めて、置ける場所も探す
-    // fieldUpdate();
     getNextPanel();
   }
 
@@ -640,7 +638,6 @@ private:
 #endif
   }
 
-  // NOTICE 先にfieldUpdateしとく
   bool getNextPanel() noexcept
   {
     if (waiting_panels.empty()) return false;
