@@ -15,11 +15,13 @@ class FieldCamera
 public:
   FieldCamera(const ci::JsonTree& params)
     : rotation_(toRadians(Json::getVec<glm::vec2>(params["camera.rotation"]))),
+      rotation_y_(rotation_.y),
       distance_(params.getValueForKey<float>("camera.distance")),
       target_position_(Json::getVec<glm::vec3>(params["target_position"])),
       distance_range_(Json::getVec<glm::vec2>(params["camera_distance_range"])),
       angle_range_(toRadians(Json::getVec<glm::vec2>(params["camera_angle_range"]))),
       ease_rate_(Json::getVec<glm::dvec2>(params["camera_ease_rate"])),
+      rotate_rate_(Json::getVec<glm::dvec2>(params["camera_rotate_rate"])),
       target_ease_rate_(ease_rate_),
       initial_ease_rate_(ease_rate_),
       retarget_rect_(Json::getRect<float>(params["camera_retarget"])),
@@ -41,6 +43,8 @@ public:
 
     target_position_ += (field_center_ - target_position_) * float(1 - std::pow(ease_rate_.x, delta_time * ease_rate_.y));
     distance_ += (field_distance_ - distance_) * float(1 - std::pow(ease_rate_.x, delta_time * ease_rate_.y));
+
+    rotation_.y += (rotation_y_ - rotation_.y) * float(1 - std::pow(rotate_rate_.x, delta_time * rotate_rate_.y));
   }
 
 
@@ -73,7 +77,8 @@ public:
 
     // 外積から回転量が決まる
     float cross = prev_pos.x * pos.z - prev_pos.z * pos.x;
-    rotation_.y += std::asin(cross);
+    rotation_y_ += std::asin(cross);
+    // rotation_.y += 
   }
 
   void addYaw(float r) noexcept
@@ -248,6 +253,9 @@ private:
   glm::vec2 rotation_;
   float distance_;
 
+  // 回転操作を滑らかにするために用意
+  float rotation_y_;
+
   // 注視位置
   glm::vec3 target_position_;
   // カメラ位置
@@ -259,6 +267,7 @@ private:
 
   // 補間用係数
   glm::dvec2 ease_rate_;
+  glm::dvec2 rotate_rate_;
   glm::dvec2 target_ease_rate_;
   glm::dvec2 initial_ease_rate_;
 
