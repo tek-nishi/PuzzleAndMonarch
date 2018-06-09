@@ -147,7 +147,7 @@
           "pivot": [ 0.5, 0.5 ],
 
           "font": "en",
-          "text": "Coworking space Kayabacho, Co-Edo",
+          "text": "Coworking Space Kayabacho, Co-Edo",
           "color": [ 1, 1, 1 ]
         },
         {
@@ -160,7 +160,20 @@
           "pivot": [ 0.5, 0.5 ],
 
           "font": "en",
-          "text": "Kantou Game Producing unit  Haino Yuka",
+          "text": "Coworking Space Temma  Haino Yuka",
+          "color": [ 1, 1, 1 ]
+        },
+        {
+          "rect": [ 0, -115, 0, -105 ],
+          "anchor": [
+            [ 0.0, 1 ],
+            [ 1.0, 1 ]
+          ],
+          "scale": [ 1, 1 ],
+          "pivot": [ 0.5, 0.5 ],
+
+          "font": "jp",
+          "text": "東ゲ部　関ゲ部",
           "color": [ 1, 1, 1 ]
         }
       ]

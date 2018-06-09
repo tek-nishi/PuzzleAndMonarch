@@ -8,7 +8,6 @@
 * TODO 雲モデルのブラッシュアップ
 * TODO 小さいバッファにレンダリングして引き延ばす実験
 * TODO シェーダーの計算量を減らす(vec4→vec3)
-* TODO Creditsに関ゲ部追加
 * TODO ローカライズ
 * TODO モデルデータが重い
 * TODO 実績で「長さ10の道を作る」「広さ5の森を作る」などを用意
@@ -21,6 +20,8 @@
 * TODO macOS:バックグラウンドで放置しとくとDisplayがnullになって落ちる
 * TODO iOS:GameCenter対応
 * TODO iOS:実績を実装
+* DONE Creditsに関ゲ部追加
+CLOSED: [2018-06-09 土 14:51]
 * DONE 回転操作時の処理負荷を減らす
 CLOSED: [2018-06-09 土 14:27]
 * DONE コントロールセンターなどでのポーズは演出を短く
