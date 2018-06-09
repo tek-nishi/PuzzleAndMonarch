@@ -21,7 +21,7 @@ public:
   ConnectionHolder() noexcept
   {
     // TIPS:vectorの再確保を減らす
-    connections_.reserve(64);
+    connections_.reserve(32);
   }
 
   ~ConnectionHolder()

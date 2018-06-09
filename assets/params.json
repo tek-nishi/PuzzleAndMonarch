@@ -242,7 +242,11 @@
       "pf11.ply"
     ],
 
-    "blank_model":    "blank.ply",
+    "blank_model": "blank.ply",
+    "blank_effect_speed": 1.5,
+    "blank_effect": [ 0.008, 0.0009 ],
+    "blank_diffuse": [ 0.5, 1.0 ],
+
     "selected_model": "selected.ply",
     "cursor_model":   "cursor.ply",
 

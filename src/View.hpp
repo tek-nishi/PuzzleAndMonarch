@@ -65,6 +65,9 @@ public:
   View(const ci::JsonTree& params) noexcept
     : polygon_offset_(Json::getVec<glm::vec2>(params["polygon_offset"])),
       panel_height_(params.getValueForKey<float>("panel_height")),
+      blank_effect_speed_(params.getValueForKey<double>("blank_effect_speed")),
+      blank_effect_(Json::getVec<glm::vec2>(params["blank_effect"])),
+      blank_diffuse_(Json::getVec<glm::vec2>(params["blank_diffuse"])),
       bg_scale_(Json::getVec<glm::vec3>(params["bg.scale"])),
       bg_texture_(ci::gl::Texture2d::create(ci::loadImage(Asset::load(params.getValueForKey<std::string>("bg.texture"))))),
       effect_y_ofs_(Json::getVec<glm::vec2>(params["effect.y_ofs"])),
@@ -119,9 +122,9 @@ public:
     panel_models.resize(panel_path.size());
 
     panel_aabb_ = ci::AxisAlignedBox(glm::vec3(-PANEL_SIZE / 2, 0, -PANEL_SIZE / 2),
-                                     glm::vec3(PANEL_SIZE / 2, 1, PANEL_SIZE / 2));
+                                     glm::vec3( PANEL_SIZE / 2, 2,  PANEL_SIZE / 2));
 
-    blank_model    = ci::gl::VboMesh::create(PLY::load(params.getValueForKey<std::string>("blank_model")));
+    blank_model_   = ci::gl::VboMesh::create(PLY::load(params.getValueForKey<std::string>("blank_model")));
     selected_model = ci::gl::VboMesh::create(PLY::load(params.getValueForKey<std::string>("selected_model")));
     cursor_model   = ci::gl::VboMesh::create(PLY::load(params.getValueForKey<std::string>("cursor_model")));
     bg_model       = createVboMesh(params.getValueForKey<std::string>("bg.model"));
@@ -749,7 +752,7 @@ private:
     ci::gl::ScopedGlslProg prog(shadow_shader_);
 
     drawFieldPanels(false);
-    drawFieldBlank();
+    drawFieldBlankShadow();
 
     if (info.playing)
     {
@@ -788,17 +791,18 @@ private:
     ci::gl::ScopedTextureBind texScope(shadow_map_);
 
     drawFieldPanels(true);
-    field_shader_->uniform("uDiffusePower", 1.0f);
     drawFieldBlank();
 
     if (info.playing)
     {
+      field_shader_->uniform("uDiffusePower", 1.0f);
+
       // 手持ちパネル
       auto pos = panel_disp_pos_() + glm::vec3(0, height_offset_, 0);
       drawPanel(info.panel_index, pos, info.panel_rotation, rotate_offset_);
 
       // 選択箇所
-      float s = std::abs(std::sin(put_gauge_timer_ * 6.0f)) * 0.1;
+      float s = std::abs(std::sin(put_gauge_timer_ * 6.0)) * 0.1;
       glm::vec3 scale(0.9 + s, 1, 0.9 + s);
       drawFieldSelected(info.field_pos, scale);
 
@@ -877,7 +881,7 @@ private:
   }
   
   // Fieldの置ける場所をすべて表示
-  void drawFieldBlank() noexcept
+  void drawFieldBlankShadow() const
   {
     ci::gl::ScopedModelMatrix m;
 
@@ -885,7 +889,24 @@ private:
     {
       auto mtx = glm::translate(p.position);
       ci::gl::setModelMatrix(mtx);
-      ci::gl::draw(blank_model);
+      ci::gl::draw(blank_model_);
+    }
+  }
+
+  void drawFieldBlank() const
+  {
+    ci::gl::ScopedModelMatrix m;
+
+    auto t = float(put_gauge_timer_ * blank_effect_speed_);
+    for (const auto& p : blank_panels_)
+    {
+      float diffuse = glm::clamp(std::sin(t + p.position.x * blank_effect_.x + p.position.z * blank_effect_.y), 0.0f, 1.0f)
+                      * blank_diffuse_.x + blank_diffuse_.y;
+      field_shader_->uniform("uDiffusePower", diffuse);
+
+      auto mtx = glm::translate(p.position);
+      ci::gl::setModelMatrix(mtx);
+      ci::gl::draw(blank_model_);
     }
   }
 
@@ -1060,9 +1081,14 @@ private:
   ci::AxisAlignedBox panel_aabb_;
 
   // 演出用
-  ci::gl::VboMeshRef blank_model;
+  ci::gl::VboMeshRef blank_model_;
   ci::gl::VboMeshRef selected_model;
   ci::gl::VboMeshRef cursor_model;
+
+  // 配置可能演出
+  double blank_effect_speed_;
+  glm::vec2 blank_effect_;
+  glm::vec2 blank_diffuse_;
 
   // 背景
   ci::gl::VboMeshRef bg_model;
@@ -1177,7 +1203,7 @@ private:
   std::string blank_disappear_ease_;
 
   // パネルを置くゲージ演出
-  float put_gauge_timer_ = 0.0f;
+  double put_gauge_timer_ = 0.0;
 
   // FIXME 途中の削除が多いのでvectorは向いていない??
   std::list<Effect> effects_;
