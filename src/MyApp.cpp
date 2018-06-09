@@ -71,8 +71,11 @@ public:
     // アクティブになった時にタッチ情報を初期化
     getSignalDidBecomeActive().connect([this]() noexcept
                                        {
+#if defined (CINDER_COCOA_TOUCH)
                                          // 時間経過を再初期化
-                                         prev_time_ = getElapsedSeconds();
+                                         // TODO パソコン版はupdateを止める
+                                         prev_time_ = std::max(getElapsedSeconds() - 1.5, prev_time_);
+#endif
                                          event_.signal("App:BecomeActive", Arguments());
                                          DOUT << "SignalDidBecomeActive" << std::endl;
                                        });
