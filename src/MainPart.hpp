@@ -29,6 +29,7 @@
 #include "Score.hpp"
 #include "AutoRotateCamera.hpp"
 #include "ScoreTest.hpp"
+#include "GameCenter.h"
 
 
 namespace ngs {
@@ -1149,7 +1150,7 @@ private:
   }
 
   // Gameの記録
-  void recordGameScore(const Score& score, bool high_score) noexcept
+  void recordGameScore(const Score& score, bool high_score)
   {
     archive_.setRecord("saved", true); 
     
@@ -1200,8 +1201,9 @@ private:
       }
     }
     archive_.setRecordArray("games", json);
-
     archive_.recordGameResults(score, high_score);
+
+    GameCenter::submitScore(score.total_score);
   }
 
   bool isRankIn(u_int score) const noexcept

@@ -1,4 +1,5 @@
 * TODO アプリ開始時は最後のプレイ結果を表示
+* TODO iOS以外はGameCenterの機能を外す
 * TODO 道の繋がった聖堂の追加
 * TODO パネル：道と緑の境目の描き込みや生活感を出す物体を置く
 * TODO エフェクト描画はdrawInstancedで
@@ -15,6 +16,8 @@
 * TODO アプリアイコン
 * TODO macOS:バックグラウンドで放置しとくとDisplayがnullになって落ちる
 * TODO iOS:GameCenter対応
+* TODO iOS:GameCenterが使えない時の対応
+* TODO iOS:課金処理
 * TODO iOS:実績を実装
 * DONE パネルが上から降ってくる演出の調整
 CLOSED: [2018-06-10 日 13:57]

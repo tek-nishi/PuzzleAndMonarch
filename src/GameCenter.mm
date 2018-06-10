@@ -16,12 +16,11 @@ namespace ngs { namespace GameCenter {
 // FIXME グローバル変数を止める
 static bool authenticated = false;
 
-
 // FIXME グローバル変数を止める
 static std::function<void()> leaderboard_finish;
 
 void showBoard(std::function<void()> start_callback,
-               std::function<void()> finish_callback) noexcept
+               std::function<void()> finish_callback)
 {
   GKGameCenterViewController* gamecenter_vc = [[[GKGameCenterViewController alloc] init] autorelease];
 
@@ -38,22 +37,23 @@ void showBoard(std::function<void()> start_callback,
   }  
 }
 
-#if 0
-
 // スコア送信
-static void sendScore(NSArray* scores) noexcept
+static void sendScore(NSArray* scores)
 {
-  [GKScore reportScores:scores withCompletionHandler:^(NSError* error) {
-      if (error != nil) {
-        NSLOG(@"Sending score error:%@", [error localizedDescription]);
-      }
-      else {
-        NSLOG(@"Sending score OK!");
-      }
-    }];
+  [GKScore reportScores:scores withCompletionHandler:^(NSError* error)
+      {
+        if (error != nil)
+        {
+          NSLOG(@"Sending score error:%@", [error localizedDescription]);
+        }
+        else
+        {
+          NSLOG(@"Sending score OK!");
+        }
+      }];
 }
 
-static NSString* createString(const std::string& text) noexcept
+static NSString* createString(const std::string& text)
 {
   NSString* str = [[[NSString alloc] initWithCString:text.c_str() encoding:NSUTF8StringEncoding] autorelease];
   return str;
@@ -61,59 +61,30 @@ static NSString* createString(const std::string& text) noexcept
 
 static GKScore* createScore(const std::string& id, const double value)
 {
-  GKScore* reporter = [[[GKScore alloc] initWithCategory:createString(id)] autorelease];
+  GKScore* reporter = [[[GKScore alloc] initWithLeaderboardIdentifier:createString(id)] autorelease];
   reporter.value = value;
 
   return reporter;
 }
 
-void submitStageScore(const int stage,
-                      const int score, const double clear_time) noexcept
+void submitScore(const int score)
 {
   if (!isAuthenticated())
   {
     NSLOG(@"GameCenter::submitStageScore: GameCenter is not active.");
     return;
   }
-  
-  std::ostringstream str;
-  str << "BRICKTRIP.STAGE"
-      << std::setw(2) << std::setfill('0') << stage;
 
-  std::string hiscore_id(str.str() + ".HISCORE");
-  GKScore* hiscore_reporter = createScore(hiscore_id, score);
-
-  DOUT << "submit:" << hiscore_id << " " << score << std::endl;
-  
-  std::string besttime_id(str.str() + ".BESTTIME");
-  GKScore* besttime_reporter = createScore(besttime_id, int64_t(clear_time * 100.0));
-
-  DOUT << "submit:" << besttime_id << " " << clear_time << std::endl;
+  GKScore* score_reporter = createScore("PM.BESTSCORES", score);
 
   // GKScoreをArrayにまとめて送信
-  NSArray* score_array = @[ hiscore_reporter, besttime_reporter ];
+  NSArray* score_array = @[ score_reporter ];
   sendScore(score_array);
 }
 
-void submitScore(const int score, const int total_items) noexcept
-{
-  if (!isAuthenticated())
-  {
-    NSLOG(@"GameCenter::submitScore: GameCenter is not active.");
-    return;
-  }
-  
-  GKScore* score_reporter = createScore("BRICKTRIP.HISCORE", score);
-  GKScore* items_reporter = createScore("BRICKTRIP.MOST_BRICK", total_items);
+#if 0
 
-  DOUT << "submit:" << score << " " << total_items << std::endl;
-  
-  NSArray* score_array = @[ score_reporter, items_reporter ];
-  sendScore(score_array);
-}
-
-
-static GKAchievement* getAchievementForIdentifier(const std::string& identifier) noexcept
+static GKAchievement* getAchievementForIdentifier(const std::string& identifier)
 {
   GKAchievement* achievement = [[[GKAchievement alloc] initWithIdentifier:createString(identifier)]
                                    autorelease];
@@ -131,7 +102,7 @@ struct Achievement
 static std::map<std::string, Achievement> cached_achievements;
 
 
-static void loadCachedAchievement() noexcept
+static void loadCachedAchievement()
 {
   cached_achievements.clear();
   
@@ -173,7 +144,7 @@ static void loadCachedAchievement() noexcept
   NSLOG(@"loadCachedAchievement: done.");
 }
 
-void writeCachedAchievement() noexcept
+void writeCachedAchievement()
 {
   if (!isAuthenticated()) return;
   
@@ -204,7 +175,7 @@ void writeCachedAchievement() noexcept
   NSLOG(@"writeCachedAchievement: %zu values", json.getNumChildren());
 }
 
-static void resubmitCachedAchievement() noexcept
+static void resubmitCachedAchievement()
 {
   for (auto& achievement : cached_achievements)
   {
@@ -219,7 +190,7 @@ static void resubmitCachedAchievement() noexcept
 
 
 // 達成項目の読み込み
-static void loadAchievement() noexcept
+static void loadAchievement()
 {
   if (!isAuthenticated())
   {
@@ -256,7 +227,7 @@ static void loadAchievement() noexcept
 }
 
 // 達成項目送信
-void submitAchievement(const std::string& identifier, const double complete_rate, const bool banner) noexcept
+void submitAchievement(const std::string& identifier, const double complete_rate, const bool banner)
 {
   if (!isAuthenticated())
   {
@@ -308,7 +279,7 @@ void submitAchievement(const std::string& identifier, const double complete_rate
 
 
 #ifdef DEBUG
-void resetAchievement() noexcept
+void resetAchievement()
 {
   [GKAchievement resetAchievementsWithCompletionHandler:^(NSError* error)
       {
@@ -329,7 +300,7 @@ void resetAchievement() noexcept
 
 // 認証
 void authenticateLocalPlayer(std::function<void()> start_callback,
-                             std::function<void()> finish_callback) noexcept
+                             std::function<void()> finish_callback)
 {
   authenticated = false;
   
@@ -362,7 +333,7 @@ void authenticateLocalPlayer(std::function<void()> start_callback,
 }
 
 // 認証済み？
-bool isAuthenticated() noexcept
+bool isAuthenticated()
 {
   return authenticated;
 }
