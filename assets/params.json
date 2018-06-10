@@ -285,9 +285,9 @@
       "ease": "OutExpo"
     },
 
-    "height_ease_start": 100,
-    "height_ease_duration": 0.5,
-    "height_ease_name": "OutExpo",
+    "height_ease_start": 90,
+    "height_ease_duration": 0.6,
+    "height_ease_name": "OutQuint",
 
     "put_duration": [ 0.6, 0.4 ],
     "put_ease":     "OutExpo",
