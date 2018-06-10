@@ -39,6 +39,13 @@ class View
     ci::ColorA color;
   };
 
+  struct Blank
+  {
+    glm::ivec2 field_pos;
+    glm::vec3 position;
+    glm::mat4 matrix;
+  };
+
 
 public:
   // 表示用の情報
@@ -322,13 +329,18 @@ public:
       blank_panels_.push_back({ pos, blank_pos });
 
       // Blank Panel出現演出
-      auto& panel = blank_panels_.back();
+      auto& panel    = blank_panels_.back();
       auto panel_pos = panel.position + blank_appear_pos_;
-      timeline_->applyPtr(&panel.position,
-                          panel_pos, panel.position,
-                          blank_appear_duration_, getEaseFunc(blank_appear_ease_));
+      auto options   = timeline_->applyPtr(&panel.position,
+                                           panel_pos, panel.position,
+                                           blank_appear_duration_, getEaseFunc(blank_appear_ease_));
+      options.updateFn([&panel]()
+                       {
+                         panel.matrix = glm::translate(panel.position);
+                       });
 
       panel.position = panel_pos;
+      panel.matrix   = glm::translate(blank_pos);
     }
 
     for (auto it = std::begin(blank_panels_); it != std::end(blank_panels_); )
@@ -393,36 +405,63 @@ public:
   void blankTouchBeginEase(const glm::vec2& pos) noexcept
   {
     auto* p = searchBlankPosition(pos);
-    if (!p) {
+    if (!p)
+    {
       DOUT << "No blank position:" << pos << std::endl;
       return;
     }
 
-    timeline_->applyPtr(&p->y, 0.0f, blank_touch_begin_pos_, blank_touch_begin_duration_, getEaseFunc(blank_touch_begin_ease_));
+    auto option = timeline_->applyPtr(&p->position.y, 0.0f, blank_touch_begin_pos_,
+                                      blank_touch_begin_duration_, getEaseFunc(blank_touch_begin_ease_));
+    option.updateFn([p]()
+                    {
+                      p->matrix = glm::translate(p->position);
+                    });
   }
 
   // Blankのタッチをやめた時の演出
   void blankTouchEndEase(const glm::vec2& pos) noexcept
   {
     auto* p = searchBlankPosition(pos);
-    if (!p) {
+    if (!p)
+    {
       DOUT << "No blank position:" << pos << std::endl;
       return;
     }
 
-    timeline_->applyPtr(&p->y, blank_touch_end_pos1_, blank_touch_end_duration1_, getEaseFunc(blank_touch_end_ease1_));
-    timeline_->appendToPtr(&p->y, 0.0f, blank_touch_end_duration2_, getEaseFunc(blank_touch_end_ease2_));
+    {
+      auto option = timeline_->applyPtr(&p->position.y, blank_touch_end_pos1_,
+                                        blank_touch_end_duration1_, getEaseFunc(blank_touch_end_ease1_));
+      option.updateFn([p]()
+                      {
+                        p->matrix = glm::translate(p->position);
+                      });
+    }
+    {
+      auto option = timeline_->appendToPtr(&p->position.y, 0.0f,
+                                           blank_touch_end_duration2_, getEaseFunc(blank_touch_end_ease2_));
+      option.updateFn([p]()
+                      {
+                        p->matrix = glm::translate(p->position);
+                      });
+    }
   }
 
   void blankTouchCancelEase(const glm::vec2& pos) noexcept
   {
     auto* p = searchBlankPosition(pos);
-    if (!p) {
+    if (!p)
+    {
       DOUT << "No blank position:" << pos << std::endl;
       return;
     }
 
-    timeline_->applyPtr(&p->y, 0.0f, blank_touch_cancel_duration_, getEaseFunc(blank_touch_cancel_ease_));
+    auto option = timeline_->applyPtr(&p->position.y, 0.0f,
+                                 blank_touch_cancel_duration_, getEaseFunc(blank_touch_cancel_ease_));
+    option.updateFn([p]()
+                    {
+                      p->matrix = glm::translate(p->position);
+                    });
   }
 
   // 得点した時の演出
@@ -717,11 +756,11 @@ private:
     return false;
   }
 
-  glm::vec3* searchBlankPosition(const glm::ivec2& pos) noexcept
+  Blank* searchBlankPosition(const glm::ivec2& pos) noexcept
   {
     for (auto& b : blank_panels_)
     {
-      if (b.field_pos == pos) return &b.position;
+      if (b.field_pos == pos) return &b;
     }
     return nullptr;
   }
@@ -887,8 +926,7 @@ private:
 
     for (const auto& p : blank_panels_)
     {
-      auto mtx = glm::translate(p.position);
-      ci::gl::setModelMatrix(mtx);
+      ci::gl::setModelMatrix(p.matrix);
       ci::gl::draw(blank_model_);
     }
   }
@@ -904,8 +942,7 @@ private:
                       * blank_diffuse_.x + blank_diffuse_.y;
       field_shader_->uniform("uDiffusePower", diffuse);
 
-      auto mtx = glm::translate(p.position);
-      ci::gl::setModelMatrix(mtx);
+      ci::gl::setModelMatrix(p.matrix);
       ci::gl::draw(blank_model_);
     }
   }
@@ -1115,11 +1152,6 @@ private:
   std::string complete_begin_ease_;
   std::string complete_end_ease_;
 
-  struct Blank
-  {
-    glm::ivec2 field_pos;
-    glm::vec3 position;
-  };
   std::list<Blank> blank_panels_;
 
   ci::gl::GlslProgRef field_shader_;
