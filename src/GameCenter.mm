@@ -67,7 +67,8 @@ static GKScore* createScore(const std::string& id, const double value)
   return reporter;
 }
 
-void submitScore(const int score)
+// スコア送信
+void submitScore(const int score, const int total_panel)
 {
   if (!isAuthenticated())
   {
@@ -76,9 +77,10 @@ void submitScore(const int score)
   }
 
   GKScore* score_reporter = createScore("PM.BESTSCORES", score);
+  GKScore* panels_reporter = createScore("PM.TOTALPANEL", total_panel);
 
   // GKScoreをArrayにまとめて送信
-  NSArray* score_array = @[ score_reporter ];
+  NSArray* score_array = @[ score_reporter, panels_reporter ];
   sendScore(score_array);
 }
 

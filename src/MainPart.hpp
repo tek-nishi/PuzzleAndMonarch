@@ -1202,8 +1202,11 @@ private:
     }
     archive_.setRecordArray("games", json);
     archive_.recordGameResults(score, high_score);
-
-    GameCenter::submitScore(score.total_score);
+    
+    {
+      auto panels = archive_.getRecord<u_int>("total-panels");
+      GameCenter::submitScore(score.total_score, panels);
+    }
   }
 
   bool isRankIn(u_int score) const noexcept

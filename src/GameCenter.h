@@ -20,7 +20,7 @@ bool isAuthenticated();
 void showBoard(std::function<void()> start_callback,
                std::function<void()> finish_callback);
 
-void submitScore(const int score);
+void submitScore(const int score, const int total_panel);
 
 void submitAchievement(const std::string& identifier, const double complete_rate = 100.0,
                        const bool banner = true);
