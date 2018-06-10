@@ -9,6 +9,7 @@
 #include "UICanvas.hpp"
 #include "TweenUtil.hpp"
 #include "EventSupport.hpp"
+#include "GameCenter.h"
 
 
 namespace ngs {
@@ -123,6 +124,28 @@ public:
                                                   active_ = false;
                                                 });
                                 DOUT << "Records." << std::endl;
+                              });
+
+    holder_ += event_.connect("game_center:touch_ended",
+                              [this, wipe_delay](const Connection&, const Arguments&)
+                              {
+                                canvas_.active(false);
+
+                                count_exec_.add(wipe_delay,
+                                                [this]()
+                                                {
+                                                  GameCenter::showBoard([this]()
+                                                                        {
+                                                                          // 画面の更新を止める
+                                                                          event_.signal("App:pending-update", Arguments());
+                                                                        },
+                                                                        [this]()
+                                                                        {
+                                                                          // 画面の更新再開
+                                                                          event_.signal("App:resume-update", Arguments());
+                                                                          canvas_.active(true);
+                                                                        });
+                                                });
                               });
 
     // ボタンイベント共通Tween

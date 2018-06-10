@@ -45,6 +45,7 @@
 	<string>LaunchScreen.xib</string>
 	<key>UIRequiredDeviceCapabilities</key>
 	<array>
+		<string>gamekit</string>
 		<string>opengles-3</string>
 	</array>
 	<key>UIRequiresFullScreen</key>

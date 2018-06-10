@@ -25,7 +25,8 @@ void showBoard(std::function<void()> start_callback,
 {
   GKGameCenterViewController* gamecenter_vc = [[[GKGameCenterViewController alloc] init] autorelease];
 
-  if (gamecenter_vc != nil) {
+  if (gamecenter_vc != nil)
+  {
     leaderboard_finish = finish_callback;
     start_callback();
     
