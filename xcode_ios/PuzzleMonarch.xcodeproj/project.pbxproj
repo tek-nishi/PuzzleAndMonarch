@@ -198,6 +198,7 @@
 				TargetAttributes = {
 					00692BCE14FF149000D0A05E = {
 						DevelopmentTeam = 4Y46LA3FF9;
+						ProvisioningStyle = Manual;
 						SystemCapabilities = {
 							com.apple.GameCenter = {
 								enabled = 0;
@@ -278,7 +279,8 @@
 				CLANG_CXX_LANGUAGE_STANDARD = "c++14";
 				CLANG_CXX_LIBRARY = "libc++";
 				CLANG_WARN_INT_CONVERSION = YES;
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				CODE_SIGN_STYLE = Manual;
 				COPY_PHASE_STRIP = NO;
 				DEAD_CODE_STRIPPING = YES;
 				DEBUG_INFORMATION_FORMAT = dwarf;
@@ -297,6 +299,7 @@
 				HEADER_SEARCH_PATHS = "\"$(CINDER_PATH)/include\"";
 				IPHONEOS_DEPLOYMENT_TARGET = 9.3;
 				ONLY_ACTIVE_ARCH = YES;
+				PROVISIONING_PROFILE = "e6e34eda-8bf0-4176-8f58-8f2ccf7ae0a3";
 				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				USER_HEADER_SEARCH_PATHS = ../include;
@@ -315,7 +318,8 @@
 				CLANG_CXX_LIBRARY = "libc++";
 				CLANG_WARN_INT_CONVERSION = YES;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				CODE_SIGN_STYLE = Manual;
 				COPY_PHASE_STRIP = NO;
 				DEAD_CODE_STRIPPING = YES;
 				GCC_FAST_MATH = YES;
@@ -334,6 +338,7 @@
 				LLVM_LTO = YES;
 				ONLY_ACTIVE_ARCH = YES;
 				OTHER_CFLAGS = "-DNS_BLOCK_ASSERTIONS=1";
+				PROVISIONING_PROFILE = "e6e34eda-8bf0-4176-8f58-8f2ccf7ae0a3";
 				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				USER_HEADER_SEARCH_PATHS = ../include;
@@ -408,6 +413,79 @@
 			};
 			name = Release;
 		};
+		4740133A20CCF2CF0053D05D /* Distribution */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
+				CINDER_PATH = "../../Cinder-0.9.1";
+				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES;
+				CLANG_CXX_LANGUAGE_STANDARD = "c++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CODE_SIGN_IDENTITY = "iPhone Distribution";
+				CODE_SIGN_STYLE = Manual;
+				COPY_PHASE_STRIP = NO;
+				DEAD_CODE_STRIPPING = YES;
+				GCC_FAST_MATH = YES;
+				GCC_OPTIMIZATION_LEVEL = s;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"SRCROOT=\"$(SRCROOT)/\"",
+					"PRODUCT_NAME=\"$(PRODUCT_NAME)\"",
+				);
+				GCC_THREADSAFE_STATICS = NO;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_SHADOW = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				HEADER_SEARCH_PATHS = "\"$(CINDER_PATH)/include\"";
+				IPHONEOS_DEPLOYMENT_TARGET = 9.3;
+				LLVM_LTO = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				OTHER_CFLAGS = "-DNS_BLOCK_ASSERTIONS=1";
+				PROVISIONING_PROFILE = "e9db2c06-5ad2-448b-9942-21158f33b822";
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				USER_HEADER_SEARCH_PATHS = ../include;
+				VALIDATE_PRODUCT = YES;
+				VALID_ARCHS = arm64;
+			};
+			name = Distribution;
+		};
+		4740133B20CCF2CF0053D05D /* Distribution */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
+				DEVELOPMENT_TEAM = 4Y46LA3FF9;
+				ENABLE_BITCODE = NO;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = PuzzleMonarch_Prefix.pch;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"SRCROOT=\"$(SRCROOT)/\"",
+					"PRODUCT_NAME=\"$(PRODUCT_NAME)\"",
+					"NDEBUG=1",
+				);
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				INFOPLIST_FILE = Info.plist;
+				"OTHER_LDFLAGS[sdk=iphoneos*][arch=*]" = (
+					"\"$(CINDER_PATH)/lib/ios/Release/libcinder.a\"",
+					"-lz",
+					"\"$(CINDER_PATH)/lib/ios/libboost_filesystem.a\"",
+					"\"$(CINDER_PATH)/lib/ios/libboost_system.a\"",
+				);
+				"OTHER_LDFLAGS[sdk=iphonesimulator*][arch=*]" = (
+					"\"$(CINDER_PATH)/lib/ios-sim/Release/libcinder.a\"",
+					"-lz",
+					"\"$(CINDER_PATH)/lib/ios-sim/libboost_filesystem.a\"",
+					"\"$(CINDER_PATH)/lib/ios-sim/libboost_system.a\"",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.ngs.PuzzleMonarch;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				WRAPPER_EXTENSION = app;
+			};
+			name = Distribution;
+		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
@@ -416,6 +494,7 @@
 			buildConfigurations = (
 				00692BF314FF149000D0A05E /* Debug */,
 				00692BF414FF149000D0A05E /* Release */,
+				4740133A20CCF2CF0053D05D /* Distribution */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
@@ -425,6 +504,7 @@
 			buildConfigurations = (
 				00692BF614FF149000D0A05E /* Debug */,
 				00692BF714FF149000D0A05E /* Release */,
+				4740133B20CCF2CF0053D05D /* Distribution */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
