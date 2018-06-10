@@ -523,9 +523,13 @@ public:
     for (auto& panel : blank_panels_)
     {
       // Blank Panel消滅演出
-      timeline_->applyPtr(&panel.position,
-                          panel.position + blank_disappear_pos_,
-                          blank_disappear_duration_, getEaseFunc(blank_disappear_ease_));
+      auto option = timeline_->applyPtr(&panel.position,
+                                        panel.position + blank_disappear_pos_,
+                                        blank_disappear_duration_, getEaseFunc(blank_disappear_ease_));
+      option.updateFn([&panel]()
+                      {
+                        panel.matrix = glm::translate(panel.position);
+                      });
     }
 
     timeline_->add([this]() noexcept
