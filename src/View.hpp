@@ -340,8 +340,8 @@ public:
                          panel.matrix = glm::translate(panel.position);
                        });
 
-      panel.position = panel_pos;
-      panel.matrix   = glm::translate(blank_pos);
+      // panel.position = panel_pos;
+      panel.matrix   = glm::translate(panel_pos);
     }
 
     for (auto it = std::begin(blank_panels_); it != std::end(blank_panels_); )
