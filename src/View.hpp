@@ -131,10 +131,11 @@ public:
     panel_aabb_ = ci::AxisAlignedBox(glm::vec3(-PANEL_SIZE / 2, 0, -PANEL_SIZE / 2),
                                      glm::vec3( PANEL_SIZE / 2, 2,  PANEL_SIZE / 2));
 
-    blank_model_   = ci::gl::VboMesh::create(PLY::load(params.getValueForKey<std::string>("blank_model")));
+    blank_model_        = ci::gl::VboMesh::create(PLY::load(params.getValueForKey<std::string>("blank_model")));
+    blank_shadow_model_ = createVboMesh(params.getValueForKey<std::string>("blank_shadow_model"), false);
     selected_model = ci::gl::VboMesh::create(PLY::load(params.getValueForKey<std::string>("selected_model")));
     cursor_model   = ci::gl::VboMesh::create(PLY::load(params.getValueForKey<std::string>("cursor_model")));
-    bg_model       = createVboMesh(params.getValueForKey<std::string>("bg.model"));
+    bg_model       = createVboMesh(params.getValueForKey<std::string>("bg.model"), true);
 
     {
       auto size = Json::getVec<glm::ivec2>(params["shadow_map"]);
@@ -195,7 +196,7 @@ public:
       {
         const auto& p = cloud.getValue<std::string>();
 
-        auto tri_mesh = loadObj(p);
+        auto tri_mesh = loadObj(p, false);
         cloud_models_.push_back(ci::gl::VboMesh::create(tri_mesh));
         auto bc = calcBoundingCircle(tri_mesh);
         bc.first  *= cloud_scale_.x;
@@ -224,7 +225,7 @@ public:
       effect_shader_->uniform("uShininess", params.getValueForKey<float>("field.shininess"));
       effect_shader_->uniform("uAmbient", params.getValueForKey<float>("field.ambient"));
     }
-    effect_model_ = createVboMesh(params.getValueForKey<std::string>("effect.model"));
+    effect_model_ = createVboMesh(params.getValueForKey<std::string>("effect.model"), true);
   }
 
   ~View() = default;
@@ -679,10 +680,14 @@ private:
 
 
   // OBJ形式→TriMesh
-  static ci::TriMesh loadObj(const std::string& path)
+  static ci::TriMesh loadObj(const std::string& path, bool has_normal)
   {
     ci::ObjLoader loader{ Asset::load(path) };
-    auto mesh = ci::TriMesh{ loader };
+
+    auto format = ci::TriMesh::Format().positions().texCoords();
+    if (has_normal) format.normals();
+
+    auto mesh = ci::TriMesh{ loader, format };
 
     // DOUT << path
     // << ": N: " << mesh.hasNormals()
@@ -694,9 +699,9 @@ private:
   }
 
   // OBJ形式からVboMeshを生成
-  static ci::gl::VboMeshRef createVboMesh(const std::string& path)
+  static ci::gl::VboMeshRef createVboMesh(const std::string& path, bool has_normal)
   {
-    return ci::gl::VboMesh::create(loadObj(path));
+    return ci::gl::VboMesh::create(loadObj(path, has_normal));
   }
 
   // TriMeshの外接円をなんとなく求める
@@ -927,7 +932,7 @@ private:
     for (const auto& p : blank_panels_)
     {
       ci::gl::setModelMatrix(p.matrix);
-      ci::gl::draw(blank_model_);
+      ci::gl::draw(blank_shadow_model_);
     }
   }
 
@@ -1119,6 +1124,7 @@ private:
 
   // 演出用
   ci::gl::VboMeshRef blank_model_;
+  ci::gl::VboMeshRef blank_shadow_model_;
   ci::gl::VboMeshRef selected_model;
   ci::gl::VboMeshRef cursor_model;
 
