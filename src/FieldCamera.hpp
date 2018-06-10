@@ -135,7 +135,7 @@ public:
     // FIXME マジックナンバー
     radius += PANEL_SIZE / 4;
 
-    float half_fov = ci::toRadians(fov * 0.5f);
+    float half_fov = toRadians(fov * 0.5f);
     float distance = radius / std::sin(half_fov);
     // カメラが斜め上から見下ろしているのを考慮
     float n = radius / std::cos(rotation_.x);

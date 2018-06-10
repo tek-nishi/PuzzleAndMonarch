@@ -35,7 +35,7 @@ public:
     if (aspect < 1.0) {
       // 画面が縦長になったら、幅基準でfovを求める
       // fovとnear_zから投影面の幅の半分を求める
-      float half_w = std::tan(ci::toRadians(fov / 2)) * near_z;
+      float half_w = std::tan(toRadians(fov / 2)) * near_z;
 
       // 表示画面の縦横比から、投影面の高さの半分を求める
       float half_h = half_w / aspect;

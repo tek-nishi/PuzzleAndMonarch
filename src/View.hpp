@@ -46,6 +46,19 @@ class View
     glm::mat4 matrix;
   };
 
+  // Field上のパネル(Modelと被っている)
+  struct Panel
+  {
+    glm::ivec2 field_pos;
+    glm::vec3 position;
+    glm::vec3 rotation;
+    glm::mat4 matrix;
+
+    float diffuse_power;
+    int index;
+    int rotate_index;
+  };
+
 
 public:
   // 表示用の情報
@@ -238,8 +251,15 @@ public:
     force_timeline_->step(delta_time);
     transition_timeline_->step(delta_time);
 
+    if (update_translate_)
+    {
+      updateFieldPanels();
+      update_translate_ = false;
+    }
+
     updateClouds(delta_time);
 
+    // NOTE 以下Paush中は処理しない
     if (game_paused) return;
 
     timeline_->step(delta_time);
@@ -256,6 +276,7 @@ public:
     effects_.clear();
 
     field_rotate_offset_ = 0.0f;
+    update_translate_ = false;
   }
 
 
@@ -285,13 +306,21 @@ public:
   // Pause演出開始
   void pauseGame() noexcept
   {
-    force_timeline_->apply(&field_rotate_offset_, toRadians(180.0f), pause_duration_.x, getEaseFunc(pause_ease_));
+    auto option = force_timeline_->apply(&field_rotate_offset_, toRadians(180.0f), pause_duration_.x, getEaseFunc(pause_ease_));
+    option.updateFn([this]()
+                    {
+                      update_translate_ = true;
+                    });
   }
 
   // Pause演出解除
   void resumeGame() noexcept
   {
-    force_timeline_->apply(&field_rotate_offset_, 0.0f, pause_duration_.y, getEaseFunc(pause_ease_));
+    auto option = force_timeline_->apply(&field_rotate_offset_, 0.0f, pause_duration_.y, getEaseFunc(pause_ease_));
+    option.updateFn([this]()
+                    {
+                      update_translate_ = true;
+                    });
   }
 
   // パネル追加
@@ -300,18 +329,29 @@ public:
     glm::ivec2 p = pos * int(PANEL_SIZE);
 
     static const float r_tbl[] = {
-      0.0f,
-      -180.0f * 0.5f,
-      -180.0f,
-      -180.0f * 1.5f 
+      toRadians(0.0f),
+      toRadians(-180.0f * 0.5f),
+      toRadians(-180.0f),
+      toRadians(-180.0f * 1.5f) 
     };
 
-    Panel panel = {
+    auto yaw = r_tbl[rotation]; 
+    glm::vec3 position{ p.x, 0.0f, p.y };
+
+    auto mtx = glm::translate(position)
+               * glm::eulerAngleXYZ(0.0f, yaw, 0.0f);
+
+    // PAUSEで回転する時の適当なindex
+    int rotate_index = (pos.x + pos.y * 3) & 0b11;
+
+    Panel panel{
       pos,
-      { p.x, 0, p.y },
-      { 0, ci::toRadians(r_tbl[rotation]), 0 },
+      position,
+      { 0.0f, yaw, 0.0f },
+      mtx,
       1.0f,
-      index
+      index,
+      rotate_index
     };
 
     field_panel_indices_.insert({ pos, field_panels_.size() });
@@ -357,6 +397,25 @@ public:
     }
   }
 
+  // パネルの行列を更新する
+  void updateFieldPanels()
+  {
+    glm::vec2 offset[] {
+      {  field_rotate_offset_, 0.0f },
+      { -field_rotate_offset_, 0.0f },
+      { 0.0f,  field_rotate_offset_ },
+      { 0.0f, -field_rotate_offset_ },
+    };
+
+    for (auto& p : field_panels_)
+    {
+      const auto& ofs = offset[p.rotate_index];
+
+      p.matrix = glm::translate(p.position)
+                 * glm::eulerAngleXYZ(p.rotation.x + ofs.x, p.rotation.y, p.rotation.z + ofs.y);
+    }
+  }
+
   // パネル位置決め
   void setPanelPosition(const glm::vec3& pos) noexcept
   {
@@ -388,8 +447,18 @@ public:
 
     auto& p = field_panels_.back();
     p.position.y = panel_height_;
-    timeline_->applyPtr(&p.position.y, 0.0f,
-                        duration, getEaseFunc(put_ease_));
+    auto option = timeline_->applyPtr(&p.position.y, 0.0f,
+                                      duration, getEaseFunc(put_ease_));
+
+    // FIXME 同じ計算を２回書いている
+    p.matrix = glm::translate(p.position)
+               * glm::eulerAngleXYZ(p.rotation.x, p.rotation.y, p.rotation.z);
+
+    option.updateFn([&p]()
+                    {
+                      p.matrix = glm::translate(p.position)
+                                 * glm::eulerAngleXYZ(p.rotation.x, p.rotation.y, p.rotation.z);
+                    });
   }
 
   // 次のパネルの出現演出
@@ -900,23 +969,9 @@ private:
   {
     ci::gl::ScopedModelMatrix m;
 
-    glm::vec2 offset[] = {
-      {  field_rotate_offset_, 0.0f },
-      { -field_rotate_offset_, 0.0f },
-      { 0.0f,  field_rotate_offset_ },
-      { 0.0f, -field_rotate_offset_ },
-    };
-
-    const auto& panels = field_panels_;
-    for (const auto& p : panels)
+    for (const auto& p : field_panels_)
     {
-      // TODO この計算はaddの時に済ませる
-      int index = (p.field_pos.x + p.field_pos.y * 3) & 0b11;
-      const auto& ofs = offset[index];
-
-      auto mtx = glm::translate(p.position)
-                 * glm::eulerAngleXYZ(p.rotation.x + ofs.x, p.rotation.y, p.rotation.z + ofs.y);
-      ci::gl::setModelMatrix(mtx);
+      ci::gl::setModelMatrix(p.matrix);
 
       if (diffuse)
       {
@@ -1026,26 +1081,24 @@ private:
     {
       auto& pos = c.first;
       pos += c.second * float(delta_time);
+
+      if (pos.x >  cloud_area_) pos.x -= cloud_area_ * 2;
+      if (pos.x < -cloud_area_) pos.x += cloud_area_ * 2;
+      if (pos.z >  cloud_area_) pos.z -= cloud_area_ * 2;
+      if (pos.z < -cloud_area_) pos.z += cloud_area_ * 2;
     }
   }
 
-  void drawClouds()
+  void drawClouds() const
   {
     ci::gl::ScopedGlslProg prog(cloud_shader_);
     ci::gl::ScopedTextureBind tex(cloud_texture_);
     ci::gl::ScopedModelMatrix m;
 
     size_t i = 0;
-    for (auto& c : clouds_)
+    for (const auto& c : clouds_)
     {
-      auto& pos = c.first;
-
-      if (pos.x >  cloud_area_) pos.x -= cloud_area_ * 2;
-      if (pos.x < -cloud_area_) pos.x += cloud_area_ * 2;
-      if (pos.z >  cloud_area_) pos.z -= cloud_area_ * 2;
-      if (pos.z < -cloud_area_) pos.z += cloud_area_ * 2;
-
-      auto mtx = glm::translate(pos) * glm::scale(cloud_scale_);
+      auto mtx = glm::translate(c.first) * glm::scale(cloud_scale_);
       ci::gl::setModelMatrix(mtx);
       ci::gl::draw(cloud_models_[i % cloud_models_.size()]);
       ++i;
@@ -1141,15 +1194,6 @@ private:
   ci::gl::VboMeshRef bg_model;
   glm::vec3 bg_scale_;
 
-  // Field上のパネル(Modelと被っている)
-  struct Panel
-  {
-    glm::ivec2 field_pos;
-    glm::vec3 position;
-    glm::vec3 rotation;
-    float diffuse_power;
-    int index;
-  };
   // NOTICE 追加時にメモリ上で再配置されるのを避けるためstd::vectorではない
   std::deque<Panel> field_panels_;
   // 光る演出用
@@ -1201,6 +1245,7 @@ private:
 
   // PAUSE時にくるっと回す用
   ci::Anim<float> field_rotate_offset_ = 0.0f;
+  bool update_translate_ = false;
   glm::vec2 pause_duration_;
   std::string pause_ease_;
 

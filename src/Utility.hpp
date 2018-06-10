@@ -45,13 +45,13 @@ std::size_t elemsof(const T& value) noexcept
 }
 
 template <typename T>
-T toRadians(const T& v) noexcept
+constexpr T toRadians(const T& v) noexcept
 {
   return v * float(M_PI) / 180.0f;
 }
 
 template <typename T>
-T toDegrees(const T& v) noexcept
+constexpr T toDegrees(const T& v) noexcept
 {
   return v * 180.0f / float(M_PI);
 }
