@@ -14,6 +14,7 @@
 #include "TouchEvent.hpp"
 #include "Core.hpp"
 #include "Debug.hpp"
+#include "GameCenter.h"
 
 
 namespace ngs {
@@ -104,6 +105,16 @@ public:
                      pending_draw_      = false;
                      pending_draw_next_ = false;
                    });
+
+    GameCenter::authenticateLocalPlayer([this]() noexcept
+                                        {
+                                          // AppSupport::pauseDraw(true);
+                                        },
+                                        [this]() noexcept
+                                        {
+                                          // AppSupport::pauseDraw(false);
+                                          // controller_->event().signal("gamecenter-authenticated", EventParam());
+                                        });
 
     prev_time_ = getElapsedSeconds();
   }

@@ -12,6 +12,8 @@
 		1D60589F0D05DD5A006BFB54 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1D30AB110D05D00D00671497 /* Foundation.framework */; };
 		1DF5F4E00D08C38300B7A737 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1DF5F4DF0D08C38300B7A737 /* UIKit.framework */; };
 		28FD15000DC6FC520079059D /* OpenGLES.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 28FD14FF0DC6FC520079059D /* OpenGLES.framework */; };
+		472681E120CCFCCF00CE1BE0 /* GameCenter.mm in Sources */ = {isa = PBXBuildFile; fileRef = 472681E020CCFCCF00CE1BE0 /* GameCenter.mm */; };
+		472681E320CCFEC500CE1BE0 /* GameKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 472681E220CCFEC500CE1BE0 /* GameKit.framework */; };
 		4738A3D320693EEC00B590F3 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 4738A3D520693EEC00B590F3 /* InfoPlist.strings */; };
 		47A6E5562045C4C200AC0CA3 /* TextCodec.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 47A6E5552045C4C200AC0CA3 /* TextCodec.cpp */; };
 		47E3D938203F20CD00275D6D /* AudioSession.mm in Sources */ = {isa = PBXBuildFile; fileRef = 47E3D937203F20CD00275D6D /* AudioSession.mm */; };
@@ -43,6 +45,8 @@
 		257B6E3315A4490FA0602ED1 /* LaunchScreen.xib */ = {isa = PBXFileReference; lastKnownFileType = "\"\""; path = LaunchScreen.xib; sourceTree = "<group>"; };
 		28FD14FF0DC6FC520079059D /* OpenGLES.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenGLES.framework; path = System/Library/Frameworks/OpenGLES.framework; sourceTree = SDKROOT; };
 		28FD15070DC6FC5B0079059D /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
+		472681E020CCFCCF00CE1BE0 /* GameCenter.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = GameCenter.mm; path = ../src/GameCenter.mm; sourceTree = "<group>"; };
+		472681E220CCFEC500CE1BE0 /* GameKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GameKit.framework; path = System/Library/Frameworks/GameKit.framework; sourceTree = SDKROOT; };
 		4738A3D420693EEC00B590F3 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		4738A3D620693F0300B590F3 /* ja */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ja; path = ja.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		47A6E5552045C4C200AC0CA3 /* TextCodec.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = TextCodec.cpp; path = ../src/TextCodec.cpp; sourceTree = "<group>"; };
@@ -69,6 +73,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				472681E320CCFEC500CE1BE0 /* GameKit.framework in Frameworks */,
 				47EF72E82043C1C0002900CF /* Social.framework in Frameworks */,
 				47EF72E92043D0AF002900CF /* Accelerate.framework in Frameworks */,
 				C725E001121DAC8F00FA186B /* AVFoundation.framework in Frameworks */,
@@ -109,6 +114,7 @@
 		00692BD214FF149000D0A05E /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				472681E220CCFEC500CE1BE0 /* GameKit.framework */,
 				47EF72E72043C1C0002900CF /* Social.framework */,
 				C7FB19D5124BC0D70045AFD2 /* AudioToolbox.framework */,
 				00A66A351965AC8800B17EB3 /* Accelerate.framework */,
@@ -130,6 +136,7 @@
 		00692BD914FF149000D0A05E /* Source */ = {
 			isa = PBXGroup;
 			children = (
+				472681E020CCFCCF00CE1BE0 /* GameCenter.mm */,
 				47A6E5552045C4C200AC0CA3 /* TextCodec.cpp */,
 				47EF72EA2043D228002900CF /* Capture.mm */,
 				47EF72E22043BEF8002900CF /* Share.mm */,
@@ -251,6 +258,7 @@
 				47E542872003933D0002BD5F /* MyApp.cpp in Sources */,
 				47EF72E32043BEF8002900CF /* Share.mm in Sources */,
 				47A6E5562045C4C200AC0CA3 /* TextCodec.cpp in Sources */,
+				472681E120CCFCCF00CE1BE0 /* GameCenter.mm in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
