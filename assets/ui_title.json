@@ -118,6 +118,7 @@
         [ 0.93, 0.05 ],
         [ 0.93, 0.05 ]
       ],
+      "enable": false,
 
       "radius": 1,
       "line_width": 1.5,

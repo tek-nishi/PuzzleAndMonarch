@@ -2,7 +2,6 @@
 * TODO BGの端でスペキュラが切れるのがみっともない
 * TODO Titleのアイコン、利き手に関係なくす
 * TODO Rankingの行間を少し広く
-* TODO iOS以外はGameCenterの機能を外す
 * TODO 道の繋がった聖堂の追加
 * TODO パネル：道と緑の境目の描き込みや生活感を出す物体を置く
 * TODO エフェクト描画はdrawInstancedで
@@ -19,10 +18,14 @@
 * TODO iOS:AppStore提出に必要な書類や素材
 * TODO iOS:実績で「長さ10の道を作る」「広さ5の森を作る」などを用意
 * TODO iOS:実績のアイコンを用意
-* TODO iOS:GameCenter対応
 * TODO iOS:GameCenterが使えない時の対応
 * TODO iOS:課金処理
-* TODO iOS:実績を実装
+* DONE iOS以外はGameCenterの機能を外す
+CLOSED: [2018-06-11 月 23:39]
+* DONE iOS:GameCenter対応
+CLOSED: [2018-06-11 月 23:32]
+* DONE iOS:実績を実装
+CLOSED: [2018-06-11 月 23:32]
 * DONE パネルが上から降ってくる演出の調整
 CLOSED: [2018-06-10 日 13:57]
 * DONE ランキング画面でライティング位置が正しく計算されているか確認

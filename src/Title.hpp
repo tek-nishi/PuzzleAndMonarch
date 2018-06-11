@@ -159,18 +159,17 @@ public:
     if (!saved)
     {
       // Saveデータがない場合関連するボタンを消す
-      {
-        const auto& widget = canvas_.at("Records");
-        widget->enable(false);
-      }
+      canvas_.enableWidget("Records", false);
     }
     if (!ranking)
     {
       // Rankingに記録がない場合もボタンを消す
-      {
-        const auto& widget = canvas_.at("Ranking");
-        widget->enable(false);
-      }
+      canvas_.enableWidget("Ranking", false);
+    }
+    if (GameCenter::isAuthenticated())
+    {
+      // GameCenter
+      canvas_.enableWidget("GameCenter");
     }
 
     if (first_time)
