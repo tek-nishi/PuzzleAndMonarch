@@ -1,4 +1,7 @@
 * TODO アプリ開始時は最後のプレイ結果を表示
+* TODO BGの端でスペキュラが切れるのがみっともない
+* TODO Titleのアイコン、利き手に関係なくす
+* TODO Rankingの行間を少し広く
 * TODO iOS以外はGameCenterの機能を外す
 * TODO 道の繋がった聖堂の追加
 * TODO パネル：道と緑の境目の描き込みや生活感を出す物体を置く
@@ -15,6 +18,7 @@
 * TODO カルカソンヌ公式に許可を取る
 * TODO アプリアイコン
 * TODO macOS:バックグラウンドで放置しとくとDisplayがnullになって落ちる
+* TODO iOS:実績のアイコンを用意
 * TODO iOS:GameCenter対応
 * TODO iOS:GameCenterが使えない時の対応
 * TODO iOS:課金処理

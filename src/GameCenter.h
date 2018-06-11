@@ -50,7 +50,7 @@ void showBoard(T1 start_callback,
                T2 finish_callback) {}
 
 template <typename T>
-  void submitScore(const T score) {}
+void submitScore(const T, const T) {}
 
 template <typename T1, typename T2 = double, typename T3 = bool>
 void submitAchievement(T1 identifier, T2 complete_rate = 0, T3 banner = true) {}
