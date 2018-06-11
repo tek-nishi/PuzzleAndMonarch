@@ -409,6 +409,7 @@ public:
                                 if (completed_tutorial_)
                                 {
                                   archive_.setRecord("tutorial-finish", true);
+                                  event_.signal("Game:Tutorial-Finish", Arguments());
                                 }
 
                                 // スコア計算
@@ -1204,6 +1205,7 @@ private:
     archive_.recordGameResults(score, high_score);
     
     {
+      // FIXME 別の場所に移す
       auto panels = archive_.getRecord<u_int>("total-panels");
       GameCenter::submitScore(score.total_score, panels);
     }

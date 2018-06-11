@@ -10,7 +10,7 @@
 
 namespace ngs { namespace GameCenter {
 
-#if defined(CINDER_COCOA_TOUCH)
+#if defined (CINDER_COCOA_TOUCH)
 
 void authenticateLocalPlayer(std::function<void()> start_callback,
                              std::function<void()> finish_callback);
@@ -56,10 +56,10 @@ template <typename T1, typename T2 = double, typename T3 = bool>
 void submitAchievement(T1 identifier, T2 complete_rate = 0, T3 banner = true) {}
 
 template <typename T = void>
-void writeCachedAchievement() {};
+void writeCachedAchievement() {}
 
 
-#ifdef DEBUG
+#if defined (DEBUG)
 
 template <typename T = void>
 void resetAchievement() {}

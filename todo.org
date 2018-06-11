@@ -10,14 +10,14 @@
 * TODO シェーダーの計算量を減らす(vec4→vec3)
 * TODO ローカライズ
 * TODO モデルデータが重い
-* TODO 実績で「長さ10の道を作る」「広さ5の森を作る」などを用意
 * TODO BGM作る
 * TODO SE作る
-* TODO AppStore提出に必要な書類や素材
 * TODO iPhone 5sでの動作確認
 * TODO カルカソンヌ公式に許可を取る
 * TODO アプリアイコン
 * TODO macOS:バックグラウンドで放置しとくとDisplayがnullになって落ちる
+* TODO iOS:AppStore提出に必要な書類や素材
+* TODO iOS:実績で「長さ10の道を作る」「広さ5の森を作る」などを用意
 * TODO iOS:実績のアイコンを用意
 * TODO iOS:GameCenter対応
 * TODO iOS:GameCenterが使えない時の対応

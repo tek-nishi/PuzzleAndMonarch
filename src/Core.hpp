@@ -24,6 +24,7 @@
 #include "Archive.hpp"
 #include "Sound.hpp"
 #include "DebugTask.hpp"
+#include "Achievements.hpp"
 
 
 namespace ngs {
@@ -36,6 +37,7 @@ public:
   Core(const ci::JsonTree& params, Event<Arguments>& event) noexcept
     : params_(params),
       event_(event),
+      achievements_(event),
       archive_("records.json", params.getValueForKey<std::string>("app.version")),
       drawer_(params["ui"]),
       tween_common_(Params::load("tw_common.json"))
@@ -251,6 +253,9 @@ private:
   ConnectionHolder holder_;
 
   TaskContainer tasks_;
+
+  // 達成記録
+  Achievements achievements_;
 
   // ゲーム内記録
   Archive archive_;

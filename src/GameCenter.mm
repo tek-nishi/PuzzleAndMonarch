@@ -7,7 +7,7 @@
 #include <iomanip>
 #include <cinder/Json.h>
 #include "GameCenter.h"
-// #include "FileUtil.hpp"
+#include "Path.hpp"
 #include "TextCodec.hpp"
 
 
@@ -84,8 +84,6 @@ void submitScore(const int score, const int total_panel)
   sendScore(score_array);
 }
 
-#if 0
-
 static GKAchievement* getAchievementForIdentifier(const std::string& identifier)
 {
   GKAchievement* achievement = [[[GKAchievement alloc] initWithIdentifier:createString(identifier)]
@@ -100,7 +98,7 @@ struct Achievement
   bool   submited;
 };
 
-// FIXME:グローバル変数を止める
+// FIXME グローバル変数を止める
 static std::map<std::string, Achievement> cached_achievements;
 
 
@@ -112,7 +110,7 @@ static void loadCachedAchievement()
   if (!ci::fs::is_regular_file(full_path)) return;
 
   ci::JsonTree json;
-#if defined(OBFUSCATION_ACHIEVEMENT)
+#if defined (OBFUSCATION_ACHIEVEMENT)
   // ファイル読み込みでエラーがあった場合、空のJsonTreeを使う
   auto text_data = TextCodec::load(full_path.string());
   try
@@ -137,13 +135,13 @@ static void loadCachedAchievement()
   for (const auto& data : json)
   {
     Achievement achievement{
-      data["rate"].getValue<double>(),
-      data["submited"].getValue<bool>(),
+      data.getValueForKey<double>("rate"),
+      data.getValueForKey<bool>("submited"),
     };
     cached_achievements.insert({ data.getKey(), achievement });
   }
   
-  NSLOG(@"loadCachedAchievement: done.");
+  NSLOG(@"loadCachedAchievement: %zu", json.getNumChildren());
 }
 
 void writeCachedAchievement()
@@ -155,8 +153,9 @@ void writeCachedAchievement()
   for (const auto& achievement : cached_achievements)
   {
     ci::JsonTree data = ci::JsonTree::makeObject(achievement.first);
-    data.addChild(ci::JsonTree("rate", achievement.second.rate))
-      .addChild(ci::JsonTree("submited", achievement.second.submited));
+
+    data.addChild(ci::JsonTree("rate",     achievement.second.rate))
+        .addChild(ci::JsonTree("submited", achievement.second.submited));
 
     json.addChild(data);
   }
@@ -168,13 +167,13 @@ void writeCachedAchievement()
   }
 
   auto full_path = getDocumentPath() / "achievements.cache";
-#if defined(OBFUSCATION_ACHIEVEMENT)
+#if defined (OBFUSCATION_ACHIEVEMENT)
   TextCodec::write(full_path.string(), json.serialize());
 #else
-  record.write(full_path);
+  json.write(full_path);
 #endif
   
-  NSLOG(@"writeCachedAchievement: %zu values", json.getNumChildren());
+  NSLOG(@"writeCachedAchievement: %zu", json.getNumChildren());
 }
 
 static void resubmitCachedAchievement()
@@ -259,7 +258,7 @@ void submitAchievement(const std::string& identifier, const double complete_rate
     achievement.showsCompletionBanner = YES;
     achievement.showsCompletionBanner = banner ? YES : NO;
     
-    [achievement reportAchievementWithCompletionHandler:^(NSError* error)
+    [GKAchievement reportAchievements:@[ achievement ] withCompletionHandler:^(NSError* error)
         {
           if (error != nil)
           {
@@ -280,7 +279,7 @@ void submitAchievement(const std::string& identifier, const double complete_rate
 }
 
 
-#ifdef DEBUG
+#if defined (DEBUG)
 void resetAchievement()
 {
   [GKAchievement resetAchievementsWithCompletionHandler:^(NSError* error)
@@ -295,8 +294,6 @@ void resetAchievement()
         }
       }];
 }
-#endif
-
 #endif
 
 
@@ -321,7 +318,7 @@ void authenticateLocalPlayer(std::function<void()> start_callback,
       authenticated = true;
       finish_callback();
 
-      // loadAchievement();
+      loadAchievement();
       
       NSLOG(@"認証成功");
     }
