@@ -111,19 +111,22 @@ std::string getFormattedDate() noexcept
 
 
 // glm::vec3の定数
-constexpr glm::vec3 unitX() 
+const glm::vec3& unitX() 
 {
-  return { 1, 0, 0 };
+  static glm::vec3 v{ 1, 0, 0 };
+  return v;
 }
 
-constexpr glm::vec3 unitY() 
+const glm::vec3& unitY() 
 {
-  return { 0, 1, 0 };
+  static glm::vec3 v{ 0, 1, 0 };
+  return v;
 }
 
-constexpr glm::vec3 unitZ() 
+const glm::vec3& unitZ() 
 {
-  return { 0, 0, 1 };
+  static glm::vec3 v{ 0, 0, 1 };
+  return v;
 }
 
 // vec3.xz = vec2

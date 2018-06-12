@@ -29,7 +29,6 @@
 #include "Score.hpp"
 #include "AutoRotateCamera.hpp"
 #include "ScoreTest.hpp"
-#include "GameCenter.h"
 
 
 namespace ngs {
@@ -397,8 +396,8 @@ public:
 
                                 field_camera_.force(true);
 
-                                prohibited_   = true;
-                                manipulated_  = false;
+                                prohibited_  = true;
+                                manipulated_ = false;
                                 game_event_.insert("Game:finish");
 
                                 calcViewRange(false);
@@ -420,14 +419,27 @@ public:
                                 auto rank_in = isRankIn(score.total_score);
                                 auto ranking = getRanking(score.total_score);
 
+                                // 総設置パネル数
+                                auto total_panels = archive_.getRecord<u_int>("total-panels");
+
+                                // 最大森
+                                auto max_forest = boost::any_cast<u_int>(args.at("max_forest"));
+                                // 最長道
+                                auto max_path = boost::any_cast<u_int>(args.at("max_path"));
+
                                 count_exec_.add(params_.getValueForKey<double>("field.result_begin_delay"),
-                                                [this, score, rank_in, ranking, high_score]() noexcept
+                                                [this, score, rank_in, ranking,
+                                                 high_score, total_panels,
+                                                 max_forest, max_path]() noexcept
                                                 {
-                                                  Arguments a {
-                                                    { "score",      score },
-                                                    { "rank_in",    rank_in },
-                                                    { "ranking",    ranking },
-                                                    { "high_score", high_score }
+                                                  Arguments a{
+                                                    { "score",        score },
+                                                    { "rank_in",      rank_in },
+                                                    { "ranking",      ranking },
+                                                    { "high_score",   high_score },
+                                                    { "total_panels", total_panels },
+                                                    { "max_forest",   max_forest },
+                                                    { "max_path",     max_path },
                                                   };
                                                   event_.signal("Result:begin", a);
                                                   view_.setColor(transition_duration_, ci::ColorA::white());
@@ -1126,7 +1138,7 @@ private:
   // 結果を計算
   Score calcGameScore(const Arguments& args) const noexcept
   {
-    Score score = {
+    Score score{
       boost::any_cast<const std::vector<u_int>&>(args.at("scores")),
       boost::any_cast<u_int>(args.at("total_score")),
       boost::any_cast<u_int>(args.at("total_ranking")),
@@ -1203,12 +1215,6 @@ private:
     }
     archive_.setRecordArray("games", json);
     archive_.recordGameResults(score, high_score);
-    
-    {
-      // FIXME 別の場所に移す
-      auto panels = archive_.getRecord<u_int>("total-panels");
-      GameCenter::submitScore(score.total_score, panels);
-    }
   }
 
   bool isRankIn(u_int score) const noexcept

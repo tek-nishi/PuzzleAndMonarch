@@ -124,6 +124,9 @@ struct Game
       
       { "panel_turned_times", panel_turned_times_ },
       { "panel_moved_times",  panel_moved_times_ },
+
+      { "max_forest", max_forest_ },
+      { "max_path",   max_path_ },
     };
     event_.signal("Game:Finish", args);
     
@@ -225,10 +228,15 @@ struct Game
           deep_num += deep;
           deep_forest.push_back(deep);
 
+          // 最大の大きさを保存
+          max_forest_ = std::max(max_forest_, u_int(comp.size()));
+
           DOUT << " Point: " << comp.size() << '\n';
           DOUT << "  Deep: " << deep << '\n';
         }
-        DOUT << "Total Deep: " << deep_num << std::endl;
+        DOUT << "Total Deep: " << deep_num << '\n';
+        DOUT << "Max forest: " << max_forest_ << '\n';
+        DOUT << std::endl;
 
         appendContainer(completed, completed_forests);
 
@@ -249,8 +257,12 @@ struct Game
         DOUT << "  Path: " << completed.size() << '\n';
         for (const auto& comp : completed)
         {
+          // 最大の大きさを保存
+          max_path_ = std::max(max_path_, u_int(comp.size()));
+
           DOUT << " Point: " << comp.size() << '\n';
         }
+        DOUT << "Max path: " << max_path_ << '\n';
         DOUT << std::endl;
 
         appendContainer(completed, completed_path);
@@ -880,6 +892,11 @@ private:
   u_int total_score   = 0;
   u_int total_ranking = 0;
   u_int total_panels  = 0;
+
+  // 最長道
+  u_int max_path_ = 0;
+  // 最大森
+  u_int max_forest_ = 0;
 
 #if defined (DEBUG)
 public:

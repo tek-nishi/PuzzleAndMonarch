@@ -8,14 +8,18 @@ namespace ngs {
 
 struct Score
 {
+  // 各種スコア
   std::vector<u_int> scores;
 
+  // 集計スコア
   u_int total_score;
   u_int total_ranking;
   u_int total_panels;
 
+  // 全てのパネルを置けた
   bool perfect;
 
+  // パネル回転数と移動数
   u_int panel_turned_times;
   u_int panel_moved_times;
 
