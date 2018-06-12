@@ -15,12 +15,14 @@
 * TODO カルカソンヌ公式に許可を取る
 * TODO アプリアイコン
 * TODO macOS:バックグラウンドで放置しとくとDisplayがnullになって落ちる
+* TODO Win:zlib.hが無くてエラー
 * TODO iOS:イントロをスキップすると、タイトル画面でGameCenterのアイコンが出現しない
 * TODO iOS:記録を消す時に実績も消す？
 * TODO iOS:AppStore提出に必要な書類や素材
-* TODO iOS:実績で「長さ10の道を作る」「広さ5の森を作る」などを用意
 * TODO iOS:実績のアイコンを用意
 * TODO iOS:課金処理
+* DONE iOS:実績で「長さ10の道を作る」「広さ5の森を作る」などを用意
+CLOSED: [2018-06-13 水 00:12]
 * DONE Win:constexpr glm::vec3 UnitZ でエラー
 CLOSED: [2018-06-12 火 17:56]
 * DONE iOS:GameCenterが使えない時の対応
