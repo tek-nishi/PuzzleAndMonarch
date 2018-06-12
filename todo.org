@@ -1,5 +1,4 @@
 * TODO アプリ開始時は最後のプレイ結果を表示
-* TODO BGの端でスペキュラが切れるのがみっともない
 * TODO Titleのアイコン、利き手に関係なくす
 * TODO Rankingの行間を少し広く
 * TODO 道の繋がった聖堂の追加
@@ -21,6 +20,8 @@
 * TODO iOS:AppStore提出に必要な書類や素材
 * TODO iOS:実績のアイコンを用意
 * TODO iOS:課金処理
+* DONE BGの端でスペキュラが切れるのがみっともない
+CLOSED: [2018-06-13 水 00:31]
 * DONE iOS:実績で「長さ10の道を作る」「広さ5の森を作る」などを用意
 CLOSED: [2018-06-13 水 00:12]
 * DONE Win:constexpr glm::vec3 UnitZ でエラー

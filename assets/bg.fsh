@@ -55,5 +55,5 @@ void main(void)
 
   vec2 pos = floor(u_pos + TexCoord0 * u_checker_size);
   float mask = mod(pos.x + mod(pos.y, 2.0), 2.0);
-  oColor = (texture(uTex1, TexCoord0) * mix(u_dark, u_bright, mask) * diffuse + spec_color) * u_color;
+  oColor = texture(uTex1, TexCoord0) * (mix(u_dark, u_bright, mask) * diffuse + spec_color) * u_color;
 }
