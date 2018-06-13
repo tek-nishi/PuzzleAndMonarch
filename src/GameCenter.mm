@@ -281,9 +281,10 @@ void submitAchievement(const std::string& identifier, const double complete_rate
 }
 
 
-#if defined (DEBUG)
 void resetAchievement()
 {
+  cached_achievements.clear();
+
   [GKAchievement resetAchievementsWithCompletionHandler:^(NSError* error)
       {
         if (error != nil)
@@ -295,8 +296,9 @@ void resetAchievement()
           NSLOG(@"deleteAchievements OK!");
         }
       }];
+
+  // FIXME Scoreの削除機能が無い
 }
-#endif
 
 
 // 認証

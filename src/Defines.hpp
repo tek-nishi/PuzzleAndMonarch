@@ -29,7 +29,8 @@
 // #define OBFUSCATION_ARCHIVE
 // ゲーム記録の難読化
 // #define OBFUSCATION_GAME_RECORD
-
+// 実績キャッシュの難読化
+// #define OBFUSCATION_ACHIEVEMENT
 
 #if defined(CINDER_COCOA_TOUCH)
 

@@ -119,6 +119,13 @@ public:
                              {
                                GameCenter::writeCachedAchievement();
                              });
+
+    // 記録を消去
+    holder_ += event.connect("Settings:Trash",
+                             [this](const Connection&, const Arguments&) noexcept
+                             {
+                               GameCenter::resetAchievement();
+                             });
   }
 
   ~Achievements() = default;

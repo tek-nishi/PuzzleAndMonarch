@@ -16,10 +16,13 @@
 * TODO macOS:バックグラウンドで放置しとくとDisplayがnullになって落ちる
 * TODO Win:zlib.hが無くてエラー
 * TODO iOS:イントロをスキップすると、タイトル画面でGameCenterのアイコンが出現しない
-* TODO iOS:記録を消す時に実績も消す？
 * TODO iOS:AppStore提出に必要な書類や素材
 * TODO iOS:実績のアイコンを用意
 * TODO iOS:課金処理
+* DONE iOS:実績キャッシュの暗号化
+CLOSED: [2018-06-13 水 22:34]
+* DONE iOS:記録を消す時に実績も消す？
+CLOSED: [2018-06-13 水 22:16]
 * DONE BGの端でスペキュラが切れるのがみっともない
 CLOSED: [2018-06-13 水 00:31]
 * DONE iOS:実績で「長さ10の道を作る」「広さ5の森を作る」などを用意
