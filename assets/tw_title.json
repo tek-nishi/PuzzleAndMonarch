@@ -346,5 +346,45 @@
         }
       ]
     }
+  ],
+
+  "GameCenterOn": [
+    {
+      "identifier": "GameCenter",
+      "tween": [
+        {
+          "param": "alpha",
+          "type": "float",
+          "body": [
+            {
+              "duration": 0.6,
+              "enable_start": true,
+              "copy_start": true,
+              "start": 0,
+              "end": 1
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "GameCenterOff": [
+    {
+      "identifier": "GameCenter",
+      "tween": [
+        {
+          "param": "alpha",
+          "type": "float",
+          "body": [
+            {
+              "duration": 0.6,
+              "disable_end": true,
+              "start": 1,
+              "end": 0
+            }
+          ]
+        }
+      ]
+    }
   ]
 }

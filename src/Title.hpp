@@ -169,6 +169,7 @@ public:
     if (GameCenter::isAuthenticated())
     {
       // GameCenter
+      game_center_ = true;
       canvas_.enableWidget("GameCenter");
     }
 
@@ -193,6 +194,23 @@ private:
   bool update(double current_time, double delta_time) noexcept override
   {
     count_exec_.update(delta_time);
+
+    // GameCenterへのログイン状態が変化した
+    if (GameCenter::isAuthenticated() != game_center_)
+    {
+      game_center_ = GameCenter::isAuthenticated();
+      if (game_center_)
+      {
+        canvas_.startTween("GameCenterOn");
+        DOUT << "GameCenter On" << std::endl;
+      }
+      else
+      {
+        canvas_.startTween("GameCenterOff");
+        DOUT << "GameCenter Off" << std::endl;
+      }
+    }
+
     return active_;
   }
 
@@ -205,6 +223,8 @@ private:
   UI::Canvas canvas_;
 
   bool active_ = true;
+
+  bool game_center_ = false;
 
 };
 
