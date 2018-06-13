@@ -32,7 +32,7 @@ void showBoard(std::function<void()> start_callback,
     auto app_vc = (UIViewController<GKGameCenterControllerDelegate>*)ci::app::getWindow()->getNativeViewController();
     gamecenter_vc.gameCenterDelegate = app_vc;
     gamecenter_vc.viewState          = GKGameCenterViewControllerStateLeaderboards;
-    [gamecenter_vc.view setNeedsDisplay];
+    // [gamecenter_vc.view setNeedsDisplay];
     [app_vc presentViewController:gamecenter_vc animated:YES completion:nil];
   }  
 }
