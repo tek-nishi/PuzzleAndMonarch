@@ -85,6 +85,7 @@ public:
                                    { "PM.FOREST5",   5.0 },
                                    { "PM.FOREST10", 10.0 },
                                    { "PM.FOREST15", 15.0 },
+                                   { "PM.FOREST20", 20.0 },
                                  };
                                  
                                  for (const auto& t : tbl)
@@ -101,6 +102,7 @@ public:
                                    { "PM.PATH5",   5.0 },
                                    { "PM.PATH10", 10.0 },
                                    { "PM.PATH15", 15.0 },
+                                   { "PM.PATH20", 20.0 },
                                  };
                                  
                                  for (const auto& t : tbl)
