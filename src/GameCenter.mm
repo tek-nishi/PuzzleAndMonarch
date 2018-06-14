@@ -281,6 +281,7 @@ void submitAchievement(const std::string& identifier, const double complete_rate
 }
 
 
+#if defined (DEBUG)
 void resetAchievement()
 {
   cached_achievements.clear();
@@ -299,6 +300,7 @@ void resetAchievement()
 
   // FIXME Scoreの削除機能が無い
 }
+#endif
 
 
 // 認証

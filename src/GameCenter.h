@@ -26,7 +26,9 @@ void submitAchievement(const std::string& identifier, const double complete_rate
                        const bool banner = true);
 
 void writeCachedAchievement();
+#if defined (DEBUG)
 void resetAchievement();
+#endif
 
 #else
 
@@ -52,8 +54,10 @@ void submitAchievement(T1 identifier, T2 complete_rate = 0, T3 banner = true) {}
 template <typename T = void>
 void writeCachedAchievement() {}
 
+#if defined (DEBUG)
 template <typename T = void>
 void resetAchievement() {}
+#endif
 
 #endif
 

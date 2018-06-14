@@ -18,6 +18,8 @@
 * TODO iOS:AppStore提出に必要な書類や素材
 * TODO iOS:実績のアイコンを用意
 * TODO iOS:課金処理
+* DONE iOS:GameCenterの記録は消去しない
+CLOSED: [2018-06-14 木 22:45]
 * DONE iOS:イントロをスキップすると、タイトル画面でGameCenterのアイコンが出現しない
 CLOSED: [2018-06-14 木 00:09]
 * DONE iOS:実績キャッシュの暗号化
