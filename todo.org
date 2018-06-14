@@ -1,6 +1,5 @@
 * TODO アプリ開始時は最後のプレイ結果を表示
 * TODO Titleのアイコン、利き手に関係なくす
-* TODO Rankingの行間を少し広く
 * TODO 道の繋がった聖堂の追加
 * TODO パネル：道と緑の境目の描き込みや生活感を出す物体を置く
 * TODO エフェクト描画はdrawInstancedで
@@ -18,6 +17,8 @@
 * TODO iOS:AppStore提出に必要な書類や素材
 * TODO iOS:実績のアイコンを用意
 * TODO iOS:課金処理
+* DONE Rankingの行間を少し広く
+CLOSED: [2018-06-14 木 23:11]
 * DONE iOS:GameCenterの記録は消去しない
 CLOSED: [2018-06-14 木 22:45]
 * DONE iOS:イントロをスキップすると、タイトル画面でGameCenterのアイコンが出現しない
