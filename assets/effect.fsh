@@ -9,10 +9,10 @@ uniform vec4 uLightPosition;
 
 uniform float uAmbient;
 uniform float uShininess;
-uniform vec4 uSpecular;
+uniform vec3 uSpecular;
 
-uniform vec4 u_color; 
-uniform vec4 uColor; 
+uniform vec3 u_color; 
+uniform vec3 uColor; 
 
 in vec4 vPosition;
 in vec3 vNormal;
@@ -33,7 +33,7 @@ void main(void)
   // スペキュラは反射ベクトルを求める方式
   vec3 reflect    = reflect(-light, fnormal);
   float specular  = pow(max(dot(reflect, view), 0.0), uShininess);
-  vec4 spec_color = uSpecular * specular;
+  vec3 spec_color = uSpecular * specular;
 
-	Color = (uColor * diffuse + spec_color) * u_color;
+	Color = vec4((uColor * diffuse + spec_color) * u_color, 1.0);
 }

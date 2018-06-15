@@ -142,4 +142,9 @@ float randFromVec2(const glm::vec2& v)
   return ci::randFloat(v.x, v.y);
 }
 
+ci::ColorA mulColor(const ci::ColorA& a, const ci::Color &b) noexcept
+{
+  return { a.r * b.r, a.g * b.g, a.b * b.b, a.a };
+}
+
 }

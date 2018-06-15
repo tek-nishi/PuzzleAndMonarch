@@ -36,7 +36,7 @@ class View
     bool disp;
     glm::vec3 pos;
     glm::vec3 scale;
-    ci::ColorA color;
+    ci::Color color;
   };
 
   struct Blank
@@ -161,7 +161,7 @@ public:
 
       field_shader_->uniform("uShadowMap", 0);
 
-      field_shader_->uniform("uSpecular", Json::getColorA<float>(params["field.specular"]));
+      field_shader_->uniform("uSpecular", Json::getColor<float>(params["field.specular"]));
       field_shader_->uniform("uShininess", params.getValueForKey<float>("field.shininess"));
       field_shader_->uniform("uAmbient", params.getValueForKey<float>("field.ambient"));
     }
@@ -172,13 +172,13 @@ public:
       float checker_size = bg_scale_.x / (PANEL_SIZE / 2);
       bg_shader_->uniform("u_checker_size", checker_size);
       
-      bg_shader_->uniform("u_bright", Json::getVec<glm::vec4>(params["bg.bright"]));
-      bg_shader_->uniform("u_dark",   Json::getVec<glm::vec4>(params["bg.dark"]));
+      bg_shader_->uniform("u_bright", Json::getVec<glm::vec3>(params["bg.bright"]));
+      bg_shader_->uniform("u_dark",   Json::getVec<glm::vec3>(params["bg.dark"]));
       bg_shader_->uniform("uTex1", 1);
 
       bg_shader_->uniform("uShadowMap", 0);
 
-      bg_shader_->uniform("uSpecular", Json::getColorA<float>(params["bg.specular"]));
+      bg_shader_->uniform("uSpecular", Json::getColor<float>(params["bg.specular"]));
       bg_shader_->uniform("uShininess", params.getValueForKey<float>("bg.shininess"));
       bg_shader_->uniform("uAmbient", params.getValueForKey<float>("bg.ambient"));
     }
@@ -234,7 +234,7 @@ public:
       auto name = params.getValueForKey<std::string>("effect.shader");
       effect_shader_ = createShader(name, name);
 
-      effect_shader_->uniform("uSpecular", Json::getColorA<float>(params["field.specular"]));
+      effect_shader_->uniform("uSpecular", Json::getColor<float>(params["field.specular"]));
       effect_shader_->uniform("uShininess", params.getValueForKey<float>("field.shininess"));
       effect_shader_->uniform("uAmbient", params.getValueForKey<float>("field.ambient"));
     }
@@ -280,24 +280,24 @@ public:
   }
 
 
-  void setColor(const ci::ColorA& color) noexcept
+  void setColor(const ci::Color& color) noexcept
   {
     field_color_.stop();
     field_color_ = color;
     field_shader_->uniform("u_color", color);
     bg_shader_->uniform("u_color", color);
-    cloud_shader_->uniform("uColor", cloud_color_ * color);
+    cloud_shader_->uniform("uColor", mulColor(cloud_color_, color));
     effect_shader_->uniform("u_color", color);
   }
 
-  void setColor(float duration, const ci::ColorA& color, float delay = 0.0f) noexcept
+  void setColor(float duration, const ci::Color& color, float delay = 0.0f) noexcept
   {
     auto option = transition_timeline_->apply(&field_color_, color, duration);
     option.updateFn([this]() noexcept
                     {
                       field_shader_->uniform("u_color", field_color_());
                       bg_shader_->uniform("u_color", field_color_());
-                      cloud_shader_->uniform("uColor", cloud_color_ * field_color_());
+                      cloud_shader_->uniform("uColor", mulColor(cloud_color_, field_color_()));
                       effect_shader_->uniform("u_color", field_color_());
                     });
     option.delay(delay);
@@ -647,7 +647,7 @@ public:
 
     disp_cloud_ = alpha > 0.0f;
     cloud_color_.a = alpha;
-    cloud_shader_->uniform("uColor", cloud_color_ * field_color_());
+    cloud_shader_->uniform("uColor", mulColor(cloud_color_, field_color_()));
   }
 
   void setCloudAlpha(float duration, float alpha, float delay = 0.0f) noexcept
@@ -656,7 +656,7 @@ public:
     option.updateFn([this]() noexcept
                     {
                       disp_cloud_ = cloud_color_.a > 0.0f;
-                      cloud_shader_->uniform("uColor", cloud_color_ * field_color_());
+                      cloud_shader_->uniform("uColor", mulColor(cloud_color_, field_color_()));
                     });
     option.delay(delay);
   }
@@ -1209,7 +1209,7 @@ private:
   std::list<Blank> blank_panels_;
 
   ci::gl::GlslProgRef field_shader_;
-  ci::Anim<ci::ColorA> field_color_ = ci::ColorA::white();
+  ci::Anim<ci::Color> field_color_ = ci::Color::white();
 
   ci::gl::GlslProgRef bg_shader_;
   ci::gl::Texture2dRef bg_texture_;

@@ -33,5 +33,5 @@ void main(void)
   vPosition = ciModelView * ciPosition;
   vNormal   = ciNormalMatrix * ciNormal;
 
-  gl_Position  = ciModelViewProjection * ciPosition;
+  gl_Position = ciModelViewProjection * ciPosition;
 }

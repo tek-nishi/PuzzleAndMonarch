@@ -4,7 +4,6 @@
 * TODO パネル：道と緑の境目の描き込みや生活感を出す物体を置く
 * TODO エフェクト描画はdrawInstancedで
 * TODO 世界観を作る
-* TODO シェーダーの計算量を減らす(vec4→vec3)
 * TODO ローカライズ
 * TODO モデルデータが重い
 * TODO BGM作る
@@ -17,6 +16,8 @@
 * TODO iOS:AppStore提出に必要な書類や素材
 * TODO iOS:実績のアイコンを用意
 * TODO iOS:課金処理
+* DONE シェーダーの計算量を減らす(vec4→vec3)
+CLOSED: [2018-06-15 金 22:06]
 * DONE Rankingの行間を少し広く
 CLOSED: [2018-06-14 木 23:11]
 * DONE iOS:GameCenterの記録は消去しない

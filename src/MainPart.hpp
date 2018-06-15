@@ -53,7 +53,7 @@ public:
       view_(params["field"]),
       ranking_records_(params.getValueForKey<u_int>("game.ranking_records")),
       transition_duration_(params.getValueForKey<float>("ui.transition.duration")),
-      transition_color_(Json::getColorA<float>(params["ui.transition.color"])),
+      transition_color_(Json::getColor<float>(params["ui.transition.color"])),
       rotate_camera_(event, params["field"], std::bind(&MainPart::rotateCamera, this, std::placeholders::_1))
   {
     // system
@@ -306,7 +306,7 @@ public:
                                 count_exec_.add(params_.getValueForKey<float>("ui.transition.game_begin_duration"),
                                                 [this]() noexcept
                                                 {
-                                                  view_.setColor(transition_duration_, ci::ColorA::white());
+                                                  view_.setColor(transition_duration_, ci::Color::white());
                                                 });
 
                                 // カメラ設定初期化
@@ -442,7 +442,7 @@ public:
                                                     { "max_path",     max_path },
                                                   };
                                                   event_.signal("Result:begin", a);
-                                                  view_.setColor(transition_duration_, ci::ColorA::white());
+                                                  view_.setColor(transition_duration_, ci::Color::white());
                                                 });
 
                                 count_exec_.add(params_.getValueForKey<double>("field.auto_camera_duration"),
@@ -589,7 +589,7 @@ public:
     holder_ += event_.connect("view:touch_ended",
                               [this](const Connection&, const Arguments&) noexcept
                               {
-                                view_.setColor(transition_duration_, ci::ColorA::white(), 0.8f);
+                                view_.setColor(transition_duration_, ci::Color::white(), 0.8f);
                               });
     
     holder_ += event_.connect("back:touch_ended",
@@ -648,7 +648,7 @@ public:
                                                 },
                                                 true);
 
-                                view_.setColor(transition_duration_, ci::ColorA::white(),
+                                view_.setColor(transition_duration_, ci::Color::white(),
                                                params_.getValueForKey<double>("field.pause_transition_delay"));
                               });
 
@@ -656,7 +656,7 @@ public:
                               [this](const Connection&, const Arguments&) noexcept
                               {
                                 // ゲーム終了
-                                view_.setColor(transition_duration_, ci::ColorA::white(),
+                                view_.setColor(transition_duration_, ci::Color::white(),
                                                params_.getValueForKey<double>("field.pause_transition_delay"));
                               });
     
@@ -670,7 +670,7 @@ public:
     holder_ += event_.connect("App:pending-update",
                               [this](const Connection&, const Arguments&) noexcept
                               {
-                                auto color = Json::getColorA<float>(params_["field.pending_update_color"]);
+                                auto color = Json::getColor<float>(params_["field.pending_update_color"]);
                                 view_.setColor(color);
                               });
 
@@ -678,7 +678,7 @@ public:
                               [this](const Connection&, const Arguments&) noexcept
                               {
                                 auto duration = params_.getValueForKey<float>("field.pending_update_duration");
-                                view_.setColor(duration, ci::ColorA::white());
+                                view_.setColor(duration, ci::Color::white());
                               });
 
     // 設定画面
@@ -844,7 +844,7 @@ public:
                               });
 #endif
 
-    view_.setColor(ci::ColorA::white());
+    view_.setColor(ci::Color::white());
   }
 
 
@@ -1131,7 +1131,7 @@ private:
     holder_ += event_.connect(end,
                               [this, delay](const Connection&, const Arguments&) noexcept
                               {
-                                view_.setColor(transition_duration_, ci::ColorA::white(), delay);
+                                view_.setColor(transition_duration_, ci::Color::white(), delay);
                               });
   }
 
@@ -1463,7 +1463,7 @@ private:
   u_int ranking_records_;
 
   float transition_duration_;
-  ci::ColorA transition_color_;
+  ci::Color transition_color_;
 
   AutoRotateCamera rotate_camera_;
 
