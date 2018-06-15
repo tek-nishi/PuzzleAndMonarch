@@ -8,6 +8,7 @@ in vec4 Color;
 out vec4 oColor;
 
 
-void main(void) {
+void main(void)
+{
   oColor = Color;
 }
