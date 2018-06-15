@@ -868,7 +868,7 @@ private:
 
     ci::gl::ScopedGlslProg prog(shadow_shader_);
 
-    drawFieldPanels(false);
+    drawFieldPanelShadow();
     drawFieldBlankShadow();
 
     if (info.playing)
@@ -889,7 +889,6 @@ private:
   void renderField(const Info& info) noexcept
   {
     ci::gl::setMatrices(*info.main_camera);
-    ci::gl::clear(ci::Color::black());
 
     auto mat = light_camera_.getProjectionMatrix() * light_camera_.getViewMatrix();
     field_shader_->uniform("uShadowMatrix", mat);
@@ -907,7 +906,7 @@ private:
     ci::gl::ScopedGlslProg prog(field_shader_);
     ci::gl::ScopedTextureBind texScope(shadow_map_);
 
-    drawFieldPanels(true);
+    drawFieldPanels();
     drawFieldBlank();
 
     if (info.playing)
@@ -965,7 +964,7 @@ private:
   }
 
   // Fieldのパネルを全て表示
-  void drawFieldPanels(bool diffuse) noexcept
+  void drawFieldPanelShadow() noexcept
   {
     ci::gl::ScopedModelMatrix m;
 
@@ -973,11 +972,20 @@ private:
     {
       ci::gl::setModelMatrix(p.matrix);
 
-      if (diffuse)
-      {
-        field_shader_->uniform("uDiffusePower", p.diffuse_power);
-      }
+      const auto& model = getPanelModel(p.index);
+      ci::gl::draw(model);
+    }
+  }
 
+  void drawFieldPanels() noexcept
+  {
+    ci::gl::ScopedModelMatrix m;
+
+    for (const auto& p : field_panels_)
+    {
+      ci::gl::setModelMatrix(p.matrix);
+
+      field_shader_->uniform("uDiffusePower", p.diffuse_power);
       const auto& model = getPanelModel(p.index);
       ci::gl::draw(model);
     }

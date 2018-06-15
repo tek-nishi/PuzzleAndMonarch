@@ -12,10 +12,11 @@
 * TODO カルカソンヌ公式に許可を取る
 * TODO アプリアイコン
 * TODO macOS:バックグラウンドで放置しとくとDisplayがnullになって落ちる
-* TODO Win:zlib.hが無くてエラー
 * TODO iOS:AppStore提出に必要な書類や素材
 * TODO iOS:実績のアイコンを用意
 * TODO iOS:課金処理
+* DONE Win:zlib.hが無くてエラー
+CLOSED: [2018-06-15 金 23:59]
 * DONE シェーダーの計算量を減らす(vec4→vec3)
 CLOSED: [2018-06-15 金 22:06]
 * DONE Rankingの行間を少し広く

@@ -10,7 +10,7 @@ uniform mat3 ciNormalMatrix;
 
 uniform mat4 uShadowMatrix;
 
-in vec4	ciColor;
+in vec3	ciColor;
 in vec4	ciPosition;
 in vec3 ciNormal;
 
@@ -29,7 +29,7 @@ const mat4 biasMatrix = mat4( 0.5, 0.0, 0.0, 0.0,
 void main(void)
 {
   vShadowCoord = (biasMatrix * uShadowMatrix * ciModelMatrix) * ciPosition;
-	vColor			 = ciColor.rgb;
+	vColor			 = ciColor;
 
   vPosition = ciModelView * ciPosition;
   vNormal   = ciNormalMatrix * ciNormal;
