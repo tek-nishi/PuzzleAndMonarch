@@ -123,19 +123,35 @@
       "identifier": "play",
       "tween": [
         {
+          "param": "end_angle",
+          "type": "float",
+          "body": [
+            {
+              "duration": 0.6,
+              "delay": 2.0,
+              "enable_start": true,
+              "ease_func": "OutQuart",
+              "start": 91,
+              "end":   450
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "identifier": "play:icon",
+      "tween": [
+        {
           "param": "alpha",
           "type": "float",
           "body": [
             {
-              "duration": 0.8,
-              "loop": true,
-              "delay": 2.0,
+              "duration": 0.4,
+              "delay": 2,
               "enable_start": true,
-              "pingpong": true,
-              "ease_func": "OutCubic",
-              "copy_start": true,
+              "ease_func": "None",
               "start": 0,
-              "end":   1
+              "end": 1
             }
           ]
         }
@@ -151,7 +167,7 @@
             {
               "duration": 1.6,
               "loop": true,
-              "delay": 2.2,
+              "delay": 2.5,
               "ease_func": "OutCubic",
               "start": [ 1, 1 ],
               "end":   [ 1.6, 1.6 ]
@@ -165,10 +181,30 @@
             {
               "duration": 1.6,
               "loop": true,
-              "delay": 2.2,
+              "delay": 2.5,
               "ease_func": "OutCubic",
               "start": 1,
               "end":   0
+            }
+          ]
+        }
+      ]
+    },
+
+    {
+      "identifier": "copyright",
+      "tween": [
+        {
+          "param": "alpha",
+          "type": "float",
+          "body": [
+            {
+              "duration": 1.0,
+              "delay": 3,
+              "copy_start": true,
+              "ease_func": "None",
+              "start": 0,
+              "end":   1
             }
           ]
         }
@@ -181,18 +217,35 @@
       "identifier": "play",
       "tween": [
         {
+          "param": "end_angle",
+          "type": "float",
+          "body": [
+            {
+              "duration": 0.6,
+              "delay": 0.3,
+              "enable_start": true,
+              "ease_func": "OutQuart",
+              "start": 91,
+              "end":   450
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "identifier": "play:icon",
+      "tween": [
+        {
           "param": "alpha",
           "type": "float",
           "body": [
             {
-              "duration": 0.8,
-              "loop": true,
+              "duration": 0.4,
               "delay": 0.3,
               "enable_start": true,
-              "pingpong": true,
-              "ease_func": "OutCubic",
+              "ease_func": "None",
               "start": 0,
-              "end":   1
+              "end": 1
             }
           ]
         }
@@ -208,7 +261,7 @@
             {
               "duration": 1.6,
               "loop": true,
-              "delay": 0.5,
+              "delay": 0.7,
               "ease_func": "OutCubic",
               "start": [ 1, 1 ],
               "end":   [ 1.6, 1.6 ]
@@ -222,10 +275,30 @@
             {
               "duration": 1.6,
               "loop": true,
-              "delay": 0.5,
+              "delay": 0.7,
               "ease_func": "OutCubic",
               "start": 1,
               "end":   0
+            }
+          ]
+        }
+      ]
+    },
+
+    {
+      "identifier": "copyright",
+      "tween": [
+        {
+          "param": "alpha",
+          "type": "float",
+          "body": [
+            {
+              "duration": 1.0,
+              "delay": 1,
+              "copy_start": true,
+              "ease_func": "None",
+              "start": 0,
+              "end":   1
             }
           ]
         }

@@ -67,6 +67,9 @@
 
       "radius": 1,
       "line_width": 3.5,
+      "segment": 40,
+      "begin_angle": 90,
+      "end_angle": 450,
 
       "event": "play",
       "se":    "play",
@@ -75,6 +78,7 @@
 
       "childlen": [
         {
+          "identifier": "play:icon",
           "rect": [ 0, 0, 0, 0 ],
           "anchor": [
             [ 0.3, 0.18 ],
@@ -96,7 +100,8 @@
       "alpha": 0,
 
       "radius": 1,
-      "line_width": 2.5
+      "line_width": 2.5,
+      "segment": 40
     },
 
     {
@@ -122,7 +127,7 @@
 
       "radius": 1,
       "line_width": 1.5,
-      "segment": 20,
+      "segment": 30,
       "begin_angle": 90,
       "end_angle": 450,
 
@@ -153,7 +158,7 @@
 
       "radius": 1,
       "line_width": 1.5,
-      "segment": 20,
+      "segment": 30,
       "begin_angle": 90,
       "end_angle": 450,
 
@@ -184,7 +189,7 @@
 
       "radius": 1,
       "line_width": 1.5,
-      "segment": 20,
+      "segment": 30,
       "begin_angle": 90,
       "end_angle": 450,
 
@@ -215,7 +220,7 @@
 
       "radius": 1,
       "line_width": 1.5,
-      "segment": 20,
+      "segment": 30,
       "begin_angle": 90,
       "end_angle": 450,
 
@@ -246,7 +251,7 @@
 
       "radius": 1,
       "line_width": 1.5,
-      "segment": 20,
+      "segment": 30,
       "begin_angle": 90,
       "end_angle": 450,
 

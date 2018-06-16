@@ -314,8 +314,8 @@ private:
   {
     // ボタン演出
     std::vector<std::pair<std::string, std::string>> widgets{
+      { "abort",  "abort:icon" },
       { "resume", "resume:icon" },
-      { "abort",  "abort:icon" }
     };
     UI::startButtonTween(count_exec_, canvas_, 0.5, 0.1, widgets);
   }
