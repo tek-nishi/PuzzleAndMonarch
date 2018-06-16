@@ -173,6 +173,8 @@ public:
       canvas_.enableWidget("GameCenter");
     }
 
+    layoutIcons(params);
+
     if (first_time)
     {
       // 起動時は特別
@@ -213,6 +215,37 @@ private:
 
     return active_;
   }
+
+  // アイコンを再レイアウト
+  void layoutIcons(const ci::JsonTree& params)
+  {
+    const auto& menu = params["title.menu"];
+
+    // 有効なアイコンを数える
+    int num = 0;
+    for (const auto& w : menu)
+    {
+      const auto& name = w.getValue<std::string>();
+      if (canvas_.isEnableWidget(name)) num += 1;
+    }
+
+    // FIXME マジックナンバー
+    float x = -(20 * num + 15 * (num - 1)) * 0.5f;
+    for (const auto& w : menu)
+    {
+      const auto& name = w.getValue<std::string>();
+      if (!canvas_.isEnableWidget(name)) continue;
+
+      // NOTICE Rectを修正しているのでやや煩雑
+      auto p = canvas_.getWidgetParam(name, "rect");
+      auto* rect = boost::any_cast<ci::Rectf*>(p);
+      rect->x1 = x;
+      rect->x2 = x + 20;
+
+      x += 20 + 15;
+    }
+  }
+
 
   
   Event<Arguments>& event_;

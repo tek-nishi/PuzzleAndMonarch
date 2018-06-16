@@ -477,6 +477,14 @@
     "canvas": "ui_title.json",
     "tweens": "tw_title.json",
 
+    "menu": [
+      "GameCenter",
+      "Ranking",
+      "Records",
+      "Settings",
+      "Credits"
+    ],
+
     "se_first": [
       [ 0.25, "title" ]
     ],

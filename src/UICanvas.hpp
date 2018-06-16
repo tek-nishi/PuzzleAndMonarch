@@ -168,6 +168,20 @@ public:
     widget->setParam("text", text);
   }
 
+  bool isEnableWidget(const std::string& id) noexcept
+  {
+#if defined DEBUG
+    if (!this->isExists(id))
+    {
+      DOUT << "No widget: " << id << std::endl;
+      return false;
+    }
+#endif
+
+    const auto& widget = this->at(id);
+    return widget->isEnable();
+  }
+
   void enableWidget(const std::string& id, bool enable = true) noexcept
   {
 #if defined DEBUG
