@@ -16,6 +16,7 @@
 * TODO iOS:AppStore提出に必要な書類や素材
 * TODO iOS:実績のアイコンを用意
 * TODO iOS:課金処理
+* TODO クルって丸を描く演出
 * DONE Win:zlib.hが無くてエラー
 CLOSED: [2018-06-15 金 23:59]
 * DONE シェーダーの計算量を減らす(vec4→vec3)
