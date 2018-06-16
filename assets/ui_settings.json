@@ -48,13 +48,16 @@
           
           "radius": 1,
           "line_width": 1.5,
+          "segment": 20,
+          "begin_angle": 90,
+          "end_angle": 450,
 
           "event": "BGM",
           "se": "bgm-test",
 
           "childlen": [
             {
-              "identifier": "BGM-text",
+              "identifier": "BGM:icon",
               "rect": [ 3, 2, -1, -2 ],
               "anchor": [
                 [ 0, 0 ],
@@ -88,13 +91,16 @@
 
           "radius": 1,
           "line_width": 1.5,
+          "segment": 20,
+          "begin_angle": 90,
+          "end_angle": 450,
 
           "event": "SE",
           "se": "se-test",
 
           "childlen": [
             {
-              "identifier": "SE-text",
+              "identifier": "SE:icon",
               "rect": [ 3, 2, -1, -2 ],
               "anchor": [
                 [ 0, 0 ],
@@ -129,11 +135,15 @@
 
           "radius": 1,
           "line_width": 1.5,
+          "segment": 20,
+          "begin_angle": 90,
+          "end_angle": 450,
 
           "event": "Trash",
 
           "childlen": [
             {
+              "identifier": "Trash:icon",
               "rect": [ 0, 0, 0, 0 ],
               "anchor": [
                 [ 0.07, 0.15 ],
@@ -171,9 +181,13 @@
 
           "radius": 1,
           "line_width": 1.5,
+          "segment": 20,
+          "begin_angle": 90,
+          "end_angle": 450,
 
           "childlen": [
             {
+              "identifier": "touch:icon",
               "rect": [ 0, 0, 0, 0 ],
               "anchor": [
                 [ 0.14, 0.14 ],
@@ -245,11 +259,15 @@
 
           "radius": 1,
           "line_width": 1.5,
+          "segment": 20,
+          "begin_angle": 90,
+          "end_angle": 450,
 
           "event": "erase-record",
 
           "childlen": [
             {
+              "identifier": "erase-record:icon",
               "rect": [ 0, 0, 0, 0 ],
               "anchor": [
                 [ 0.07, 0.15 ],
@@ -284,9 +302,13 @@
 
           "radius": 1,
           "line_width": 1.5,
+          "segment": 20,
+          "begin_angle": 90,
+          "end_angle": 450,
 
           "childlen": [
             {
+              "identifier": "back:icon",
               "rect": [ 0, 0, 0, 0 ],
               "anchor": [
                 [ 0.14, 0.14 ],

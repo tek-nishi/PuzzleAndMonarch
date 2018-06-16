@@ -5,8 +5,6 @@
     [ 0, 0 ],
     [ 1, 1 ]
   ],
-  "scale": [ 1, 1 ],
-  "pivot": [ 0.5, 0.5 ],
   
   "childlen": [
     {
@@ -15,12 +13,9 @@
         [ 0.5, 0.91 ],
         [ 0.5, 0.91 ]
       ],
-      "scale": [ 1, 1 ],
-      "pivot": [ 0.5, 0.5 ],
 
       "font": "head",
-      "text": "Credits",
-      "color": [ 1, 1, 1 ]
+      "text": "Credits"
     },
     
     {
@@ -29,8 +24,6 @@
         [ 0.5, 0.5 ],
         [ 0.5, 0.5 ]
       ],
-      "scale": [ 1, 1 ],
-      "pivot": [ 0.5, 0.5 ],
       
       "childlen": [
         {
@@ -39,12 +32,9 @@
             [ 0.0, 1 ],
             [ 1.0, 1 ]
           ],
-          "scale": [ 1, 1 ],
-          "pivot": [ 0.5, 0.5 ],
 
           "font": "en",
-          "text": "Created by",
-          "color": [ 1, 1, 1 ]
+          "text": "Created by"
         },
         {
           "rect": [ 0, -15, 0, -5 ],
@@ -52,12 +42,9 @@
             [ 0.0, 1 ],
             [ 1.0, 1 ]
           ],
-          "scale": [ 1, 1 ],
-          "pivot": [ 0.5, 0.5 ],
 
           "font": "en",
-          "text": "Nishiyama Nobuyuki",
-          "color": [ 1, 1, 1 ]
+          "text": "Nishiyama Nobuyuki"
         },
         {
           "rect": [ 0, -29, 0, -21 ],
@@ -65,12 +52,9 @@
             [ 0.0, 1 ],
             [ 1.0, 1 ]
           ],
-          "scale": [ 1, 1 ],
-          "pivot": [ 0.5, 0.5 ],
 
           "font": "en",
-          "text": "Powered by",
-          "color": [ 1, 1, 1 ]
+          "text": "Powered by"
         },
         {
           "rect": [ 0, -40, 0, -30 ],
@@ -78,12 +62,9 @@
             [ 0.0, 1 ],
             [ 1.0, 1 ]
           ],
-          "scale": [ 1, 1 ],
-          "pivot": [ 0.5, 0.5 ],
 
           "font": "en",
-          "text": "Cinder 0.9.1  Boost 1.67.0  glm 0.9.8.5",
-          "color": [ 1, 1, 1 ]
+          "text": "Cinder 0.9.1  Boost 1.67.0  glm 0.9.8.5"
         },
         {
           "rect": [ 0, -50, 0, -40 ],
@@ -91,12 +72,9 @@
             [ 0.0, 1 ],
             [ 1.0, 1 ]
           ],
-          "scale": [ 1, 1 ],
-          "pivot": [ 0.5, 0.5 ],
 
           "font": "en",
-          "text": "stb_truetype.h 1.17  fontstash  Font Awesome 4.7.0",
-          "color": [ 1, 1, 1 ]
+          "text": "stb_truetype.h 1.17  fontstash  Font Awesome 4.7.0"
         },
         {
           "rect": [ 0, -64, 0, -56 ],
@@ -104,12 +82,9 @@
             [ 0.0, 1 ],
             [ 1.0, 1 ]
           ],
-          "scale": [ 1, 1 ],
-          "pivot": [ 0.5, 0.5 ],
 
           "font": "en",
-          "text": "Thanks to",
-          "color": [ 1, 1, 1 ]
+          "text": "Thanks to"
         },
         {
           "rect": [ 0, -75, 0, -65 ],
@@ -117,12 +92,9 @@
             [ 0.0, 1 ],
             [ 1.0, 1 ]
           ],
-          "scale": [ 1, 1 ],
-          "pivot": [ 0.5, 0.5 ],
 
           "font": "en",
-          "text": "Japan Electronics College  Vantan Game Academy",
-          "color": [ 1, 1, 1 ]
+          "text": "Japan Electronics College  Vantan Game Academy"
         },
         {
           "rect": [ 0, -85, 0, -75 ],
@@ -130,12 +102,9 @@
             [ 0.0, 1 ],
             [ 1.0, 1 ]
           ],
-          "scale": [ 1, 1 ],
-          "pivot": [ 0.5, 0.5 ],
 
           "font": "en",
-          "text": "Software Society Akihabara",
-          "color": [ 1, 1, 1 ]
+          "text": "Software Society Akihabara"
         },
         {
           "rect": [ 0, -95, 0, -85 ],
@@ -143,12 +112,9 @@
             [ 0.0, 1 ],
             [ 1.0, 1 ]
           ],
-          "scale": [ 1, 1 ],
-          "pivot": [ 0.5, 0.5 ],
 
           "font": "en",
-          "text": "Coworking Space Kayabacho, Co-Edo",
-          "color": [ 1, 1, 1 ]
+          "text": "Coworking Space Kayabacho, Co-Edo"
         },
         {
           "rect": [ 0, -105, 0, -95 ],
@@ -156,12 +122,9 @@
             [ 0.0, 1 ],
             [ 1.0, 1 ]
           ],
-          "scale": [ 1, 1 ],
-          "pivot": [ 0.5, 0.5 ],
 
           "font": "en",
-          "text": "Coworking Space Temma  Haino Yuka",
-          "color": [ 1, 1, 1 ]
+          "text": "Coworking Space Temma  Haino Yuka"
         },
         {
           "rect": [ 0, -115, 0, -105 ],
@@ -169,12 +132,9 @@
             [ 0.0, 1 ],
             [ 1.0, 1 ]
           ],
-          "scale": [ 1, 1 ],
-          "pivot": [ 0.5, 0.5 ],
 
           "font": "jp",
-          "text": "東ゲ部　関ゲ部",
-          "color": [ 1, 1, 1 ]
+          "text": "東ゲ部　関ゲ部"
         }
       ]
     },
@@ -186,27 +146,25 @@
         [ 0.5, 0.06 ],
         [ 0.5, 0.06 ]
       ],
-      "scale": [ 1, 1 ],
-      "pivot": [ 0.5, 0.5 ],
       "event": "agree",
       "se": "agree",
 
       "radius": 1,
       "line_width": 1.5,
-      "color": [ 1, 1, 1 ],
+      "segment": 20,
+      "begin_angle": 90,
+      "end_angle": 450,
 
       "childlen": [
         {
+          "identifier": "touch:icon",
           "rect": [ 0, 0, 0, 0 ],
           "anchor": [
             [ 0.14, 0.14 ],
             [ 0.85, 0.93 ]
           ],
-          "scale": [ 1, 1 ],
-          "pivot": [ 0.5, 0.5 ],
           "font": "icon",
-          "text": "",
-          "color": [ 1, 1, 1 ]
+          "text": ""
         }
       ]
     }

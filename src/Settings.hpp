@@ -5,6 +5,7 @@
 //
 
 #include "TweenUtil.hpp"
+#include "UISupport.hpp"
 
 
 namespace ngs {
@@ -12,20 +13,6 @@ namespace ngs {
 class Settings
   : public Task
 {
-  Event<Arguments>& event_;
-  ConnectionHolder holder_;
-
-  CountExec count_exec_;
-
-  UI::Canvas canvas_;
-
-  bool bgm_enable_;
-  bool se_enable_;
-  bool has_records_;
-
-  bool active_ = true;
-
-
 public:
   // FIXME 受け渡しが冗長なのを解決したい
   struct Detail {
@@ -74,7 +61,7 @@ public:
                               [this](const Connection&, const Arguments&) noexcept
                               {
                                 bgm_enable_ = !bgm_enable_;
-                                canvas_.setWidgetText("BGM-text", bgm_enable_ ? u8"" : u8"");
+                                canvas_.setWidgetText("BGM:icon", bgm_enable_ ? u8"" : u8"");
                                 signalSettings();
                               });
 
@@ -82,7 +69,7 @@ public:
                               [this](const Connection&, const Arguments&) noexcept
                               {
                                 se_enable_ = !se_enable_;
-                                canvas_.setWidgetText("SE-text", se_enable_ ? u8"" : u8"");
+                                canvas_.setWidgetText("SE:icon", se_enable_ ? u8"" : u8"");
                                 signalSettings();
                               });
 
@@ -96,6 +83,7 @@ public:
                                                 [this]() noexcept
                                                 {
                                                   canvas_.startCommonTween("dust", "in-from-right");
+                                                  startSubTween();
                                                 });
                                 count_exec_.add(wipe_duration,
                                                 [this]() noexcept
@@ -116,6 +104,7 @@ public:
                                                 [this]() noexcept
                                                 {
                                                   canvas_.startCommonTween("main", "in-from-left");
+                                                  startMainTween();
                                                 });
                                 count_exec_.add(wipe_duration,
                                                 [this]() noexcept
@@ -140,6 +129,7 @@ public:
                                                 [this]() noexcept
                                                 {
                                                   canvas_.startCommonTween("main", "in-from-left");
+                                                  startMainTween();
                                                 });
                                 count_exec_.add(wipe_duration,
                                                 [this]() noexcept
@@ -159,6 +149,7 @@ public:
 
     applyDetail(detail);
     canvas_.startCommonTween("root", "in-from-right");
+    startMainTween();
   }
 
   ~Settings() = default;
@@ -178,8 +169,8 @@ private:
     se_enable_   = detail.se_enable;
     has_records_ = detail.has_records;
 
-    canvas_.setWidgetText("BGM-text", bgm_enable_ ? u8"" : u8"");
-    canvas_.setWidgetText("SE-text",  se_enable_  ? u8"" : u8"");
+    canvas_.setWidgetText("BGM:icon", bgm_enable_ ? u8"" : u8"");
+    canvas_.setWidgetText("SE:icon",  se_enable_  ? u8"" : u8"");
 
     enableTrashButton(has_records_);
   }
@@ -190,7 +181,6 @@ private:
     canvas_.enableWidget("Trash",      enable);
   }
 
-
   void signalSettings() noexcept
   {
     Arguments args{
@@ -199,6 +189,45 @@ private:
     };
     event_.signal("Settings:Changed", args);
   }
+
+  // メイン画面のボタン演出
+  void startMainTween()
+  {
+    // ボタン演出
+    std::vector<std::string> widgets{
+      "BGM",
+      "SE",
+      "Trash",
+      "touch",
+    };
+    UI::startButtonTween(count_exec_, canvas_, 0.4, 0.1, widgets);
+  }
+
+  // サブ画面のボタン演出
+  void startSubTween()
+  {
+    // ボタン演出
+    std::vector<std::string> widgets{
+      "back",
+      "erase-record"
+    };
+    UI::startButtonTween(count_exec_, canvas_, 0.5, 0.1, widgets);
+  }
+
+
+
+  Event<Arguments>& event_;
+  ConnectionHolder holder_;
+
+  CountExec count_exec_;
+
+  UI::Canvas canvas_;
+
+  bool bgm_enable_;
+  bool se_enable_;
+  bool has_records_;
+
+  bool active_ = true;
 };
 
 }

@@ -8,6 +8,7 @@
 #include "CountExec.hpp"
 #include "UICanvas.hpp"
 #include "TweenUtil.hpp"
+#include "UISupport.hpp"
 
 
 namespace ngs {
@@ -78,6 +79,12 @@ public:
 
     applyDetail(detail);
     canvas_.startCommonTween("root", "in-from-right");
+
+    // ボタン演出
+    std::vector<std::string> widgets{
+      "touch",
+    };
+    UI::startButtonTween(count_exec_, canvas_, 0.5, 0.0, widgets);
   }
 
   ~Records() = default;
