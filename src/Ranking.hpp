@@ -9,6 +9,7 @@
 #include "UICanvas.hpp"
 #include "TweenUtil.hpp"
 #include "ConvertRank.hpp" 
+#include "UISupport.hpp"
 #include "Share.h"
 #include "Capture.h"
 
@@ -18,26 +19,6 @@ namespace ngs {
 class Ranking
   : public Task
 {
-  Event<Arguments>& event_;
-  ConnectionHolder holder_;
-
-  CountExec count_exec_;
-
-  std::vector<std::string> ranking_text_;
-
-  bool rank_in_  = false;
-  u_int ranking_ = 0;
-  size_t ranking_records_;
-
-  // Share機能用の文章
-  std::string share_text_;
-
-  std::vector<std::string> rank_effects_;
-
-  UI::Canvas canvas_;
-  bool active_ = true;
-
-
 public:
   Ranking(const ci::JsonTree& params, Event<Arguments>& event, UI::Drawer& drawer, TweenCommon& tween_common,
           const Arguments& args) noexcept
@@ -104,6 +85,7 @@ public:
                                 count_exec_.add(wipe_delay,
                                                 [this]() noexcept
                                                 {
+                                                  startSubTween();
                                                   canvas_.startCommonTween("result", "in-from-right");
                                                 });
                                 count_exec_.add(wipe_duration,
@@ -123,6 +105,7 @@ public:
                                 count_exec_.add(wipe_delay,
                                                 [this]() noexcept
                                                 {
+                                                  startMainTween(rank_in_);
                                                   canvas_.startCommonTween("top10", "in-from-left");
                                                 });
                                 count_exec_.add(wipe_duration,
@@ -220,6 +203,7 @@ public:
     canvas_.startCommonTween("root",
                              rank_in_ ? "in-from-left"
                                       : "in-from-right");
+    startMainTween(rank_in_);
   }
 
   ~Ranking() = default;
@@ -298,6 +282,54 @@ private:
     convertRankToText(rank, canvas_, "score:10", ranking_text_);
   }
 
+  // メイン画面のボタン演出
+  void startMainTween(bool rank_in)
+  {
+    // ボタン演出
+    std::vector<std::pair<std::string, std::string>> widgets{
+      { "touch", "touch_back" },
+      { "view",  "view:icon" },
+    };
+    // NOTICE ゲーム本編→ランキングの場合は対象が違う
+    if (rank_in)
+    {
+      widgets[0].second = "touch_agree";
+    }
+
+    UI::startButtonTween(count_exec_, canvas_, 0.5, 0.1, widgets);
+  }
+
+  // サブ画面のボタン演出
+  void startSubTween()
+  {
+    // ボタン演出
+    std::vector<std::pair<std::string, std::string>> widgets{
+      { "back",  "back:icon" },
+      { "share", "share:icon" },
+    };
+    UI::startButtonTween(count_exec_, canvas_, 0.5, 0.1, widgets);
+  }
+
+
+
+  Event<Arguments>& event_;
+  ConnectionHolder holder_;
+
+  CountExec count_exec_;
+
+  std::vector<std::string> ranking_text_;
+
+  bool rank_in_  = false;
+  u_int ranking_ = 0;
+  size_t ranking_records_;
+
+  // Share機能用の文章
+  std::string share_text_;
+
+  std::vector<std::string> rank_effects_;
+
+  UI::Canvas canvas_;
+  bool active_ = true;
 };
 
 }

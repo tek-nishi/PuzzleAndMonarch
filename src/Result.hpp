@@ -13,6 +13,7 @@
 #include "Capture.h"
 #include "EventSupport.hpp"
 #include "ConvertRank.hpp" 
+#include "UISupport.hpp" 
 
 
 namespace ngs {
@@ -178,6 +179,12 @@ public:
     tweenTotalScore(params);
 
     canvas_.startCommonTween("root", "in-from-left");
+
+    // ボタン演出
+    std::vector<std::pair<std::string, std::string>> widgets{
+      { "touch", "touch:icon" }
+    };
+    UI::startButtonTween(count_exec_, canvas_, 0.5, 0.0, widgets);
   }
 
   ~Result() = default;

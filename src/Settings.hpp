@@ -194,11 +194,11 @@ private:
   void startMainTween()
   {
     // ボタン演出
-    std::vector<std::string> widgets{
-      "BGM",
-      "SE",
-      "Trash",
-      "touch",
+    std::vector<std::pair<std::string, std::string>> widgets{
+      { "BGM",   "BGM:icon" },
+      { "SE",    "SE:icon" },
+      { "Trash", "Trash:icon" },
+      { "touch", "touch:icon" },
     };
     UI::startButtonTween(count_exec_, canvas_, 0.4, 0.1, widgets);
   }
@@ -207,9 +207,9 @@ private:
   void startSubTween()
   {
     // ボタン演出
-    std::vector<std::string> widgets{
-      "back",
-      "erase-record"
+    std::vector<std::pair<std::string, std::string>> widgets{
+      { "back",         "back:icon" },
+      { "erase-record", "erase-record:icon" },
     };
     UI::startButtonTween(count_exec_, canvas_, 0.5, 0.1, widgets);
   }

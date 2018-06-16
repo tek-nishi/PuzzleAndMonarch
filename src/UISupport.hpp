@@ -11,19 +11,19 @@
 namespace ngs { namespace UI {
 
 void startButtonTween(CountExec& count_exec, UI::Canvas& canvas,
-                      double delay, double interval, const std::vector<std::string>& widgets)
+                      double delay, double interval, const std::vector<std::pair<std::string, std::string>>& widgets)
 {
-  for (const auto& name : widgets)
+  for (const auto& id : widgets)
   {
     // 非表示のWidgetは対象外
-    if (!canvas.isEnableWidget(name)) continue;
+    if (!canvas.isEnableWidget(id.first)) continue;
 
-    canvas.enableWidget(name, false);
+    canvas.enableWidget(id.first, false);
     count_exec.add(delay,
-                   [&canvas, name]()
+                   [&canvas, id]()
                    {
-                     canvas.startCommonTween(name, "icon:circle");
-                     canvas.startCommonTween(name + ":icon", "icon:text");
+                     canvas.startCommonTween(id.first, "icon:circle");
+                     canvas.startCommonTween(id.second, "icon:text");
                    });
     delay += interval;
   }

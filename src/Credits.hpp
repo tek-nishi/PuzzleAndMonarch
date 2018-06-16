@@ -60,8 +60,8 @@ public:
     canvas_.startCommonTween("root", "in-from-right");
 
     // ボタン演出
-    std::vector<std::string> widgets{
-      "touch"
+    std::vector<std::pair<std::string, std::string>> widgets{
+      { "touch", "touch:icon" }
     };
     UI::startButtonTween(count_exec_, canvas_, 0.5, 0.0, widgets);
   }
