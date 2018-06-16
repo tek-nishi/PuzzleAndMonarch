@@ -11,6 +11,40 @@ namespace ngs {
 
 void drawStrokedRect( const ci::Rectf &rect, float lineWidth ) noexcept;
 
+//
+// ci::Ring改変
+//
+class Ring
+  : public ci::geom::Source
+{
+public:
+  Ring();
+
+  Ring&		center( const glm::vec2 &center ) { mCenter = center; return *this; }
+  Ring&		radius( float radius );
+  Ring&		width( float width );
+  Ring&		subdivisions( int subdivs );
+
+  size_t		getNumVertices() const override;
+  size_t		getNumIndices() const override { return 0; }
+  ci::geom::Primitive	getPrimitive() const override { return ci::geom::Primitive::TRIANGLE_STRIP; }
+  uint8_t		getAttribDims( ci::geom::Attrib attr ) const override;
+  ci::geom::AttribSet	getAvailableAttribs() const override;
+  void		loadInto( ci::geom::Target *target, const ci::geom::AttribSet &requestedAttribs ) const override;
+  Ring*		clone() const override { return new Ring( *this ); }
+
+private:
+  void	updateVertexCounts();
+
+  glm::vec2		mCenter;
+  float		mRadius;
+  float		mWidth;
+  int			mRequestedSubdivisions, mNumSubdivisions;
+  size_t		mNumVertices;
+};
+
+void drawStrokedCircle( const glm::vec2 &center, float radius, float lineWidth, int numSegments );
+
 
 #if defined (NGS_GL_IMPLEMENTATION)
 
@@ -62,6 +96,118 @@ void drawStrokedRect( const ci::Rectf &rect, float lineWidth ) noexcept
 	ctx->getDefaultVao()->replacementBindEnd();	
 	ctx->drawArrays( GL_TRIANGLE_STRIP, 0, 16 );
 	ctx->popVao();
+}
+
+
+//
+// ci::Ring改変
+//
+Ring::Ring()
+  : mRequestedSubdivisions( -1 ), mCenter( 0, 0 ), mRadius( 1.0f ), mWidth( 0.5f )
+{
+  updateVertexCounts();
+}
+
+Ring&	Ring::subdivisions( int subdivs )
+{
+  mRequestedSubdivisions = subdivs;
+  updateVertexCounts();
+  return *this;
+}
+
+Ring&	Ring::radius( float radius )
+{
+  mRadius = radius;
+  updateVertexCounts();
+  return *this;
+}
+
+Ring&	Ring::width( float width )
+{
+  mWidth = width;
+  return *this;
+}
+
+// If numSegments<0, calculate based on radius
+void Ring::updateVertexCounts()
+{
+  if( mRequestedSubdivisions <= 0 )
+  {
+    mNumSubdivisions = (int) ci::math<double>::floor( mRadius * float( M_PI * 2 ) );
+  }
+  else
+  {
+    mNumSubdivisions = mRequestedSubdivisions;
+  }
+
+  if( mNumSubdivisions < 3 ) mNumSubdivisions = 3;
+  mNumVertices = ( mNumSubdivisions + 1 ) * 2;
+}
+
+size_t Ring::getNumVertices() const
+{
+  return mNumVertices;
+}
+
+uint8_t	Ring::getAttribDims( ci::geom::Attrib attr ) const
+{
+  switch( attr )
+  {
+  case ci::geom::Attrib::POSITION:    return 2;
+  case ci::geom::Attrib::NORMAL:      return 3;
+  case ci::geom::Attrib::TEX_COORD_0: return 2;
+  default:
+    return 0;
+  }
+}
+
+ci::geom::AttribSet Ring::getAvailableAttribs() const
+{
+  // return { ci::geom::Attrib::POSITION, ci::geom::Attrib::NORMAL, ci::geom::Attrib::TEX_COORD_0 };
+  return { ci::geom::Attrib::POSITION };
+}
+
+void Ring::loadInto( ci::geom::Target *target, const ci::geom::AttribSet &/*requestedAttribs*/ ) const
+{
+  std::vector<glm::vec2> positions;
+  // std::vector<glm::vec2> texCoords;
+  // std::vector<glm::vec3> normals;
+
+  positions.reserve( mNumVertices );
+  // texCoords.reserve( mNumVertices );
+  // normals.reserve( mNumVertices );
+
+  float innerRadius = mRadius - 0.5f * mWidth;
+  float outerRadius = mRadius + 0.5f * mWidth;
+
+  // iterate the segments
+  const float tDelta = 1 / (float) mNumSubdivisions * 2.0f * 3.14159f;
+  float t = 0;
+  for( int s = 0; s <= mNumSubdivisions; s++ )
+  {
+    glm::vec2 unit( ci::math<float>::cos( t ), ci::math<float>::sin( t ) );
+    positions.emplace_back( mCenter + unit * innerRadius );
+    positions.emplace_back( mCenter + unit * outerRadius );
+    // texCoords.emplace_back( glm::vec2( 1, s / (float) mNumSubdivisions ) );
+    // texCoords.emplace_back( glm::vec2( 0, s / (float) mNumSubdivisions ) );
+    // normals.emplace_back( 0, 0, 1 );
+    // normals.emplace_back( 0, 0, 1 );
+    t += tDelta;
+  }
+
+  target->copyAttrib( ci::geom::Attrib::POSITION, 2, 0, (const float*) positions.data(), mNumVertices );
+  // target->copyAttrib( ci::geom::Attrib::NORMAL, 3, 0, (const float*) normals.data(), mNumVertices );
+  // target->copyAttrib( ci::geom::Attrib::TEX_COORD_0, 2, 0, (const float*) texCoords.data(), mNumVertices );
+}
+
+void drawStrokedCircle( const glm::vec2 &center, float radius, float lineWidth, int numSegments )
+{
+	if( numSegments <= 0 )
+  {
+		numSegments = (int)ci::math<double>::floor( radius * M_PI * 2 );
+  }
+
+  ci::gl::draw( Ring().center( center ).radius( radius ).width( lineWidth ).subdivisions( numSegments ) );
 }
 
 #endif

@@ -7,6 +7,7 @@
 
 #include "UIWidgetBase.hpp"
 #include "UIDrawer.hpp"
+#include "gl.hpp"
 
 
 namespace ngs { namespace UI {
@@ -61,7 +62,7 @@ private:
     }
     else
     {
-      ci::gl::drawStrokedCircle(center, r, line_width_, segment_);
+      drawStrokedCircle(center, r, line_width_, segment_);
     }
   }
 
