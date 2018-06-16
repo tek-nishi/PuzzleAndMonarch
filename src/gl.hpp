@@ -24,6 +24,7 @@ public:
   Ring&		radius( float radius );
   Ring&		width( float width );
   Ring&		subdivisions( int subdivs );
+  Ring&   angle(float begin, float end);
 
   size_t		getNumVertices() const override;
   size_t		getNumIndices() const override { return 0; }
@@ -41,9 +42,14 @@ private:
   float		mWidth;
   int			mRequestedSubdivisions, mNumSubdivisions;
   size_t		mNumVertices;
+  
+  float mBeginAngle;
+  float mEndAngle;
 };
 
 void drawStrokedCircle( const glm::vec2 &center, float radius, float lineWidth, int numSegments );
+void drawStrokedCircle( const glm::vec2 &center, float radius, float lineWidth, int numSegments,
+                        float begin_angle, float end_angle );
 
 
 #if defined (NGS_GL_IMPLEMENTATION)
@@ -103,7 +109,12 @@ void drawStrokedRect( const ci::Rectf &rect, float lineWidth ) noexcept
 // ci::Ring改変
 //
 Ring::Ring()
-  : mRequestedSubdivisions( -1 ), mCenter( 0, 0 ), mRadius( 1.0f ), mWidth( 0.5f )
+  : mRequestedSubdivisions( -1 ),
+    mCenter( 0, 0 ),
+    mRadius( 1.0f ),
+    mWidth( 0.5f ),
+    mBeginAngle(0.0f),
+    mEndAngle(M_PI * 2.0f)
 {
   updateVertexCounts();
 }
@@ -125,6 +136,13 @@ Ring&	Ring::radius( float radius )
 Ring&	Ring::width( float width )
 {
   mWidth = width;
+  return *this;
+}
+
+Ring& Ring::angle(float begin, float end)
+{
+  mBeginAngle = ci::toRadians(begin);
+  mEndAngle   = ci::toRadians(end);
   return *this;
 }
 
@@ -153,9 +171,7 @@ uint8_t	Ring::getAttribDims( ci::geom::Attrib attr ) const
 {
   switch( attr )
   {
-  case ci::geom::Attrib::POSITION:    return 2;
-  case ci::geom::Attrib::NORMAL:      return 3;
-  case ci::geom::Attrib::TEX_COORD_0: return 2;
+  case ci::geom::Attrib::POSITION: return 2;
   default:
     return 0;
   }
@@ -163,41 +179,29 @@ uint8_t	Ring::getAttribDims( ci::geom::Attrib attr ) const
 
 ci::geom::AttribSet Ring::getAvailableAttribs() const
 {
-  // return { ci::geom::Attrib::POSITION, ci::geom::Attrib::NORMAL, ci::geom::Attrib::TEX_COORD_0 };
   return { ci::geom::Attrib::POSITION };
 }
 
 void Ring::loadInto( ci::geom::Target *target, const ci::geom::AttribSet &/*requestedAttribs*/ ) const
 {
   std::vector<glm::vec2> positions;
-  // std::vector<glm::vec2> texCoords;
-  // std::vector<glm::vec3> normals;
-
   positions.reserve( mNumVertices );
-  // texCoords.reserve( mNumVertices );
-  // normals.reserve( mNumVertices );
 
   float innerRadius = mRadius - 0.5f * mWidth;
   float outerRadius = mRadius + 0.5f * mWidth;
 
   // iterate the segments
-  const float tDelta = 1 / (float) mNumSubdivisions * 2.0f * 3.14159f;
-  float t = 0;
+  const float tDelta = 1 / (float) mNumSubdivisions * (mEndAngle - mBeginAngle);
+  float t = mBeginAngle;
   for( int s = 0; s <= mNumSubdivisions; s++ )
   {
     glm::vec2 unit( ci::math<float>::cos( t ), ci::math<float>::sin( t ) );
     positions.emplace_back( mCenter + unit * innerRadius );
     positions.emplace_back( mCenter + unit * outerRadius );
-    // texCoords.emplace_back( glm::vec2( 1, s / (float) mNumSubdivisions ) );
-    // texCoords.emplace_back( glm::vec2( 0, s / (float) mNumSubdivisions ) );
-    // normals.emplace_back( 0, 0, 1 );
-    // normals.emplace_back( 0, 0, 1 );
     t += tDelta;
   }
 
   target->copyAttrib( ci::geom::Attrib::POSITION, 2, 0, (const float*) positions.data(), mNumVertices );
-  // target->copyAttrib( ci::geom::Attrib::NORMAL, 3, 0, (const float*) normals.data(), mNumVertices );
-  // target->copyAttrib( ci::geom::Attrib::TEX_COORD_0, 2, 0, (const float*) texCoords.data(), mNumVertices );
 }
 
 void drawStrokedCircle( const glm::vec2 &center, float radius, float lineWidth, int numSegments )
@@ -209,6 +213,18 @@ void drawStrokedCircle( const glm::vec2 &center, float radius, float lineWidth, 
 
   ci::gl::draw( Ring().center( center ).radius( radius ).width( lineWidth ).subdivisions( numSegments ) );
 }
+
+void drawStrokedCircle( const glm::vec2 &center, float radius, float lineWidth, int numSegments,
+                        float begin_angle, float end_angle )
+{
+	if( numSegments <= 0 )
+  {
+		numSegments = (int)ci::math<double>::floor( radius * M_PI * 2 );
+  }
+
+  ci::gl::draw( Ring().center( center ).radius( radius ).width( lineWidth ).angle(begin_angle, end_angle).subdivisions( numSegments ) );
+}
+
 
 #endif
 

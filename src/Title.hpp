@@ -179,6 +179,7 @@ public:
     {
       // 起動時は特別
       canvas_.startTween("launch");
+      startIconTweens(params);
     }
     else
     {
@@ -246,8 +247,29 @@ private:
     }
   }
 
+  // アイコンの演出開始
+  void startIconTweens(const ci::JsonTree& params)
+  {
+    const auto& menu = params["title.menu"];
+    double delay = 2.5;
+    for (const auto& w : menu)
+    {
+      const auto& name = w.getValue<std::string>();
+      if (!canvas_.isEnableWidget(name)) continue;
 
-  
+      canvas_.enableWidget(name, false);
+      count_exec_.add(delay,
+                      [this, name]()
+                      {
+                        canvas_.startCommonTween(name, "icon:circle");
+                        canvas_.startCommonTween(name + "Icon", "icon:text");
+                      });
+      delay += 0.15;
+    }
+  }
+
+
+
   Event<Arguments>& event_;
   ConnectionHolder holder_;
 

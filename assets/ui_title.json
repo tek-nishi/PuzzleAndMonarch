@@ -122,12 +122,16 @@
 
       "radius": 1,
       "line_width": 1.5,
+      "segment": 20,
+      "begin_angle": 90,
+      "end_angle": 450,
 
       "event": "game_center",
       "se":    "selected",
 
       "childlen": [
         {
+          "identifier": "GameCenterIcon",
           "rect": [ 0, 0, 0, 0 ],
           "anchor": [
             [ 0.15, 0.14 ],
@@ -149,12 +153,16 @@
 
       "radius": 1,
       "line_width": 1.5,
+      "segment": 20,
+      "begin_angle": 90,
+      "end_angle": 450,
 
       "event": "ranking",
       "se":    "selected",
 
       "childlen": [
         {
+          "identifier": "RankingIcon",
           "rect": [ 0, 0, 0, 0 ],
           "anchor": [
             [ 0.08, 0.25 ],
@@ -176,12 +184,16 @@
 
       "radius": 1,
       "line_width": 1.5,
+      "segment": 20,
+      "begin_angle": 90,
+      "end_angle": 450,
 
       "event": "records",
       "se":    "selected",
 
       "childlen": [
         {
+          "identifier": "RecordsIcon",
           "rect": [ 0, 0, 0, 0 ],
           "anchor": [
             [ 0.09, 0.23 ],
@@ -203,12 +215,16 @@
 
       "radius": 1,
       "line_width": 1.5,
+      "segment": 20,
+      "begin_angle": 90,
+      "end_angle": 450,
 
       "event": "settings",
       "se":    "selected",
 
       "childlen": [
         {
+          "identifier": "SettingsIcon",
           "rect": [ 0.8, 2, 0.8, -1.5 ],
           "anchor": [
             [ 0, 0 ],
@@ -230,12 +246,16 @@
 
       "radius": 1,
       "line_width": 1.5,
+      "segment": 20,
+      "begin_angle": 90,
+      "end_angle": 450,
 
       "event": "credits",
       "se":    "selected",
 
       "childlen": [
         {
+          "identifier": "CreditsIcon",
           "rect": [ 0, 0, 0, 0 ],
           "anchor": [
             [ 0.1, 0.06 ],

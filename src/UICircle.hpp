@@ -21,6 +21,9 @@ class Circle
   bool fill_ = false;
   float line_width_ = 0.5;
 
+  float begin_angle_ = 0.0f;
+  float end_angle_   = 360.0f;
+
   
 public:
   Circle(const ci::JsonTree& params)
@@ -42,6 +45,14 @@ public:
     {
       line_width_ = params.getValueForKey<float>("line_width");
     }
+    if (params.hasChild("begin_angle"))
+    {
+      begin_angle_ = params.getValueForKey<float>("begin_angle");
+    }
+    if (params.hasChild("end_angle"))
+    {
+      end_angle_ = params.getValueForKey<float>("end_angle");
+    }
   }
 
   ~Circle() = default;
@@ -62,7 +73,7 @@ private:
     }
     else
     {
-      drawStrokedCircle(center, r, line_width_, segment_);
+      drawStrokedCircle(center, r, line_width_, segment_, begin_angle_, end_angle_);
     }
   }
 
@@ -84,6 +95,16 @@ private:
                  {
                    color_ = boost::any_cast<const ci::Color&>(v);
                  }
+      },
+      { "begin_angle", [this](const boost::any& v) noexcept
+                       {
+                         begin_angle_ = boost::any_cast<const float>(v);
+                       }
+      },
+      { "end_angle", [this](const boost::any& v) noexcept
+                     {
+                       end_angle_ = boost::any_cast<const float>(v);
+                     }
       }
     };
 
@@ -107,6 +128,16 @@ private:
                  {
                    return &color_;
                  }
+      },
+      { "begin_angle", [this]() noexcept
+                       {
+                         return &begin_angle_;
+                       }
+      },
+      { "end_angle", [this]() noexcept
+                     {
+                       return &end_angle_;
+                     }
       }
     };
 
