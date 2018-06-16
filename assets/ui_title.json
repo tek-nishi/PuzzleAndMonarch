@@ -131,7 +131,7 @@
 
       "childlen": [
         {
-          "identifier": "GameCenterIcon",
+          "identifier": "GameCenter:icon",
           "rect": [ 0, 0, 0, 0 ],
           "anchor": [
             [ 0.15, 0.14 ],
@@ -162,7 +162,7 @@
 
       "childlen": [
         {
-          "identifier": "RankingIcon",
+          "identifier": "Ranking:icon",
           "rect": [ 0, 0, 0, 0 ],
           "anchor": [
             [ 0.08, 0.25 ],
@@ -193,7 +193,7 @@
 
       "childlen": [
         {
-          "identifier": "RecordsIcon",
+          "identifier": "Records:icon",
           "rect": [ 0, 0, 0, 0 ],
           "anchor": [
             [ 0.09, 0.23 ],
@@ -224,7 +224,7 @@
 
       "childlen": [
         {
-          "identifier": "SettingsIcon",
+          "identifier": "Settings:icon",
           "rect": [ 0.8, 2, 0.8, -1.5 ],
           "anchor": [
             [ 0, 0 ],
@@ -255,7 +255,7 @@
 
       "childlen": [
         {
-          "identifier": "CreditsIcon",
+          "identifier": "Credits:icon",
           "rect": [ 0, 0, 0, 0 ],
           "anchor": [
             [ 0.1, 0.06 ],

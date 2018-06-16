@@ -497,12 +497,16 @@
 
           "radius": 1,
           "line_width": 3,
+          "segment": 20,
+          "begin_angle": 90,
+          "end_angle": 450,
 
           "event": "resume",
           "se": "agree",
 
           "childlen": [
             {
+              "identifier": "resume:icon",
               "rect": [ 0, 0, 0, 0 ],
               "anchor": [
                 [ 0.2, 0.17 ],
@@ -535,12 +539,16 @@
 
           "radius": 1,
           "line_width": 3,
+          "segment": 20,
+          "begin_angle": 90,
+          "end_angle": 450,
 
           "event": "abort",
           "se": "agree",
 
           "childlen": [
             {
+              "identifier": "abort:icon",
               "rect": [ 0, 0, 0, 0 ],
               "anchor": [
                 [ 0.06, 0.16 ],

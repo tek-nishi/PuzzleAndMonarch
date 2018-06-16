@@ -272,7 +272,7 @@
           {
             "enable_start": true,
             "duration": 0.6,
-            "ease_func": "OutQuad",
+            "ease_func": "OutQuart",
             "start": 91,
             "end":   450
           }

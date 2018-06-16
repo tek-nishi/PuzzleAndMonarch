@@ -8,6 +8,7 @@
 #include "CountExec.hpp"
 #include "UICanvas.hpp"
 #include "TweenUtil.hpp"
+#include "UISupport.hpp"
 
 
 namespace ngs {
@@ -51,6 +52,7 @@ public:
                                                 [this]() noexcept
                                                 {
                                                   canvas_.startCommonTween("pause_menu", "in-from-left");
+                                                  startPauseTweens();
                                                 });
                                 count_exec_.add(wipe_duration,
                                                 [this]() noexcept
@@ -308,7 +310,16 @@ private:
     like_pos_ = c;
   }
 
-  
+  void startPauseTweens()
+  {
+    // ボタン演出
+    std::vector<std::pair<std::string, std::string>> widgets{
+      { "resume", "resume:icon" },
+      { "abort",  "abort:icon" }
+    };
+    UI::startButtonTween(count_exec_, canvas_, 0.5, 0.1, widgets);
+  }
+
 
   Event<Arguments>& event_;
   ConnectionHolder holder_;

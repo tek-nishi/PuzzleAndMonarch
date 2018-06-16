@@ -13,16 +13,6 @@ namespace ngs {
 class Credits
   : public Task
 {
-  Event<Arguments>& event_;
-  ConnectionHolder holder_;
-
-  CountExec count_exec_;
-
-  UI::Canvas canvas_;
-
-  bool active_ = true;
-
-
 public:
   Credits(const ci::JsonTree& params, Event<Arguments>& event, UI::Drawer& drawer, TweenCommon& tween_common) noexcept
     : event_(event),
@@ -76,6 +66,15 @@ private:
     return active_;
   }
 
+
+  Event<Arguments>& event_;
+  ConnectionHolder holder_;
+
+  CountExec count_exec_;
+
+  UI::Canvas canvas_;
+
+  bool active_ = true;
 };
 
 }

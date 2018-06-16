@@ -9,6 +9,7 @@
 #include "UICanvas.hpp"
 #include "TweenUtil.hpp"
 #include "EventSupport.hpp"
+#include "UISupport.hpp"
 #include "GameCenter.h"
 
 
@@ -179,12 +180,14 @@ public:
     {
       // 起動時は特別
       canvas_.startTween("launch");
-      startIconTweens(params);
+      // startIconTweens(params);
+      startMainTween(params, 2.5);
     }
     else
     {
       canvas_.startCommonTween("root", "in-from-left");
       canvas_.startTween("start");
+      startMainTween(params, 0.5);
     }
 
     event.signal("Title:begin", Arguments());
@@ -268,6 +271,19 @@ private:
     }
   }
 
+  // メイン画面のボタン演出
+  void startMainTween(const ci::JsonTree& params, double delay)
+  {
+    std::vector<std::pair<std::string, std::string>> widgets;
+    const auto& menu = params["title.menu"];
+    for (const auto m : menu)
+    {
+      const auto& id = m.getValue<std::string>();
+      widgets.push_back({ id, id + ":icon" });
+    }
+
+    UI::startButtonTween(count_exec_, canvas_, delay, 0.15, widgets);
+  }
 
 
   Event<Arguments>& event_;
