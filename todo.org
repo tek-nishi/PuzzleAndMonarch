@@ -12,6 +12,7 @@
 * TODO カルカソンヌ公式に許可を取る
 * TODO アプリアイコン
 * TODO macOS:バックグラウンドで放置しとくとDisplayがnullになって落ちる
+* TODO iOS:表示ON/OFFとかをparamsで書いて処理負荷を計測できるように
 * TODO iOS:AppStore提出に必要な書類や素材
 * TODO iOS:実績のアイコンを用意
 * TODO iOS:課金処理
