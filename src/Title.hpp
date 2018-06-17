@@ -194,7 +194,7 @@ public:
     {
       canvas_.startCommonTween("root", "in-from-left");
       canvas_.startTween("start");
-      startMainTween(params, 0.5);
+      startMainTween(params, 0.6);
     }
 
     event.signal("Title:begin", Arguments());
@@ -294,7 +294,7 @@ private:
       widgets.push_back({ id, id + ":icon" });
     }
 
-    UI::startButtonTween(count_exec_, canvas_, delay, 0.15, widgets);
+    UI::startButtonTween(count_exec_, canvas_, delay, 0.18, widgets);
   }
 
 

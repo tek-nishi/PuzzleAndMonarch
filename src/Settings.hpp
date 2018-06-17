@@ -200,7 +200,7 @@ private:
       { "Trash", "Trash:icon" },
       { "touch", "touch:icon" },
     };
-    UI::startButtonTween(count_exec_, canvas_, 0.4, 0.1, widgets);
+    UI::startButtonTween(count_exec_, canvas_, 0.53, 0.15, widgets);
   }
 
   // サブ画面のボタン演出
@@ -211,7 +211,7 @@ private:
       { "back",         "back:icon" },
       { "erase-record", "erase-record:icon" },
     };
-    UI::startButtonTween(count_exec_, canvas_, 0.5, 0.1, widgets);
+    UI::startButtonTween(count_exec_, canvas_, 0.53, 0.15, widgets);
   }
 
 

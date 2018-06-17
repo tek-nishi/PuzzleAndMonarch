@@ -296,7 +296,7 @@ private:
       widgets[0].second = "touch_agree";
     }
 
-    UI::startButtonTween(count_exec_, canvas_, 0.5, 0.1, widgets);
+    UI::startButtonTween(count_exec_, canvas_, 0.55, 0.2, widgets);
   }
 
   // サブ画面のボタン演出
@@ -307,7 +307,7 @@ private:
       { "back",  "back:icon" },
       { "share", "share:icon" },
     };
-    UI::startButtonTween(count_exec_, canvas_, 0.5, 0.1, widgets);
+    UI::startButtonTween(count_exec_, canvas_, 0.55, 0.2, widgets);
   }
 
 

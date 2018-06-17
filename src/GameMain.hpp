@@ -317,7 +317,7 @@ private:
       { "abort",  "abort:icon" },
       { "resume", "resume:icon" },
     };
-    UI::startButtonTween(count_exec_, canvas_, 0.5, 0.1, widgets);
+    UI::startButtonTween(count_exec_, canvas_, 0.53, 0.2, widgets);
   }
 
 

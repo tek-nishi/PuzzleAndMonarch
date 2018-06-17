@@ -131,8 +131,8 @@
               "delay": 2.0,
               "enable_start": true,
               "ease_func": "OutQuart",
-              "start": 91,
-              "end":   450
+              "start": 89,
+              "end":   -270
             }
           ]
         }
@@ -222,11 +222,11 @@
           "body": [
             {
               "duration": 0.6,
-              "delay": 0.3,
+              "delay": 0.45,
               "enable_start": true,
               "ease_func": "OutQuart",
-              "start": 91,
-              "end":   450
+              "start": 89,
+              "end":   -270
             }
           ]
         }
@@ -241,7 +241,7 @@
           "body": [
             {
               "duration": 0.4,
-              "delay": 0.3,
+              "delay": 0.45,
               "enable_start": true,
               "ease_func": "None",
               "start": 0,
@@ -261,7 +261,7 @@
             {
               "duration": 1.6,
               "loop": true,
-              "delay": 0.7,
+              "delay": 0.9,
               "ease_func": "OutCubic",
               "start": [ 1, 1 ],
               "end":   [ 1.6, 1.6 ]
@@ -275,7 +275,7 @@
             {
               "duration": 1.6,
               "loop": true,
-              "delay": 0.7,
+              "delay": 0.9,
               "ease_func": "OutCubic",
               "start": 1,
               "end":   0

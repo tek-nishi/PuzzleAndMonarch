@@ -1,4 +1,5 @@
 * TODO アプリ開始時は最後のプレイ結果を表示
+* TODO ポーズアイコンも演出を加える
 * TODO 道の繋がった聖堂の追加
 * TODO パネル：道と緑の境目の描き込みや生活感を出す物体を置く
 * TODO エフェクト描画はdrawInstancedで
@@ -15,7 +16,8 @@
 * TODO iOS:AppStore提出に必要な書類や素材
 * TODO iOS:実績のアイコンを用意
 * TODO iOS:課金処理
-* TODO クルって丸を描く演出を逆向きに
+* DONE クルって丸を描く演出を逆向きに
+CLOSED: [2018-06-18 Mon 00:36]
 * DONE iOS:GameCenterアイコンはグレーアウトする
 CLOSED: [2018-06-17 日 09:59]
 * DONE Titleのアイコン、利き手に関係なくす

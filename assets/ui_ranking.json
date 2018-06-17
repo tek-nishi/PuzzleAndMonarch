@@ -549,6 +549,9 @@
 
           "radius": 1,
           "line_width": 1.5,
+          "segment": 30,
+          "begin_angle": 90,
+          "end_angle": -270,
 
           "event": "view",
           "se": "selected",
@@ -579,6 +582,9 @@
 
           "radius": 1,
           "line_width": 1.5,
+          "segment": 30,
+          "begin_angle": 90,
+          "end_angle": -270,
 
           "childlen": [
             {
@@ -893,6 +899,9 @@
 
           "radius": 1,
           "line_width": 1.5,
+          "segment": 30,
+          "begin_angle": 90,
+          "end_angle": -270,
 
           "childlen": [
             {
@@ -921,6 +930,9 @@
 
           "radius": 1,
           "line_width": 1.5,
+          "segment": 30,
+          "begin_angle": 90,
+          "end_angle": -270,
           "enable": false,
 
           "childlen": [

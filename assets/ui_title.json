@@ -69,7 +69,7 @@
       "line_width": 3.5,
       "segment": 40,
       "begin_angle": 90,
-      "end_angle": 450,
+      "end_angle": -270,
 
       "event": "play",
       "se":    "play",
@@ -131,7 +131,7 @@
       "line_width": 1.5,
       "segment": 30,
       "begin_angle": 90,
-      "end_angle": 450,
+      "end_angle": -270,
 
       "event": "game_center",
       "se":    "selected",
@@ -163,7 +163,7 @@
       "line_width": 1.5,
       "segment": 30,
       "begin_angle": 90,
-      "end_angle": 450,
+      "end_angle": -270,
 
       "event": "ranking",
       "se":    "selected",
@@ -194,7 +194,7 @@
       "line_width": 1.5,
       "segment": 30,
       "begin_angle": 90,
-      "end_angle": 450,
+      "end_angle": -270,
 
       "event": "records",
       "se":    "selected",
@@ -225,7 +225,7 @@
       "line_width": 1.5,
       "segment": 30,
       "begin_angle": 90,
-      "end_angle": 450,
+      "end_angle": -270,
 
       "event": "settings",
       "se":    "selected",
@@ -256,7 +256,7 @@
       "line_width": 1.5,
       "segment": 30,
       "begin_angle": 90,
-      "end_angle": 450,
+      "end_angle": -270,
 
       "event": "credits",
       "se":    "selected",
