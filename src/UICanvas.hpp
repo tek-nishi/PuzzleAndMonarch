@@ -196,6 +196,30 @@ public:
     widget->enable(enable);
   }
 
+  void activeWidget(const std::string& id, bool active = true) noexcept
+  {
+#if defined DEBUG
+    if (!this->isExists(id))
+    {
+      DOUT << "No widget: " << id << std::endl;
+      return;
+    }
+#endif
+
+    const auto& widget = this->at(id);
+    if (!active && widget->hasEvent())
+    {
+      auto w = touching_widget_.lock();
+      if (w == widget)
+      {
+        // 中断
+        DOUT << "widget touch abort." << std::endl;
+        signalEventMessage(widget, ":cancel");
+        touching_widget_.reset();
+      }
+    }
+    widget->active(active);
+  }
 
   template <typename T>
   void setWidgetParam(const std::string& id, const std::string& param_id, const T& param) noexcept
@@ -388,7 +412,8 @@ private:
 
     if (touching_widget_.expired()) return;
     auto widget = touching_widget_.lock();
-    if (widget->contains(pos))
+
+    if (widget->hasEvent() && widget->contains(pos))
     {
       // DOUT << "widget touch ended in: " << widget->getIdentifier() << std::endl;
       // イベント送信

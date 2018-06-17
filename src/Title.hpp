@@ -175,12 +175,11 @@ public:
       // Rankingに記録がない場合もボタンを消す
       canvas_.enableWidget("Ranking", false);
     }
-    if (GameCenter::isAuthenticated())
-    {
-      // GameCenter
-      game_center_ = true;
-      canvas_.enableWidget("GameCenter");
-    }
+
+#if defined (CINDER_COCOA_TOUCH)
+    // GameCenter
+    canvas_.enableWidget("GameCenter");
+#endif
 
     layoutIcons(params);
 
@@ -217,7 +216,8 @@ private:
     if (gamecenter != game_center_)
     {
       game_center_ = gamecenter;
-      if (game_center_)
+      canvas_.activeWidget("GameCenter", gamecenter);
+      if (gamecenter)
       {
         canvas_.startTween("GameCenterOn");
         DOUT << "GameCenter On" << std::endl;

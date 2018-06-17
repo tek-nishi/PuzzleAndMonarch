@@ -22,15 +22,17 @@ void setupCommonTweens(Event<Arguments>& event, ConnectionHolder& holder, UI::Ca
     ":moved_out",
     ":moved_in",
     ":touch_ended",
+    ":cancel",            // 中断
   };
   static const char* tween_name[] = {
     "touch-in",
     "moved-out",
     "moved-in",
     "ended-in",
+    "moved-out",         // 中断
   };
 
-  for (int i = 0; i < 4; ++i)
+  for (int i = 0; i < 5; ++i)
   {
     const auto& id = identifiers[i];
     const auto& tn = tween_name[i];

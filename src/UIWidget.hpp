@@ -49,7 +49,7 @@ public:
 
   bool hasEvent() const noexcept
   {
-    return has_event_;
+    return has_event_ && active_;
   }
   
   const std::string& getSe() const noexcept
@@ -119,6 +119,17 @@ public:
   bool isEnable() const noexcept
   {
     return enable_;
+  }
+
+  // eventを処理するか
+  void active(bool active = true) noexcept
+  {
+    active_ = active;
+  }
+
+  bool isActive() const noexcept
+  {
+    return active_;
   }
 
 
@@ -273,6 +284,7 @@ public:
     }
 
     widget->enable_ = Json::getValue(params, "enable", true);
+    widget->active_ = Json::getValue(params, "active", true);
     widget->alpha_  = Json::getValue(params, "alpha",  1.0f);
 
     if (params.hasChild("anchor"))
@@ -355,6 +367,8 @@ private:
   bool enable_;
   // 親も有効
   bool parent_enable_ = true;
+
+  bool active_ = true;
 
   ci::Rectf rect_;
   glm::vec2 offset_;
