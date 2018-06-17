@@ -149,6 +149,14 @@ public:
                                                 });
                               });
 
+#if defined (DEBUG)
+    holder_ += event_.connect("debug-gamecenter",
+                              [this](const Connection&, const Arguments&)
+                              {
+                                force_game_center_ = !force_game_center_;
+                              });
+#endif
+
     // ボタンイベント共通Tween
     setupCommonTweens(event_, holder_, canvas_, "credits");
     setupCommonTweens(event_, holder_, canvas_, "settings");
@@ -202,9 +210,13 @@ private:
     count_exec_.update(delta_time);
 
     // GameCenterへのログイン状態が変化した
-    if (GameCenter::isAuthenticated() != game_center_)
+    bool gamecenter = GameCenter::isAuthenticated();
+#if defined (DEBUG)
+    gamecenter |= force_game_center_;
+#endif
+    if (gamecenter != game_center_)
     {
-      game_center_ = GameCenter::isAuthenticated();
+      game_center_ = gamecenter;
       if (game_center_)
       {
         canvas_.startTween("GameCenterOn");
@@ -296,6 +308,11 @@ private:
   bool active_ = true;
 
   bool game_center_ = false;
+
+#if defined (DEBUG)
+  // GameCenter強制ON機能
+  bool force_game_center_ = false;
+#endif
 
 };
 

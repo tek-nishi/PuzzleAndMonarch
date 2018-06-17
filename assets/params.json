@@ -10,7 +10,8 @@
       [ "s", "debug-settings" ],
       [ "k", "debug-shadowmap" ],
       [ "t", "debug-score-test" ],
-      [ "b", "debug-disp-clouds" ]
+      [ "b", "debug-disp-clouds" ],
+      [ "g", "debug-gamecenter" ]
     ],
 
     "app_size": [
