@@ -28,7 +28,7 @@ public:
   {
     DOUT << "GameMain::GameMain" << std::endl;
     startTimelineSound(event, params, "gamemain.se");
-    
+
     // ゲーム開始演出 
     count_exec_.add(params.getValueForKey<double>("gamemain.start_delay"),
                     [this]() noexcept
@@ -72,6 +72,7 @@ public:
                                                 [this]() noexcept
                                                 {
                                                   canvas_.startCommonTween("main", "in-from-right");
+                                                  startPauseButtonTween(0.6);
                                                 });
                                 count_exec_.add(wipe_duration,
                                                 [this]() noexcept
@@ -223,6 +224,7 @@ public:
 
     canvas_.active(false);
     canvas_.startTween("start");
+    startPauseButtonTween(2.5);
 
     // like演出準備
     like_func_ = [](const glm::ivec2&)
@@ -319,6 +321,15 @@ private:
     };
     UI::startButtonTween(count_exec_, canvas_, 0.53, 0.2, widgets);
   }
+
+  void startPauseButtonTween(double delay)
+  {
+    std::vector<std::pair<std::string, std::string>> widgets{
+      { "pause", "pause:icon" }
+    };
+    UI::startButtonTween(count_exec_, canvas_, delay, 0.0, widgets);
+  }
+
 
 
   Event<Arguments>& event_;

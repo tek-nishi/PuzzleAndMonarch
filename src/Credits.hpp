@@ -46,7 +46,6 @@ public:
 
     // ボタンイベント共通Tween
     setupCommonTweens(event_, holder_, canvas_, "agree");
-
     canvas_.startCommonTween("root", "in-from-right");
 
     // ボタン演出

@@ -52,17 +52,34 @@
         },
         {
           "identifier": "pause",
-          "rect": [ -15, -12, 5, 12 ],
+          "rect": [ -12, -6, 4, 10 ],
           "anchor": [
             [ 0.93, 0.915 ],
             [ 0.93, 0.915 ]
           ],
 
+          "radius": 1,
+          "line_width": 2,
+          "segment": 30,
+          "begin_angle": 90,
+          "end_angle": -270,
+
           "event": "pause",
           "se": "pause",
               
-          "font": "icon",
-          "text": ""
+          "childlen": [
+            {
+              "identifier": "pause:icon",
+              "rect": [ 0, 0, 0, 0 ],
+              "anchor": [
+                [ 0.1, 0.23 ],
+                [ 0.95, 0.80 ]
+              ],
+              
+              "font": "icon",
+              "text": ""
+            }
+          ]
         },
 
         {
