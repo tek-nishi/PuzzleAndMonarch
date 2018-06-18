@@ -330,7 +330,7 @@
 
       "radius": 1,
       "line_width": 1.5,
-      "segment": 20,
+      "segment": 30,
       "begin_angle": 90,
       "end_angle": 450,
 
