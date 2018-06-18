@@ -184,7 +184,7 @@ public:
     std::vector<std::pair<std::string, std::string>> widgets{
       { "touch", "touch:icon" }
     };
-    UI::startButtonTween(count_exec_, canvas_, 0.55, 0.0, widgets);
+    UI::startButtonTween(count_exec_, canvas_, 2.6, 0.0, widgets);
   }
 
   ~Result() = default;
