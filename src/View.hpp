@@ -271,8 +271,32 @@ public:
       effect_shader_->uniform("uSpecular", Json::getColor<float>(params["field.specular"]));
       effect_shader_->uniform("uShininess", params.getValueForKey<float>("field.shininess"));
       effect_shader_->uniform("uAmbient", params.getValueForKey<float>("field.ambient"));
+
+      auto model = createVboMesh(params.getValueForKey<std::string>("effect.model"), true);
+
+      {
+        std::vector<glm::mat4> matrix(500);
+        effect_matrix_ = ci::gl::Vbo::create(GL_ARRAY_BUFFER, matrix.size() * sizeof(glm::mat4), matrix.data(), GL_DYNAMIC_DRAW);
+
+        ci::geom::BufferLayout layout;
+        layout.append(ci::geom::Attrib::CUSTOM_0, 16, sizeof(glm::mat4), 0, 1 /* per instance */);
+        model->appendVbo(layout, effect_matrix_);
+      }
+      {
+        std::vector<ci::Color> diffuse(500);
+        effect_color_ = ci::gl::Vbo::create(GL_ARRAY_BUFFER, diffuse.size() * sizeof(ci::Color), diffuse.data(), GL_DYNAMIC_DRAW);
+
+        ci::geom::BufferLayout layout;
+        layout.append(ci::geom::Attrib::CUSTOM_1, 3, sizeof(ci::Color), 0, 1 /* per instance */);
+        model->appendVbo(layout, effect_color_);
+      }
+
+      effect_model_ = ci::gl::Batch::create(model, effect_shader_,
+                                            {
+                                              { ci::geom::Attrib::CUSTOM_0, "vInstanceMatrix" },
+                                              { ci::geom::Attrib::CUSTOM_1, "uColor" },
+                                              });
     }
-    effect_model_ = createVboMesh(params.getValueForKey<std::string>("effect.model"), true);
   }
 
   ~View() = default;
@@ -1110,9 +1134,9 @@ private:
   // 演出表示
   void drawEffect() noexcept
   {
-    ci::gl::ScopedGlslProg prog(effect_shader_);
-    ci::gl::ScopedModelMatrix m;
-
+    auto* mat = (glm::mat4*)effect_matrix_->mapReplace();
+    auto* color = (ci::Color*)effect_color_->mapReplace();
+    int num = 0;
     for (auto it = std::begin(effects_); it != std::end(effects_); )
     {
       if (!it->active)
@@ -1123,15 +1147,23 @@ private:
 
       if (it->disp)
       {
-        effect_shader_->uniform("uColor", it->color);
+        *color = it->color;
+        ++color;
 
-        auto mtx = glm::translate(it->pos) * glm::scale(it->scale);
-        ci::gl::setModelMatrix(mtx);
-        ci::gl::draw(effect_model_);
+        *mat = glm::translate(it->pos) * glm::scale(it->scale);
+        ++mat;
+
+        ++num;
       }
 
       ++it;
     }
+    effect_matrix_->unmap();
+    effect_color_->unmap();
+
+    if (!num) return;
+
+    effect_model_->drawInstanced(num);
   }
 
   // 雲
@@ -1281,10 +1313,12 @@ private:
 
   ci::gl::GlslProgRef shadow_shader_;
 
-
   // 得点時演出用
-  ci::gl::VboMeshRef effect_model_;
   ci::gl::GlslProgRef effect_shader_;
+  ci::gl::BatchRef effect_model_;
+  ci::gl::VboRef effect_matrix_;
+  ci::gl::VboRef effect_color_;
+
   glm::vec2 effect_y_ofs_;
   glm::vec2 effect_y_move_;
   glm::vec2 effect_delay_;
