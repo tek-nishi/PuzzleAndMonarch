@@ -305,17 +305,6 @@ public:
   // Timelineとかの更新
   void update(double delta_time, bool game_paused) noexcept
   {
-    // effect test
-    if (ci::randFloat() < 0.4f)
-    {
-      auto pos = glm::ivec2{
-        ci::randInt(-3, 3),
-        ci::randInt(-3, 3)
-      };
-
-      startEffect(pos);
-    }
-
     put_gauge_timer_ += delta_time;
     force_timeline_->step(delta_time);
     transition_timeline_->step(delta_time);
