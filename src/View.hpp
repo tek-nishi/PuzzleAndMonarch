@@ -144,8 +144,6 @@ public:
     panel_aabb_ = ci::AxisAlignedBox(glm::vec3(-PANEL_SIZE / 2, 0, -PANEL_SIZE / 2),
                                      glm::vec3( PANEL_SIZE / 2, 2,  PANEL_SIZE / 2));
 
-    blank_model_        = ci::gl::VboMesh::create(PLY::load(params.getValueForKey<std::string>("blank_model")));
-    blank_shadow_model_ = createVboMesh(params.getValueForKey<std::string>("blank_shadow_model"), false);
     selected_model = ci::gl::VboMesh::create(PLY::load(params.getValueForKey<std::string>("selected_model")));
     cursor_model   = ci::gl::VboMesh::create(PLY::load(params.getValueForKey<std::string>("cursor_model")));
     bg_model       = createVboMesh(params.getValueForKey<std::string>("bg.model"), true);
@@ -164,6 +162,42 @@ public:
       field_shader_->uniform("uSpecular", Json::getColor<float>(params["field.specular"]));
       field_shader_->uniform("uShininess", params.getValueForKey<float>("field.shininess"));
       field_shader_->uniform("uAmbient", params.getValueForKey<float>("field.ambient"));
+    }
+    {
+      blank_shader_ = createShader("blank", "blank");
+      blank_shader_->uniform("uShadowMap", 0);
+      blank_shader_->uniform("uSpecular", Json::getColor<float>(params["field.specular"]));
+      blank_shader_->uniform("uShininess", params.getValueForKey<float>("field.shininess"));
+      blank_shader_->uniform("uAmbient", params.getValueForKey<float>("field.ambient"));
+
+      auto model = ci::gl::VboMesh::create(PLY::load(params.getValueForKey<std::string>("blank_model")));
+
+      {
+        std::vector<glm::mat4> matrix(72 * 2 + 2);
+        blank_matrix_ = ci::gl::Vbo::create(GL_ARRAY_BUFFER, matrix.size() * sizeof(glm::mat4), matrix.data(), GL_DYNAMIC_DRAW);
+
+        ci::geom::BufferLayout layout;
+        layout.append(ci::geom::Attrib::CUSTOM_0, 16, sizeof(glm::mat4), 0, 1 /* per instance */);
+        model->appendVbo(layout, blank_matrix_);
+      }
+      {
+        std::vector<float> diffuse(72 * 2 + 2);
+        blank_diffuse_power_ = ci::gl::Vbo::create(GL_ARRAY_BUFFER, diffuse.size() * sizeof(float), diffuse.data(), GL_DYNAMIC_DRAW);
+
+        ci::geom::BufferLayout layout;
+        layout.append(ci::geom::Attrib::CUSTOM_1, 1, sizeof(float), 0, 1 /* per instance */);
+        model->appendVbo(layout, blank_diffuse_power_);
+      }
+
+      blank_model_ = ci::gl::Batch::create(model, blank_shader_,
+                                           {
+                                             { ci::geom::Attrib::CUSTOM_0, "vInstanceMatrix" },
+                                             { ci::geom::Attrib::CUSTOM_1, "uDiffusePower" },
+                                           });
+
+
+      // 処理負荷軽減のため専用モデルを用意
+      blank_shadow_model_ = createVboMesh(params.getValueForKey<std::string>("blank_shadow_model"), false);
     }
     {
       auto name = params.getValueForKey<std::string>("bg.shader");
@@ -284,7 +318,9 @@ public:
   {
     field_color_.stop();
     field_color_ = color;
+
     field_shader_->uniform("u_color", color);
+    blank_shader_->uniform("u_color", color);
     bg_shader_->uniform("u_color", color);
     cloud_shader_->uniform("uColor", mulColor(cloud_color_, color));
     effect_shader_->uniform("u_color", color);
@@ -296,6 +332,7 @@ public:
     option.updateFn([this]() noexcept
                     {
                       field_shader_->uniform("u_color", field_color_());
+                      blank_shader_->uniform("u_color", field_color_());
                       bg_shader_->uniform("u_color", field_color_());
                       cloud_shader_->uniform("uColor", mulColor(cloud_color_, field_color_()));
                       effect_shader_->uniform("u_color", field_color_());
@@ -686,18 +723,21 @@ public:
   void setFieldSpecular(const ci::ColorA& color) noexcept
   {
     field_shader_->uniform("uSpecular", color);
+    blank_shader_->uniform("uSpecular", color);
     effect_shader_->uniform("uSpecular", color);
   }
 
   void setFieldShininess(float shininess) noexcept
   {
     field_shader_->uniform("uShininess", shininess);
+    blank_shader_->uniform("uShininess", shininess);
     effect_shader_->uniform("uShininess", shininess);
   }
 
   void setFieldAmbient(float value) noexcept
   {
     field_shader_->uniform("uAmbient", value);
+    blank_shader_->uniform("uAmbient", value);
     effect_shader_->uniform("uAmbient", value);
   }
 
@@ -892,6 +932,7 @@ private:
 
     auto mat = light_camera_.getProjectionMatrix() * light_camera_.getViewMatrix();
     field_shader_->uniform("uShadowMatrix", mat);
+    blank_shader_->uniform("uShadowMatrix", mat);
     bg_shader_->uniform("uShadowMatrix", mat);
 
     {
@@ -899,6 +940,7 @@ private:
       auto v = info.main_camera->getViewMatrix() * glm::vec4(light_pos_, 1);
 
       field_shader_->uniform("uLightPosition", v);
+      blank_shader_->uniform("uLightPosition", v);
       bg_shader_->uniform("uLightPosition", v);
       effect_shader_->uniform("uLightPosition", v);
     }
@@ -994,6 +1036,8 @@ private:
   // Fieldの置ける場所をすべて表示
   void drawFieldBlankShadow() const
   {
+    if (blank_panels_.empty()) return;
+
     ci::gl::ScopedModelMatrix m;
 
     for (const auto& p : blank_panels_)
@@ -1005,18 +1049,26 @@ private:
 
   void drawFieldBlank() const
   {
-    ci::gl::ScopedModelMatrix m;
+    if (blank_panels_.empty()) return;
+
+    auto* mat = (glm::mat4*)blank_matrix_->mapReplace();
+    auto* diffuse_power = (float*)blank_diffuse_power_->mapReplace();
 
     auto t = float(put_gauge_timer_ * blank_effect_speed_);
     for (const auto& p : blank_panels_)
     {
-      float diffuse = glm::clamp(std::sin(t + p.position.x * blank_effect_.x + p.position.z * blank_effect_.y), 0.0f, 1.0f)
-                      * blank_diffuse_.x + blank_diffuse_.y;
-      field_shader_->uniform("uDiffusePower", diffuse);
+      float diffuse = glm::clamp(std::sin(t + p.position.x * blank_effect_.x + p.position.z * blank_effect_.y), 0.0f, 1.0f) * blank_diffuse_.x
+                      + blank_diffuse_.y;
+      *diffuse_power = diffuse;
+      ++diffuse_power;
 
-      ci::gl::setModelMatrix(p.matrix);
-      ci::gl::draw(blank_model_);
+      *mat = p.matrix;
+      ++mat;
     }
+    blank_matrix_->unmap();
+    blank_diffuse_power_->unmap();
+
+    blank_model_->drawInstanced(blank_panels_.size());
   }
 
   // 置けそうな箇所をハイライト
@@ -1188,7 +1240,12 @@ private:
   ci::AxisAlignedBox panel_aabb_;
 
   // 演出用
-  ci::gl::VboMeshRef blank_model_;
+  ci::gl::GlslProgRef blank_shader_;
+  ci::gl::VboRef blank_matrix_;
+  ci::gl::VboRef blank_diffuse_power_;
+  ci::gl::BatchRef blank_model_;
+
+
   ci::gl::VboMeshRef blank_shadow_model_;
   ci::gl::VboMeshRef selected_model;
   ci::gl::VboMeshRef cursor_model;
