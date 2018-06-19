@@ -275,7 +275,7 @@ public:
       auto model = createVboMesh(params.getValueForKey<std::string>("effect.model"), true);
 
       {
-        std::vector<glm::mat4> matrix(500);
+        std::vector<glm::mat4> matrix(256);
         effect_matrix_ = ci::gl::Vbo::create(GL_ARRAY_BUFFER, matrix.size() * sizeof(glm::mat4), matrix.data(), GL_DYNAMIC_DRAW);
 
         ci::geom::BufferLayout layout;
@@ -283,7 +283,7 @@ public:
         model->appendVbo(layout, effect_matrix_);
       }
       {
-        std::vector<ci::Color> diffuse(500);
+        std::vector<ci::Color> diffuse(256);
         effect_color_ = ci::gl::Vbo::create(GL_ARRAY_BUFFER, diffuse.size() * sizeof(ci::Color), diffuse.data(), GL_DYNAMIC_DRAW);
 
         ci::geom::BufferLayout layout;
@@ -792,7 +792,7 @@ public:
 
 private:
   // 読まれてないパネルを読み込む
-  const ci::gl::VboMeshRef& getPanelModel(int number) noexcept
+  const ci::gl::BatchRef& getPanelModel(int number) noexcept
   {
     if (!panel_models[number])
     {
@@ -801,7 +801,7 @@ private:
       {
         auto tri_mesh = PLY::load(path);
         // panel_aabb[number] = tri_mesh.calcBoundingBox();
-        auto mesh = ci::gl::VboMesh::create(tri_mesh);
+        auto mesh = ci::gl::Batch::create(tri_mesh, field_shader_);
         panel_models[number] = mesh;
         panel_model_cache_.insert({ path, mesh });
       }
@@ -1026,7 +1026,7 @@ private:
     ci::gl::setModelMatrix(mtx);
 
     const auto& model = getPanelModel(number);
-    ci::gl::draw(model);
+    model->draw();
   }
 
   // Fieldのパネルを全て表示
@@ -1039,7 +1039,7 @@ private:
       ci::gl::setModelMatrix(p.matrix);
 
       const auto& model = getPanelModel(p.index);
-      ci::gl::draw(model);
+      ci::gl::draw(model->getVboMesh());
     }
   }
 
@@ -1053,7 +1053,7 @@ private:
 
       field_shader_->uniform("uDiffusePower", p.diffuse_power);
       const auto& model = getPanelModel(p.index);
-      ci::gl::draw(model);
+      model->draw();
     }
   }
   
@@ -1092,7 +1092,7 @@ private:
     blank_matrix_->unmap();
     blank_diffuse_power_->unmap();
 
-    blank_model_->drawInstanced(blank_panels_.size());
+    blank_model_->drawInstanced(int(blank_panels_.size()));
   }
 
   // 置けそうな箇所をハイライト
@@ -1264,9 +1264,9 @@ private:
 
   // パネル
   std::vector<std::string> panel_path;
-  std::vector<ci::gl::VboMeshRef> panel_models;
+  std::vector<ci::gl::BatchRef> panel_models;
   // NOTE 同じパスのモデルデータのキャッシュ
-  std::map<std::string, ci::gl::VboMeshRef> panel_model_cache_;
+  std::map<std::string, ci::gl::BatchRef> panel_model_cache_;
 
   // AABBは全パネル共通
   ci::AxisAlignedBox panel_aabb_;
