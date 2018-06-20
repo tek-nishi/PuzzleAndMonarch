@@ -375,10 +375,13 @@
       "radius": 1,
       "line_width": 1.5,
       "segment": 30,
+      "begin_angle": 90,
+      "end_angle": -270,
       "enable": false,
 
       "childlen": [
         {
+          "identifier": "share:icon",
           "rect": [ 0, 0, 0, 0 ],
           "anchor": [
             [ 0.17, 0.24 ],
