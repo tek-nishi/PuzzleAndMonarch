@@ -195,9 +195,21 @@ public:
                                              { ci::geom::Attrib::CUSTOM_1, "uDiffusePower" },
                                            });
 
-
       // 処理負荷軽減のため専用モデルを用意
-      blank_shadow_model_ = createVboMesh(params.getValueForKey<std::string>("blank_shadow_model"), false);
+      {
+        auto model = createVboMesh(params.getValueForKey<std::string>("blank_shadow_model"), false);
+
+        ci::geom::BufferLayout layout;
+        layout.append(ci::geom::Attrib::CUSTOM_0, 16, sizeof(glm::mat4), 0, 1 /* per instance */);
+        model->appendVbo(layout, blank_matrix_);
+
+        blank_shadow_shader_ = createShader("blank_shadow", "shadow");
+
+        blank_shadow_model_ = ci::gl::Batch::create(model, blank_shadow_shader_,
+                                                    {
+                                                      { ci::geom::Attrib::CUSTOM_0, "vInstanceMatrix" },
+                                                    });
+      }
     }
     {
       auto name = params.getValueForKey<std::string>("bg.shader");
@@ -684,6 +696,8 @@ public:
   // フィールド表示
   void drawField(const Info& info) noexcept
   {
+    updateFieldBlank();
+
     ci::gl::enableDepth();
     ci::gl::enable(GL_CULL_FACE);
     ci::gl::disableAlphaBlending();
@@ -1058,20 +1072,7 @@ private:
   }
   
   // Fieldの置ける場所をすべて表示
-  void drawFieldBlankShadow() const
-  {
-    if (blank_panels_.empty()) return;
-
-    ci::gl::ScopedModelMatrix m;
-
-    for (const auto& p : blank_panels_)
-    {
-      ci::gl::setModelMatrix(p.matrix);
-      ci::gl::draw(blank_shadow_model_);
-    }
-  }
-
-  void drawFieldBlank() const
+  void updateFieldBlank()
   {
     if (blank_panels_.empty()) return;
 
@@ -1091,7 +1092,18 @@ private:
     }
     blank_matrix_->unmap();
     blank_diffuse_power_->unmap();
+  }
 
+
+  void drawFieldBlankShadow()
+  {
+    if (blank_panels_.empty()) return;
+    blank_shadow_model_->drawInstanced(int(blank_panels_.size()));
+  }
+
+  void drawFieldBlank() const
+  {
+    if (blank_panels_.empty()) return;
     blank_model_->drawInstanced(int(blank_panels_.size()));
   }
 
@@ -1277,8 +1289,9 @@ private:
   ci::gl::VboRef blank_diffuse_power_;
   ci::gl::BatchRef blank_model_;
 
+  ci::gl::GlslProgRef blank_shadow_shader_;
+  ci::gl::BatchRef blank_shadow_model_;
 
-  ci::gl::VboMeshRef blank_shadow_model_;
   ci::gl::VboMeshRef selected_model;
   ci::gl::VboMeshRef cursor_model;
 
