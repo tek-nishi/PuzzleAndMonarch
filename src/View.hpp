@@ -193,25 +193,25 @@ public:
                                            {
                                              { ci::geom::Attrib::CUSTOM_0, "vInstanceMatrix" },
                                              { ci::geom::Attrib::CUSTOM_1, "uDiffusePower" },
-                                           });
-
-      // 処理負荷軽減のため専用モデルを用意
-      {
-        auto model = createVboMesh(params.getValueForKey<std::string>("blank_shadow_model"), false);
-
-        ci::geom::BufferLayout layout;
-        layout.append(ci::geom::Attrib::CUSTOM_0, 16, sizeof(glm::mat4), 0, 1 /* per instance */);
-        model->appendVbo(layout, blank_matrix_);
-
-        blank_shadow_shader_ = createShader("blank_shadow", "shadow");
-
-        blank_shadow_model_ = ci::gl::Batch::create(model, blank_shadow_shader_,
-                                                    {
-                                                      { ci::geom::Attrib::CUSTOM_0, "vInstanceMatrix" },
-                                                    });
-      }
+                                             });
     }
     {
+      // 処理負荷軽減のため専用モデルを用意
+      auto model = createVboMesh(params.getValueForKey<std::string>("blank_shadow_model"), false);
+
+      ci::geom::BufferLayout layout;
+      layout.append(ci::geom::Attrib::CUSTOM_0, 16, sizeof(glm::mat4), 0, 1 /* per instance */);
+      model->appendVbo(layout, blank_matrix_);
+
+      blank_shadow_shader_ = createShader("blank_shadow", "shadow");
+
+      blank_shadow_model_ = ci::gl::Batch::create(model, blank_shadow_shader_,
+                                                  {
+                                                    { ci::geom::Attrib::CUSTOM_0, "vInstanceMatrix" },
+                                                    });
+    }
+    {
+      // BG
       auto name = params.getValueForKey<std::string>("bg.shader");
       bg_shader_ = createShader(name, name);
 
@@ -427,11 +427,8 @@ public:
       rotate_index
     };
 
-    // field_panel_indices_.insert({ pos, field_panels_.size() });
-    // field_panels_.push_back(panel);
-
-
-    blank_panels_.push_back({ pos, position, glm::translate(position) });
+    field_panel_indices_.insert({ pos, field_panels_.size() });
+    field_panels_.push_back(panel);
   }
 
   // Blank更新
@@ -519,8 +516,6 @@ public:
   // パネルを置く時の演出
   void startPutEase(double time_rate) noexcept
   {
-    return;
-
     auto duration = glm::mix(put_duration_.x, put_duration_.y, time_rate);
 
     auto& p = field_panels_.back();
