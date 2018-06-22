@@ -427,8 +427,11 @@ public:
       rotate_index
     };
 
-    field_panel_indices_.insert({ pos, field_panels_.size() });
-    field_panels_.push_back(panel);
+    // field_panel_indices_.insert({ pos, field_panels_.size() });
+    // field_panels_.push_back(panel);
+
+
+    blank_panels_.push_back({ pos, position, glm::translate(position) });
   }
 
   // Blank更新
@@ -516,6 +519,8 @@ public:
   // パネルを置く時の演出
   void startPutEase(double time_rate) noexcept
   {
+    return;
+
     auto duration = glm::mix(put_duration_.x, put_duration_.y, time_rate);
 
     auto& p = field_panels_.back();
