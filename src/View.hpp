@@ -975,7 +975,8 @@ private:
 
     {
       // NOTICE 点光源の位置は視野座標系に変換しとく
-      auto v = info.main_camera->getViewMatrix() * glm::vec4(light_pos_, 1);
+      auto lp = light_pos_ + info.target_pos;
+      auto v = info.main_camera->getViewMatrix() * glm::vec4(lp, 1);
 
       field_shader_->uniform("uLightPosition", v);
       blank_shader_->uniform("uLightPosition", v);
