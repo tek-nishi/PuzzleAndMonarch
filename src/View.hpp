@@ -146,7 +146,6 @@ public:
 
     selected_model = ci::gl::VboMesh::create(PLY::load(params.getValueForKey<std::string>("selected_model")));
     cursor_model   = ci::gl::VboMesh::create(PLY::load(params.getValueForKey<std::string>("cursor_model")));
-    bg_model       = createVboMesh(params.getValueForKey<std::string>("bg.model"), true);
 
     {
       auto size = Json::getVec<glm::ivec2>(params["shadow_map"]);
@@ -214,7 +213,8 @@ public:
       // BG
       auto name = params.getValueForKey<std::string>("bg.shader");
       bg_shader_ = createShader(name, name);
-
+      bg_model = ci::gl::Batch::create(createVboMesh(params.getValueForKey<std::string>("bg.model"), true), bg_shader_);
+      
       float checker_size = bg_scale_.x / (PANEL_SIZE / 2);
       bg_shader_->uniform("u_checker_size", checker_size);
       
@@ -1131,7 +1131,6 @@ private:
   // 背景
   void drawFieldBg(const glm::vec3& pos) noexcept
   {
-    ci::gl::ScopedGlslProg prog(bg_shader_);
     ci::gl::ScopedTextureBind tex(bg_texture_, 1);
     ci::gl::ScopedModelMatrix m;
     glm::vec2 offset { pos.x * (1.0f / PANEL_SIZE), -pos.z * (1.0f / PANEL_SIZE) };
@@ -1140,7 +1139,7 @@ private:
     auto mtx = glm::translate(pos);
     mtx = glm::scale(mtx, bg_scale_);
     ci::gl::setModelMatrix(mtx);
-    ci::gl::draw(bg_model);
+    bg_model->draw();
   }
 
   // 演出表示
@@ -1301,7 +1300,7 @@ private:
   glm::vec2 blank_diffuse_;
 
   // 背景
-  ci::gl::VboMeshRef bg_model;
+  ci::gl::BatchRef bg_model;
   glm::vec3 bg_scale_;
 
   // NOTICE 追加時にメモリ上で再配置されるのを避けるためstd::vectorではない
