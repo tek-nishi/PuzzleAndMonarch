@@ -23,6 +23,9 @@ namespace ngs {
 
 enum {
   PANEL_SIZE = 20,
+
+  EFFECT_NUM     = 10,
+  EFFECT_MAX_NUM = 256
 };
 
 
@@ -287,7 +290,7 @@ public:
       auto model = createVboMesh(params.getValueForKey<std::string>("effect.model"), true);
 
       {
-        std::vector<glm::mat4> matrix(256);
+        std::vector<glm::mat4> matrix(EFFECT_MAX_NUM);
         effect_matrix_ = ci::gl::Vbo::create(GL_ARRAY_BUFFER, matrix.size() * sizeof(glm::mat4), matrix.data(), GL_DYNAMIC_DRAW);
 
         ci::geom::BufferLayout layout;
@@ -295,7 +298,7 @@ public:
         model->appendVbo(layout, effect_matrix_);
       }
       {
-        std::vector<ci::Color> diffuse(256);
+        std::vector<ci::Color> diffuse(EFFECT_MAX_NUM);
         effect_color_ = ci::gl::Vbo::create(GL_ARRAY_BUFFER, diffuse.size() * sizeof(ci::Color), diffuse.data(), GL_DYNAMIC_DRAW);
 
         ci::geom::BufferLayout layout;
@@ -612,8 +615,10 @@ public:
   {
     glm::vec3 gpos = vec2ToVec3(pos * int(PANEL_SIZE));
 
-    for (int i = 0; i < 10; ++i)
+    for (int i = 0; i < EFFECT_NUM; ++i)
     {
+      if (effects_.size() == EFFECT_MAX_NUM) break;
+
       glm::vec3 ofs{
         ci::randFloat(-PANEL_SIZE / 2, PANEL_SIZE / 2),
         randFromVec2(effect_y_ofs_),
