@@ -578,7 +578,7 @@
             [ 0.5, 0.06 ]
           ],
           "event": "agree",
-          "se": "agree",
+          "se": "back",
 
           "radius": 1,
           "line_width": 1.5,
@@ -895,7 +895,7 @@
             [ 0.5, 0.06 ]
           ],
           "event": "back",
-          "se": "agree",
+          "se": "back",
 
           "radius": 1,
           "line_width": 1.5,

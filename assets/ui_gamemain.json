@@ -519,7 +519,7 @@
           "end_angle": 450,
 
           "event": "resume",
-          "se": "agree",
+          "se": "back",
 
           "childlen": [
             {
@@ -561,7 +561,7 @@
           "end_angle": 450,
 
           "event": "abort",
-          "se": "agree",
+          "se": "back",
 
           "childlen": [
             {

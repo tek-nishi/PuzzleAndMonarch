@@ -207,6 +207,7 @@ public:
                                 // 可能であればパネルを移動
                                 if (calcNewFieldPos(grid_pos_))
                                 {
+                                  game_event_.insert("Panel:move");
                                   event_.signal("Game:PanelMove", Arguments());
                                 }
                               });
@@ -480,7 +481,7 @@ public:
                                    event_.signal("Game:completed", comp_args);
                                  }
                                }
-                               game_event_.insert("Comp:forests");
+                               game_event_.insert("Game:completed");
                              });
 
     holder_ += event.connect("Game:completed_path",
@@ -503,7 +504,7 @@ public:
                                    event_.signal("Game:completed", comp_args);
                                  }
                                }
-                               game_event_.insert("Comp:path");
+                               game_event_.insert("Game:completed");
                              });
     
     holder_ += event.connect("Game:completed_church",
@@ -539,7 +540,7 @@ public:
                                  };
                                  event_.signal("Game:completed", comp_args);
                                }
-                               game_event_.insert("Comp:church");
+                               game_event_.insert("Game:completed");
                              });
 
     // Result→Title

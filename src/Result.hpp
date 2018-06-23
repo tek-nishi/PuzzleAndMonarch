@@ -148,6 +148,14 @@ public:
                         {
                           canvas_.enableWidget("score:rank-in");
                         }
+
+                        {
+                          // SE
+                          Arguments args{
+                            { "name", std::string("rank-in") }
+                          };
+                          event_.signal("UI:sound", args);
+                        }
                       });
     }
     if (perfect_)

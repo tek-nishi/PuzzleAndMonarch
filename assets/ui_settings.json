@@ -140,6 +140,7 @@
           "end_angle": 450,
 
           "event": "Trash",
+          "se": "selected",
 
           "childlen": [
             {
@@ -177,7 +178,7 @@
             [ 0.5, 0.06 ]
           ],
           "event": "agree",
-          "se": "agree",
+          "se": "back",
 
           "radius": 1,
           "line_width": 1.5,
@@ -264,6 +265,7 @@
           "end_angle": 450,
 
           "event": "erase-record",
+          "se": "selected",
 
           "childlen": [
             {
@@ -298,7 +300,7 @@
             [ 0.5, 0.31 ]
           ],
           "event": "back",
-          "se": "agree",
+          "se": "back",
 
           "radius": 1,
           "line_width": 1.5,

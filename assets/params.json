@@ -32,28 +32,33 @@
     },
     {
       "name": "start",
-      "path": "menu-jingle.m4a",
+      "path": "start-jingle.m4a",
       "type": "bgm"
     },
     {
       "name": "result",
-      "path": "stageclear.m4a",
+      "path": "result-jingle.m4a",
+      "type": "bgm"
+    },
+    {
+      "name": "misc",
+      "path": "misc-jingle.m4a",
       "type": "bgm"
     },
 
-    {
-      "name": "agree",
-      "path": "agree.m4a",
-      "type": "se"
-    },
     {
       "name": "selected",
       "path": "selected.m4a",
       "type": "se"
     },
     {
+      "name": "back",
+      "path": "back.m4a",
+      "type": "se"
+    },
+    {
       "name": "play",
-      "path": "switch.m4a",
+      "path": "play.m4a",
       "type": "se"
     },
 
@@ -68,6 +73,16 @@
       "type": "se"
     },
     {
+      "name": "panel-move",
+      "path": "panel-move.m4a",
+      "type": "se"
+    },
+    {
+      "name": "complete",
+      "path": "complete.m4a",
+      "type": "se"
+    },
+    {
       "name": "countdown",
       "path": "count-down.m4a",
       "type": "se"
@@ -75,6 +90,11 @@
     {
       "name": "timeup",
       "path": "timeup.m4a",
+      "type": "bgm"
+    },
+    {
+      "name": "rank-in",
+      "path": "rank-in.m4a",
       "type": "se"
     },
 
@@ -97,14 +117,16 @@
 
   "game-sound": {
     "Panel:rotate":   "panel-rotate",
+    "Panel:move":     "panel-move",
     "Panel:put":      "panel-put",
+    "Game:completed": "complete",
     "Game:ready":     "start",
     "Game:finish":    "timeup",
     "Game:countdown": "countdown"
   },
 
   "game": {
-    "play_time": 180,
+    "play_time": 80,
     "force_panel": 0,
     "test_score_": 110000,
     "force_tutorial": false,
