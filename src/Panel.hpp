@@ -25,7 +25,7 @@ struct Panel {
     // パネルの属性
     TOWN        = 1 << 0,         // 道の途中にある街
     CHURCH      = 1 << 1,         // 教会
-    CASTLE      = 1 << 2,         // お城(開始位置)
+    CASTLE      = 1 << 2,         // お城
     DEEP_FOREST = 1 << 3,         // 深い森
     START       = 1 << 4,         // 開始用
   };
@@ -155,7 +155,7 @@ std::vector<Panel> createPanels() noexcept
    
     { 0, Panel::GRASS, Panel::PATH,   Panel::GRASS,  Panel::PATH },
     { Panel::TOWN, Panel::PATH | Panel::EDGE,  Panel::PATH | Panel::EDGE,   Panel::GRASS,  Panel::PATH | Panel::EDGE },
-    { Panel::CASTLE, Panel::GRASS, Panel::GRASS,  Panel::GRASS,  Panel::PATH | Panel::EDGE },
+    { Panel::CHURCH, Panel::GRASS, Panel::GRASS,  Panel::GRASS,  Panel::PATH | Panel::EDGE },
     { 0, Panel::GRASS, Panel::FOREST | Panel::EDGE, Panel::FOREST | Panel::EDGE, Panel::GRASS },
 
     // d
@@ -171,7 +171,7 @@ std::vector<Panel> createPanels() noexcept
 
     { 0, Panel::GRASS, Panel::PATH,   Panel::GRASS,  Panel::PATH },
     { Panel::TOWN, Panel::PATH | Panel::EDGE,  Panel::PATH | Panel::EDGE,   Panel::GRASS,  Panel::PATH | Panel::EDGE },
-    { Panel::CASTLE, Panel::GRASS, Panel::GRASS,  Panel::GRASS,  Panel::PATH | Panel::EDGE },
+    { Panel::CHURCH, Panel::GRASS, Panel::GRASS,  Panel::GRASS,  Panel::PATH | Panel::EDGE },
     { 0, Panel::GRASS, Panel::FOREST | Panel::EDGE, Panel::FOREST | Panel::EDGE, Panel::GRASS },
 
     // f 
