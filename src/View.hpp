@@ -14,6 +14,7 @@
 #include <cinder/ImageIo.h>
 #include <cinder/Timeline.h>
 #include "PLY.hpp"
+#include "Model.hpp"
 #include "Shader.hpp"
 #include "Utility.hpp"
 #include "EaseFunc.hpp"
@@ -818,7 +819,8 @@ private:
       const auto& path = panel_path[number];
       if (!panel_model_cache_.count(path))
       {
-        auto tri_mesh = PLY::load(path);
+        auto tri_mesh = Model::load(path);
+
         // panel_aabb[number] = tri_mesh.calcBoundingBox();
         auto mesh = ci::gl::Batch::create(tri_mesh, field_shader_);
         panel_models[number] = mesh;

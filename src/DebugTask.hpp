@@ -9,6 +9,8 @@
 #include <cinder/params/Params.h>
 #include "Task.hpp"
 #include "Camera.hpp"
+#include "Model.hpp"
+
 
 // TIPS AntTweakBarを直接使う
 extern "C" {
@@ -21,6 +23,7 @@ namespace ngs {
 class DebugTask
   : public Task
 {
+  const ci::JsonTree& params_;
   Event<Arguments>& event_;
   ConnectionHolder holder_;
   Camera camera_;
@@ -171,6 +174,25 @@ class DebugTask
                 event_.signal("debug-bg-ambient", args);
               });
 
+    settings_->addButton("PLY -> mesh",
+                         [this]()
+                         {
+                           DOUT << "PLY -> mesh" << std::endl;
+
+                           std::set<std::string> cache;
+
+                           for (const auto& path : params_["field.panel_path"])
+                           {
+                             const auto& p = path.getValue<std::string>();
+                             
+                             if (cache.count(p)) continue;
+                             cache.insert(p);
+
+                             auto mesh = PLY::load(p);
+                             Model::writeTriMesh(p, mesh);
+                           }
+                         });
+
     settings_->show(false);
 
     // TIPS HELPを隠す
@@ -247,7 +269,8 @@ class DebugTask
 
 public:
   DebugTask(const ci::JsonTree& params, Event<Arguments>& event, UI::Drawer& drawer) noexcept
-    : event_(event),
+    : params_(params),
+      event_(event),
       camera_(params["field.camera"]),
       drawer_(drawer)
   {
