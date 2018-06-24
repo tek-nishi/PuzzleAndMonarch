@@ -17,6 +17,7 @@
 namespace ngs { namespace PLY {
 
 ci::TriMesh load(const std::string& path);
+ci::TriMesh optimize(const ci::TriMesh& mesh);
 
 
 #if defined (NGS_PLY_IMPLEMENTATION)
@@ -133,13 +134,71 @@ ci::TriMesh load(const std::string& path)
   }
 
   mesh.recalculateNormals();
-  
-  DOUT << path << '\n'
-       << "  face: " << face_num << '\n'
-       << "vertex: " << vertex_num << '\n'
+
+  // DOUT << path << '\n'
+  //      << "  face: " << face_num << '\n'
+  //      << "vertex: " << vertex_num << '\n'
+  //      << std::endl;
+
+  return optimize(mesh);
+}
+
+
+// 同じ頂点を削除する
+ci::TriMesh optimize(const ci::TriMesh& mesh)
+{ 
+  // 頂点カラーを含むTriMeshを準備
+  ci::TriMesh opt_mesh(ci::TriMesh::Format().positions().normals().colors());
+
+  // 頂点索引変換情報
+  std::map<uint32_t, uint32_t> indices;
+
+  // 全頂点情報を取り出す
+  const auto* pos    = mesh.getPositions<3>();
+  const auto& color  = mesh.getColors<3>();
+  const auto& normal = mesh.getNormals();
+
+  uint32_t vertex_num = uint32_t(mesh.getNumVertices());
+  uint32_t index = 0;
+  for (uint32_t i = 0; i < vertex_num; ++i)
+  {
+    for (uint32_t j = 0; j < i; ++j)
+    {
+      if (pos[j] == pos[i]
+          && color[j] == color[i]
+          && normal[j] == normal[i])
+      {
+        // 同じ頂点が見つかった
+        indices.insert({ i, indices.at(j) });
+        goto NEXT;
+      }
+    }
+
+    // 見つからなかった
+    opt_mesh.appendPosition(pos[i]);
+    opt_mesh.appendColorRgb(color[i]);
+    opt_mesh.appendNormal(normal[i]);
+    indices.insert({ i, index });
+    ++index;
+  NEXT:
+    ;
+  }
+
+  // 再マップ
+  const auto& mesh_indices = mesh.getIndices();
+  std::vector<uint32_t> opt_indices(mesh_indices.size());
+  for (size_t i = 0; i < mesh_indices.size(); ++i)
+  {
+    opt_indices[i] = indices.at(mesh_indices[i]);
+  }
+  opt_mesh.getIndices() = opt_indices;
+
+  DOUT << "vtx: " << mesh.getNumVertices()
+       << " -> " << opt_mesh.getNumVertices()
+       << " (" << float(opt_mesh.getNumVertices()) / float(mesh.getNumVertices()) * 100.0f << "%)"
        << std::endl;
 
-  return mesh;
+  return opt_mesh;
 }
 
 #endif

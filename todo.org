@@ -5,6 +5,7 @@
 * TODO 世界観を作る
 * TODO ローカライズ
 * TODO モデルデータが重い
+* TODO モデルデータの変換
 * TODO BGM作る
 * TODO SE作る
 * TODO カルカソンヌ公式に許可を取る
