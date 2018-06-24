@@ -10,6 +10,7 @@
 * TODO アプリアイコン
 * TODO macOS:バックグラウンドで放置しとくとDisplayがnullになって落ちる
 * TODO iOS:処理の思い箇所を探して修正
+* TODO iOS:モノラル再生で音量が小さくなる
 * TODO iOS:表示ON/OFFとかをparamsで書いて処理負荷を計測できるように
 * TODO iOS:AppStore提出に必要な書類や素材
 * TODO iOS:実績のアイコンを用意
