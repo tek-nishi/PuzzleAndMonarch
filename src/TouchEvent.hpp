@@ -153,6 +153,15 @@ struct TouchEvent
       multi_touch_ = false;
       DOUT << "multi_touch_began" << std::endl;
     }
+
+#if defined (CINDER_COCOA_TOUCH) && defined (DEBUG)
+    if (touches.size() == 3)
+    {
+      DOUT << "triple" << std::endl;
+      // 3本同時タップでキーボード
+      event_.signal("App:show-keyboard", Arguments());
+    }
+#endif
   }
   
   void touchesMoved(const ci::app::TouchEvent& event) noexcept

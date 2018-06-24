@@ -106,6 +106,18 @@ public:
                      pending_draw_next_ = false;
                    });
 
+#if defined (CINDER_COCOA_TOUCH) && defined (DEBUG)
+    event_.connect("App:show-keyboard",
+                   [this](const Connection&, const Arguments&) noexcept
+                   {
+                     if (!isKeyboardVisible())
+                     {
+                       showKeyboard(KeyboardOptions().closeOnReturn(true));
+                     }
+                   });
+#endif
+
+
     GameCenter::authenticateLocalPlayer([this]() noexcept
                                         {
                                           // AppSupport::pauseDraw(true);
