@@ -11,6 +11,10 @@ struct Score
   // 各種スコア
   std::vector<u_int> scores;
 
+  // 森と道は特別
+  std::vector<u_int> forest;
+  std::vector<u_int> path;
+
   // 集計スコア
   u_int total_score;
   u_int total_ranking;

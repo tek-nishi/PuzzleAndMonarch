@@ -8,7 +8,6 @@
 
   "childlen": [
     {
-      "identifier": "1",
       "rect": [ -20, -14, 20, 14 ],
       "anchor": [
         [ 0.5, 0.91 ],
@@ -20,345 +19,444 @@
     },
 
     {
-      "identifier": "scores",
-      "rect": [ -30, -70, -30, 70 ],
+      "rect": [ 0, 58, 0, 71 ],
       "anchor": [
-        [ 0.45, 0.5 ],
-        [ 0.45, 0.5 ]
+        [ 0.3, 0.5 ],
+        [ 0.3, 0.5 ]
       ],
 
-      "childlen": [
-        {
-          "rect": [ 0, 0, 0, 0 ],
-          "anchor": [
-            [ 0, 0.92 ],
-            [ 0, 1.0 ]
-          ],
+      "font": "jp",
+      "text": "森:",
+      "layout": [ 1, 0 ]
+    },
+    {
+      "rect": [ 0, 41, 0, 54 ],
+      "anchor": [
+        [ 0.3, 0.5 ],
+        [ 0.3, 0.5 ]
+      ],
 
-          "font": "jp",
-          "text": "道:",
-          "layout": [ 1, 0 ]
-        },
-        {
-          "rect": [ 0, 0, 0, 0 ],
-          "anchor": [
-            [ 0, 0.82 ],
-            [ 0, 0.9 ]
-          ],
+      "font": "jp",
+      "text": "道:",
+      "layout": [ 1, 0 ]
+    },
+    {
+      "rect": [ 0, 24, 0, 37 ],
+      "anchor": [
+        [ 0.3, 0.5 ],
+        [ 0.3, 0.5 ]
+      ],
 
-          "font": "jp",
-          "text": "道の長さ:",
-          "layout": [ 1, 0 ]
-        },
-        {
-          "rect": [ 0, 0, 0, 0 ],
-          "anchor": [
-            [ 0, 0.72 ],
-            [ 0, 0.8 ]
-          ],
+      "font": "jp",
+      "text": "街:",
+      "layout": [ 1, 0 ]
+    },
+    {
+      "rect": [ 0, 7, 0, 20 ],
+      "anchor": [
+        [ 0.3, 0.5 ],
+        [ 0.3, 0.5 ]
+      ],
 
-          "font": "jp",
-          "text": "森:",
-          "layout": [ 1, 0 ]
-        },
-        {
-          "rect": [ 0, 0, 0, 0 ],
-          "anchor": [
-            [ 0, 0.62 ],
-            [ 0, 0.7 ]
-          ],
+      "font": "jp",
+      "text": "教会:",
+      "layout": [ 1, 0 ]
+    },
+    {
+      "rect": [ 0, -10, 0, 3 ],
+      "anchor": [
+        [ 0.3, 0.5 ],
+        [ 0.3, 0.5 ]
+      ],
 
-          "font": "jp",
-          "text": "森の広さ:",
-          "layout": [ 1, 0 ]
-        },
-        {
-          "rect": [ 0, 0, 0, 0 ],
-          "anchor": [
-            [ 0, 0.52 ],
-            [ 0, 0.6 ]
-          ],
+      "font": "jp",
+      "text": "置いた数:",
+      "layout": [ 1, 0 ]
+    },
+    {
+      "identifier": "score:perfect",
+      "rect": [ 4, -27, 15, -14 ],
+      "anchor": [
+        [ 0.3, 0.5 ],
+        [ 0.3, 0.5 ]
+      ],
+      "enable": false,
 
-          "font": "jp",
-          "text": "深い森:",
-          "layout": [ 1, 0 ]
-        },
-        {
-          "rect": [ 0, 0, 0, 0 ],
-          "anchor": [
-            [ 0, 0.42 ],
-            [ 0, 0.5 ]
-          ],
+      "font": "en",
+      "text": "Perfect!!",
+      "layout": [ 0, 0 ]
+    },
 
-          "font": "jp",
-          "text": "街:",
-          "layout": [ 1, 0 ]
-        },
-        {
-          "rect": [ 0, 0, 0, 0 ],
-          "anchor": [
-            [ 0, 0.32 ],
-            [ 0, 0.4 ]
-          ],
+    {
+      "identifier": "score:forest0",
+      "rect": [ 4, 57, 15, 70 ],
+      "anchor": [
+        [ 0.3, 0.5 ],
+        [ 0.3, 0.5 ]
+      ],
+      "enable": false,
 
-          "font": "jp",
-          "text": "教会:",
-          "layout": [ 1, 0 ]
-        },
-        {
-          "rect": [ 0, -0, 0, 0 ],
-          "anchor": [
-            [ 0, 0.22 ],
-            [ 0, 0.3 ]
-          ],
+      "font": "en",
+      "text": "00",
+      "layout": [ 0, 0 ]
+    },
+    {
+      "identifier": "score:forest1",
+      "rect": [ 4, 57, 15, 70 ],
+      "anchor": [
+        [ 0.3, 0.5 ],
+        [ 0.3, 0.5 ]
+      ],
+      "enable": false,
 
-          "font": "jp",
-          "text": "置いた数:",
-          "layout": [ 1, 0 ]
-        },
-        {
-          "identifier": "score:perfect",
-          "rect": [ -34, -1, -34, -2 ],
-          "anchor": [
-            [ 0, 0.22 ],
-            [ 0, 0.3 ]
-          ],
-          "enable": false,
+      "font": "en",
+      "text": "00",
+      "layout": [ 0, 0 ]
+    },
+    {
+      "identifier": "score:forest2",
+      "rect": [ 4, 57, 15, 70 ],
+      "anchor": [
+        [ 0.3, 0.5 ],
+        [ 0.3, 0.5 ]
+      ],
+      "enable": false,
 
-          "font": "en",
-          "text": "Perfect!!",
-          "layout": [ 1, 0 ]
-        },
-        {
-          "rect": [ 0, 0, 0, 0 ],
-          "anchor": [
-            [ 0, 0.12 ],
-            [ 0, 0.2 ]
-          ],
+      "font": "en",
+      "text": "00",
+      "layout": [ 0, 0 ]
+    },
+    {
+      "identifier": "score:forest3",
+      "rect": [ 4, 57, 15, 70 ],
+      "anchor": [
+        [ 0.3, 0.5 ],
+        [ 0.3, 0.5 ]
+      ],
+      "enable": false,
 
-          "font": "jp",
-          "text": "回した数:",
-          "layout": [ 1, 0 ]
-        },
-        {
-          "rect": [ 0, 0, 0, 0 ],
-          "anchor": [
-            [ 0, 0.02 ],
-            [ 0, 0.1 ]
-          ],
+      "font": "en",
+      "text": "00",
+      "layout": [ 0, 0 ]
+    },
+    {
+      "identifier": "score:forest4",
+      "rect": [ 4, 57, 15, 70 ],
+      "anchor": [
+        [ 0.3, 0.5 ],
+        [ 0.3, 0.5 ]
+      ],
+      "enable": false,
 
-          "font": "jp",
-          "text": "移動回数:",
-          "layout": [ 1, 0 ]
-        },
+      "font": "en",
+      "text": "00",
+      "layout": [ 0, 0 ]
+    },
+    {
+      "identifier": "score:forest5",
+      "rect": [ 4, 57, 15, 70 ],
+      "anchor": [
+        [ 0.3, 0.5 ],
+        [ 0.3, 0.5 ]
+      ],
+      "enable": false,
 
-        {
-          "identifier": "score:1",
-          "rect": [ 3, -1, 3, -1 ],
-          "anchor": [
-            [ 0, 0.92 ],
-            [ 0, 1.0 ]
-          ],
+      "font": "en",
+      "text": "00",
+      "layout": [ 0, 0 ]
+    },
+    {
+      "identifier": "score:forest6",
+      "rect": [ 4, 57, 15, 70 ],
+      "anchor": [
+        [ 0.3, 0.5 ],
+        [ 0.3, 0.5 ]
+      ],
+      "enable": false,
 
-          "font": "en",
-          "text": "000",
-          "layout": [ 0, 0 ]
-        },
-        {
-          "identifier": "score:2",
-          "rect": [ 3, -1, 3, -1 ],
-          "anchor": [
-            [ 0, 0.82 ],
-            [ 0, 0.9 ]
-          ],
+      "font": "en",
+      "text": "00",
+      "layout": [ 0, 0 ]
+    },
+    {
+      "identifier": "score:forest7",
+      "rect": [ 4, 57, 15, 70 ],
+      "anchor": [
+        [ 0.3, 0.5 ],
+        [ 0.3, 0.5 ]
+      ],
+      "enable": false,
 
-          "font": "en",
-          "text": "000",
-          "layout": [ 0, 0 ]
-        },
-        {
-          "identifier": "score:3",
-          "rect": [ 3, -1, 3, -1 ],
-          "anchor": [
-            [ 0, 0.72 ],
-            [ 0, 0.8 ]
-          ],
+      "font": "en",
+      "text": "00",
+      "layout": [ 0, 0 ]
+    },
+    {
+      "identifier": "score:forest8",
+      "rect": [ 4, 57, 15, 70 ],
+      "anchor": [
+        [ 0.3, 0.5 ],
+        [ 0.3, 0.5 ]
+      ],
+      "enable": false,
 
-          "font": "en",
-          "text": "000",
-          "layout": [ 0, 0 ]
-        },
-        {
-          "identifier": "score:4",
-          "rect": [ 3, -1, 3, -1 ],
-          "anchor": [
-            [ 0, 0.62 ],
-            [ 0, 0.7 ]
-          ],
+      "font": "en",
+      "text": "00",
+      "layout": [ 0, 0 ]
+    },
+    {
+      "identifier": "score:forest9",
+      "rect": [ 4, 57, 15, 70 ],
+      "anchor": [
+        [ 0.3, 0.5 ],
+        [ 0.3, 0.5 ]
+      ],
+      "enable": false,
 
-          "font": "en",
-          "text": "000",
-          "layout": [ 0, 0 ]
-        },
-        {
-          "identifier": "score:5",
-          "rect": [ 3, -1, 3, -1 ],
-          "anchor": [
-            [ 0, 0.52 ],
-            [ 0, 0.6 ]
-          ],
+      "font": "en",
+      "text": "00",
+      "layout": [ 0, 0 ]
+    },
 
-          "font": "en",
-          "text": "000",
-          "layout": [ 0, 0 ]
-        },
-        {
-          "identifier": "score:6",
-          "rect": [ 3, -1, 3, -1 ],
-          "anchor": [
-            [ 0, 0.42 ],
-            [ 0, 0.5 ]
-          ],
+    {
+      "identifier": "score:path0",
+      "rect": [ 4, 40, 15, 53 ],
+      "anchor": [
+        [ 0.3, 0.5 ],
+        [ 0.3, 0.5 ]
+      ],
+      "enable": false,
 
-          "font": "en",
-          "text": "000",
-          "layout": [ 0, 0 ]
-        },
-        {
-          "identifier": "score:7",
-          "rect": [ 3, -1, 3, -1 ],
-          "anchor": [
-            [ 0, 0.32 ],
-            [ 0, 0.4 ]
-          ],
+      "font": "en",
+      "text": "000",
+      "layout": [ 0, 0 ]
+    },
+    {
+      "identifier": "score:path1",
+      "rect": [ 4, 40, 15, 53 ],
+      "anchor": [
+        [ 0.3, 0.5 ],
+        [ 0.3, 0.5 ]
+      ],
+      "enable": false,
 
-          "font": "en",
-          "text": "000",
-          "layout": [ 0, 0 ]
-        },
-        {
-          "identifier": "score:8",
-          "rect": [ 3, -1, 3, -1 ],
-          "anchor": [
-            [ 0, 0.22 ],
-            [ 0, 0.3 ]
-          ],
+      "font": "en",
+      "text": "000",
+      "layout": [ 0, 0 ]
+    },
+    {
+      "identifier": "score:path2",
+      "rect": [ 4, 40, 15, 53 ],
+      "anchor": [
+        [ 0.3, 0.5 ],
+        [ 0.3, 0.5 ]
+      ],
+      "enable": false,
 
-          "font": "en",
-          "text": "000",
-          "layout": [ 0, 0 ]
-        },
-        {
-          "identifier": "score:9",
-          "rect": [ 3, -1, 3, -1 ],
-          "anchor": [
-            [ 0, 0.12 ],
-            [ 0, 0.2 ]
-          ],
+      "font": "en",
+      "text": "000",
+      "layout": [ 0, 0 ]
+    },
+    {
+      "identifier": "score:path3",
+      "rect": [ 4, 40, 15, 53 ],
+      "anchor": [
+        [ 0.3, 0.5 ],
+        [ 0.3, 0.5 ]
+      ],
+      "enable": false,
 
-          "font": "en",
-          "text": "000",
-          "layout": [ 0, 0 ]
-        },
-        {
-          "identifier": "score:10",
-          "rect": [ 3, -1, 3, -1 ],
-          "anchor": [
-            [ 0, 0.02 ],
-            [ 0, 0.1 ]
-          ],
+      "font": "en",
+      "text": "000",
+      "layout": [ 0, 0 ]
+    },
+    {
+      "identifier": "score:path4",
+      "rect": [ 4, 40, 15, 53 ],
+      "anchor": [
+        [ 0.3, 0.5 ],
+        [ 0.3, 0.5 ]
+      ],
+      "enable": false,
 
-          "font": "en",
-          "text": "000",
-          "layout": [ 0, 0 ]
-        }
-      ]
+      "font": "en",
+      "text": "000",
+      "layout": [ 0, 0 ]
+    },
+    {
+      "identifier": "score:path5",
+      "rect": [ 4, 40, 15, 53 ],
+      "anchor": [
+        [ 0.3, 0.5 ],
+        [ 0.3, 0.5 ]
+      ],
+      "enable": false,
+
+      "font": "en",
+      "text": "000",
+      "layout": [ 0, 0 ]
+    },
+    {
+      "identifier": "score:path6",
+      "rect": [ 4, 40, 15, 53 ],
+      "anchor": [
+        [ 0.3, 0.5 ],
+        [ 0.3, 0.5 ]
+      ],
+      "enable": false,
+
+      "font": "en",
+      "text": "000",
+      "layout": [ 0, 0 ]
+    },
+    {
+      "identifier": "score:path7",
+      "rect": [ 4, 40, 15, 53 ],
+      "anchor": [
+        [ 0.3, 0.5 ],
+        [ 0.3, 0.5 ]
+      ],
+      "enable": false,
+
+      "font": "en",
+      "text": "000",
+      "layout": [ 0, 0 ]
+    },
+    {
+      "identifier": "score:path8",
+      "rect": [ 4, 40, 15, 53 ],
+      "anchor": [
+        [ 0.3, 0.5 ],
+        [ 0.3, 0.5 ]
+      ],
+      "enable": false,
+
+      "font": "en",
+      "text": "000",
+      "layout": [ 0, 0 ]
+    },
+    {
+      "identifier": "score:path9",
+      "rect": [ 4, 40, 15, 53 ],
+      "anchor": [
+        [ 0.3, 0.5 ],
+        [ 0.3, 0.5 ]
+      ],
+      "enable": false,
+
+      "font": "en",
+      "text": "000",
+      "layout": [ 0, 0 ]
+    },
+
+    {
+      "identifier": "score:1",
+      "rect": [ 4, 23, 10, 36 ],
+      "anchor": [
+        [ 0.3, 0.5 ],
+        [ 0.3, 0.5 ]
+      ],
+
+      "font": "en",
+      "text": "000",
+      "layout": [ 0, 0 ]
+    },
+    {
+      "identifier": "score:2",
+      "rect": [ 4, 6, 10, 19 ],
+      "anchor": [
+        [ 0.3, 0.5 ],
+        [ 0.3, 0.5 ]
+      ],
+
+      "font": "en",
+      "text": "000",
+      "layout": [ 0, 0 ]
+    },
+    {
+      "identifier": "score:3",
+      "rect": [ 4, -11, 10, 2 ],
+      "anchor": [
+        [ 0.3, 0.5 ],
+        [ 0.3, 0.5 ]
+      ],
+
+      "font": "en",
+      "text": "000",
+      "layout": [ 0, 0 ]
     },
     
     {
-      "identifier": "total_score",
-      "rect": [ 45, -15, 45, 30 ],
+      "rect": [ -50, -30, 15, -12 ],
       "anchor": [
-        [ 0.6, 0.5 ],
-        [ 0.6, 0.5 ]
+        [ 0.65, 0.5 ],
+        [ 0.65, 0.5 ]
       ],
+      
+      "font": "en",
+      "text": "Your Score",
+      "layout": [ 1, 0 ]
+    },
+    {
+      "identifier": "score:20",
+      "rect": [ 20, -30, 50, -12 ],
+      "anchor": [
+        [ 0.65, 0.5],
+        [ 0.65, 0.5 ]
+      ],
+      
+      "font": "en",
+      "text": "0",
+      "layout": [ 0, 0 ]
+    },
+    {
+      "rect": [ -50, -52, 15, -34 ],
+      "anchor": [
+        [ 0.65, 0.5 ],
+        [ 0.65, 0.5 ]
+      ],
+      
+      "font": "en",
+      "text": "Your Rank",
+      "layout": [ 1, 0 ]
+    },
+    {
+      "identifier": "score:21",
+      "rect": [ 20, -49, 50, -33 ],
+      "anchor": [
+        [ 0.65, 0.5 ],
+        [ 0.65, 0.5 ]
+      ],
+      
+      "font": "icon",
+      "text": "",
+      "layout": [ 0, 0 ]
+    },
+    {
+      "identifier": "score:high-score",
+      "rect": [ 20, -68, 50, -55 ],
+      "anchor": [
+        [ 0.65, 0.5 ],
+        [ 0.65, 0.5 ]
+      ],
+      "enable": false,
+      
+      "font": "en",
+      "text": "New Record!!",
+      "layout": [ 0, 0 ]
+    },
+    {
+      "identifier": "score:rank-in",
+      "rect": [ 20, -68, 50, -55 ],
+      "anchor": [
+        [ 0.65, 0.5 ],
+        [ 0.65, 0.5 ]
+      ],
+      "enable": false,
 
-      "childlen": [
-        {
-          "identifier": "10",
-          "rect": [ -50, 0, 0, 18 ],
-          "anchor": [
-            [ 0, 1 ],
-            [ 0, 1 ]
-          ],
-
-          "font": "en",
-          "text": "Your Score",
-          "layout": [ 1, 0 ]
-        },
-        {
-          "identifier": "score:20",
-          "rect": [ -50, -22, 18, -2 ],
-          "anchor": [
-            [ 0, 1 ],
-            [ 0, 1 ]
-          ],
-
-          "font": "en",
-          "text": "0",
-          "layout": [ 1, 0 ]
-        },
-        {
-          "identifier": "11",
-          "rect": [ -50, -45, 0, -27 ],
-          "anchor": [
-            [ 0, 1 ],
-            [ 0, 1 ]
-          ],
-
-          "font": "en",
-          "text": "Your Rank",
-          "layout": [ 1, 0 ]
-        },
-        {
-          "identifier": "score:21",
-          "rect": [ -50, -63, 18, -47 ],
-          "anchor": [
-            [ 0, 1 ],
-            [ 0, 1 ]
-          ],
-
-          "font": "icon",
-          "text": "",
-          "layout": [ 1, 0 ]
-        },
-        {
-          "identifier": "score:high-score",
-          "rect": [ -50, -80, 18, -67 ],
-          "anchor": [
-            [ 0, 1 ],
-            [ 0, 1 ]
-          ],
-          "enable": false,
-
-          "font": "en",
-          "text": "New Record!!",
-          "layout": [ 1, 0 ]
-        },
-        {
-          "identifier": "score:rank-in",
-          "rect": [ -50, -80, 18, -67 ],
-          "anchor": [
-            [ 0, 1 ],
-            [ 0, 1 ]
-          ],
-          "enable": false,
-
-          "font": "en",
-          "text": "Rank In!",
-          "layout": [ 1, 0 ]
-        }
-      ]
+      "font": "en",
+      "text": "Rank In!",
+      "layout": [ 1, 0 ]
     },
 
     {

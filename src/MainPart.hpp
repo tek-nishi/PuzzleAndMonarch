@@ -1141,6 +1141,8 @@ private:
   {
     Score score{
       boost::any_cast<const std::vector<u_int>&>(args.at("scores")),
+      {},
+      {},
       boost::any_cast<u_int>(args.at("total_score")),
       boost::any_cast<u_int>(args.at("total_ranking")),
       boost::any_cast<u_int>(args.at("total_panels")),

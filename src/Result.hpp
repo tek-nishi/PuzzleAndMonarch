@@ -226,23 +226,34 @@ private:
   
   void applyScore(const Score& score) noexcept
   {
-    int i = 1;
-    for (auto s : score.scores)
+    panelScore(score.forest, "score:forest%d");
+    panelScore(score.path, "score:path%d");
+
+    // 街
+    canvas_.setWidgetText("score:1",  std::to_string(score.scores[5]));
+    // 教会
+    canvas_.setWidgetText("score:2",  std::to_string(score.scores[6]));
+    canvas_.setWidgetText("score:3",  std::to_string(score.total_panels));
+  }
+
+  void panelScore(const std::vector<u_int>& scores, const char* id_text)
+  {
+    int i = 0;
+    float offset = 0.0f;
+    for (auto f : scores)
     {
       char id[16];
-      std::sprintf(id, "score:%d", i);
+      sprintf(id, id_text, i);
 
-      // const auto& widget = canvas_.at(id);
-      // widget->setParam("text", std::to_string(s));
-      canvas_.setWidgetText(id, std::to_string(s));
-
+      canvas_.setWidgetParam(id, "offset", glm::vec2(offset, 0));
+      canvas_.enableWidget(id);
+      auto s = std::to_string(f);
+      canvas_.setWidgetText(id,  s);
       i += 1;
+      offset += 6.0f + 5.0f * s.size();
     }
-
-    canvas_.setWidgetText("score:8",  std::to_string(score.total_panels));
-    canvas_.setWidgetText("score:9",  std::to_string(score.panel_turned_times));
-    canvas_.setWidgetText("score:10", std::to_string(score.panel_moved_times));
   }
+
 
   void tweenTotalScore(const ci::JsonTree& params) noexcept
   {
