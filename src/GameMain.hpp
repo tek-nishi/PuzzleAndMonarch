@@ -185,6 +185,14 @@ public:
                                 canvas_.setWidgetParam("put_timer:body", "scale", glm::vec2(scale));
                                 canvas_.setWidgetParam("put_timer:body", "alpha", alpha);
                               });
+    // パネル設置
+    holder_ += event_.connect("Game:PutPanel",
+                              [this](const Connection&, const Arguments& args)
+                              {
+                                auto panels = boost::any_cast<u_int>(args.at("total_panels"));
+                                scores_[4] = panels;
+                                updateScoreWidget(4, panels);
+                              });
 
     // Like演出
     holder_ += event_.connect("Game:convertPos",
@@ -242,10 +250,6 @@ private:
     count_exec_.update(delta_time);
     timeline_->step(delta_time);
 
-    // auto ndc_pos = like_func_(like_pos_);
-    // auto ofs = canvas_.ndcToPos(ndc_pos);
-    // canvas_.setWidgetParam("like", "offset", ofs);
-
     return active_;
   }
 
@@ -263,28 +267,47 @@ private:
     std::fill(std::begin(scores_color_), std::end(scores_color_), ci::Color::white());
   }
 
+
+  void updateScoreWidget(int index, int score)
+  {
+    char id[16];
+    std::sprintf(id, "score:%d", index + 1);
+    canvas_.setWidgetParam(id, "text", std::to_string(score));
+
+    auto option = timeline_->applyPtr(&scores_color_[index],
+                                      ci::Color(1, 0, 0), ci::Color::white(),
+                                      0.8);
+    option.updateFn([this, id, index]() noexcept
+                    {
+                      canvas_.setWidgetParam(id, "color", scores_color_[index]);
+                    });
+  }
+
   void updateScores(const std::vector<u_int>& scores)
   {
-    int i = 0;
-    for (auto score : scores)
+    // 森
+    if (scores_[0] != scores[2])
     {
-      if (score != scores_[i])
-      {
-        scores_[i] = score;
-
-        char id[16];
-        std::sprintf(id, "score:%d", i + 1);
-        canvas_.setWidgetParam(id, "text", std::to_string(score));
-
-        auto option = timeline_->applyPtr(&scores_color_[i],
-                                          ci::Color(1, 0, 0), ci::Color::white(),
-                                          0.8);
-        option.updateFn([this, id, i]() noexcept
-                        {
-                          canvas_.setWidgetParam(id, "color", scores_color_[i]);
-                        });
-      }
-      i += 1;
+      scores_[0] = scores[2];
+      updateScoreWidget(0, scores[2]);
+    }
+    // 道
+    if (scores_[1] != scores[0])
+    {
+      scores_[1] = scores[0];
+      updateScoreWidget(1, scores[0]);
+    }
+    // 街
+    if (scores_[2] != scores[5])
+    {
+      scores_[2] = scores[5];
+      updateScoreWidget(2, scores[5]);
+    }
+    // 教会
+    if (scores_[3] != scores[6])
+    {
+      scores_[3] = scores[6];
+      updateScoreWidget(3, scores[6]);
     }
   }
 

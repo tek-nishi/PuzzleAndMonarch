@@ -303,7 +303,7 @@ struct Game
       updateScores();
       
       Arguments args{
-        { "scores", scores_ }
+        { "scores", scores_ },
       };
       event_.signal("Game:UpdateScores", args);
     }
@@ -816,9 +816,10 @@ private:
 
     {
       Arguments args{
-        { "panel",     panel },
-        { "field_pos", pos },
-        { "rotation",  rotation },
+        { "panel",        panel },
+        { "field_pos",    pos },
+        { "rotation",     rotation },
+        { "total_panels", total_panels },
       };
       event_.signal("Game:PutPanel", args);
     }
