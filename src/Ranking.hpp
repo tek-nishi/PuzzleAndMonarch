@@ -268,7 +268,7 @@ private:
   {
     int i = 0;
     float offset = 0.0f;
-    for (auto f : *scores)
+    for (auto& f : *scores)
     {
       char id[16];
       sprintf(id, id_text, i);
@@ -276,9 +276,17 @@ private:
       canvas_.setWidgetParam(id, "offset", glm::vec2(offset, 0));
       canvas_.enableWidget(id);
       auto s = std::to_string(f.size());
-      canvas_.setWidgetText(id,  s);
-      i += 1;
+      canvas_.setWidgetText(id, s);
+      ++i;
       offset += 4.5f + 3.0f * s.size();
+    }
+
+    // NOTE 残りをdisable
+    for (; i < 12; ++i)
+    {
+      char id[16];
+      sprintf(id, id_text, i);
+      canvas_.enableWidget(id, false);
     }
   }
 
