@@ -127,6 +127,9 @@ struct Game
 
       { "max_forest", max_forest_ },
       { "max_path",   max_path_ },
+
+      { "completed_forest", &completed_forests },
+      { "completed_path",   &completed_path },
     };
     event_.signal("Game:Finish", args);
     

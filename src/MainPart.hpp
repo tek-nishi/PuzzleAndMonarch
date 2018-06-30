@@ -1137,12 +1137,28 @@ private:
   }
 
   // 結果を計算
+  std::vector<u_int> getCompleted(const Arguments& args, const std::string& id) const
+  {
+    auto* completed = boost::any_cast<std::vector<std::vector<glm::ivec2>>*>(args.at(id));
+
+    std::vector<u_int> comp_list;
+    for (const auto& comp : *completed)
+    {
+      comp_list.push_back(u_int(comp.size()));
+    }
+
+    return comp_list;
+  }
+
   Score calcGameScore(const Arguments& args) const noexcept
   {
+    auto comp_forest = getCompleted(args, "completed_forest");
+    auto comp_path   = getCompleted(args, "completed_path");
+
     Score score{
       boost::any_cast<const std::vector<u_int>&>(args.at("scores")),
-      {},
-      {},
+      comp_forest,
+      comp_path,
       boost::any_cast<u_int>(args.at("total_score")),
       boost::any_cast<u_int>(args.at("total_ranking")),
       boost::any_cast<u_int>(args.at("total_panels")),
