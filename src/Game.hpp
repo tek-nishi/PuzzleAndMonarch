@@ -793,6 +793,9 @@ private:
                         { "total_ranking", total_ranking },
                         { "total_panels",  total_panels },
 
+                        { "completed_forest", &completed_forests },
+                        { "completed_path",   &completed_path },
+
                         { "panel_turned_times", panel_turned_times_ },
                         { "panel_moved_times",  panel_moved_times_ },
                       };

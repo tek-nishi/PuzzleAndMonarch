@@ -625,50 +625,14 @@
       "childlen": [
         {
           "identifier": "scores",
-          "rect": [ 0, 20, 0, 140 ],
+          "rect": [ 0, -100, 0, 20 ],
           "anchor": [
-            [ 0.80, 0.1 ],
-            [ 0.80, 0.1 ]
+            [ 0.15, 0.8 ],
+            [ 0.15, 0.8 ]
           ],
           "alpha": 0,
 
           "childlen": [
-            {
-              "rect": [ 0, 0, 0, 0 ],
-              "anchor": [
-                [ 0, 0.92 ],
-                [ 0, 1.0 ]
-              ],
-              "pivot": [ 1, 0.5 ],
-
-              "font": "jp",
-              "text": "道:",
-              "layout": [ 1, 0 ]
-            },
-            {
-              "rect": [ 0, 0, 0, 0 ],
-              "anchor": [
-                [ 0, 0.82 ],
-                [ 0, 0.9 ]
-              ],
-              "pivot": [ 1, 0.5 ],
-
-              "font": "jp",
-              "text": "道の長さ:",
-              "layout": [ 1, 0 ]
-            },
-            {
-              "rect": [ 0, 0, 0, 0 ],
-              "anchor": [
-                [ 0, 0.72 ],
-                [ 0, 0.8 ]
-              ],
-              "pivot": [ 1, 0.5 ],
-
-              "font": "jp",
-              "text": "森:",
-              "layout": [ 1, 0 ]
-            },
             {
               "rect": [ 0, 0, 0, 0 ],
               "anchor": [
@@ -678,7 +642,7 @@
               "pivot": [ 1, 0.5 ],
 
               "font": "jp",
-              "text": "森の広さ:",
+              "text": "森:",
               "layout": [ 1, 0 ]
             },
             {
@@ -690,7 +654,7 @@
               "pivot": [ 1, 0.5 ],
 
               "font": "jp",
-              "text": "深い森:",
+              "text": "道:",
               "layout": [ 1, 0 ]
             },
             {
@@ -755,70 +719,343 @@
             },
 
             {
-              "identifier": "score:1",
-              "rect": [ 3, -1, 3, -1 ],
-              "anchor": [
-                [ 0, 0.92 ],
-                [ 0, 1.0 ]
-              ],
-              "pivot": [ 0, 0.5 ],
-
-              "font": "en",
-              "text": "000",
-              "layout": [ 0, 0 ]
-            },
-            {
-              "identifier": "score:2",
-              "rect": [ 3, -1, 3, -1 ],
-              "anchor": [
-                [ 0, 0.82 ],
-                [ 0, 0.9 ]
-              ],
-              "pivot": [ 0, 0.5 ],
-              
-              "font": "en",
-              "text": "000",
-              "layout": [ 0, 0 ]
-            },
-            {
-              "identifier": "score:3",
-              "rect": [ 3, -1, 3, -1 ],
-              "anchor": [
-                [ 0, 0.72 ],
-                [ 0, 0.8 ]
-              ],
-              "pivot": [ 0, 0.5 ],
-
-              "font": "en",
-              "text": "000",
-              "layout": [ 0, 0 ]
-            },
-            {
-              "identifier": "score:4",
-              "rect": [ 3, -1, 3, -1 ],
+              "identifier": "score:forest0",
+              "rect": [ 3, -1, 10, -1 ],
               "anchor": [
                 [ 0, 0.62 ],
                 [ 0, 0.7 ]
               ],
               "pivot": [ 0, 0.5 ],
+              "enable": false,
 
               "font": "en",
-              "text": "000",
+              "text": "99",
               "layout": [ 0, 0 ]
             },
             {
-              "identifier": "score:5",
-              "rect": [ 3, -1, 3, -1 ],
+              "identifier": "score:forest1",
+              "rect": [ 3, -1, 10, -1 ],
+              "anchor": [
+                [ 0, 0.62 ],
+                [ 0, 0.7 ]
+              ],
+              "pivot": [ 0, 0.5 ],
+              "enable": false,
+
+              "font": "en",
+              "text": "99",
+              "layout": [ 0, 0 ]
+            },
+            {
+              "identifier": "score:forest2",
+              "rect": [ 3, -1, 10, -1 ],
+              "anchor": [
+                [ 0, 0.62 ],
+                [ 0, 0.7 ]
+              ],
+              "pivot": [ 0, 0.5 ],
+              "enable": false,
+
+              "font": "en",
+              "text": "99",
+              "layout": [ 0, 0 ]
+            },
+            {
+              "identifier": "score:forest3",
+              "rect": [ 3, -1, 10, -1 ],
+              "anchor": [
+                [ 0, 0.62 ],
+                [ 0, 0.7 ]
+              ],
+              "pivot": [ 0, 0.5 ],
+              "enable": false,
+
+              "font": "en",
+              "text": "99",
+              "layout": [ 0, 0 ]
+            },
+            {
+              "identifier": "score:forest4",
+              "rect": [ 3, -1, 10, -1 ],
+              "anchor": [
+                [ 0, 0.62 ],
+                [ 0, 0.7 ]
+              ],
+              "pivot": [ 0, 0.5 ],
+              "enable": false,
+
+              "font": "en",
+              "text": "99",
+              "layout": [ 0, 0 ]
+            },
+            {
+              "identifier": "score:forest5",
+              "rect": [ 3, -1, 10, -1 ],
+              "anchor": [
+                [ 0, 0.62 ],
+                [ 0, 0.7 ]
+              ],
+              "pivot": [ 0, 0.5 ],
+              "enable": false,
+
+              "font": "en",
+              "text": "99",
+              "layout": [ 0, 0 ]
+            },
+            {
+              "identifier": "score:forest6",
+              "rect": [ 3, -1, 10, -1 ],
+              "anchor": [
+                [ 0, 0.62 ],
+                [ 0, 0.7 ]
+              ],
+              "pivot": [ 0, 0.5 ],
+              "enable": false,
+
+              "font": "en",
+              "text": "99",
+              "layout": [ 0, 0 ]
+            },
+            {
+              "identifier": "score:forest7",
+              "rect": [ 3, -1, 10, -1 ],
+              "anchor": [
+                [ 0, 0.62 ],
+                [ 0, 0.7 ]
+              ],
+              "pivot": [ 0, 0.5 ],
+              "enable": false,
+
+              "font": "en",
+              "text": "99",
+              "layout": [ 0, 0 ]
+            },
+            {
+              "identifier": "score:forest8",
+              "rect": [ 3, -1, 10, -1 ],
+              "anchor": [
+                [ 0, 0.62 ],
+                [ 0, 0.7 ]
+              ],
+              "pivot": [ 0, 0.5 ],
+              "enable": false,
+
+              "font": "en",
+              "text": "99",
+              "layout": [ 0, 0 ]
+            },
+            {
+              "identifier": "score:forest9",
+              "rect": [ 3, -1, 10, -1 ],
+              "anchor": [
+                [ 0, 0.62 ],
+                [ 0, 0.7 ]
+              ],
+              "pivot": [ 0, 0.5 ],
+              "enable": false,
+
+              "font": "en",
+              "text": "99",
+              "layout": [ 0, 0 ]
+            },
+            {
+              "identifier": "score:forest10",
+              "rect": [ 3, -1, 10, -1 ],
+              "anchor": [
+                [ 0, 0.62 ],
+                [ 0, 0.7 ]
+              ],
+              "pivot": [ 0, 0.5 ],
+              "enable": false,
+
+              "font": "en",
+              "text": "99",
+              "layout": [ 0, 0 ]
+            },
+            {
+              "identifier": "score:forest11",
+              "rect": [ 3, -1, 10, -1 ],
+              "anchor": [
+                [ 0, 0.62 ],
+                [ 0, 0.7 ]
+              ],
+              "pivot": [ 0, 0.5 ],
+              "enable": false,
+
+              "font": "en",
+              "text": "99",
+              "layout": [ 0, 0 ]
+            },
+
+            {
+              "identifier": "score:path0",
+              "rect": [ 3, -1, 10, -1 ],
               "anchor": [
                 [ 0, 0.52 ],
                 [ 0, 0.6 ]
               ],
               "pivot": [ 0, 0.5 ],
+              "enable": false,
 
               "font": "en",
-              "text": "000",
+              "text": "00",
               "layout": [ 0, 0 ]
             },
+            {
+              "identifier": "score:path1",
+              "rect": [ 3, -1, 10, -1 ],
+              "anchor": [
+                [ 0, 0.52 ],
+                [ 0, 0.6 ]
+              ],
+              "pivot": [ 0, 0.5 ],
+              "enable": false,
+
+              "font": "en",
+              "text": "00",
+              "layout": [ 0, 0 ]
+            },
+            {
+              "identifier": "score:path2",
+              "rect": [ 3, -1, 10, -1 ],
+              "anchor": [
+                [ 0, 0.52 ],
+                [ 0, 0.6 ]
+              ],
+              "pivot": [ 0, 0.5 ],
+              "enable": false,
+
+              "font": "en",
+              "text": "00",
+              "layout": [ 0, 0 ]
+            },
+            {
+              "identifier": "score:path3",
+              "rect": [ 3, -1, 10, -1 ],
+              "anchor": [
+                [ 0, 0.52 ],
+                [ 0, 0.6 ]
+              ],
+              "pivot": [ 0, 0.5 ],
+              "enable": false,
+
+              "font": "en",
+              "text": "00",
+              "layout": [ 0, 0 ]
+            },
+            {
+              "identifier": "score:path4",
+              "rect": [ 3, -1, 10, -1 ],
+              "anchor": [
+                [ 0, 0.52 ],
+                [ 0, 0.6 ]
+              ],
+              "pivot": [ 0, 0.5 ],
+              "enable": false,
+
+              "font": "en",
+              "text": "00",
+              "layout": [ 0, 0 ]
+            },
+            {
+              "identifier": "score:path5",
+              "rect": [ 3, -1, 10, -1 ],
+              "anchor": [
+                [ 0, 0.52 ],
+                [ 0, 0.6 ]
+              ],
+              "pivot": [ 0, 0.5 ],
+              "enable": false,
+
+              "font": "en",
+              "text": "00",
+              "layout": [ 0, 0 ]
+            },
+            {
+              "identifier": "score:path6",
+              "rect": [ 3, -1, 10, -1 ],
+              "anchor": [
+                [ 0, 0.52 ],
+                [ 0, 0.6 ]
+              ],
+              "pivot": [ 0, 0.5 ],
+              "enable": false,
+
+              "font": "en",
+              "text": "00",
+              "layout": [ 0, 0 ]
+            },
+            {
+              "identifier": "score:path7",
+              "rect": [ 3, -1, 10, -1 ],
+              "anchor": [
+                [ 0, 0.52 ],
+                [ 0, 0.6 ]
+              ],
+              "pivot": [ 0, 0.5 ],
+              "enable": false,
+
+              "font": "en",
+              "text": "00",
+              "layout": [ 0, 0 ]
+            },
+            {
+              "identifier": "score:path8",
+              "rect": [ 3, -1, 10, -1 ],
+              "anchor": [
+                [ 0, 0.52 ],
+                [ 0, 0.6 ]
+              ],
+              "pivot": [ 0, 0.5 ],
+              "enable": false,
+
+              "font": "en",
+              "text": "00",
+              "layout": [ 0, 0 ]
+            },
+            {
+              "identifier": "score:path9",
+              "rect": [ 3, -1, 10, -1 ],
+              "anchor": [
+                [ 0, 0.52 ],
+                [ 0, 0.6 ]
+              ],
+              "pivot": [ 0, 0.5 ],
+              "enable": false,
+
+              "font": "en",
+              "text": "00",
+              "layout": [ 0, 0 ]
+            },
+            {
+              "identifier": "score:path10",
+              "rect": [ 3, -1, 10, -1 ],
+              "anchor": [
+                [ 0, 0.52 ],
+                [ 0, 0.6 ]
+              ],
+              "pivot": [ 0, 0.5 ],
+              "enable": false,
+
+              "font": "en",
+              "text": "00",
+              "layout": [ 0, 0 ]
+            },
+            {
+              "identifier": "score:path11",
+              "rect": [ 3, -1, 10, -1 ],
+              "anchor": [
+                [ 0, 0.52 ],
+                [ 0, 0.6 ]
+              ],
+              "pivot": [ 0, 0.5 ],
+              "enable": false,
+
+              "font": "en",
+              "text": "00",
+              "layout": [ 0, 0 ]
+            },
+
             {
               "identifier": "score:6",
               "rect": [ 3, -1, 3, -1 ],

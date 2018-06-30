@@ -263,21 +263,45 @@ private:
     }
   }
 
-  void applyScore(const Arguments& args)
+
+  void panelScore(const std::vector<std::vector<glm::ivec2>>* scores, const char* id_text)
   {
-    const auto& scores = boost::any_cast<const std::vector<u_int>&>(args.at("scores"));
-    int i = 1;
-    for (auto s : scores)
+    int i = 0;
+    float offset = 0.0f;
+    for (auto f : *scores)
     {
       char id[16];
-      std::sprintf(id, "score:%d", i);
-      canvas_.setWidgetText(id, std::to_string(s));
+      sprintf(id, id_text, i);
 
+      canvas_.setWidgetParam(id, "offset", glm::vec2(offset, 0));
+      canvas_.enableWidget(id);
+      auto s = std::to_string(f.size());
+      canvas_.setWidgetText(id,  s);
       i += 1;
+      offset += 4.5f + 3.0f * s.size();
     }
-      
-    canvas_.setWidgetText("score:8",  std::to_string(boost::any_cast<u_int>(args.at("total_panels"))));
-    canvas_.setWidgetText("score:9",  std::to_string(boost::any_cast<u_int>(args.at("total_score"))));
+  }
+
+  void applyScore(const Arguments& args)
+  {
+    {
+      auto* forest = boost::any_cast<std::vector<std::vector<glm::ivec2>>*>(args.at("completed_forest"));
+      panelScore(forest, "score:forest%d");
+    }
+    {
+      auto* path = boost::any_cast<std::vector<std::vector<glm::ivec2>>*>(args.at("completed_path"));
+      panelScore(path, "score:path%d");
+    }
+
+    const auto& scores = boost::any_cast<const std::vector<u_int>&>(args.at("scores"));
+    // 街
+    canvas_.setWidgetText("score:6",  std::to_string(scores[5]));
+    // 教会
+    canvas_.setWidgetText("score:7",  std::to_string(scores[6]));
+
+    canvas_.setWidgetText("score:8", std::to_string(boost::any_cast<u_int>(args.at("total_panels"))));
+    canvas_.setWidgetText("score:9", std::to_string(boost::any_cast<u_int>(args.at("total_score"))));
+
     auto rank = boost::any_cast<u_int>(args.at("total_ranking"));
     convertRankToText(rank, canvas_, "score:10", ranking_text_);
   }
