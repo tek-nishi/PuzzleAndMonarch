@@ -1,6 +1,7 @@
 * TODO アプリ開始時は最後のプレイ結果を表示
 * TODO 道と森の最大数について実際にパネルを使ってシミュレーションする
 * TODO Ranking画面もレイアウトを直す
+* TODO 本編中のスコア表示修正
 * TODO GameCenterのアイコンに進捗度を入れられないか
 * TODO パネル：道と緑の境目の描き込みや生活感を出す物体を置く
 * TODO 世界観を作る
@@ -9,7 +10,6 @@
 * TODO SE作る
 * TODO カルカソンヌ公式に許可を取る
 * TODO アプリアイコン
-* TODO macOS:バックグラウンドで放置しとくとDisplayがnullになって落ちる
 * TODO iOS:処理の思い箇所を探して修正
 * TODO iOS:モノラル再生で音量が小さくなる
 * TODO iOS:AppStore提出に必要な書類や素材
@@ -635,6 +635,8 @@ CLOSED: [2018-01-09 火 16:27]
 CLOSED: [2018-01-09 Tue 00:32]
 * DONE iOS:縦画面→非アクティブ→横画面→アクティブ→画面乱れる
 CLOSED: [2018-03-17 土 17:19]
+* ABORT macOS:バックグラウンドで放置しとくとDisplayがnullになって落ちる
+CLOSED: [2018-06-30 土 15:40]
 * ABORT ライティングをuniform bufferで
 CLOSED: [2018-06-22 金 01:03]
 * ABORT iOS:アプリ起動中にネットワークが切れた時にGameCenterへ再ログインを試みる
