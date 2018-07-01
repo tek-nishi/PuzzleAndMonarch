@@ -66,6 +66,7 @@ void begin() noexcept
         ci::audio::Node::Format format;
         format.channelMode(ci::audio::Node::ChannelMode::MATCHES_OUTPUT);
         auto new_output = ctx->createOutputDeviceNode(device, format);
+        new_output->enableClipDetection(false);
 
         DOUT << "prev:"
              << output->getName() << ","

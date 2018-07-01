@@ -95,13 +95,13 @@ class Sound
     const auto& detail = details_.at(name);
     if (!enable_category_[detail.category]) return;
 
+    const auto& output = ci::audio::Context::master()->getOutput();
     if (detail.node->isEnabled())
     {
       detail.node->stop();
     }
 
-    auto ctx = ci::audio::Context::master();
-    detail.node >> ctx->getOutput();
+    detail.node >> output;
     detail.node->start();
   }
 
@@ -131,7 +131,7 @@ class Sound
   // FIXME:iOSではNodeをOutputにたくさん繋げると、音量が小さくなる
   static void disconnectInactiveNode()
   {
-    auto output = ci::audio::Context::master()->getOutput();
+    const auto& output = ci::audio::Context::master()->getOutput();
     // DOUT << "active nodes:" << output->getNumConnectedInputs() << std::endl;
 
     // NOTICE disconnectするとイテレーターが無効になるので意図的にコピーを受け取っている
@@ -150,7 +150,8 @@ public:
     // TIPS iOS:ヘッドホンプラグの抜き差しに対応
     AudioSession::begin();
 
-    auto ctx = ci::audio::Context::master();
+    auto* ctx = ci::audio::Context::master();
+    ctx->getOutput()->enableClipDetection(false);
 
     ci::audio::Node::Format format;
     format.channelMode(ci::audio::Node::ChannelMode::SPECIFIED);
@@ -180,6 +181,7 @@ public:
 
       const auto& type = p.getValueForKey<std::string>("type");
       auto node = funcs.at(type)(ctx, source);
+      node->setAutoEnabled(true);
 
       const auto& name = p.getValueForKey<std::string>("name");
       details_.emplace(std::piecewise_construct,
