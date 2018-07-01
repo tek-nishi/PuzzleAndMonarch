@@ -9,7 +9,6 @@
 * TODO カルカソンヌ公式に許可を取る
 * TODO アプリアイコン
 * TODO iOS:処理の思い箇所を探して修正
-* TODO iOS:モノラル再生で音量が小さくなる
 * TODO iOS:AppStore提出に必要な書類や素材
 * TODO iOS:実績のアイコンを用意
 * TODO iOS:課金処理
@@ -637,6 +636,8 @@ CLOSED: [2018-01-09 火 16:27]
 CLOSED: [2018-01-09 Tue 00:32]
 * DONE iOS:縦画面→非アクティブ→横画面→アクティブ→画面乱れる
 CLOSED: [2018-03-17 土 17:19]
+* ABORT iOS:モノラル再生で音量が小さくなる
+CLOSED: [2018-07-01 日 23:16]
 * ABORT macOS:バックグラウンドで放置しとくとDisplayがnullになって落ちる
 CLOSED: [2018-06-30 土 15:40]
 * ABORT ライティングをuniform bufferで
