@@ -16,7 +16,7 @@
 
 namespace ngs { namespace PLY {
 
-ci::TriMesh load(const std::string& path);
+ci::TriMesh load(const std::string& path, bool do_optimize = false);
 ci::TriMesh optimize(const ci::TriMesh& mesh);
 
 #if defined (NGS_PLY_IMPLEMENTATION)
@@ -52,7 +52,7 @@ std::istringstream createStringStream(const std::string& path)
 }
 
 
-ci::TriMesh load(const std::string& path)
+ci::TriMesh load(const std::string& path, bool do_optimize)
 {
   auto iss = createStringStream(path);
 
@@ -139,7 +139,8 @@ ci::TriMesh load(const std::string& path)
   //      << "vertex: " << vertex_num << '\n'
   //      << std::endl;
 
-  return optimize(mesh);
+  return do_optimize ? optimize(mesh)
+                     : mesh;
 }
 
 
