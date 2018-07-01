@@ -61,6 +61,7 @@ class Sound
     {
       it.second.node->stop();
     }
+    disconnectInactiveNode();
   }
 
   void stopCategory(const std::string& category) noexcept
@@ -76,11 +77,15 @@ class Sound
     {
       node->stop();
     }
+
+    disconnectInactiveNode();
   }
 
 
   void play(const std::string& name) noexcept
   {
+    disconnectInactiveNode();
+
     if (!details_.count(name))
     {
       DOUT << "Sound::play No sound: " << name << std::endl;
@@ -89,6 +94,11 @@ class Sound
 
     const auto& detail = details_.at(name);
     if (!enable_category_[detail.category]) return;
+
+    if (detail.node->isEnabled())
+    {
+      detail.node->stop();
+    }
 
     auto ctx = ci::audio::Context::master();
     detail.node >> ctx->getOutput();
@@ -104,6 +114,8 @@ class Sound
     }
 
     details_.at(name).node->stop();
+
+    disconnectInactiveNode();
   }
 
   
@@ -116,6 +128,19 @@ class Sound
     }
   }
 
+  // FIXME:iOSではNodeをOutputにたくさん繋げると、音量が小さくなる
+  static void disconnectInactiveNode()
+  {
+    auto output = ci::audio::Context::master()->getOutput();
+    // DOUT << "active nodes:" << output->getNumConnectedInputs() << std::endl;
+
+    // NOTICE disconnectするとイテレーターが無効になるので意図的にコピーを受け取っている
+    auto nodes = output->getInputs();
+    for (const auto& node : nodes)
+    {
+      if (!node->isEnabled()) node->disconnect(output);
+    }
+  }
 
 
 public:
