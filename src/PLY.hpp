@@ -12,6 +12,7 @@
 #include <fstream>
 #include <sstream> 
 #include <vector> 
+#include <glm/gtc/random.hpp>
 
 
 namespace ngs { namespace PLY {
@@ -144,6 +145,20 @@ ci::TriMesh load(const std::string& path, bool do_optimize)
 }
 
 
+void displaceNormals(ci::TriMesh& mesh)
+{
+  auto& normals = mesh.getNormals();
+  for (auto& n : normals)
+  {
+    auto v = glm::sphericalRand(1.0f);
+    auto r = glm::linearRand(-0.05f, 0.05f);
+    auto q = glm::angleAxis(r, v);
+    auto nn = q * glm::vec4(n, 1);
+    n = nn;
+  }
+}
+
+
 // 同じ頂点を削除する
 ci::TriMesh optimize(const ci::TriMesh& mesh)
 { 
@@ -197,6 +212,8 @@ ci::TriMesh optimize(const ci::TriMesh& mesh)
        << " -> " << opt_mesh.getNumVertices()
        << " (" << float(opt_mesh.getNumVertices()) / float(mesh.getNumVertices()) * 100.0f << "%)"
        << std::endl;
+
+  displaceNormals(opt_mesh);
 
   return opt_mesh;
 }
