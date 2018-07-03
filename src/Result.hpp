@@ -238,6 +238,15 @@ private:
 
   void panelScore(const std::vector<u_int>& scores, const char* id_text)
   {
+    if (scores.empty())
+    {
+      char id[16];
+      sprintf(id, id_text, 0);
+      canvas_.enableWidget(id);
+
+      return;
+    }
+
     int i = 0;
     float offset = 0.0f;
     for (auto f : scores)
