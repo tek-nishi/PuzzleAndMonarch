@@ -155,6 +155,8 @@ public:
     // TOP10を閲覧
     if (!rank_in_)
     {
+      applyRankingEffect(0);
+
       auto num = boost::any_cast<int>(args.at("record_num"));
       for (int i = 0; i < num; ++i)
       {
@@ -175,6 +177,8 @@ public:
                                       { "rank", i }
                                     };
                                     event_.signal("Ranking:reload", args);
+
+                                    applyRankingEffect(i);
                                   });
       }
     }
@@ -214,11 +218,11 @@ private:
   {
     count_exec_.update(delta_time);
 
-    if (rank_in_)
+    if (!rank_effects_.empty())
     {
+      auto color = ci::hsvToRgb({ std::fmod(current_time * 2.0, 1.0), 0.7, 1 });
       for (const auto& id : rank_effects_)
       {
-        auto color = ci::hsvToRgb({ std::fmod(current_time * 2.0, 1.0), 1, 1 });
         canvas_.setWidgetParam(id, "color", color);
       }
     }
@@ -250,17 +254,32 @@ private:
 
     if (ranking_ < rankings.getNumChildren())
     {
-      char id[16];
-
-      std::sprintf(id, "%d", ranking_ + 1);
-      rank_effects_.push_back(id);
-
-      std::sprintf(id, "t%d", ranking_ + 1);
-      rank_effects_.push_back(id);
-      
-      std::sprintf(id, "r%d", ranking_ + 1);
-      rank_effects_.push_back(id);
+      applyRankingEffect(ranking_);
     }
+  }
+
+  void applyRankingEffect(u_int ranking)
+  {
+    if (!rank_effects_.empty())
+    {
+      for (const auto& id : rank_effects_)
+      {
+        canvas_.setWidgetParam(id, "color", ci::Color::white());
+      }
+    }
+
+    rank_effects_.clear();
+
+    char id[16];
+
+    std::sprintf(id, "%d", ranking + 1);
+    rank_effects_.push_back(id);
+
+    std::sprintf(id, "t%d", ranking + 1);
+    rank_effects_.push_back(id);
+      
+    std::sprintf(id, "r%d", ranking + 1);
+    rank_effects_.push_back(id);
   }
 
 
