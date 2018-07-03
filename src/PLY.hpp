@@ -151,7 +151,7 @@ void displaceNormals(ci::TriMesh& mesh)
   for (auto& n : normals)
   {
     auto v = glm::sphericalRand(1.0f);
-    auto r = glm::linearRand(-0.05f, 0.05f);
+    auto r = glm::linearRand(-0.08f, 0.08f);
     auto q = glm::angleAxis(r, v);
     auto nn = q * glm::vec4(n, 1);
     n = nn;

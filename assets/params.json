@@ -341,8 +341,8 @@
       "shader": "field",
 
       "specular":  [ 0.1255, 0.1255, 0.1255, 1 ],
-      "shininess": 62,
-      "ambient":   0.65
+      "shininess": 58,
+      "ambient":   0.6
     },
 
     "bg": {
