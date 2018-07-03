@@ -207,7 +207,7 @@ private:
 
     if (effect_)
     {
-      auto color = ci::hsvToRgb({ std::fmod(current_time * effect_speed_, 1.0), 1, 1 });
+      auto color = ci::hsvToRgb({ std::fmod(current_time * effect_speed_, 1.0), 0.75f, 1 });
       if (high_score_ || rank_in_)
       {
         canvas_.setWidgetParam("score:20", "color", color);

@@ -220,7 +220,7 @@ private:
 
     if (!rank_effects_.empty())
     {
-      auto color = ci::hsvToRgb({ std::fmod(current_time * 2.0, 1.0), 0.7, 1 });
+      auto color = ci::hsvToRgb({ std::fmod(current_time * 2.0, 1.0), 0.75f, 1 });
       for (const auto& id : rank_effects_)
       {
         canvas_.setWidgetParam(id, "color", color);
