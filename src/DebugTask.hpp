@@ -188,7 +188,7 @@ class DebugTask
                              if (cache.count(p)) continue;
                              cache.insert(p);
 
-                             auto mesh = PLY::load(p);
+                             auto mesh = PLY::load(p, true);
                              Model::writeTriMesh(p, mesh);
                            }
                          });
