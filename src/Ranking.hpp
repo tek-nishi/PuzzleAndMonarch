@@ -285,6 +285,23 @@ private:
 
   void panelScore(const std::vector<std::vector<glm::ivec2>>* scores, const char* id_text)
   {
+    for (int i = 0; i < 12; ++i)
+    {
+      char id[16];
+      sprintf(id, id_text, i);
+      canvas_.enableWidget(id, false);
+    }
+
+    if (scores->empty())
+    {
+      char id[16];
+      sprintf(id, id_text, 0);
+      canvas_.enableWidget(id);
+      canvas_.setWidgetText(id, std::string("0"));
+
+      return;
+    }
+
     int i = 0;
     float offset = 0.0f;
     for (auto& f : *scores)
@@ -298,14 +315,6 @@ private:
       canvas_.setWidgetText(id, s);
       ++i;
       offset += 4.5f + 3.0f * s.size();
-    }
-
-    // NOTE 残りをdisable
-    for (; i < 12; ++i)
-    {
-      char id[16];
-      sprintf(id, id_text, i);
-      canvas_.enableWidget(id, false);
     }
   }
 

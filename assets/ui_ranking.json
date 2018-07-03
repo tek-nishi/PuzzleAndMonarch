@@ -729,7 +729,7 @@
               "enable": false,
 
               "font": "en",
-              "text": "99",
+              "text": "0",
               "layout": [ 0, 0 ]
             },
             {
@@ -898,7 +898,7 @@
               "enable": false,
 
               "font": "en",
-              "text": "00",
+              "text": "0",
               "layout": [ 0, 0 ]
             },
             {
