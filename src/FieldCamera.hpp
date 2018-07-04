@@ -131,9 +131,13 @@ public:
   void calcViewRange(const glm::vec3& center, float radius, float fov, const glm::vec3& put_pos,
                      const ci::CameraPersp& camera)
   {
+    // NOTE 縦画面と横画面で調整内容が違う
+    auto aspect = camera.getAspectRatio();
+
     map_center_ = center;
     // FIXME マジックナンバー
-    radius += PANEL_SIZE / 4;
+    radius += (aspect > 1.0f) ? PANEL_SIZE / 4           // 横画面
+                              : PANEL_SIZE;              // 縦画面
 
     float half_fov = toRadians(fov * 0.5f);
     float distance = radius / std::sin(half_fov);
