@@ -292,7 +292,7 @@ public:
                               [this](const Connection&, const Arguments&) noexcept
                               {
                                 field_camera_.restoreEaseRate();
-                                game_->putFirstPanel();
+                                // game_->putFirstPanel();
                                 // カメラを初期位置へ
                                 prohibited_ = false;
                               });
@@ -319,6 +319,9 @@ public:
                                                 {
                                                   prohibited_ = false;
                                                 });
+
+                                // ここで色々リセット
+                                resetGame();
                                 // NOTICE 開始演出終わりに残り時間が正しく表示されているために必要
                                 game_->updateGameUI();
 
@@ -367,11 +370,13 @@ public:
                                 // 中断
                                 archive_.addRecord("abort-times", uint32_t(1));
                                 archive_.save();
+                                view_.endPlay();
                                 count_exec_.add(params_.getValueForKey<double>("field.game_abort_delay"),
                                                 [this]() noexcept
                                                 {
-                                                  resetGame();
-                                                  field_camera_.resetAll();
+                                                  abortGame();
+                                                  // resetGame();
+                                                  // field_camera_.resetAll();
                                                 },
                                                 true);
                               });
@@ -558,8 +563,9 @@ public:
                                   count_exec_.add(params_.getValueForKey<double>("field.reset_delay"),
                                                   [this]() noexcept
                                                   {
-                                                    resetGame();
-                                                    field_camera_.resetAll();
+                                                    abortGame();
+                                                    // resetGame();
+                                                    // field_camera_.resetAll();
                                                   },
                                                   true);
                                 }
@@ -605,8 +611,9 @@ public:
                                 count_exec_.add(params_.getValueForKey<double>("field.reset_delay"),
                                                 [this]() noexcept
                                                 {
-                                                  resetGame();
-                                                  field_camera_.resetAll();
+                                                  abortGame();
+                                                  // resetGame();
+                                                  // field_camera_.resetAll();
                                                 });
                               });
 
@@ -846,6 +853,7 @@ public:
 #endif
 
     view_.setColor(ci::Color::white());
+    loadIntroField();
   }
 
 
@@ -1092,6 +1100,16 @@ private:
     view_.startRotatePanelEase(game_->getPlayTimeRate());
   }
 
+  // ゲーム中断
+  void abortGame() noexcept
+  {
+    paused_ = false;
+    count_exec_.pause(false);
+    fixed_exec_.clear();
+    tutorial_pos_.clear();
+    game_->abortPlay();
+  }
+
   // Game本体初期化
   void resetGame() noexcept
   {
@@ -1304,7 +1322,8 @@ private:
       if (json.hasChildren() && json[rank].hasChild("path"))
       {
         view_.clear();
-        game_->load(json[rank].getValueForKey("path"));
+        auto full_path = getDocumentPath() / json[rank].getValueForKey<std::string>("path");
+        game_->load(full_path);
         calcViewRange(false);
       }
     }
@@ -1314,6 +1333,12 @@ private:
                     {
                       field_camera_.force(false);
                     });
+  }
+
+  // Intro時のゲームを読み込む
+  void loadIntroField()
+  {
+    game_->load(getAssetPath("intro.json"));
   }
 
 

@@ -442,14 +442,15 @@ struct Game
     DOUT << "Game saved: " << name << std::endl;
   }
 
-  void load(const std::string& path)
+  // NOTE pathはfull path
+  void load(const ci::fs::path& path)
   {
 #if defined (DEBUG)
-    game_path = path;
+    game_path = path.string();
 #endif
 
-    auto full_path = getDocumentPath() / path;
-    if (!ci::fs::is_regular_file(full_path))
+    // auto full_path = getDocumentPath() / path;
+    if (!ci::fs::is_regular_file(path))
     {
       DOUT << "No game data." << std::endl;
       return;
@@ -457,7 +458,7 @@ struct Game
 
     ci::JsonTree json;
 #if defined (OBFUSCATION_GAME_RECORD)
-    auto text = TextCodec::load(full_path.string());
+    auto text = TextCodec::load(path.string());
     try
     {
       json = ci::JsonTree(text);
@@ -470,7 +471,7 @@ struct Game
 #else
     try
     {
-      json = ci::JsonTree(ci::loadFile(full_path));
+      json = ci::JsonTree(ci::loadFile(path));
     }
     catch (ci::JsonTree::ExcJsonParserError& exc)
     {
