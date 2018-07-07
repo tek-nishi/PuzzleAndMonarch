@@ -1,5 +1,5 @@
-* TODO アプリ開始時は最後のプレイ結果を表示
 * TODO blankの演出に乱数でdelayをつける
+* TODO Introの文章を楽しげに
 * TODO Tutorial「パネルを置く」が出てこない
 * TODO 道と森の最大数について実際にパネルを使ってシミュレーションする
 * TODO GameCenterのアイコンに進捗度を入れられないか
@@ -13,6 +13,8 @@
 * TODO iOS:AppStore提出に必要な書類や素材
 * TODO iOS:実績のアイコンを用意
 * TODO iOS:課金処理
+* DONE アプリ開始時は最後のプレイ結果を表示
+CLOSED: [2018-07-07 土 15:58]
 * DONE パネル：道と緑の境目の描き込みや生活感を出す物体を置く
 CLOSED: [2018-07-05 木 23:55]
 * DONE iPhone6タテ画面だとやや手狭

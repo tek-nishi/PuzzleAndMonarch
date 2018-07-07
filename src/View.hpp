@@ -452,12 +452,14 @@ public:
       auto options   = timeline_->applyPtr(&panel.position,
                                            panel_pos, panel.position,
                                            blank_appear_duration_, getEaseFunc(blank_appear_ease_));
+
+      auto delay = ci::randFloat(0.0f, 0.1f);
+      options.delay(delay);
       options.updateFn([&panel]()
                        {
                          panel.matrix = glm::translate(panel.position);
                        });
 
-      // panel.position = panel_pos;
       panel.matrix   = glm::translate(panel_pos);
     }
 
@@ -674,6 +676,9 @@ public:
       auto option = timeline_->applyPtr(&panel.position,
                                         panel.position + blank_disappear_pos_,
                                         blank_disappear_duration_, getEaseFunc(blank_disappear_ease_));
+
+      auto delay = ci::randFloat(0.0f, 0.15f);
+      option.delay(delay);
       option.updateFn([&panel]()
                       {
                         panel.matrix = glm::translate(panel.position);
@@ -684,7 +689,7 @@ public:
                    {
                      blank_panels_.clear();
                    },
-                   timeline_->getCurrentTime() + blank_disappear_duration_ + 0.1f);
+                   timeline_->getCurrentTime() + blank_disappear_duration_ + 0.25f);
   }
 
   // Fieldのパネルをリセットする演出
