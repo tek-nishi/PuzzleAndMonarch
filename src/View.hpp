@@ -344,9 +344,9 @@ public:
   {
     timeline_->clear();
     force_timeline_->clear();
-    field_panels_.clear();
-    field_panel_indices_.clear();
-    blank_panels_.clear();
+    // field_panels_.clear();
+    // field_panel_indices_.clear();
+    // blank_panels_.clear();
     effects_.clear();
 
     field_rotate_offset_ = 0.0f;
@@ -715,7 +715,7 @@ public:
                    {
                      field_panels_.clear();
                      field_panel_indices_.clear();
-                     field_rotate_offset_ = 0.0f;
+                     // field_rotate_offset_ = 0.0f;
                    },
                    timeline_->getCurrentTime() + duration + 0.25f);
   }

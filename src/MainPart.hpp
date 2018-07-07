@@ -336,6 +336,7 @@ public:
                                                   // パネル準備
                                                   game_->putFirstPanel();
                                                   game_->preparationPlay(isTutorial());
+                                                  view_.clear();
                                                 });
                               });
 
@@ -380,7 +381,6 @@ public:
                                                 [this]() noexcept
                                                 {
                                                   abortGame();
-                                                  // resetGame();
                                                   // field_camera_.resetAll();
                                                 },
                                                 true);
@@ -569,7 +569,6 @@ public:
                                                   [this]() noexcept
                                                   {
                                                     abortGame();
-                                                    // resetGame();
                                                     // field_camera_.resetAll();
                                                   },
                                                   true);
@@ -617,7 +616,6 @@ public:
                                                 [this]() noexcept
                                                 {
                                                   abortGame();
-                                                  // resetGame();
                                                   // field_camera_.resetAll();
                                                 });
                               });
