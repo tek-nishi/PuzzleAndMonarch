@@ -687,6 +687,34 @@ public:
                    timeline_->getCurrentTime() + blank_disappear_duration_ + 0.1f);
   }
 
+  // Fieldのパネルをリセットする演出
+  void removeFieldPanels() noexcept
+  {
+    glm::vec3 disappear_pos{ 0, -30, 0 };
+    float duration = 0.6f;
+    for (auto& panel : field_panels_)
+    {
+      auto option = timeline_->applyPtr(&panel.position,
+                                        panel.position + disappear_pos,
+                                        duration, getEaseFunc("InBack"));
+
+      auto delay = ci::randFloat(0.0f, 0.25f);
+      option.delay(delay);
+      option.updateFn([this]()
+                      {
+                        update_translate_ = true;
+                      });
+    }
+
+    timeline_->add([this]() noexcept
+                   {
+                     field_panels_.clear();
+                     field_panel_indices_.clear();
+                     field_rotate_offset_ = 0.0f;
+                   },
+                   timeline_->getCurrentTime() + duration + 0.25f);
+  }
+
 
   const ci::AxisAlignedBox& panelAabb(int number) const noexcept
   {

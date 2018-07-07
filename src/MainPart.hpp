@@ -1113,7 +1113,8 @@ private:
   // Game本体初期化
   void resetGame() noexcept
   {
-    view_.clear();
+    // view_.clear();
+    view_.removeFieldPanels();
 
     paused_ = false;
     count_exec_.pause(false);
