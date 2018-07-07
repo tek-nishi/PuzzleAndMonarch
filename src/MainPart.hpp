@@ -330,8 +330,13 @@ public:
                                   // チュートリアル開始
                                   event_.signal("Tutorial:begin", Arguments());
                                 }
-                                // パネル準備
-                                game_->preparationPlay(isTutorial());
+                                count_exec_.add(1.4,
+                                                [this]()
+                                                {
+                                                  // パネル準備
+                                                  game_->putFirstPanel();
+                                                  game_->preparationPlay(isTutorial());
+                                                });
                               });
 
     holder_ += event_.connect("Game:Start",
@@ -1124,7 +1129,7 @@ private:
     // Game再生成
     game_.reset();            // TIPS メモリを２重に確保したくないので先にresetする
     game_ = std::make_unique<Game>(params_["game"], event_, panels_);
-    game_->putFirstPanel();
+    // game_->putFirstPanel();
   }
 
   // カメラから見える範囲のBGを計算
