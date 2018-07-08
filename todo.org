@@ -1,4 +1,7 @@
 * TODO Introの文章を楽しげに
+* TODO Intro縦画面でもいい感じに見えるように
+* TODO Introのデータの難読化
+* TODO Introのデータの確定
 * TODO 道と森の最大数について実際にパネルを使ってシミュレーションする
 * TODO 世界観を作る
 * TODO ローカライズ
