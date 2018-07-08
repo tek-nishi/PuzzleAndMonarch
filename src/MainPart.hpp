@@ -325,11 +325,6 @@ public:
                                 // NOTICE 開始演出終わりに残り時間が正しく表示されているために必要
                                 game_->updateGameUI();
 
-                                if (isTutorial())
-                                {
-                                  // チュートリアル開始
-                                  event_.signal("Tutorial:begin", Arguments());
-                                }
                                 count_exec_.add(1.4,
                                                 [this]()
                                                 {
@@ -337,6 +332,12 @@ public:
                                                   view_.clear();
                                                   game_->putFirstPanel();
                                                   game_->preparationPlay(isTutorial());
+
+                                                  if (isTutorial())
+                                                  {
+                                                    // チュートリアル開始
+                                                    event_.signal("Tutorial:begin", Arguments());
+                                                  }
                                                 });
                               });
 

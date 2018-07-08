@@ -1,6 +1,5 @@
 * TODO Introの文章を楽しげに
 * TODO Titleに遷移した時にAutoRotateCameraを動かしたままにしたい
-* TODO Tutorial「パネルを置く」が出てこない
 * TODO 道と森の最大数について実際にパネルを使ってシミュレーションする
 * TODO GameCenterのアイコンに進捗度を入れられないか
 * TODO 世界観を作る
@@ -13,6 +12,8 @@
 * TODO iOS:AppStore提出に必要な書類や素材
 * TODO iOS:実績のアイコンを用意
 * TODO iOS:課金処理
+* DONE Tutorial「パネルを置く」が出てこない
+CLOSED: [2018-07-08 日 12:18]
 * DONE Ranking開始時にFieldがリセットされない
 CLOSED: [2018-07-08 日 11:51]
 * DONE blankの演出に乱数でdelayをつける
