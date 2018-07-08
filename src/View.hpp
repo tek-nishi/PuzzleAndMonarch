@@ -725,7 +725,7 @@ public:
                      field_panel_indices_.clear();
                      // field_rotate_offset_ = 0.0f;
                    },
-                   timeline_->getCurrentTime() + duration + 0.25f);
+                   timeline_->getCurrentTime() + duration + 0.35f);
   }
 
 

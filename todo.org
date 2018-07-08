@@ -1,5 +1,4 @@
 * TODO Introの文章を楽しげに
-* TODO Ranking→Title→GameでViewのTweenが残っている状況があった
 * TODO 道と森の最大数について実際にパネルを使ってシミュレーションする
 * TODO 世界観を作る
 * TODO ローカライズ
@@ -11,6 +10,8 @@
 * TODO iOS:AppStore提出に必要な書類や素材
 * TODO iOS:実績のアイコンを用意
 * TODO iOS:課金処理
+* DONE Ranking→Title→GameでViewのTweenが残っている状況があった
+CLOSED: [2018-07-08 日 16:05]
 * DONE Intro~Titleの繋ぎがダサいので直す
 CLOSED: [2018-07-08 日 15:39]
 * DONE Titleに遷移した時にAutoRotateCameraを動かしたままにしたい
