@@ -857,7 +857,12 @@ public:
 #endif
 
     view_.setColor(ci::Color::white());
-    loadIntroField();
+
+    count_exec_.add(1,
+                    [this]()
+                    {
+                      loadIntroField();
+                    });
   }
 
 

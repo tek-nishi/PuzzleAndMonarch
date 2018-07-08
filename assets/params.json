@@ -163,7 +163,7 @@
       "far_z":  1800,
 
       "rotation": [ 45, 45 ],
-      "distance": 190
+      "distance": 200
     },
 
     "light": {
@@ -482,9 +482,9 @@
     "touch_delay": 0.5,
     "finish_delay": 0.5,
 
-    "distance": 600,
+    "distance": 650,
 
-    "camera_ease_rate": [ 0.9, 4 ],
+    "camera_ease_rate": [ 0.92, 3 ],
 
     "cloud_erase_duration": 0.5,
     "cloud_erase_delay": 1.5,
