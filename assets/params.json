@@ -11,7 +11,8 @@
       [ "k", "debug-shadowmap" ],
       [ "t", "debug-score-test" ],
       [ "b", "debug-disp-clouds" ],
-      [ "g", "debug-gamecenter" ]
+      [ "g", "debug-gamecenter" ],
+      [ "e", "debug-effect" ]
     ],
 
     "app_size": [
@@ -384,6 +385,7 @@
     "effect": {
       "model":  "effect.obj",
       "shader": "effect",
+      "ambient": 0.65,
 
       "y_ofs": [ 1, 3 ],
       "y_move": [ 15, 30 ],
@@ -391,7 +393,7 @@
       "delay": [ 0, 1 ],
       "scale": [ 1, 2 ],
       "h": [ 0.12, 0.16 ],
-      "s": [ 0.8, 1.0 ],
+      "s": [ 0.68, 1.0 ],
       "ease": "None"
     },
 

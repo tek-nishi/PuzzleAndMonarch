@@ -8,8 +8,6 @@ $precision$
 uniform vec4 uLightPosition;
 
 uniform float uAmbient;
-uniform float uShininess;
-uniform vec3 uSpecular;
 
 uniform vec3 u_color; 
 
@@ -27,13 +25,7 @@ void main(void)
   vec3 view    = -normalize(vPosition.xyz);
   vec3 fnormal = normalize(vNormal);
 
-  // 平行光源+影
+  // 平行光源
   float diffuse = max(dot(light, fnormal), uAmbient);
-
-  // スペキュラは反射ベクトルを求める方式
-  vec3 reflect    = reflect(-light, fnormal);
-  float specular  = pow(max(dot(reflect, view), 0.0), uShininess);
-  vec3 spec_color = uSpecular * specular;
-
-	Color = vec4((vColor * diffuse + spec_color) * u_color, 1.0);
+	Color = vec4((vColor * diffuse) * u_color, 1.0);
 }

@@ -845,6 +845,13 @@ public:
                                 view_.toggleCloud();
                               });
 
+    holder_ += event_.connect("debug-effect",
+                              [this](const Connection&, Arguments&) noexcept
+                              {
+                                view_.startEffect({ 0, 0 });
+                              });
+
+
     holder_ += event_.connect("Test:PutPanel",
                               [this](const Connection&, Arguments& args) noexcept
                               {

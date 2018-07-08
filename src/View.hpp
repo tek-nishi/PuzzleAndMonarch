@@ -284,9 +284,9 @@ public:
       auto name = params.getValueForKey<std::string>("effect.shader");
       effect_shader_ = createShader(name, name);
 
-      effect_shader_->uniform("uSpecular", Json::getColor<float>(params["field.specular"]));
-      effect_shader_->uniform("uShininess", params.getValueForKey<float>("field.shininess"));
-      effect_shader_->uniform("uAmbient", params.getValueForKey<float>("field.ambient"));
+      // effect_shader_->uniform("uSpecular", Json::getColor<float>(params["field.specular"]));
+      // effect_shader_->uniform("uShininess", params.getValueForKey<float>("field.shininess"));
+      effect_shader_->uniform("uAmbient", params.getValueForKey<float>("effect.ambient"));
 
       auto model = createVboMesh(params.getValueForKey<std::string>("effect.model"), true);
 
