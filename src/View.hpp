@@ -350,7 +350,15 @@ public:
     effects_.clear();
 
     field_rotate_offset_ = 0.0f;
-    update_translate_ = false;
+    update_translate_    = false;
+  }
+
+  void clearAll()
+  {
+    clear();
+    field_panels_.clear();
+    field_panel_indices_.clear();
+    blank_panels_.clear();
   }
 
 

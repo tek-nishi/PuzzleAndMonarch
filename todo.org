@@ -13,6 +13,8 @@
 * TODO iOS:AppStore提出に必要な書類や素材
 * TODO iOS:実績のアイコンを用意
 * TODO iOS:課金処理
+* DONE Ranking開始時にFieldがリセットされない
+CLOSED: [2018-07-08 日 11:51]
 * DONE blankの演出に乱数でdelayをつける
 CLOSED: [2018-07-07 土 16:20]
 * DONE アプリ開始時は最後のプレイ結果を表示

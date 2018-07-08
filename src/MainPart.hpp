@@ -334,9 +334,9 @@ public:
                                                 [this]()
                                                 {
                                                   // パネル準備
+                                                  view_.clear();
                                                   game_->putFirstPanel();
                                                   game_->preparationPlay(isTutorial());
-                                                  view_.clear();
                                                 });
                               });
 
@@ -1321,15 +1321,13 @@ private:
     field_camera_.force(true);
     manipulated_ = false;
 
+    const auto& json = archive_.getRecordArray("games");
+    if (json.hasChildren() && json[rank].hasChild("path"))
     {
-      const auto& json = archive_.getRecordArray("games");
-      if (json.hasChildren() && json[rank].hasChild("path"))
-      {
-        view_.clear();
-        auto full_path = getDocumentPath() / json[rank].getValueForKey<std::string>("path");
-        game_->load(full_path);
-        calcViewRange(false);
-      }
+      view_.clearAll();
+      auto full_path = getDocumentPath() / json[rank].getValueForKey<std::string>("path");
+      game_->load(full_path);
+      calcViewRange(false);
     }
 
     count_exec_.add(params_.getValueForKey<double>("field.auto_camera_duration"),
