@@ -1,4 +1,8 @@
 * TODO Introの文章を楽しげに
+* TODO AutoRotateCameraが有効時にサスペンド→復帰ですごく回転する
+* TODO 実績に「30枚置いた」などを追加
+* TODO 記録画面に最大森とか最大道とかも欲しい
+* TODO GameCenterにパネル最大設置数も追加
 * TODO 結果画面の道の数とか見たい
 * TODO Intro縦画面でもいい感じに見えるように
 * TODO Introのデータの難読化
@@ -14,6 +18,8 @@
 * TODO iOS:AppStore提出に必要な書類や素材
 * TODO iOS:実績のアイコンを用意
 * TODO iOS:課金処理
+* DONE 最大置けた数を記録とランキングに
+CLOSED: [2018-07-09 月 22:03]
 * DONE Ranking→Title→GameでViewのTweenが残っている状況があった
 CLOSED: [2018-07-08 日 16:05]
 * DONE Intro~Titleの繋ぎがダサいので直す

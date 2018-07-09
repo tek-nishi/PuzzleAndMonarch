@@ -29,6 +29,7 @@ class Archive
 
     records_.addChild(ci::JsonTree("play-times",         uint32_t(0)))
             .addChild(ci::JsonTree("high-score",         uint32_t(0)))
+            .addChild(ci::JsonTree("max-panels",         uint32_t(0)))
             .addChild(ci::JsonTree("total-panels",       uint32_t(0)))
             .addChild(ci::JsonTree("panel-turned-times", uint32_t(0)))
             .addChild(ci::JsonTree("panel-moved-times",  uint32_t(0)))
@@ -145,6 +146,11 @@ public:
     if (high_score)
     {
       setRecord("high-score", uint32_t(score.total_score));
+    }
+
+    {
+      auto max_panels = getRecord<uint32_t>("max-panels");
+      setRecord("max-panels", std::max(max_panels, score.total_panels));
     }
 
     // 平均値などを計算

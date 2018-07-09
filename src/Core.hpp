@@ -106,6 +106,7 @@ public:
                               {
                                 Records::Detail detail = {
                                   archive_.getRecord<u_int>("play-times"),
+                                  archive_.getRecord<u_int>("max-panels"),
                                   archive_.getRecord<u_int>("total-panels"),
                                   archive_.getRecord<u_int>("panel-turned-times"),
                                   archive_.getRecord<u_int>("panel-moved-times"),

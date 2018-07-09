@@ -30,6 +30,7 @@ public:
   // FIXME 受け渡しが冗長なのを解決したい
   struct Detail {
     u_int play_times;
+    u_int max_panels;
     u_int total_panels;
     u_int panel_turned_times;
     u_int panel_moved_times;
@@ -101,12 +102,13 @@ private:
   void applyDetail(const Detail& detail) noexcept
   {
     canvas_.setWidgetText("record:0",  std::to_string(detail.play_times));
-    canvas_.setWidgetText("record:1",  std::to_string(detail.total_panels));
-    canvas_.setWidgetText("record:2",  std::to_string(detail.panel_moved_times));
-    canvas_.setWidgetText("record:3",  std::to_string(detail.panel_turned_times));
-    canvas_.setWidgetText("record:4",  std::to_string(detail.share_times));
-    canvas_.setWidgetText("record:5",  std::to_string(detail.startup_times));
-    canvas_.setWidgetText("record:6",  std::to_string(detail.abort_times));
+    canvas_.setWidgetText("record:1",  std::to_string(detail.max_panels));
+    canvas_.setWidgetText("record:2",  std::to_string(detail.total_panels));
+    canvas_.setWidgetText("record:3",  std::to_string(detail.panel_moved_times));
+    canvas_.setWidgetText("record:4",  std::to_string(detail.panel_turned_times));
+    canvas_.setWidgetText("record:5",  std::to_string(detail.share_times));
+    canvas_.setWidgetText("record:6",  std::to_string(detail.startup_times));
+    canvas_.setWidgetText("record:7",  std::to_string(detail.abort_times));
 
     {
       char text[64];

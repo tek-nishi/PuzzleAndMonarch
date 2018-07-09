@@ -20,7 +20,7 @@ bool isAuthenticated();
 void showBoard(std::function<void()> start_callback,
                std::function<void()> finish_callback);
 
-void submitScore(const int score, const int total_panel);
+void submitScore(const int score, const int total_panel, const int max_panel);
 
 void submitAchievement(const std::string& identifier, const double complete_rate = 100.0,
                        const bool banner = true);
@@ -46,7 +46,7 @@ void showBoard(T1 start_callback,
                T2 finish_callback) {}
 
 template <typename T>
-void submitScore(const T, const T) {}
+void submitScore(const T, const T, const T) {}
 
 template <typename T1, typename T2 = double, typename T3 = bool>
 void submitAchievement(T1 identifier, T2 complete_rate = 0, T3 banner = true) {}

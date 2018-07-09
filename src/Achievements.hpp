@@ -69,7 +69,24 @@ public:
                                // スコア送信
                                auto total_panels = boost::any_cast<u_int>(args.at("total_panels"));
                                const auto& score = boost::any_cast<const Score&>(args.at("score"));
-                               GameCenter::submitScore(score.total_score, total_panels);
+                               GameCenter::submitScore(score.total_score, total_panels, score.total_panels);
+
+                               {
+                                 // 最大設置数
+                                 static std::pair<const char*, double> tbl[] = {
+                                   { "PM.PUT30", 30.0 },
+                                   { "PM.PUT40", 40.0 },
+                                   { "PM.PUT50", 50.0 },
+                                   { "PM.PUT60", 60.0 },
+                                   { "PM.PUT70", 70.0 },
+                                 };
+                                 
+                                 for (const auto& t : tbl)
+                                 {
+                                   auto rate = std::min((score.total_panels * 100.0) / t.second, 100.0);
+                                   GameCenter::submitAchievement(t.first, rate);
+                                 }
+                               }
 
                                // 実績解除判定
                                if (score.perfect)
@@ -81,7 +98,7 @@ public:
                                {
                                  // 最大森
                                  auto max_forest = double(boost::any_cast<u_int>(args.at("max_forest")));
-                                 std::pair<const char*, double> tbl[] = {
+                                 static std::pair<const char*, double> tbl[] = {
                                    { "PM.FOREST5",   5.0 },
                                    { "PM.FOREST10", 10.0 },
                                    { "PM.FOREST15", 15.0 },
@@ -98,7 +115,7 @@ public:
                                {
                                  // 最大道
                                  auto max_path = double(boost::any_cast<u_int>(args.at("max_path")));
-                                 std::pair<const char*, double> tbl[] = {
+                                 static std::pair<const char*, double> tbl[] = {
                                    { "PM.PATH5",   5.0 },
                                    { "PM.PATH10", 10.0 },
                                    { "PM.PATH15", 15.0 },
