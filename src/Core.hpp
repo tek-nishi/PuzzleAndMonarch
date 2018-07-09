@@ -106,13 +106,16 @@ public:
                               {
                                 Records::Detail detail = {
                                   archive_.getRecord<u_int>("play-times"),
-                                  archive_.getRecord<u_int>("max-panels"),
                                   archive_.getRecord<u_int>("total-panels"),
                                   archive_.getRecord<u_int>("panel-turned-times"),
                                   archive_.getRecord<u_int>("panel-moved-times"),
                                   archive_.getRecord<u_int>("share-times"),
                                   archive_.getRecord<u_int>("startup-times"),
                                   archive_.getRecord<u_int>("abort-times"),
+
+                                  archive_.getRecord<u_int>("max-panels"),
+                                  archive_.getRecord<u_int>("max-forest"),
+                                  archive_.getRecord<u_int>("max-path"),
 
                                   archive_.getRecord<double>("average-score"),
                                   archive_.getRecord<double>("average-put-panels"),

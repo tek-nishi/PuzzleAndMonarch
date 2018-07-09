@@ -29,13 +29,16 @@ class Archive
 
     records_.addChild(ci::JsonTree("play-times",         uint32_t(0)))
             .addChild(ci::JsonTree("high-score",         uint32_t(0)))
-            .addChild(ci::JsonTree("max-panels",         uint32_t(0)))
             .addChild(ci::JsonTree("total-panels",       uint32_t(0)))
             .addChild(ci::JsonTree("panel-turned-times", uint32_t(0)))
             .addChild(ci::JsonTree("panel-moved-times",  uint32_t(0)))
             .addChild(ci::JsonTree("share-times",        uint32_t(0)))
             .addChild(ci::JsonTree("startup-times",      uint32_t(0)))
             .addChild(ci::JsonTree("abort-times",        uint32_t(0)))
+
+            .addChild(ci::JsonTree("max-panels", uint32_t(0)))
+            .addChild(ci::JsonTree("max-forest", uint32_t(0)))
+            .addChild(ci::JsonTree("max-path",   uint32_t(0)))
 
             .addChild(ci::JsonTree("tutorial-finish", false))
 
@@ -149,8 +152,23 @@ public:
     }
 
     {
-      auto max_panels = getRecord<uint32_t>("max-panels");
-      setRecord("max-panels", std::max(max_panels, score.total_panels));
+      // 最大設置数
+      auto record = getRecord<uint32_t>("max-panels");
+      setRecord("max-panels", std::max(record, score.total_panels));
+    }
+    {
+      // 最大規模の森
+      auto record = getRecord<uint32_t>("max-forest");
+      auto it    = std::max_element(std::begin(score.forest), std::end(score.forest));
+      auto value = uint32_t(it != std::end(score.forest) ? *it : 0);
+      setRecord("max-forest", std::max(record, value));
+    }
+    {
+      // 道最大長
+      auto record = getRecord<uint32_t>("max-path");
+      auto it    = std::max_element(std::begin(score.path), std::end(score.path));
+      auto value = uint32_t(it != std::end(score.path) ? *it : 0);
+      setRecord("max-path", std::max(record, value));
     }
 
     // 平均値などを計算

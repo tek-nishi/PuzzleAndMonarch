@@ -30,13 +30,16 @@ public:
   // FIXME 受け渡しが冗長なのを解決したい
   struct Detail {
     u_int play_times;
-    u_int max_panels;
     u_int total_panels;
     u_int panel_turned_times;
     u_int panel_moved_times;
     u_int share_times;
     u_int startup_times;
     u_int abort_times;
+
+    u_int max_panels;
+    u_int max_forest;
+    u_int max_path;
 
     double average_score;
     double average_put_panels;
@@ -102,38 +105,41 @@ private:
   void applyDetail(const Detail& detail) noexcept
   {
     canvas_.setWidgetText("record:0",  std::to_string(detail.play_times));
-    canvas_.setWidgetText("record:1",  std::to_string(detail.max_panels));
-    canvas_.setWidgetText("record:2",  std::to_string(detail.total_panels));
-    canvas_.setWidgetText("record:3",  std::to_string(detail.panel_moved_times));
-    canvas_.setWidgetText("record:4",  std::to_string(detail.panel_turned_times));
-    canvas_.setWidgetText("record:5",  std::to_string(detail.share_times));
-    canvas_.setWidgetText("record:6",  std::to_string(detail.startup_times));
-    canvas_.setWidgetText("record:7",  std::to_string(detail.abort_times));
+    canvas_.setWidgetText("record:1",  std::to_string(detail.total_panels));
+    canvas_.setWidgetText("record:2",  std::to_string(detail.panel_moved_times));
+    canvas_.setWidgetText("record:3",  std::to_string(detail.panel_turned_times));
+    canvas_.setWidgetText("record:4",  std::to_string(detail.share_times));
+    canvas_.setWidgetText("record:5",  std::to_string(detail.startup_times));
+    canvas_.setWidgetText("record:6",  std::to_string(detail.abort_times));
+
+    canvas_.setWidgetText("record:10",  std::to_string(detail.max_panels));
+    canvas_.setWidgetText("record:11",  std::to_string(detail.max_forest));
+    canvas_.setWidgetText("record:12",  std::to_string(detail.max_path));
 
     {
       char text[64];
       sprintf(text, "%.0f", detail.average_score);
-      canvas_.setWidgetText("record:10", text);
-    }
-    {
-      char text[64];
-      sprintf(text, "%.1f", detail.average_put_panels);
-      canvas_.setWidgetText("record:11", text);
-    }
-    {
-      char text[64];
-      sprintf(text, "%.1f", detail.average_moved_times);
-      canvas_.setWidgetText("record:12", text);
-    }
-    {
-      char text[64];
-      sprintf(text, "%.1f", detail.average_turn_times);
       canvas_.setWidgetText("record:13", text);
     }
     {
       char text[64];
-      sprintf(text, "%.1fs", detail.average_put_time);
+      sprintf(text, "%.1f", detail.average_put_panels);
       canvas_.setWidgetText("record:14", text);
+    }
+    {
+      char text[64];
+      sprintf(text, "%.1f", detail.average_moved_times);
+      canvas_.setWidgetText("record:15", text);
+    }
+    {
+      char text[64];
+      sprintf(text, "%.1f", detail.average_turn_times);
+      canvas_.setWidgetText("record:16", text);
+    }
+    {
+      char text[64];
+      sprintf(text, "%.1fs", detail.average_put_time);
+      canvas_.setWidgetText("record:17", text);
     }
   }
 };
