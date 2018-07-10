@@ -1,5 +1,4 @@
 * TODO Introの文章を楽しげに
-* TODO AutoRotateCameraが有効時にサスペンド→復帰ですごく回転する
 * TODO 結果画面の道の数とか見たい
 * TODO Intro縦画面でもいい感じに見えるように
 * TODO Introのデータの難読化
@@ -15,6 +14,8 @@
 * TODO iOS:AppStore提出に必要な書類や素材
 * TODO iOS:実績のアイコンを用意
 * TODO iOS:課金処理
+* DONE AutoRotateCameraが有効時にサスペンド→復帰ですごく回転する
+CLOSED: [2018-07-10 火 19:11]
 * DONE 記録画面に最大森とか最大道とかも欲しい
 CLOSED: [2018-07-10 火 00:00]
 * DONE GameCenterにパネル最大設置数も追加

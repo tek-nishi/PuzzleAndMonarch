@@ -25,13 +25,13 @@ public:
                                const auto& touch = boost::any_cast<const Touch&>(arg.at("touch"));
                                if (touch.handled) return;
                                 
-                               manipulating_ = true;
+                               manipulating_  = true;
                                current_speed_ = 0.0;
                              });
     holder_ += event.connect("multi_touch_began",
-                             [this](const Connection&, Arguments& arg) noexcept
+                             [this](const Connection&, Arguments&) noexcept
                              {
-                               manipulating_ = true;
+                               manipulating_  = true;
                                current_speed_ = 0.0;
                              });
     
@@ -42,27 +42,27 @@ public:
                                if (touch.handled) return;
 
                                manipulating_ = false;
-                               delay_  = 3;
+                               delay_        = 3;
                              });
     holder_ += event.connect("multi_touch_ended",
-                             [this](const Connection&, Arguments& arg) noexcept
+                             [this](const Connection&, Arguments&) noexcept
                              {
                                manipulating_ = false;
-                               delay_  = 3;
+                               delay_        = 3;
                              });
 
     // 動作開始のきっかけ
     holder_ += event.connect("Title:finished",
                              [this](const Connection&, Arguments&) noexcept
                              {
-                               active_ = false;
+                               active_        = false;
                                current_speed_ = 0.0;
                              });
     holder_ += event.connect("Game:Finish",
                              [this](const Connection&, Arguments&) noexcept
                              {
-                               delay_ = waiting_time_;
-                               active_ = true;
+                               delay_         = waiting_time_;
+                               active_        = true;
                                current_speed_ = 0.0;
                              });
     holder_ += event.connect("Ranking:begin",
@@ -70,10 +70,32 @@ public:
                              {
                                if (!active_)
                                {
-                                 delay_ = waiting_time_;
+                                 delay_  = waiting_time_;
                                  active_ = true;
                                }
                              });
+
+    holder_ += event.connect("App:ResignActive",
+                             [this](const Connection&, Arguments&) noexcept
+                             {
+                               // アプリがサスペンドした
+                               if (active_)
+                               {
+                                 manipulating_  = true;
+                                 current_speed_ = 0.0;
+                               }
+                             });
+    holder_ += event.connect("App:BecomeActive",
+                             [this](const Connection&, Arguments&) noexcept
+                             {
+                               // サスペンドから復帰
+                               if (active_)
+                               {
+                                 manipulating_  = false;
+                                 delay_         = 3;
+                               }
+                             });
+
   }
 
   ~AutoRotateCamera() = default;
