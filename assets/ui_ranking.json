@@ -45,6 +45,7 @@
               ],
               "event": "rank0",
               "move_event": true,
+              "se": "selecting",
               
               "childlen": [
                 {
@@ -95,6 +96,7 @@
               ],
               "event": "rank1",
               "move_event": true,
+              "se": "selecting",
 
               "childlen": [
                 {
@@ -145,6 +147,7 @@
               ],
               "event": "rank2",
               "move_event": true,
+              "se": "selecting",
 
               "childlen": [
                 {
@@ -195,6 +198,7 @@
               ],
               "event": "rank3",
               "move_event": true,
+              "se": "selecting",
 
               "childlen": [
                 {
@@ -245,6 +249,7 @@
               ],
               "event": "rank4",
               "move_event": true,
+              "se": "selecting",
 
               "childlen": [
                 {
@@ -295,6 +300,7 @@
               ],
               "event": "rank5",
               "move_event": true,
+              "se": "selecting",
 
               "childlen": [
                 {
@@ -345,6 +351,7 @@
               ],
               "event": "rank6",
               "move_event": true,
+              "se": "selecting",
 
               "childlen": [
                 {
@@ -394,6 +401,7 @@
               ],
               "event": "rank7",
               "move_event": true,
+              "se": "selecting",
 
               "childlen": [
                 {
@@ -444,6 +452,7 @@
               ],
               "event": "rank8",
               "move_event": true,
+              "se": "selecting",
 
               "childlen": [
                 {
@@ -494,6 +503,7 @@
               ],
               "event": "rank9",
               "move_event": true,
+              "se": "selecting",
 
               "childlen": [
                 {

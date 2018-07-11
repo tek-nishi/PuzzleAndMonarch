@@ -275,6 +275,17 @@ private:
                       {
                         canvas_.setWidgetText("score:20", std::to_string(disp_score_));
                       });
+
+      if (total_score_ > 0)
+      {
+        option.startFn([this]()
+                       {
+                         Arguments args{
+                           { "name", std::string("drum-roll") }
+                         };
+                         event_.signal("UI:sound", args);
+                       });
+      }
     }
     {
       auto option = timeline_->apply(&disp_rank_, 0, total_rank_,

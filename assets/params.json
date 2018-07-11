@@ -94,6 +94,11 @@
       "type": "bgm"
     },
     {
+      "name": "drum-roll",
+      "path": "drum-roll.m4a",
+      "type": "se"
+    },
+    {
       "name": "rank-in",
       "path": "rank-in.m4a",
       "type": "se"
@@ -113,6 +118,11 @@
       "name": "se-test",
       "path": "toggle-se.m4a",
       "type": "se"
+    },
+    {
+      "name": "selecting",
+      "path": "selecting.m4a",
+      "type": "se"
     }
   ],
 
@@ -127,7 +137,7 @@
   },
 
   "game": {
-    "play_time": 180,
+    "play_time": 10,
     "force_panel": 0,
     "test_score_": 110000,
     "force_tutorial": false,
