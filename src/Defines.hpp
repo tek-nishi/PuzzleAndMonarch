@@ -31,6 +31,8 @@
 // #define OBFUSCATION_GAME_RECORD
 // 実績キャッシュの難読化
 // #define OBFUSCATION_ACHIEVEMENT
+//不要な記録は削除
+#define REMOVE_UNNECESSARY_RECORD
 
 #if defined(CINDER_COCOA_TOUCH)
 

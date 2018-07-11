@@ -1248,6 +1248,7 @@ private:
       size_t count = json.getNumChildren() - ranking_records_;
       for (size_t i = 0; i < count; ++i)
       {
+#if defined (REMOVE_UNNECESSARY_RECORD)
         if (json[ranking_records_].hasChild("path"))
         {
           auto p = json[ranking_records_].getValueForKey<std::string>("path");
@@ -1263,6 +1264,7 @@ private:
             DOUT << ex.what() << std::endl;
           }
         }
+#endif
 
         json.removeChild(ranking_records_);
       }
