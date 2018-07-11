@@ -27,7 +27,6 @@
 		47EF72E92043D0AF002900CF /* Accelerate.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 00A66A351965AC8800B17EB3 /* Accelerate.framework */; };
 		47EF72EB2043D228002900CF /* Capture.mm in Sources */ = {isa = PBXBuildFile; fileRef = 47EF72EA2043D228002900CF /* Capture.mm */; };
 		4A87E5FC4BF545F684E4E5FE /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = 257B6E3315A4490FA0602ED1 /* LaunchScreen.xib */; };
-		89A048848AF74A878039EF6B /* CinderApp_ios.png in Resources */ = {isa = PBXBuildFile; fileRef = E6C27D858B5543499BB4162A /* CinderApp_ios.png */; };
 		8FA538F2FD744747970E9EF1 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = D9BFC250AE1146EB97135C4B /* Images.xcassets */; };
 		C725E001121DAC8F00FA186B /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C725E000121DAC8F00FA186B /* AVFoundation.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
 		C725E001121DAC8FFFFA18FF /* ImageIO.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 00CFDF6A1138442D0091FFFF /* ImageIO.framework */; };
@@ -65,7 +64,6 @@
 		C7FB19D5124BC0D70045AFD2 /* AudioToolbox.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AudioToolbox.framework; path = System/Library/Frameworks/AudioToolbox.framework; sourceTree = SDKROOT; };
 		D9BFC250AE1146EB97135C4B /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = "\"\""; path = Images.xcassets; sourceTree = "<group>"; };
 		DDDDDF6A1138442D0091DDDD /* MobileCoreServices.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MobileCoreServices.framework; path = System/Library/Frameworks/MobileCoreServices.framework; sourceTree = SDKROOT; };
-		E6C27D858B5543499BB4162A /* CinderApp_ios.png */ = {isa = PBXFileReference; lastKnownFileType = "\"\""; name = CinderApp_ios.png; path = ../resources/CinderApp_ios.png; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -151,7 +149,6 @@
 			isa = PBXGroup;
 			children = (
 				00748057165D41390024B57A /* assets */,
-				E6C27D858B5543499BB4162A /* CinderApp_ios.png */,
 				D9BFC250AE1146EB97135C4B /* Images.xcassets */,
 				257B6E3315A4490FA0602ED1 /* LaunchScreen.xib */,
 				4F061B89F5B245658DFC98A3 /* Info.plist */,
@@ -241,7 +238,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				00748058165D41390024B57A /* assets in Resources */,
-				89A048848AF74A878039EF6B /* CinderApp_ios.png in Resources */,
 				8FA538F2FD744747970E9EF1 /* Images.xcassets in Resources */,
 				4A87E5FC4BF545F684E4E5FE /* LaunchScreen.xib in Resources */,
 				4738A3D320693EEC00B590F3 /* InfoPlist.strings in Resources */,
@@ -355,6 +351,7 @@
 		00692BF614FF149000D0A05E /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
@@ -390,6 +387,7 @@
 		00692BF714FF149000D0A05E /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
@@ -462,6 +460,7 @@
 		4740133B20CCF2CF0053D05D /* Distribution */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				CODE_SIGN_IDENTITY = "iPhone Distribution";
 				CODE_SIGN_STYLE = Manual;
