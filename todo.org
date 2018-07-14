@@ -9,11 +9,12 @@
 * TODO BGM作る
 * TODO SE作る
 * TODO カルカソンヌ公式に許可を取る
-* TODO アプリアイコン
 * TODO iOS:処理の思い箇所を探して修正
 * TODO iOS:AppStore提出に必要な書類や素材
 * TODO iOS:実績のアイコンを用意
 * TODO iOS:課金処理
+* DONE アプリアイコン
+CLOSED: [2018-07-14 Sat 11:49]
 * DONE AutoRotateCameraが有効時にサスペンド→復帰ですごく回転する
 CLOSED: [2018-07-10 火 19:11]
 * DONE 記録画面に最大森とか最大道とかも欲しい
