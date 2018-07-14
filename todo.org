@@ -8,7 +8,7 @@
 * TODO ローカライズ
 * TODO BGM作る
 * TODO SE作る
-* TODO カルカソンヌ公式に許可を取る
+* WAIT カルカソンヌ公式に許可を取る
 * TODO iOS:処理の思い箇所を探して修正
 * TODO iOS:AppStore提出に必要な書類や素材
 * TODO iOS:実績のアイコンを用意
