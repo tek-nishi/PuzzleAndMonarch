@@ -18,6 +18,7 @@
 #include "GameMain.hpp"
 #include "Result.hpp"
 #include "Credits.hpp"
+#include "Purchase.hpp"
 #include "Settings.hpp"
 #include "Records.hpp"
 #include "Ranking.hpp"
@@ -89,6 +90,7 @@ public:
 
                                 tasks_.pushBack<Settings>(params_, event_, drawer_, tween_common_, detail);
                               });
+
     // Settings→Title
     holder_ += event_.connect("Settings:Finished",
                               [this](const Connection&, const Arguments& args) noexcept
@@ -100,6 +102,20 @@ public:
 
                                 startTitle(false);
                               });
+
+    // Title→Purchase
+    holder_ += event_.connect("Purchase:begin",
+                              [this](const Connection&, const Arguments&) noexcept
+                              {
+                                tasks_.pushBack<Purchase>(params_, event_, drawer_, tween_common_);
+                              });
+    // Purchase→Title
+    holder_ += event_.connect("Purchase:Finished",
+                              [this](const Connection&, const Arguments&) noexcept
+                              {
+                                startTitle(false);
+                              });
+
     // Title→Records
     holder_ += event_.connect("Records:begin",
                               [this](const Connection&, const Arguments&) noexcept

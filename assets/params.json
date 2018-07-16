@@ -513,6 +513,7 @@
     "tweens": "tw_title.json",
 
     "menu": [
+      "Purchase",
       "GameCenter",
       "Ranking",
       "Records",
@@ -606,5 +607,10 @@
       [ 0, 20 ],
       [ 0, 20 ]
     ]
+  },
+
+  "purchase": {
+    "canvas": "ui_purchase.json",
+    "tweens": "tw_purchase.json"
   }
 }

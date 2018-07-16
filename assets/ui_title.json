@@ -117,6 +117,39 @@
     },
 
     {
+      "identifier": "Purchase",
+      "rect": [ -80, -10, -60, 10 ],
+      "anchor": [
+        [ 0.5, 0.21 ],
+        [ 0.5, 0.21 ]
+      ],
+      "enable": true,
+      "active": true,
+
+      "radius": 1,
+      "line_width": 1.5,
+      "segment": 30,
+      "begin_angle": 90,
+      "end_angle": -270,
+
+      "event": "purchase",
+      "se":    "selected",
+
+      "childlen": [
+        {
+          "identifier": "Purchase:icon",
+          "rect": [ 0, 0, 0, 0 ],
+          "anchor": [
+            [ 0.15, 0.14 ],
+            [ 0.92, 0.88 ]
+          ],
+          
+          "font": "icon",
+          "text": ""
+        }
+      ]
+    },
+    {
       "identifier": "GameCenter",
       "rect": [ -80, -10, -60, 10 ],
       "anchor": [

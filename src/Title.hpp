@@ -37,6 +37,7 @@ public:
     auto wipe_delay    = params.getValueForKey<double>("ui.wipe.delay");
     auto wipe_duration = params.getValueForKey<double>("ui.wipe.duration");
 
+    // FIXME 同じ処理が並んでいる
     holder_ += event_.connect("play:touch_ended",
                               [this, wipe_delay, wipe_duration](const Connection&, const Arguments&) noexcept
                               {
@@ -127,6 +128,24 @@ public:
                                 DOUT << "Records." << std::endl;
                               });
 
+    holder_ += event_.connect("purchase:touch_ended",
+                              [this, wipe_delay, wipe_duration](const Connection&, const Arguments&) noexcept
+                              {
+                                canvas_.active(false);
+                                canvas_.startCommonTween("root", "out-to-left");
+                                count_exec_.add(wipe_delay,
+                                                [this]() noexcept
+                                                {
+                                                  event_.signal("Purchase:begin", Arguments());
+                                                });
+                                count_exec_.add(wipe_duration,
+                                                [this]() noexcept
+                                                {
+                                                  active_ = false;
+                                                });
+                                DOUT << "Records." << std::endl;
+                              });
+    
     holder_ += event_.connect("game_center:touch_ended",
                               [this, wipe_delay](const Connection&, const Arguments&)
                               {
@@ -163,6 +182,7 @@ public:
     setupCommonTweens(event_, holder_, canvas_, "records");
     setupCommonTweens(event_, holder_, canvas_, "ranking");
     setupCommonTweens(event_, holder_, canvas_, "game_center");
+    setupCommonTweens(event_, holder_, canvas_, "purchase");
     setupCommonTweens(event_, holder_, canvas_, "play");
 
     if (!saved)
