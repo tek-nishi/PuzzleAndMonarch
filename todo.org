@@ -1,3 +1,4 @@
+* TODO Titleを「Puzzle and Monarch」にする？
 * TODO Introの文章を楽しげに
 * TODO IntroのFieldの中心をいい感じに
 * TODO 結果画面の道の数とか見たい

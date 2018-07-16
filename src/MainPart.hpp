@@ -736,6 +736,7 @@ public:
       { "Settings:begin", "Settings:Finished" },
       { "Records:begin",  "Records:Finished" },
       { "Ranking:begin",  "Ranking:Finished" },
+      { "Purchase:begin", "Purchase:Finished" },
     };
 
     auto transition_delay = params.getValueForKey<double>("ui.transition.delay");
