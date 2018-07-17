@@ -40,6 +40,9 @@ public:
                              });
 
     setupCommonTweens(event_, holder_, canvas_, "agree");
+    setupCommonTweens(event_, holder_, canvas_, "Purchase");
+    setupCommonTweens(event_, holder_, canvas_, "Restore");
+
     canvas_.startCommonTween("root", "in-from-right");
   }
 

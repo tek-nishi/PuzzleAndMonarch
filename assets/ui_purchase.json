@@ -19,6 +19,111 @@
     },
 
     {
+      "rect": [ 0, 32, 0, 42 ],
+      "anchor": [
+        [ 0.5, 0.6 ],
+        [ 0.5, 0.6 ]
+      ],
+      "font": "jp",
+      "text": "制限時間を３分に延長する"
+    },
+    {
+      "identifier": "price-01",
+      "rect": [ 0, 20, 0, 30 ],
+      "anchor": [
+        [ 0.5, 0.6 ],
+        [ 0.5, 0.6 ]
+      ],
+      "font": "jp",
+      "text": "JPY 240"
+    },
+
+    {
+      "identifier": "Trash-text",
+      "rect": [ 0, 4, 0, 17 ],
+      "anchor": [
+        [ 0.5, 0.6 ],
+        [ 0.5, 0.6 ]
+      ],
+
+      "font": "jp",
+      "text": "購入"
+    },
+    {
+      "identifier": "Purchase",
+      "rect": [ -12, -23, 12, 0 ],
+      "anchor": [
+        [ 0.5, 0.6 ],
+        [ 0.5, 0.6 ]
+      ],
+
+      "radius": 1,
+      "line_width": 1.5,
+      "segment": 30,
+      "begin_angle": 90,
+      "end_angle": 450,
+
+      "event": "Purchase",
+      "se": "selected",
+
+      "childlen": [
+        {
+          "identifier": "Purchase:icon",
+          "rect": [ 0, 0, 0, 0 ],
+          "anchor": [
+            [ 0.02, 0.13 ],
+            [ 1.0, 0.81 ]
+          ],
+
+          "font": "icon",
+          "text": ""
+        }
+      ]
+    },
+
+    {
+      "rect": [ 0, 4, 0, 17 ],
+      "anchor": [
+        [ 0.5, 0.35 ],
+        [ 0.5, 0.35 ]
+      ],
+
+      "font": "jp",
+      "text": "復元"
+    },
+    {
+      "identifier": "Restore",
+      "rect": [ -12, -23, 12, 0 ],
+      "anchor": [
+        [ 0.5, 0.35 ],
+        [ 0.5, 0.35 ]
+      ],
+
+      "radius": 1,
+      "line_width": 1.5,
+      "segment": 30,
+      "begin_angle": 90,
+      "end_angle": 450,
+
+      "event": "Restore",
+      "se": "selected",
+
+      "childlen": [
+        {
+          "identifier": "Restore:icon",
+          "rect": [ 0, 0, 0, 0 ],
+          "anchor": [
+            [ 0.07, 0.16 ],
+            [ 1.0, 0.87 ]
+          ],
+
+          "font": "icon",
+          "text": ""
+        }
+      ]
+    },
+
+    {
       "identifier": "touch",
       "rect": [ -10, 0, 10, 20 ],
       "anchor": [
