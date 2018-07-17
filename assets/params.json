@@ -454,13 +454,6 @@
         "path": "FuturaCon-Bol.ttf",
         "texture_size": 512,
         "size": 64
-      },
-      {
-        "name": "rank",
-        "path": "ChessAlpha2.ttf",
-        "spacing": -5,
-        "texture_size": 256,
-        "size": 60
       }
     ],
     
