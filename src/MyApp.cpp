@@ -131,6 +131,8 @@ public:
 
     PurchaseDelegate::init([this]()
                            {
+                             // 課金成功
+                             event_.signal("purchase-completed", Arguments());
                            });
  
     prev_time_ = getElapsedSeconds();

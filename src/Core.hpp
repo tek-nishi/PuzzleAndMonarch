@@ -210,24 +210,38 @@ public:
                               });
 
     // ???
-    holder_ += event_.connect("Share:completed",
-                              [this](const Connection&, const Arguments&) noexcept
-                              {
-                                archive_.addRecord("share-times", uint32_t(1));
-                                archive_.save();
-                              });
+    holder_ += event.connect("Share:completed",
+                             [this](const Connection&, const Arguments&) noexcept
+                             {
+                               archive_.addRecord("share-times", uint32_t(1));
+                               archive_.save();
+                             });
 
     // system
-    holder_ += event_.connect("update",
-                              std::bind(&Core::update,
-                                        this, std::placeholders::_1, std::placeholders::_2));
+    holder_ += event.connect("update",
+                             std::bind(&Core::update,
+                                       this, std::placeholders::_1, std::placeholders::_2));
 
-    // ここで課金情報を取得
-    PurchaseDelegate::price("PM.PERCHASE01",
-                            [this](const std::string price)
-                            {
-                              price_ = price;
-                            });
+    holder_ += event.connect("App:BecomeActive",
+                             [this](const Connection&, const Arguments&) noexcept
+                             {
+                               if (PurchaseDelegate::hasPrice()) return;
+
+                               // ここで課金情報を取得
+                               PurchaseDelegate::price("PM.PERCHASE01",
+                                                       [this](const std::string price)
+                                                       {
+                                                         price_ = price;
+                                                       });
+                             });
+
+    holder_ += event.connect("purchase-completed",
+                             [this](const Connection&, const Arguments&) noexcept
+                             {
+                               archive_.setRecord("PM-PERCHASE01", true);
+                               archive_.save();
+                               DOUT << "purchase-completed"<< std::endl;
+                             });
 
     // アプリの起動回数を更新して保存
     archive_.addRecord("startup-times", uint32_t(1));

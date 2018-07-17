@@ -219,7 +219,16 @@ public:
   template <typename T>
   void setRecord(const std::string& id, const T& value) noexcept
   {
-    records_[id] = ci::JsonTree(id, value);
+    auto json = ci::JsonTree(id, value);
+    if (records_.hasChild(id))
+    {
+      records_[id] = json;
+    }
+    else
+    {
+      records_.addChild(json);
+      DOUT << "new record value: " << id << std::endl;
+    }
   }
 
   // 値に加算する
@@ -240,9 +249,17 @@ public:
     return records_[id];
   }
 
-  bool hasValue(const std::string& key) const
+  bool hasValue(const std::string& id) const
   {
-    return records_.hasChild(key);
+    return records_.hasChild(id);
+  }
+
+  // 初期値付き値読み取りだし
+  template <typename T>
+  T getValue(const std::string& id, const T& default_value) const noexcept
+  {
+    return (records_.hasChild(id)) ? records_.getValueForKey<T>(id)
+                                   : default_value;
   }
 
 

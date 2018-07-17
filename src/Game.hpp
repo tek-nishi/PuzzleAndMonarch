@@ -19,6 +19,7 @@ struct Game
   : private boost::noncopyable
 {
   Game(const ci::JsonTree& params, Event<Arguments>& event,
+       bool purchased,
        const std::vector<Panel>& panels) noexcept
     : params_(params),
       event_(event),
@@ -28,6 +29,14 @@ struct Game
       scores_(7, 0)
   {
     DOUT << "Panel: " << panels_.size() << std::endl;
+
+    // 課金済みなら制限時間を伸ばす
+    if (purchased)
+    {
+      DOUT << "Time extended." << std::endl;
+      initial_play_time_ = params.getValueForKey<double>("play_time_extend");
+      play_time_         = initial_play_time_;
+    }
 
     // 乱数
     std::random_device seed_gen;

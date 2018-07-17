@@ -43,7 +43,7 @@ public:
       event_(event),
       archive_(archive),
       panels_(createPanels()),
-      game_(std::make_unique<Game>(params["game"], event, panels_)),
+      game_(std::make_unique<Game>(params["game"], event, archive.getValue("PM-PERCHASE01", false), panels_)),
       draged_max_length_(params.getValueForKey<float>("field.draged_max_length")),
       field_camera_(params["field"]),
       camera_(params["field.camera"]),
@@ -834,7 +834,8 @@ public:
                                 auto path = game_->game_path;
 
                                 game_.reset();            // TIPS メモリを２重に確保したくないので先にresetする
-                                game_ = std::make_unique<Game>(params_["game"], event_, panels_);
+                                game_ = std::make_unique<Game>(params_["game"], event_,
+                                                               archive_.getValue("PM-PERCHASE01", false), panels_);
 
                                 ScoreTest test(event_, path);
                                 game_->testCalcResults(); 
@@ -1139,7 +1140,8 @@ private:
 
     // Game再生成
     game_.reset();            // TIPS メモリを２重に確保したくないので先にresetする
-    game_ = std::make_unique<Game>(params_["game"], event_, panels_);
+    game_ = std::make_unique<Game>(params_["game"], event_,
+                                   archive_.getValue("PM-PERCHASE01", false), panels_);
     // game_->putFirstPanel();
   }
 

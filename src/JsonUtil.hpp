@@ -149,7 +149,7 @@ ci::RectT<T> getRect(const ci::JsonTree& json) noexcept
 template <typename T>
 T getValue(const ci::JsonTree& json, const std::string& name, const T& default_value) noexcept
 {
-  return (json.hasChild(name)) ? json[name].getValue<T>()
+  return (json.hasChild(name)) ? json.getValueForKey<T>(name)
                                : default_value;
 }
 
