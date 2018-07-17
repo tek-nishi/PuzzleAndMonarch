@@ -199,6 +199,10 @@ public:
 #if defined (CINDER_COCOA_TOUCH)
     // GameCenter
     canvas_.enableWidget("GameCenter");
+    if (saved)
+    {
+      canvas_.enableWidget("Purchase");
+    }
 #endif
 
     layoutIcons(params);

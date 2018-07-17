@@ -1,6 +1,6 @@
 * TODO Titleを「Puzzle and Monarch」にする？
+* TODO アプリがバックグラウンドから復帰したら課金情報を取得し直す
 * TODO 通信環境が無い場合には課金メニューへ進めないように
-* TODO １回プレイしないと課金できない
 * TODO GameCenter認証画面で画面更新を止める？
 * TODO Introの文章を楽しげに
 * TODO IntroのFieldの中心をいい感じに
@@ -18,6 +18,8 @@
 * TODO iOS:AppStore提出に必要な書類や素材
 * TODO iOS:実績のアイコンを用意
 * TODO iOS:課金処理
+* DONE １回プレイしないと課金できない
+CLOSED: [2018-07-17 火 18:26]
 * DONE 課金価格表示用の文字フォント(数字と通貨記号)
 CLOSED: [2018-07-17 火 14:14]
 * DONE アプリアイコン
