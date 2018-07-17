@@ -68,11 +68,22 @@ public:
 
 
     // 課金金額
-    canvas_.setWidgetText("price-01", price);
+    if (!price.empty())
+    {
+      canvas_.setWidgetText("price-01", price);
+    }
 
     setupCommonTweens(event_, holder_, canvas_, "agree");
     setupCommonTweens(event_, holder_, canvas_, "Purchase");
     setupCommonTweens(event_, holder_, canvas_, "Restore");
+
+    // ボタン演出
+    std::vector<std::pair<std::string, std::string>> widgets{
+      { "Purchase", "Purchase:icon" },
+      { "Restore",  "Restore:icon" },
+      { "touch",    "touch:icon" }
+    };
+    UI::startButtonTween(count_exec_, canvas_, 0.53, 0.15, widgets);
 
     canvas_.startCommonTween("root", "in-from-right");
   }
