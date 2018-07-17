@@ -1,0 +1,37 @@
+﻿#pragma once
+
+//
+// アプリ内課金処理繋ぎ
+//
+
+#include <string>
+#include <functional>
+
+
+namespace ngs { namespace PurchaseDelegate {
+
+#if defined(CINDER_COCOA_TOUCH)
+
+    void init(const std::function<void ()>& completed);
+
+    void start(const std::string& product_id);
+    void restore(const std::string& product_id);
+    
+    void price(const std::string& product_id, const std::function<void (const std::string)>& completed);
+
+#else
+
+    template <typename T>
+    void init(T) {}
+
+    template <typename T>
+    void start(T) {}
+    template <typename T>
+    void restore(T) {}
+
+    template <typename T1, typename T2>
+    void price(T1, T2) {}
+
+#endif
+
+} }

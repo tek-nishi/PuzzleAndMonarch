@@ -4,6 +4,9 @@
 // 課金画面
 //
 
+#include "PurchaseDelegate.h"
+
+
 namespace ngs {
 
 class Purchase

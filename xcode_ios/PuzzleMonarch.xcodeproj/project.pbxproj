@@ -14,6 +14,9 @@
 		28FD15000DC6FC520079059D /* OpenGLES.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 28FD14FF0DC6FC520079059D /* OpenGLES.framework */; };
 		472681E120CCFCCF00CE1BE0 /* GameCenter.mm in Sources */ = {isa = PBXBuildFile; fileRef = 472681E020CCFCCF00CE1BE0 /* GameCenter.mm */; };
 		472681E320CCFEC500CE1BE0 /* GameKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 472681E220CCFEC500CE1BE0 /* GameKit.framework */; };
+		472CB8DC20FD9711007481E6 /* DCInAppPurchase.mm in Sources */ = {isa = PBXBuildFile; fileRef = 472CB8DA20FD9711007481E6 /* DCInAppPurchase.mm */; };
+		472CB8DD20FD9711007481E6 /* PurchaseDelegate.mm in Sources */ = {isa = PBXBuildFile; fileRef = 472CB8DB20FD9711007481E6 /* PurchaseDelegate.mm */; };
+		472CB8DF20FD9723007481E6 /* StoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 472CB8DE20FD9723007481E6 /* StoreKit.framework */; };
 		4738A3D320693EEC00B590F3 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 4738A3D520693EEC00B590F3 /* InfoPlist.strings */; };
 		47A6E5562045C4C200AC0CA3 /* TextCodec.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 47A6E5552045C4C200AC0CA3 /* TextCodec.cpp */; };
 		47E3D938203F20CD00275D6D /* AudioSession.mm in Sources */ = {isa = PBXBuildFile; fileRef = 47E3D937203F20CD00275D6D /* AudioSession.mm */; };
@@ -46,6 +49,9 @@
 		28FD15070DC6FC5B0079059D /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
 		472681E020CCFCCF00CE1BE0 /* GameCenter.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = GameCenter.mm; path = ../src/GameCenter.mm; sourceTree = "<group>"; };
 		472681E220CCFEC500CE1BE0 /* GameKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GameKit.framework; path = System/Library/Frameworks/GameKit.framework; sourceTree = SDKROOT; };
+		472CB8DA20FD9711007481E6 /* DCInAppPurchase.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = DCInAppPurchase.mm; path = ../src/DCInAppPurchase.mm; sourceTree = "<group>"; };
+		472CB8DB20FD9711007481E6 /* PurchaseDelegate.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = PurchaseDelegate.mm; path = ../src/PurchaseDelegate.mm; sourceTree = "<group>"; };
+		472CB8DE20FD9723007481E6 /* StoreKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = StoreKit.framework; path = System/Library/Frameworks/StoreKit.framework; sourceTree = SDKROOT; };
 		4738A3D420693EEC00B590F3 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		4738A3D620693F0300B590F3 /* ja */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ja; path = ja.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		47A6E5552045C4C200AC0CA3 /* TextCodec.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = TextCodec.cpp; path = ../src/TextCodec.cpp; sourceTree = "<group>"; };
@@ -82,6 +88,7 @@
 				1DF5F4E00D08C38300B7A737 /* UIKit.framework in Frameworks */,
 				28FD15000DC6FC520079059D /* OpenGLES.framework in Frameworks */,
 				00CFDF6B1138442D0091E310 /* CoreGraphics.framework in Frameworks */,
+				472CB8DF20FD9723007481E6 /* StoreKit.framework in Frameworks */,
 				47E3D93C203F214100275D6D /* MobileCoreServices.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -112,6 +119,7 @@
 		00692BD214FF149000D0A05E /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				472CB8DE20FD9723007481E6 /* StoreKit.framework */,
 				472681E220CCFEC500CE1BE0 /* GameKit.framework */,
 				47EF72E72043C1C0002900CF /* Social.framework */,
 				C7FB19D5124BC0D70045AFD2 /* AudioToolbox.framework */,
@@ -134,6 +142,8 @@
 		00692BD914FF149000D0A05E /* Source */ = {
 			isa = PBXGroup;
 			children = (
+				472CB8DA20FD9711007481E6 /* DCInAppPurchase.mm */,
+				472CB8DB20FD9711007481E6 /* PurchaseDelegate.mm */,
 				472681E020CCFCCF00CE1BE0 /* GameCenter.mm */,
 				47A6E5552045C4C200AC0CA3 /* TextCodec.cpp */,
 				47EF72EA2043D228002900CF /* Capture.mm */,
@@ -210,6 +220,9 @@
 							com.apple.GameCenter.iOS = {
 								enabled = 1;
 							};
+							com.apple.InAppPurchase = {
+								enabled = 1;
+							};
 						};
 					};
 				};
@@ -252,9 +265,11 @@
 			buildActionMask = 2147483647;
 			files = (
 				47E542862003933D0002BD5F /* Framework.cpp in Sources */,
+				472CB8DD20FD9711007481E6 /* PurchaseDelegate.mm in Sources */,
 				47E3D938203F20CD00275D6D /* AudioSession.mm in Sources */,
 				47EF72EB2043D228002900CF /* Capture.mm in Sources */,
 				47E542872003933D0002BD5F /* MyApp.cpp in Sources */,
+				472CB8DC20FD9711007481E6 /* DCInAppPurchase.mm in Sources */,
 				47EF72E32043BEF8002900CF /* Share.mm in Sources */,
 				47A6E5562045C4C200AC0CA3 /* TextCodec.cpp in Sources */,
 				472681E120CCFCCF00CE1BE0 /* GameCenter.mm in Sources */,

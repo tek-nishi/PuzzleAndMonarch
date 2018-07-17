@@ -15,6 +15,7 @@
 #include "Core.hpp"
 #include "Debug.hpp"
 #include "GameCenter.h"
+#include "PurchaseDelegate.h"
 
 
 namespace ngs {
@@ -128,6 +129,16 @@ public:
                                           // controller_->event().signal("gamecenter-authenticated", EventParam());
                                         });
 
+    PurchaseDelegate::price("PM.PERCHASE01",
+                            [this](const std::string price)
+                            {
+                              console() << price << std::endl;
+                            });
+
+    PurchaseDelegate::init([this]()
+                           {
+                           });
+ 
     prev_time_ = getElapsedSeconds();
   }
 
