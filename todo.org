@@ -2,10 +2,7 @@
 * TODO 課金したらタイトルの演出を派手にしたい
 * TODO iOS:課金復元処理の時に画面が停止しない
 * TODO GameCenter認証画面で画面更新を止める？
-* TODO Introの文章を楽しげに
-* TODO IntroのFieldの中心をいい感じに
 * TODO 結果画面の道の数とか見たい
-* TODO Intro縦画面でもいい感じに見えるように
 * TODO Introのデータの難読化
 * TODO Introのデータの確定
 * TODO 道と森の最大数について実際にパネルを使ってシミュレーションする
@@ -18,6 +15,12 @@
 * TODO iOS:AppStore提出に必要な書類や素材
 * TODO iOS:実績のアイコンを用意
 * TODO iOS:サポートサイト用意(特定商取引に関する表示)
+* DONE Intro縦画面でもいい感じに見えるように
+CLOSED: [2018-07-18 水 01:15]
+* DONE Introの文章を楽しげに
+CLOSED: [2018-07-18 水 01:14]
+* DONE IntroのFieldの中心をいい感じに
+CLOSED: [2018-07-18 水 01:14]
 * DONE iOS:課金処理
 CLOSED: [2018-07-17 火 23:07]
 * DONE 課金したら３分遊べるように
