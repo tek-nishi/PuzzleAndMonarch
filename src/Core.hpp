@@ -26,6 +26,7 @@
 #include "Sound.hpp"
 #include "DebugTask.hpp"
 #include "Achievements.hpp"
+#include "PurchaseDelegate.h"
 
 
 namespace ngs {
@@ -107,7 +108,7 @@ public:
     holder_ += event_.connect("Purchase:begin",
                               [this](const Connection&, const Arguments&) noexcept
                               {
-                                tasks_.pushBack<Purchase>(params_, event_, drawer_, tween_common_);
+                                tasks_.pushBack<Purchase>(params_, event_, price_, drawer_, tween_common_);
                               });
     // Purchase→Title
     holder_ += event_.connect("Purchase:Finished",
@@ -221,6 +222,13 @@ public:
                               std::bind(&Core::update,
                                         this, std::placeholders::_1, std::placeholders::_2));
 
+    // ここで課金情報を取得
+    PurchaseDelegate::price("PM.PERCHASE01",
+                            [this](const std::string price)
+                            {
+                              price_ = price;
+                            });
+
     // アプリの起動回数を更新して保存
     archive_.addRecord("startup-times", uint32_t(1));
     archive_.save();
@@ -276,6 +284,9 @@ private:
 
   // 達成記録
   Achievements achievements_;
+
+  // 課金の価格
+  std::string price_;
 
   // ゲーム内記録
   Archive archive_;

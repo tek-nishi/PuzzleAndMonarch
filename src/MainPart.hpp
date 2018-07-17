@@ -865,7 +865,6 @@ public:
 #endif
 
     view_.setColor(ci::Color::white());
-
     count_exec_.add(1,
                     [this]()
                     {

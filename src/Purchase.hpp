@@ -14,7 +14,8 @@ class Purchase
 {
 
 public:
-  Purchase(const ci::JsonTree& params, Event<Arguments>& event, UI::Drawer& drawer, TweenCommon& tween_common)
+  Purchase(const ci::JsonTree& params, Event<Arguments>& event, const std::string& price,
+           UI::Drawer& drawer, TweenCommon& tween_common)
     : event_(event),
       canvas_(event, drawer, tween_common,
               params["ui.camera"],
@@ -41,6 +42,33 @@ public:
                                                });
                                DOUT << "Back to Title" << std::endl;
                              });
+
+    holder_ += event.connect("Purchase:touch_ended",
+                             [this, wipe_delay](const Connection&, const Arguments&) noexcept
+                             {
+                               canvas_.active(false);
+                               count_exec_.add(wipe_delay,
+                                               [this]() noexcept
+                                               {
+                                                 PurchaseDelegate::start("PM.PERCHASE01");
+                                                 canvas_.active(true);
+                                               });
+                             });
+    holder_ += event.connect("Restore:touch_ended",
+                             [this, wipe_delay](const Connection&, const Arguments&) noexcept
+                             {
+                               canvas_.active(false);
+                               count_exec_.add(wipe_delay,
+                                               [this]() noexcept
+                                               {
+                                                 PurchaseDelegate::restore("PM.PERCHASE01");
+                                                 canvas_.active(true);
+                                               });
+                             });
+
+
+    // 課金金額
+    canvas_.setWidgetText("price-01", price);
 
     setupCommonTweens(event_, holder_, canvas_, "agree");
     setupCommonTweens(event_, holder_, canvas_, "Purchase");

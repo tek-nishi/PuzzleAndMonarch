@@ -239,7 +239,12 @@ public:
   {
     return records_[id];
   }
-  
+
+  bool hasValue(const std::string& key) const
+  {
+    return records_.hasChild(key);
+  }
+
 
   void save()
   {

@@ -129,12 +129,6 @@ public:
                                           // controller_->event().signal("gamecenter-authenticated", EventParam());
                                         });
 
-    PurchaseDelegate::price("PM.PERCHASE01",
-                            [this](const std::string price)
-                            {
-                              console() << price << std::endl;
-                            });
-
     PurchaseDelegate::init([this]()
                            {
                            });
