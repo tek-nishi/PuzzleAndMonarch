@@ -11,6 +11,7 @@
 #include "EventSupport.hpp"
 #include "UISupport.hpp"
 #include "GameCenter.h"
+#include "PurchaseDelegate.h"
 
 
 namespace ngs {
@@ -253,6 +254,24 @@ private:
       }
     }
 
+    // 課金の値段情報ゲット!!
+    bool purchase = PurchaseDelegate::hasPrice();
+    if (purchase != has_purchase_)
+    {
+      has_purchase_ = purchase;
+      canvas_.activeWidget("Purchase", purchase);
+      if (purchase)
+      {
+        canvas_.startTween("PurchaseOn");
+        DOUT << "Purchase On" << std::endl;
+      }
+      else
+      {
+        canvas_.startTween("PurchaseOff");
+        DOUT << "Purchase Off" << std::endl;
+      }
+    }
+
     return active_;
   }
 
@@ -332,6 +351,7 @@ private:
   bool active_ = true;
 
   bool game_center_ = false;
+  bool has_purchase_ = false;
 
 #if defined (DEBUG)
   // GameCenter強制ON機能

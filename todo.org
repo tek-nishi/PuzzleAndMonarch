@@ -1,4 +1,5 @@
 * TODO Titleを「Puzzle and Monarch」にする？
+* TODO 課金したら３分遊べるように
 * TODO アプリがバックグラウンドから復帰したら課金情報を取得し直す
 * TODO 通信環境が無い場合には課金メニューへ進めないように
 * TODO GameCenter認証画面で画面更新を止める？

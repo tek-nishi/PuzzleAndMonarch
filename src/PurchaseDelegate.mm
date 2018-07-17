@@ -12,7 +12,10 @@ extern std::function<void ()> purchase_completed;
 namespace ngs { namespace PurchaseDelegate {
 
 DCInAppPurchase *inAppPurchase;
+
+// FIXME グローバル変数禁止
 std::function<void (std::string price)> price_completed;
+bool got_price = false;
 
 
 static NSString* createString(const std::string& text)
@@ -51,6 +54,11 @@ void price(const std::string& product_id, const std::function<void (const std::s
   [request start];
 }
 
+bool hasPrice()
+{
+  return got_price;
+}
+
 } }
 
 
@@ -83,11 +91,12 @@ void price(const std::string& product_id, const std::function<void (const std::s
     [numberFormatter setLocale:product.priceLocale];
 
     NSString* localizedPrice = [numberFormatter stringFromNumber:product.price];
-    NSLog(@"price : %@", localizedPrice);
+    // NSLog(@"price : %@", localizedPrice);
 
     // NSString→std::string
     std::string p = [localizedPrice UTF8String];
     ngs::PurchaseDelegate::price_completed(p);
+    ngs::PurchaseDelegate::got_price = true;
   }
 }
 

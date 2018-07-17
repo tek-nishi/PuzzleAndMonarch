@@ -369,5 +369,70 @@
         }
       ]
     }
+  ],
+
+  "PurchaseOn": [
+    {
+      "identifier": "Purchase",
+      "tween": [
+        {
+          "param": "color",
+          "type": "color",
+          "body": [
+            {
+              "duration": 0.3,
+              "end": [ 1, 1, 1, 1 ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "identifier": "Purchase:icon",
+      "tween": [
+        {
+          "param": "color",
+          "type": "color",
+          "body": [
+            {
+              "duration": 0.3,
+              "end": [ 1, 1, 1, 1 ]
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "PurchaseOff": [
+    {
+      "identifier": "Purchase",
+      "tween": [
+        {
+          "param": "color",
+          "type": "color",
+          "body": [
+            {
+              "duration": 0.3,
+              "end": [ 0.6, 0.6, 0.6, 1 ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "identifier": "Purchase:icon",
+      "tween": [
+        {
+          "param": "color",
+          "type": "color",
+          "body": [
+            {
+              "duration": 0.3,
+              "end": [ 0.6, 0.6, 0.6, 1 ]
+            }
+          ]
+        }
+      ]
+    }
   ]
 }

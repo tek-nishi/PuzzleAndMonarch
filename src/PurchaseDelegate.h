@@ -18,6 +18,7 @@ namespace ngs { namespace PurchaseDelegate {
     void restore(const std::string& product_id);
     
     void price(const std::string& product_id, const std::function<void (const std::string)>& completed);
+    bool hasPrice();
 
 #else
 
@@ -31,6 +32,8 @@ namespace ngs { namespace PurchaseDelegate {
 
     template <typename T1, typename T2>
     void price(T1, T2) {}
+    template <typename T = void>
+    bool hasPrice() { return false; }
 
 #endif
 
