@@ -39,7 +39,7 @@ public:
 
   void update(double delta_time)
   {
-    ease_rate_ += (target_ease_rate_ - ease_rate_) * (1.0 - std::pow(0.01, delta_time));
+    ease_rate_ += (target_ease_rate_ - ease_rate_) * (1.0 - std::pow(0.1, delta_time));
 
     target_position_ += (field_center_ - target_position_) * float(1 - std::pow(ease_rate_.x, delta_time * ease_rate_.y));
     distance_ += (field_distance_ - distance_) * float(1 - std::pow(ease_rate_.x, delta_time * ease_rate_.y));
@@ -68,6 +68,11 @@ public:
     field_distance_ = initial_distance_;
     
     skip_easing_ = false;
+  }
+
+  void forceCenter() noexcept
+  {
+    target_position_ = field_center_;
   }
 
 
@@ -235,9 +240,9 @@ public:
 
   void setEaseRate(const glm::dvec2 rate) noexcept
   {
-    ease_rate_.x = rate.x;
-    ease_rate_.y = rate.y;
-    target_ease_rate_ = ease_rate_;
+    target_ease_rate_.x = rate.x;
+    target_ease_rate_.y = rate.y;
+    ease_rate_ = target_ease_rate_;
   }
 
   void restoreEaseRate() noexcept

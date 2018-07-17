@@ -1,5 +1,6 @@
 * TODO Titleを「Puzzle and Monarch」にする？
-* TODO 課金したら３分遊べるように
+* TODO 課金したらタイトルの演出を派手にしたい
+* TODO iOS:課金復元処理の時に画面が停止しない
 * TODO GameCenter認証画面で画面更新を止める？
 * TODO Introの文章を楽しげに
 * TODO IntroのFieldの中心をいい感じに
@@ -17,7 +18,10 @@
 * TODO iOS:AppStore提出に必要な書類や素材
 * TODO iOS:実績のアイコンを用意
 * TODO iOS:サポートサイト用意(特定商取引に関する表示)
-* TODO iOS:課金処理
+* DONE iOS:課金処理
+CLOSED: [2018-07-17 火 23:07]
+* DONE 課金したら３分遊べるように
+CLOSED: [2018-07-17 火 23:07]
 * DONE アプリがバックグラウンドから復帰したら課金情報を取得し直す
 CLOSED: [2018-07-17 火 22:25]
 * DONE 通信環境が無い場合には課金メニューへ進めないように

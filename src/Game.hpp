@@ -452,7 +452,7 @@ struct Game
   }
 
   // NOTE pathはfull path
-  void load(const ci::fs::path& path)
+  void load(const ci::fs::path& path, double delay = 0.0)
   {
 #if defined (DEBUG)
     game_path = path.string();
@@ -506,7 +506,7 @@ struct Game
     panel_moved_times_  = json.getValueForKey<u_int>("panel_moved_times");
 
     auto panels = field.enumeratePanels();
-    double at_time       = params_.getValueForKey<double>("replay.delay");
+    double at_time       = params_.getValueForKey<double>("replay.delay") + delay;
     double interval_time = params_.getValueForKey<double>("replay.interval");
     for (const auto& status : panels)
     {

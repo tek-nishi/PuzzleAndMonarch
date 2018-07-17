@@ -272,6 +272,9 @@ public:
     holder_ += event_.connect("Intro:begin",
                               [this](const Connection&, const Arguments&) noexcept
                               {
+                                // 演出用Field
+                                loadIntroField(params_.getValueForKey<double>("intro.field_delay"));
+
                                 // カメラをジワーッと寄せる
                                 prohibited_ = true;
                                 field_camera_.setCurrentDistance(params_.getValueForKey<float>("intro.distance"));
@@ -866,11 +869,6 @@ public:
 #endif
 
     view_.setColor(ci::Color::white());
-    count_exec_.add(1,
-                    [this]()
-                    {
-                      loadIntroField();
-                    });
   }
 
 
@@ -1355,9 +1353,12 @@ private:
   }
 
   // Intro時のゲームを読み込む
-  void loadIntroField()
+  void loadIntroField(double delay)
   {
-    game_->load(getAssetPath("intro.json"));
+    game_->load(getAssetPath("intro.json"), delay);
+    field_camera_.force(true);
+    calcViewRange(false);
+    field_camera_.forceCenter();
   }
 
 
