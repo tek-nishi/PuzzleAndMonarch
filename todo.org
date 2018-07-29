@@ -1,6 +1,4 @@
 * TODO Titleを「Puzzle and Monarch」にする？
-* TODO プレイ記録のはじめの10枚くらいを再現してみる
-* TODO タイトル画面でのっけからAutoRotateをONに
 * TODO 課金したらタイトルの演出を派手にしたい
 * TODO iOS:課金復元処理の時に画面が停止しない
 * TODO iOS:未ログイン時に課金処理へ移行すると何度もサインインを求められる
@@ -18,6 +16,8 @@
 * TODO iOS:AppStore提出に必要な書類や素材
 * TODO iOS:実績のアイコンを用意
 * TODO iOS:サポートサイト用意(特定商取引に関する表示)
+* DONE タイトル画面でのっけからAutoRotateをONに
+CLOSED: [2018-07-29 日 15:20]
 * DONE Intro縦画面でもいい感じに見えるように
 CLOSED: [2018-07-18 水 01:15]
 * DONE Introの文章を楽しげに
@@ -702,6 +702,8 @@ CLOSED: [2018-01-09 火 16:27]
 CLOSED: [2018-01-09 Tue 00:32]
 * DONE iOS:縦画面→非アクティブ→横画面→アクティブ→画面乱れる
 CLOSED: [2018-03-17 土 17:19]
+* ABORT プレイ記録のはじめの10枚くらいを再現してみる
+CLOSED: [2018-07-29 日 15:29]
 * ABORT GameCenterのアイコンに進捗度を入れられないか
 CLOSED: [2018-07-08 日 14:13]
 * ABORT iOS:モノラル再生で音量が小さくなる

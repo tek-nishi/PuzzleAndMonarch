@@ -52,6 +52,16 @@ public:
                              });
 
     // 動作開始のきっかけ
+    holder_ += event.connect("Title:begin",
+                             [this](const Connection&, Arguments&) noexcept
+                             {
+                               if (!active_)
+                               {
+                                 delay_         = 3;
+                                 active_        = true;
+                                 current_speed_ = 0.0;
+                               }
+                             });
     holder_ += event.connect("Title:finished",
                              [this](const Connection&, Arguments&) noexcept
                              {
