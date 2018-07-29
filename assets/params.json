@@ -12,7 +12,8 @@
       [ "t", "debug-score-test" ],
       [ "b", "debug-disp-clouds" ],
       [ "g", "debug-gamecenter" ],
-      [ "e", "debug-effect" ]
+      [ "e", "debug-effect" ],
+      [ "p", "debug-purchase" ]
     ],
 
     "app_size": [

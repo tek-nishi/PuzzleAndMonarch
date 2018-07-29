@@ -284,7 +284,7 @@ private:
   void startTitle(bool first_time)
   {
     tasks_.pushBack<Title>(params_, event_, drawer_, tween_common_,
-                           first_time, archive_.isSaved(), archive_.existsRanking());
+                           first_time, archive_.isSaved(), archive_.existsRanking(), archive_.getValue("PM-PERCHASE01", false));
   }
 
 

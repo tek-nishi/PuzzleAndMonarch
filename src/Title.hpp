@@ -22,7 +22,7 @@ class Title
 
 public:
   Title(const ci::JsonTree& params, Event<Arguments>& event, UI::Drawer& drawer, TweenCommon& tween_common,
-        bool first_time, bool saved, bool ranking) noexcept
+        bool first_time, bool saved, bool ranking, bool purchased) noexcept
     : event_(event),
       canvas_(event, drawer, tween_common,
               params["ui.camera"],
@@ -195,6 +195,10 @@ public:
     {
       // Rankingに記録がない場合もボタンを消す
       canvas_.enableWidget("Ranking", false);
+    }
+    if (purchased)
+    {
+      canvas_.enableWidget("purchased");
     }
 
 #if defined (CINDER_COCOA_TOUCH)
