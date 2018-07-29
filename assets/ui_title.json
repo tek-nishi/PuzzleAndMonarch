@@ -58,6 +58,19 @@
     },
 
     {
+      "identifier": "purchased",
+
+      "rect": [ 0, -18, 0, -5 ],
+      "anchor": [
+        [ 0.5, 0.75 ],
+        [ 0.5, 0.75 ]
+      ],
+
+      "font": "en",
+      "text": "Thank you for your support!!"
+    },
+
+    {
       "identifier": "play",
       "rect": [ -20, -20, 20, 20 ],
       "anchor": [
