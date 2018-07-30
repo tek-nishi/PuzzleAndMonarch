@@ -51,6 +51,10 @@ public:
                                                [this]() noexcept
                                                {
                                                  PurchaseDelegate::start("PM.PERCHASE01");
+                                               });
+                               count_exec_.add(wipe_delay + 0.5,
+                                               [this]() noexcept
+                                               {
                                                  canvas_.active(true);
                                                });
                              });
@@ -62,6 +66,10 @@ public:
                                                [this]() noexcept
                                                {
                                                  PurchaseDelegate::restore("PM.PERCHASE01");
+                                               });
+                               count_exec_.add(wipe_delay + 0.5,
+                                               [this]() noexcept
+                                               {
                                                  canvas_.active(true);
                                                });
                              });

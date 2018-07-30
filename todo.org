@@ -1,7 +1,5 @@
 * TODO Titleを「Puzzle and Monarch」にする？
-* TODO iOS:課金復元処理の時に画面が停止しない
 * TODO iOS:未ログイン時に課金処理へ移行すると何度もサインインを求められる
-* TODO GameCenter認証画面で画面更新を止める？
 * TODO 結果画面の道の数とか見たい
 * TODO Introのデータの確定
 * TODO 道と森の最大数について実際にパネルを使ってシミュレーションする
@@ -14,6 +12,10 @@
 * TODO iOS:AppStore提出に必要な書類や素材
 * TODO iOS:実績のアイコンを用意
 * WAIT iOS:サポートサイト用意(特定商取引に関する表示)
+* DONE GameCenter認証画面で画面更新を止める？
+CLOSED: [2018-07-30 月 21:51]
+* DONE iOS:課金復元処理の時に画面が停止しない
+CLOSED: [2018-07-30 月 21:48]
 * DONE 中断時に手持ちパネルがパッと消えるのがみっともない
 CLOSED: [2018-07-30 月 19:27]
 * DONE Releaseビルド時にintro.jsonをassetsから取り除く

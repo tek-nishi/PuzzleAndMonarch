@@ -105,6 +105,36 @@ public:
                                  delay_         = 3;
                                }
                              });
+    holder_ += event.connect("Purchase:touch_ended",
+                             [this](const Connection&, Arguments&) noexcept
+                             {
+                               // 課金
+                               if (active_)
+                               {
+                                 delay_         = 3;
+                                 current_speed_ = 0.0;
+                               }
+                             });
+    holder_ += event.connect("Restore:touch_ended",
+                             [this](const Connection&, Arguments&) noexcept
+                             {
+                               // 課金復元
+                               if (active_)
+                               {
+                                 delay_         = 3;
+                                 current_speed_ = 0.0;
+                               }
+                             });
+    holder_ += event.connect("game_center:touch_ended",
+                             [this](const Connection&, Arguments&) noexcept
+                             {
+                               // GameCenter 
+                               if (active_)
+                               {
+                                 delay_         = 3;
+                                 current_speed_ = 0.0;
+                               }
+                             });
 
   }
 
