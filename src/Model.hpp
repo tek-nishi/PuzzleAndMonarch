@@ -36,6 +36,12 @@ void writeTriMesh(const std::string& path, const ci::TriMesh& mesh)
 // FIXME Releaseビルドでは.meshのみ読む
 ci::TriMesh load(const std::string& path)
 {
+#if !defined (DEBUG)
+  auto p = ci::fs::path(path);
+  auto mesh_path = p.replace_extension("mesh");
+  auto full_path = getAssetPath(mesh_path.string());
+  return loadTriMesh(full_path.string());
+#else
   auto full_path = getAssetPath(path);
   auto mesh_path = full_path.replace_extension("mesh");
   if (ci::fs::is_regular_file(mesh_path))
@@ -44,6 +50,7 @@ ci::TriMesh load(const std::string& path)
   }
 
   return PLY::load(path);
+#endif
 }
 
 } }

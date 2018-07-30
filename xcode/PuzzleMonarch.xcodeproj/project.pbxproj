@@ -168,8 +168,9 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = C01FCF4A08A954540054247B /* Build configuration list for PBXNativeTarget "PuzzleMonarch" */;
 			buildPhases = (
-				47979CB6210EB03000F54AA1 /* Run Script */,
+				47979CB7210ED75E00F54AA1 /* Run Script */,
 				8D1107290486CEB800E47090 /* Resources */,
+				47979CB8210EDCB200F54AA1 /* ShellScript */,
 				8D11072C0486CEB800E47090 /* Sources */,
 				8D11072E0486CEB800E47090 /* Frameworks */,
 			);
@@ -222,7 +223,7 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
-		47979CB6210EB03000F54AA1 /* Run Script */ = {
+		47979CB7210ED75E00F54AA1 /* Run Script */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -234,7 +235,20 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = /Users/nishi/src/CinderProjects/PuzzleMonarch/tools/convert.sh;
+			shellScript = "if [ \"${CONFIGURATION}\" = \"Release\" ]; then\n    /Users/nishi/src/CinderProjects/PuzzleMonarch/tools/prebuild.sh\nfi";
+		};
+		47979CB8210EDCB200F54AA1 /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "if [ \"${CONFIGURATION}\" = \"Release\" ]; then\n    /Users/nishi/src/CinderProjects/PuzzleMonarch/tools/postbuild.sh\nfi";
 		};
 /* End PBXShellScriptBuildPhase section */
 

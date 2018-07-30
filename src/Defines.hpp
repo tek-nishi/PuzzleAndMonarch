@@ -25,14 +25,17 @@
 #define PREPRO_TO_STR(value) PREPRO_STR(value)
 #define PREPRO_STR(value)    #value
 
+#if !defined (DEBUG)
 // セーブファイルの難読化
-// #define OBFUSCATION_ARCHIVE
+#define OBFUSCATION_ARCHIVE
 // ゲーム記録の難読化
-// #define OBFUSCATION_GAME_RECORD
+#define OBFUSCATION_GAME_RECORD
+//不要な記録は削除
+#define REMOVE_UNNECESSARY_RECORD
+#endif
+
 // 実績キャッシュの難読化
 // #define OBFUSCATION_ACHIEVEMENT
-//不要な記録は削除
-// #define REMOVE_UNNECESSARY_RECORD
 
 #if defined(CINDER_COCOA_TOUCH)
 
