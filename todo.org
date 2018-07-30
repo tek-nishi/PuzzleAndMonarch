@@ -1,5 +1,4 @@
 * TODO Titleを「Puzzle and Monarch」にする？
-* TODO 中断時に手持ちパネルがパッと消えるのがみっともない
 * TODO iOS:課金復元処理の時に画面が停止しない
 * TODO iOS:未ログイン時に課金処理へ移行すると何度もサインインを求められる
 * TODO GameCenter認証画面で画面更新を止める？
@@ -15,6 +14,8 @@
 * TODO iOS:AppStore提出に必要な書類や素材
 * TODO iOS:実績のアイコンを用意
 * WAIT iOS:サポートサイト用意(特定商取引に関する表示)
+* DONE 中断時に手持ちパネルがパッと消えるのがみっともない
+CLOSED: [2018-07-30 月 19:27]
 * DONE Releaseビルド時にintro.jsonをassetsから取り除く
 CLOSED: [2018-07-30 月 15:20]
 * DONE Releaseビルド時にplyファイルをassetsから取り除く

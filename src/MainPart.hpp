@@ -930,6 +930,7 @@ private:
 
         if (put_remaining_ < 0.0)
         {
+          // パネル設置
           game_->putHandPanel(field_pos_);
           event_.signal("Game:PutEnd", Arguments());
           game_event_.insert("Panel:put");

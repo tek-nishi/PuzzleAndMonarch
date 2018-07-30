@@ -506,6 +506,8 @@ public:
   // パネル位置決め
   void setPanelPosition(const glm::vec3& pos) noexcept
   {
+    panel_disp_ = true;
+
     panel_disp_pos_.stop();
     panel_disp_pos_ = pos;
   }
@@ -513,7 +515,6 @@ public:
   // パネル移動
   void startMovePanelEase(const glm::vec3& target_pos, float rate) noexcept
   {
-    // panel_disp_pos_.stop();
     auto duration = glm::mix(disp_ease_duration_.x, disp_ease_duration_.y, rate);
     timeline_->apply(&panel_disp_pos_, target_pos, duration, getEaseFunc(disp_ease_name_));
   }
@@ -521,7 +522,6 @@ public:
   // パネル回転
   void startRotatePanelEase(float rate) noexcept
   {
-    // rotate_offset_.stop();
     rotate_offset_ = 90.0f;
     auto duration = glm::mix(rotate_ease_duration_.x, rotate_ease_duration_.y, rate);
     timeline_->apply(&rotate_offset_, 0.0f, duration, getEaseFunc(rotate_ease_name_));
@@ -556,6 +556,20 @@ public:
 
     height_offset_ = height_ease_start_;
     timeline_->apply(&height_offset_, 0.0f, height_ease_duration_, getEaseFunc(height_ease_name_));
+  }
+
+  // ゲーム中断時の演出
+  void abortNextPanelEase() noexcept
+  {
+    if (!panel_disp_) return;
+
+    auto option = timeline_->apply(&height_offset_, height_ease_start_, height_ease_duration_, getEaseFunc("InQuint"));
+    option.finishFn([this]()
+                    {
+                      rotate_offset_.stop();
+                      rotate_offset_ = 0.0f;
+                      panel_disp_ = false;
+                    });
   }
 
   // Blankをタッチした時の演出
@@ -678,6 +692,8 @@ public:
   // ゲーム終了
   void endPlay() noexcept
   {
+    abortNextPanelEase();
+
     for (auto& panel : blank_panels_)
     {
       // Blank Panel消滅演出
@@ -997,7 +1013,7 @@ private:
     drawFieldPanelShadow();
     drawFieldBlankShadow();
 
-    if (info.playing)
+    if (panel_disp_)
     {
       // 手持ちパネル
       auto pos = panel_disp_pos_() + glm::vec3(0, height_offset_, 0);
@@ -1038,7 +1054,7 @@ private:
     drawFieldPanels();
     drawFieldBlank();
 
-    if (info.playing)
+    if (panel_disp_)
     {
       field_shader_->uniform("uDiffusePower", 1.0f);
 
@@ -1046,17 +1062,20 @@ private:
       auto pos = panel_disp_pos_() + glm::vec3(0, height_offset_, 0);
       drawPanel(info.panel_index, pos, info.panel_rotation, rotate_offset_);
 
-      // 選択箇所
-      float s = std::abs(std::sin(put_gauge_timer_ * 6.0)) * 0.1;
-      glm::vec3 scale(0.9 + s, 1, 0.9 + s);
-      drawFieldSelected(info.field_pos, scale);
-
-      // 「置けますよ」アピール
-      if (info.can_put)
+      if (info.playing)
       {
-        scale.x = 1.0 + s;
-        scale.z = 1.0 + s;
-        drawCursor(pos, scale);
+        // 選択箇所
+        float s = std::abs(std::sin(put_gauge_timer_ * 6.0)) * 0.1;
+        glm::vec3 scale(0.9 + s, 1, 0.9 + s);
+        drawFieldSelected(info.field_pos, scale);
+
+        // 「置けますよ」アピール
+        if (info.can_put)
+        {
+          scale.x = 1.0 + s;
+          scale.z = 1.0 + s;
+          drawCursor(pos, scale);
+        }
       }
     }
 
@@ -1410,6 +1429,7 @@ private:
   std::string pause_ease_;
 
   // パネル位置
+  bool panel_disp_ = false;
   ci::Anim<glm::vec3> panel_disp_pos_;
   glm::vec2 disp_ease_duration_;
   std::string disp_ease_name_;
