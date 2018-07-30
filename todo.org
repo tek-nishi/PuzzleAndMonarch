@@ -1,5 +1,4 @@
 * TODO Titleを「Puzzle and Monarch」にする？
-* TODO iOS:強制課金
 * TODO iOS:課金復元処理の時に画面が停止しない
 * TODO iOS:未ログイン時に課金処理へ移行すると何度もサインインを求められる
 * TODO GameCenter認証画面で画面更新を止める？
@@ -17,6 +16,8 @@
 * TODO iOS:AppStore提出に必要な書類や素材
 * TODO iOS:実績のアイコンを用意
 * TODO iOS:サポートサイト用意(特定商取引に関する表示)
+* DONE iOS:強制課金
+CLOSED: [2018-07-30 月 10:37]
 * DONE 課金したらタイトルの演出を派手にしたい
 CLOSED: [2018-07-29 日 16:58]
 * DONE タイトル画面でのっけからAutoRotateをONに

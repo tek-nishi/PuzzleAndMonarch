@@ -256,7 +256,7 @@
 					"\"$(CINDER_PATH)/lib/macosx/libboost_system.a\"",
 					"-lz",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = "org.libcinder.${PRODUCT_NAME:rfc1034identifier}";
+				PRODUCT_BUNDLE_IDENTIFIER = com.ngs.PuzzleMonarch;
 				PRODUCT_NAME = PuzzleMonarch;
 				WRAPPER_EXTENSION = app;
 			};
@@ -284,7 +284,7 @@
 					"\"$(CINDER_PATH)/lib/macosx/libboost_system.a\"",
 					"-lz",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = "org.libcinder.${PRODUCT_NAME:rfc1034identifier}";
+				PRODUCT_BUNDLE_IDENTIFIER = com.ngs.PuzzleMonarch;
 				PRODUCT_NAME = PuzzleMonarch;
 				STRIP_INSTALLED_PRODUCT = YES;
 				WRAPPER_EXTENSION = app;
