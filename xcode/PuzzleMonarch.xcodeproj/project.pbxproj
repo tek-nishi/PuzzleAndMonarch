@@ -15,6 +15,8 @@
 		43498AFBC90B40CEABDC634D /* MyApp.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 82A083D7206440548816D769 /* MyApp.cpp */; };
 		47559FD12003441100833AB0 /* Framework.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 47559FD02003441000833AB0 /* Framework.cpp */; };
 		476F8B9A200329D400A394F0 /* assets in Resources */ = {isa = PBXBuildFile; fileRef = 476F8B99200329D400A394F0 /* assets */; };
+		47979CBE210F4AE400F54AA1 /* Localize.mm in Sources */ = {isa = PBXBuildFile; fileRef = 47979CBD210F4AE400F54AA1 /* Localize.mm */; };
+		47979CC1210F5EAF00F54AA1 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 47979CC3210F5EAF00F54AA1 /* Localizable.strings */; };
 		47A6E5542045C3D800AC0CA3 /* TextCodec.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 47A6E5532045C3D800AC0CA3 /* TextCodec.cpp */; };
 		47A6E5572045C58200AC0CA3 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1058C7A1FEA54F0111CA2CBB /* Cocoa.framework */; };
 		47E3D93D203F2CDF00275D6D /* CoreVideo.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5323E6B10EAFCA74003A9687 /* CoreVideo.framework */; };
@@ -40,6 +42,9 @@
 		37ED1BFD95724281A4782197 /* PuzzleMonarch_Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PuzzleMonarch_Prefix.pch; sourceTree = "<group>"; };
 		47559FD02003441000833AB0 /* Framework.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Framework.cpp; path = ../src/Framework.cpp; sourceTree = "<group>"; };
 		476F8B99200329D400A394F0 /* assets */ = {isa = PBXFileReference; lastKnownFileType = folder; name = assets; path = ../assets; sourceTree = "<group>"; };
+		47979CBD210F4AE400F54AA1 /* Localize.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = Localize.mm; path = ../src/Localize.mm; sourceTree = "<group>"; };
+		47979CC2210F5EAF00F54AA1 /* en */ = {isa = PBXFileReference; fileEncoding = 10; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Localizable.strings; sourceTree = "<group>"; };
+		47979CC4210F5EB200F54AA1 /* ja */ = {isa = PBXFileReference; fileEncoding = 10; lastKnownFileType = text.plist.strings; name = ja; path = ja.lproj/Localizable.strings; sourceTree = "<group>"; };
 		47A6E5532045C3D800AC0CA3 /* TextCodec.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = TextCodec.cpp; path = ../src/TextCodec.cpp; sourceTree = "<group>"; };
 		5323E6B10EAFCA74003A9687 /* CoreVideo.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreVideo.framework; path = /System/Library/Frameworks/CoreVideo.framework; sourceTree = "<absolute>"; };
 		82A083D7206440548816D769 /* MyApp.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = MyApp.cpp; path = ../src/MyApp.cpp; sourceTree = "<group>"; };
@@ -81,6 +86,7 @@
 				47A6E5532045C3D800AC0CA3 /* TextCodec.cpp */,
 				47559FD02003441000833AB0 /* Framework.cpp */,
 				82A083D7206440548816D769 /* MyApp.cpp */,
+				47979CBD210F4AE400F54AA1 /* Localize.mm */,
 			);
 			name = Source;
 			sourceTree = "<group>";
@@ -148,6 +154,7 @@
 				476F8B99200329D400A394F0 /* assets */,
 				89197F6F9146454BA89F6920 /* AppIcon.icns */,
 				25C101A44F8D496FB5CB84D7 /* Info.plist */,
+				47979CC3210F5EAF00F54AA1 /* Localizable.strings */,
 			);
 			name = Resources;
 			sourceTree = "<group>";
@@ -200,6 +207,7 @@
 				Japanese,
 				French,
 				German,
+				ja,
 			);
 			mainGroup = 29B97314FDCFA39411CA2CEA /* ApprenticeMonarch */;
 			projectDirPath = "";
@@ -216,6 +224,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				DEF6DCA10C6640E1A34580DD /* AppIcon.icns in Resources */,
+				47979CC1210F5EAF00F54AA1 /* Localizable.strings in Resources */,
 				476F8B9A200329D400A394F0 /* assets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -259,11 +268,25 @@
 			files = (
 				47559FD12003441100833AB0 /* Framework.cpp in Sources */,
 				43498AFBC90B40CEABDC634D /* MyApp.cpp in Sources */,
+				47979CBE210F4AE400F54AA1 /* Localize.mm in Sources */,
 				47A6E5542045C3D800AC0CA3 /* TextCodec.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXSourcesBuildPhase section */
+
+/* Begin PBXVariantGroup section */
+		47979CC3210F5EAF00F54AA1 /* Localizable.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				47979CC2210F5EAF00F54AA1 /* en */,
+				47979CC4210F5EB200F54AA1 /* ja */,
+			);
+			name = Localizable.strings;
+			path = ../resources;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
 
 /* Begin XCBuildConfiguration section */
 		C01FCF4B08A954540054247B /* Debug */ = {

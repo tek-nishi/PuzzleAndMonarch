@@ -5,6 +5,7 @@
 //
 
 #include "UIWidgetBase.hpp"
+#include "Localize.h"
 #include <glm/gtx/transform.hpp>
 
 
@@ -27,8 +28,8 @@ class Text
 
 public:
   Text(const ci::JsonTree& params) noexcept
-    : text_(params.getValueForKey<std::string>("text")),
-      font_name_(params.getValueForKey<std::string>("font")),
+    : text_(Localize::get(params.getValueForKey<std::string>("text"))),
+      font_name_(Localize::get(params.getValueForKey<std::string>("font"))),
       initial_text_(text_)
   {
     layout_         = Json::getVec(params, "layout", glm::vec2(0.5));
