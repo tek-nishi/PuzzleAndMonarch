@@ -283,6 +283,13 @@ public:
   }
 
 
+  // FIXME 特殊化処理を抽象的にするには？
+  static bool isPurchased(const Archive& archive)
+  {
+    return Json::getValue(archive.records_, "PM-PERCHASE01", false);
+  }
+
+
 private:
   std::string version_;
 
