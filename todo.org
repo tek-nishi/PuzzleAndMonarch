@@ -14,7 +14,7 @@
 * TODO iOS:処理の思い箇所を探して修正
 * TODO iOS:AppStore提出に必要な書類や素材
 * TODO iOS:実績のアイコンを用意
-* TODO iOS:サポートサイト用意(特定商取引に関する表示)
+* WAIT iOS:サポートサイト用意(特定商取引に関する表示)
 * DONE Releaseビルド時にintro.jsonをassetsから取り除く
 CLOSED: [2018-07-30 月 15:20]
 * DONE Releaseビルド時にplyファイルをassetsから取り除く
