@@ -192,7 +192,9 @@
 			buildPhases = (
 				00692BCB14FF149000D0A05E /* Sources */,
 				00692BCC14FF149000D0A05E /* Frameworks */,
+				47979CB9210EE69200F54AA1 /* ShellScript */,
 				00692BCD14FF149000D0A05E /* Resources */,
+				47979CBA210EE6B200F54AA1 /* ShellScript */,
 			);
 			buildRules = (
 			);
@@ -258,6 +260,35 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		47979CB9210EE69200F54AA1 /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "if [ \"${CONFIGURATION}\" = \"Release\" ]; then\n/Users/nishi/src/CinderProjects/PuzzleMonarch/tools/prebuild.sh\nfi";
+		};
+		47979CBA210EE6B200F54AA1 /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "if [ \"${CONFIGURATION}\" = \"Release\" ]; then\n/Users/nishi/src/CinderProjects/PuzzleMonarch/tools/postbuild.sh\nfi";
+		};
+/* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		00692BCB14FF149000D0A05E /* Sources */ = {
