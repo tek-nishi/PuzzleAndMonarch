@@ -123,7 +123,7 @@
           ],
 
           "font": "jp",
-          "text": "記録を消去"
+          "text": "Settings01"
         },
         {
           "identifier": "Trash",
@@ -167,7 +167,7 @@
           "enable": false,
 
           "font": "jp",
-          "text": "記録を消去しました"
+          "text": "Settings02"
         },
 
         {
@@ -220,7 +220,7 @@
             [ 0.5, 0.45 ]
           ],
           "font": "jp",
-          "text": "プレイ記録を消去します。"
+          "text": "Settings03"
         },
         {
           "rect": [ 0, 30, 0, 42 ],
@@ -229,7 +229,7 @@
             [ 0.5, 0.45 ]
           ],
           "font": "jp",
-          "text": "あなたのこれまでのプレイ記録をすべて消去して"
+          "text": "Settings04"
         },
         {
           "rect": [ 0, 18, 0, 30 ],
@@ -238,7 +238,7 @@
             [ 0.5, 0.45 ]
           ],
           "font": "jp",
-          "text": "まっさらな状態に戻します。"
+          "text": "Settings05"
         },
         {
           "rect": [ 0, 25, 0, 38 ],
@@ -248,7 +248,7 @@
           ],
 
           "font": "jp",
-          "text": "記録を消去する"
+          "text": "Settings06"
         },
         {
           "identifier": "erase-record",
@@ -290,7 +290,7 @@
           ],
 
           "font": "jp",
-          "text": "やめる"
+          "text": "Settings07"
         },
         {
           "identifier": "back",
