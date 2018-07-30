@@ -186,7 +186,12 @@ public:
     setupCommonTweens(event_, holder_, canvas_, "purchase");
     setupCommonTweens(event_, holder_, canvas_, "play");
 
-    if (!saved)
+    if (saved)
+    {
+      // NOTICE 課金は１回でもプレイしてくれた人が対象
+      canvas_.enableWidget("Purchase");
+    }
+    else 
     {
       // Saveデータがない場合関連するボタンを消す
       canvas_.enableWidget("Records", false);
@@ -204,10 +209,6 @@ public:
 #if defined (CINDER_COCOA_TOUCH)
     // GameCenter
     canvas_.enableWidget("GameCenter");
-    if (saved)
-    {
-      canvas_.enableWidget("Purchase");
-    }
 #endif
 
     layoutIcons(params);

@@ -263,8 +263,20 @@ public:
       event_.signal("Settings:Changed", args);
     }
 
-#if defined (DEBUG) && !defined (CINDER_COCOA_TOUCH)
+#if defined (DEBUG)
+    // 課金ON/OFF
+    holder_ += event.connect("debug-purchase",
+                             [this](const Connection&, const Arguments&) noexcept
+                             {
+                               bool purchased = Archive::isPurchased(archive_);
+                               archive_.setRecord("PM-PERCHASE01", !purchased);
+                               DOUT << "debug-purchased: " << purchased << std::endl;
+                             });
+
+#if !defined (CINDER_COCOA_TOUCH)
     tasks_.pushBack<DebugTask>(params_, event_, drawer_);
+#endif
+
 #endif
   }
 
