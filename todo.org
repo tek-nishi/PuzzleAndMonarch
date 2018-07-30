@@ -12,7 +12,8 @@
 * TODO SE作る
 * WAIT カルカソンヌ公式に許可を取る
 * TODO iOS:処理の思い箇所を探して修正
-* TODO iOS:課金処理の記録を隠したい
+* TODO Releaseビルド時にplyファイルをassetsから取り除く
+* TODO Releaseビルド時にparam.jsonとintro.jsonをassetsから取り除く
 * TODO iOS:AppStore提出に必要な書類や素材
 * TODO iOS:実績のアイコンを用意
 * TODO iOS:サポートサイト用意(特定商取引に関する表示)
@@ -706,6 +707,8 @@ CLOSED: [2018-01-09 火 16:27]
 CLOSED: [2018-01-09 Tue 00:32]
 * DONE iOS:縦画面→非アクティブ→横画面→アクティブ→画面乱れる
 CLOSED: [2018-03-17 土 17:19]
+* ABORT iOS:課金処理の記録を隠したい
+CLOSED: [2018-07-30 月 11:17]
 * ABORT プレイ記録のはじめの10枚くらいを再現してみる
 CLOSED: [2018-07-29 日 15:29]
 * ABORT GameCenterのアイコンに進捗度を入れられないか

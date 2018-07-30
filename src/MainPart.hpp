@@ -1355,7 +1355,14 @@ private:
   // Intro時のゲームを読み込む
   void loadIntroField(double delay)
   {
-    game_->load(getAssetPath("intro.json"), delay);
+    // 難読化の場合はPATHが違う
+#if defined (OBFUSCATION_GAME_RECORD)
+    static const char* INTRO_PATH = "intro.data";
+#else
+    static const char* INTRO_PATH = "intro.json";
+#endif
+
+    game_->load(getAssetPath(INTRO_PATH), delay);
     field_camera_.force(true);
     calcViewRange(false);
     field_camera_.forceCenter();
