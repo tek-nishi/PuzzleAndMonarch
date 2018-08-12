@@ -18,6 +18,7 @@
 		472CB8DD20FD9711007481E6 /* PurchaseDelegate.mm in Sources */ = {isa = PBXBuildFile; fileRef = 472CB8DB20FD9711007481E6 /* PurchaseDelegate.mm */; };
 		472CB8DF20FD9723007481E6 /* StoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 472CB8DE20FD9723007481E6 /* StoreKit.framework */; };
 		4738A3D320693EEC00B590F3 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 4738A3D520693EEC00B590F3 /* InfoPlist.strings */; };
+		4794916221201D9E0043F15B /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 4794916021201D9E0043F15B /* Localizable.strings */; };
 		47979CBC210F4AA400F54AA1 /* Localize.mm in Sources */ = {isa = PBXBuildFile; fileRef = 47979CBB210F4AA400F54AA1 /* Localize.mm */; };
 		47A6E5562045C4C200AC0CA3 /* TextCodec.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 47A6E5552045C4C200AC0CA3 /* TextCodec.cpp */; };
 		47E3D938203F20CD00275D6D /* AudioSession.mm in Sources */ = {isa = PBXBuildFile; fileRef = 47E3D937203F20CD00275D6D /* AudioSession.mm */; };
@@ -55,6 +56,8 @@
 		472CB8DE20FD9723007481E6 /* StoreKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = StoreKit.framework; path = System/Library/Frameworks/StoreKit.framework; sourceTree = SDKROOT; };
 		4738A3D420693EEC00B590F3 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		4738A3D620693F0300B590F3 /* ja */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ja; path = ja.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		4794916121201D9E0043F15B /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = ../resources/en.lproj/Localizable.strings; sourceTree = "<group>"; };
+		4794916321201DA90043F15B /* ja */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ja; path = ../resources/ja.lproj/Localizable.strings; sourceTree = "<group>"; };
 		47979CBB210F4AA400F54AA1 /* Localize.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = Localize.mm; path = ../src/Localize.mm; sourceTree = "<group>"; };
 		47A6E5552045C4C200AC0CA3 /* TextCodec.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = TextCodec.cpp; path = ../src/TextCodec.cpp; sourceTree = "<group>"; };
 		47E3D937203F20CD00275D6D /* AudioSession.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = AudioSession.mm; path = ../src/AudioSession.mm; sourceTree = "<group>"; };
@@ -161,6 +164,7 @@
 		00692BD914FF149000D0FFFF /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				4794916021201D9E0043F15B /* Localizable.strings */,
 				00748057165D41390024B57A /* assets */,
 				D9BFC250AE1146EB97135C4B /* Images.xcassets */,
 				257B6E3315A4490FA0602ED1 /* LaunchScreen.xib */,
@@ -255,6 +259,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				4794916221201D9E0043F15B /* Localizable.strings in Resources */,
 				00748058165D41390024B57A /* assets in Resources */,
 				8FA538F2FD744747970E9EF1 /* Images.xcassets in Resources */,
 				4A87E5FC4BF545F684E4E5FE /* LaunchScreen.xib in Resources */,
@@ -321,6 +326,15 @@
 				4738A3D620693F0300B590F3 /* ja */,
 			);
 			name = InfoPlist.strings;
+			sourceTree = "<group>";
+		};
+		4794916021201D9E0043F15B /* Localizable.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				4794916121201D9E0043F15B /* en */,
+				4794916321201DA90043F15B /* ja */,
+			);
+			name = Localizable.strings;
 			sourceTree = "<group>";
 		};
 /* End PBXVariantGroup section */
