@@ -652,7 +652,7 @@
               "pivot": [ 1, 0.5 ],
 
               "font": "jp",
-              "text": "森:",
+              "text": "Ranking01",
               "layout": [ 1, 0 ]
             },
             {
@@ -664,7 +664,7 @@
               "pivot": [ 1, 0.5 ],
 
               "font": "jp",
-              "text": "道:",
+              "text": "Ranking02",
               "layout": [ 1, 0 ]
             },
             {
@@ -676,7 +676,7 @@
               "pivot": [ 1, 0.5 ],
 
               "font": "jp",
-              "text": "街:",
+              "text": "Ranking03",
               "layout": [ 1, 0 ]
             },
             {
@@ -688,7 +688,7 @@
               "pivot": [ 1, 0.5 ],
 
               "font": "jp",
-              "text": "教会:",
+              "text": "Ranking04",
               "layout": [ 1, 0 ]
             },
             {
@@ -700,7 +700,7 @@
               "pivot": [ 1, 0.5 ],
 
               "font": "jp",
-              "text": "置いた数:",
+              "text": "Ranking05",
               "layout": [ 1, 0 ]
             },
             {

@@ -34,7 +34,7 @@
           ],
 
           "font": "jp",
-          "text": "プレイ回数:",
+          "text": "Records01",
           "layout": [ 1, 0 ]
         },
         {
@@ -45,7 +45,7 @@
           ],
 
           "font": "jp",
-          "text": "パネル設置数:",
+          "text": "Records02",
           "layout": [ 1, 0 ]
         },
         {
@@ -56,7 +56,7 @@
           ],
 
           "font": "jp",
-          "text": "パネル移動数:",
+          "text": "Records03",
           "layout": [ 1, 0 ]
         },
         {
@@ -67,7 +67,7 @@
           ],
 
           "font": "jp",
-          "text": "パネル回転数:",
+          "text": "Records04",
           "layout": [ 1, 0 ]
         },
         {
@@ -78,7 +78,7 @@
           ],
 
           "font": "jp",
-          "text": "Share回数:",
+          "text": "Records05",
           "layout": [ 1, 0 ]
         },
         {
@@ -89,7 +89,7 @@
           ],
 
           "font": "jp",
-          "text": "アプリ起動回数:",
+          "text": "Records06",
           "layout": [ 1, 0 ]
         },
         {
@@ -100,7 +100,7 @@
           ],
 
           "font": "jp",
-          "text": "中断回数:",
+          "text": "Records07",
           "layout": [ 1, 0 ]
         },
 
@@ -207,7 +207,7 @@
           ],
 
           "font": "jp",
-          "text": "パネル最大設置数:",
+          "text": "Records08",
           "layout": [ 1, 0 ]
         },
         {
@@ -218,7 +218,7 @@
           ],
 
           "font": "jp",
-          "text": "森最大規模:",
+          "text": "Records09",
           "layout": [ 1, 0 ]
         },
         {
@@ -229,7 +229,7 @@
           ],
 
           "font": "jp",
-          "text": "道最大長さ:",
+          "text": "Records10",
           "layout": [ 1, 0 ]
         },
         {
@@ -240,7 +240,7 @@
           ],
 
           "font": "jp",
-          "text": "平均スコア:",
+          "text": "Records11",
           "layout": [ 1, 0 ]
         },
         {
@@ -251,7 +251,7 @@
           ],
 
           "font": "jp",
-          "text": "平均設置数:",
+          "text": "Records12",
           "layout": [ 1, 0 ]
         },
         {
@@ -262,7 +262,7 @@
           ],
 
           "font": "jp",
-          "text": "平均移動数:",
+          "text": "Records13",
           "layout": [ 1, 0 ]
         },
         {
@@ -273,7 +273,7 @@
           ],
 
           "font": "jp",
-          "text": "平均回転数:",
+          "text": "Records14",
           "layout": [ 1, 0 ]
         },
         {
@@ -284,7 +284,7 @@
           ],
 
           "font": "jp",
-          "text": "平均設置時間:",
+          "text": "Records15",
           "layout": [ 1, 0 ]
         },
 

@@ -142,7 +142,7 @@
     "play_time_extend": 180,
     "force_panel": 0,
     "test_score_": 110000,
-    "force_tutorial": false,
+    "force_tutorial": true,
 
     "panel_rate": [ 1.7, 0.3 ],
     "score_rates": [

@@ -270,7 +270,7 @@ public:
                              {
                                bool purchased = Archive::isPurchased(archive_);
                                archive_.setRecord("PM-PERCHASE01", !purchased);
-                               DOUT << "debug-purchased: " << purchased << std::endl;
+                               DOUT << "debug-purchased: " << !purchased << std::endl;
                              });
 
 #if !defined (CINDER_COCOA_TOUCH)
