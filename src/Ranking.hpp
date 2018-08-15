@@ -285,7 +285,8 @@ private:
 
   void panelScore(const std::vector<std::vector<glm::ivec2>>* scores, const char* id_text)
   {
-    for (int i = 0; i < 12; ++i)
+    // TODO 最大数チェック
+    for (int i = 0; i < 15; ++i)
     {
       char id[16];
       sprintf(id, id_text, i);
@@ -306,6 +307,8 @@ private:
     float offset = 0.0f;
     for (auto& f : *scores)
     {
+      if (i == 15) break;
+
       char id[16];
       sprintf(id, id_text, i);
 

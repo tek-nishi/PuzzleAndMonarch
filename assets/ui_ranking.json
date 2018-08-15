@@ -896,6 +896,48 @@
               "text": "99",
               "layout": [ 0, 0 ]
             },
+            {
+              "identifier": "score:forest12",
+              "rect": [ 3, -1, 10, -1 ],
+              "anchor": [
+                [ 0, 0.62 ],
+                [ 0, 0.7 ]
+              ],
+              "pivot": [ 0, 0.5 ],
+              "enable": false,
+
+              "font": "en",
+              "text": "99",
+              "layout": [ 0, 0 ]
+            },
+            {
+              "identifier": "score:forest13",
+              "rect": [ 3, -1, 10, -1 ],
+              "anchor": [
+                [ 0, 0.62 ],
+                [ 0, 0.7 ]
+              ],
+              "pivot": [ 0, 0.5 ],
+              "enable": false,
+
+              "font": "en",
+              "text": "99",
+              "layout": [ 0, 0 ]
+            },
+            {
+              "identifier": "score:forest14",
+              "rect": [ 3, -1, 10, -1 ],
+              "anchor": [
+                [ 0, 0.62 ],
+                [ 0, 0.7 ]
+              ],
+              "pivot": [ 0, 0.5 ],
+              "enable": false,
+
+              "font": "en",
+              "text": "99",
+              "layout": [ 0, 0 ]
+            },
 
             {
               "identifier": "score:path0",
@@ -1053,6 +1095,48 @@
             },
             {
               "identifier": "score:path11",
+              "rect": [ 3, -1, 10, -1 ],
+              "anchor": [
+                [ 0, 0.52 ],
+                [ 0, 0.6 ]
+              ],
+              "pivot": [ 0, 0.5 ],
+              "enable": false,
+
+              "font": "en",
+              "text": "00",
+              "layout": [ 0, 0 ]
+            },
+            {
+              "identifier": "score:path12",
+              "rect": [ 3, -1, 10, -1 ],
+              "anchor": [
+                [ 0, 0.52 ],
+                [ 0, 0.6 ]
+              ],
+              "pivot": [ 0, 0.5 ],
+              "enable": false,
+
+              "font": "en",
+              "text": "00",
+              "layout": [ 0, 0 ]
+            },
+            {
+              "identifier": "score:path13",
+              "rect": [ 3, -1, 10, -1 ],
+              "anchor": [
+                [ 0, 0.52 ],
+                [ 0, 0.6 ]
+              ],
+              "pivot": [ 0, 0.5 ],
+              "enable": false,
+
+              "font": "en",
+              "text": "00",
+              "layout": [ 0, 0 ]
+            },
+            {
+              "identifier": "score:path14",
               "rect": [ 3, -1, 10, -1 ],
               "anchor": [
                 [ 0, 0.52 ],

@@ -251,6 +251,8 @@ private:
     float offset = 0.0f;
     for (auto f : scores)
     {
+      if (i == 15) break;
+
       char id[16];
       sprintf(id, id_text, i);
 
