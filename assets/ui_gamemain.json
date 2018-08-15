@@ -100,7 +100,7 @@
               ],
 
               "font": "jp",
-              "text": "森:",
+              "text": "GameMain01",
               "layout": [ 1, 0 ]
             },
             {
@@ -112,7 +112,7 @@
               ],
 
               "font": "jp",
-              "text": "道:",
+              "text": "GameMain02",
               "layout": [ 1, 0 ]
             },
             {
@@ -124,7 +124,7 @@
               ],
 
               "font": "jp",
-              "text": "街:",
+              "text": "GameMain03",
               "layout": [ 1, 0 ]
             },
             {
@@ -136,7 +136,7 @@
               ],
 
               "font": "jp",
-              "text": "教会:",
+              "text": "GameMain04",
               "layout": [ 1, 0 ]
             },
             {
@@ -148,7 +148,7 @@
               ],
 
               "font": "jp",
-              "text": "置いた数:",
+              "text": "GameMain05",
               "layout": [ 1, 0 ]
             },
 
@@ -269,7 +269,7 @@
 
               "layout": [ 0, 0 ],
               "font": "jp",
-              "text": "いいね!!"
+              "text": "GameMain06"
             },
             {
               "rect": [ -10, 0, 0, 15 ],
@@ -303,7 +303,7 @@
 
               "layout": [ 0, 0 ],
               "font": "jp",
-              "text": "いいね!!"
+              "text": "GameMain06"
             },
             {
               "rect": [ -10, 0, 0, 15 ],
@@ -337,7 +337,7 @@
 
               "layout": [ 0, 0 ],
               "font": "jp",
-              "text": "いいね!!"
+              "text": "GameMain06"
             },
             {
               "rect": [ -10, 0, 0, 15 ],
@@ -371,7 +371,7 @@
 
               "layout": [ 0, 0 ],
               "font": "jp",
-              "text": "いいね!!"
+              "text": "GameMain06"
             },
             {
               "rect": [ -10, 0, 0, 15 ],
@@ -495,7 +495,7 @@
           ],
 
           "font": "jp",
-          "text": "再開"
+          "text": "GameMain07"
         },
 
         {
@@ -537,7 +537,7 @@
           ],
 
           "font": "jp",
-          "text": "中断"
+          "text": "GameMain08"
         }
       ]
     }
