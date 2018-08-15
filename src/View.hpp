@@ -563,7 +563,7 @@ public:
   {
     if (!panel_disp_) return;
 
-    auto option = timeline_->apply(&height_offset_, height_ease_start_, height_ease_duration_, getEaseFunc("InQuint"));
+    auto option = timeline_->apply(&height_offset_, -25.0f, height_ease_duration_, getEaseFunc("InQuint"));
     option.finishFn([this]()
                     {
                       rotate_offset_.stop();
