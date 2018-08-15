@@ -26,7 +26,7 @@
       ],
 
       "font": "jp",
-      "text": "森:",
+      "text": "Result01",
       "layout": [ 1, 0 ]
     },
     {
@@ -37,7 +37,7 @@
       ],
 
       "font": "jp",
-      "text": "道:",
+      "text": "Result02",
       "layout": [ 1, 0 ]
     },
     {
@@ -48,7 +48,7 @@
       ],
 
       "font": "jp",
-      "text": "街:",
+      "text": "Result03",
       "layout": [ 1, 0 ]
     },
     {
@@ -59,7 +59,7 @@
       ],
 
       "font": "jp",
-      "text": "教会:",
+      "text": "Result04",
       "layout": [ 1, 0 ]
     },
     {
@@ -70,7 +70,7 @@
       ],
 
       "font": "jp",
-      "text": "置いた数:",
+      "text": "Result05",
       "layout": [ 1, 0 ]
     },
     {
