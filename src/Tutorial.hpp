@@ -188,7 +188,7 @@ private:
         {
           if (!operation_.count(i) && waiting_.count(i))
           {
-            canvas_.setWidgetText("blank:text", text_[i]);
+            canvas_.setWidgetText("blank:text", Localize::get(text_[i]));
             disp_type_ = i;
             disp = true;
             break;

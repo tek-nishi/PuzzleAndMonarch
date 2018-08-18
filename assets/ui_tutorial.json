@@ -61,7 +61,7 @@
 
           "layout": [ 0, 0 ],
           "font": "jp",
-          "text": "いいね!!"
+          "text": "Tutorial01"
         },
         {
           "rect": [ -10, 0, 0, 15 ],
@@ -87,7 +87,7 @@
       "enable": false,
 
       "font": "jp",
-      "text": "あとは任せましたよ…"
+      "text": "Tutorial02"
     }
   ]
 }

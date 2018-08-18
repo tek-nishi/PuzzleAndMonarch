@@ -590,13 +590,13 @@
     "direction_delay": 1.8,
 
     "text": [
-      "タップで移動",
-      "タップで回転",
-      "長押しで置く",
+      "Tutorial03",
+      "Tutorial04",
+      "Tutorial05",
 
-      "街を道で繋いで得点",
-      "森の完成で得点",
-      "教会の周囲を埋めて得点"
+      "Tutorial06",
+      "Tutorial07",
+      "Tutorial08"
     ],
     "offset": [
       [ 0, 15 ],
