@@ -186,12 +186,8 @@ public:
     setupCommonTweens(event_, holder_, canvas_, "purchase");
     setupCommonTweens(event_, holder_, canvas_, "play");
 
-    if (saved)
-    {
-      // NOTICE 課金は１回でもプレイしてくれた人が対象
-      canvas_.enableWidget("Purchase");
-    }
-    else 
+    // canvas_.enableWidget("Purchase");
+    if (!saved) 
     {
       // Saveデータがない場合関連するボタンを消す
       canvas_.enableWidget("Records", false);
