@@ -568,7 +568,7 @@
 
     "effect_speed": 2.2,
 
-    "share": "PuzzleMonarch で%1点獲得しました!!",
+    "share": "Share01",
 
     "disp_duration": 1.7,
     "disp_delay": 0.15,
@@ -580,7 +580,7 @@
     "canvas": "ui_ranking.json",
     "tweens": "tw_ranking.json",
 
-    "share": "PuzzleMonarch でのハイスコアです!!"
+    "share": "Share02"
   },
 
   "tutorial": {

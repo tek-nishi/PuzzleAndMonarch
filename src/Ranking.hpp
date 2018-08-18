@@ -137,7 +137,7 @@ public:
 
                                                   event_.signal("App:pending-update", Arguments());
 
-                                                  Share::post(share_text_, image,
+                                                  Share::post(Localize::get(share_text_), image,
                                                               [this](bool completed) noexcept
                                                               {
                                                                 if (completed)

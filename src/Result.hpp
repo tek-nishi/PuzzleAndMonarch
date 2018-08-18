@@ -75,7 +75,7 @@ public:
     total_rank_  = score.total_ranking;
     perfect_     = score.perfect;
 
-    share_text_ = replaceString(params.getValueForKey<std::string>("result.share"),
+    share_text_ = replaceString(Localize::get(params.getValueForKey<std::string>("result.share")),
                                 "%1",
                                 std::to_string(score.total_score));
 
