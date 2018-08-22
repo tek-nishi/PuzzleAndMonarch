@@ -1,4 +1,5 @@
 * TODO Titleを「Puzzle and Monarch」にする？
+* TODO Fontの生成を遅らせたい(ローカライズ対策)
 * TODO iOS:未ログイン時に課金処理へ移行すると何度もサインインを求められる
 * TODO 結果画面の道の数とか見たい
 * TODO 世界観を作る

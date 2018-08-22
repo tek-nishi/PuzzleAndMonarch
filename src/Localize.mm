@@ -9,7 +9,7 @@
 
 namespace ngs { namespace Localize {
 
-// 投稿用の文字列(ローカライズ済み)を取得
+// 文字列(ローカライズ済み)を取得
 std::string get(const std::string& key)
 {
   NSString* key_text = [NSString stringWithUTF8String:key.c_str()];
