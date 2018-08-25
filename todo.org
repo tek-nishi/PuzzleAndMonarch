@@ -1,4 +1,5 @@
 * TODO Titleを「Puzzle and Monarch」にする？
+* TODO Fontのテクスチャが足りてるか確認
 * TODO Fontの生成を遅らせたい(ローカライズ対策)
 * TODO ゲームのゴールが「得点を稼ぐ」というのを明確に
 * TODO 達成項目にもハイスコアを入れる
