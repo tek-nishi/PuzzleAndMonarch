@@ -54,8 +54,8 @@ static DCInAppPurchase *_sharedInstance = nil;
 {
   if (![self canMakePayments]) {
     // アプリ内課金が許可されていなければアラートを出して終了
-    [self showAlert:@"エラー" message:@"アプリ内課金が許可されていません"];
-        
+    [self showAlert:NSLocalizedString(@"Purchase06", nil) message:NSLocalizedString(@"Purchase05", nil)];
+
     return;
   }
     
@@ -89,7 +89,7 @@ static DCInAppPurchase *_sharedInstance = nil;
 // デリゲートメソッド (アクセスエラー)
 - (void)request:(SKRequest *)request didFailWithError:(NSError *)error
 {
-  [self showAlert:@"エラー" message:[error localizedDescription]];
+  [self showAlert:NSLocalizedString(@"Purchase06", nil) message:[error localizedDescription]];
 }
 
 // デリゲートメソッド (プロダクト情報を取得)
@@ -97,14 +97,14 @@ static DCInAppPurchase *_sharedInstance = nil;
 {
   // レスポンスがなければエラー処理
   if (response == nil) {
-    [self showAlert:@"エラー" message:@"レスポンスがありません"];
+    [self showAlert:NSLocalizedString(@"Purchase06", nil) message:NSLocalizedString(@"Purchase07", nil)];
         
     return;
   }
     
   // プロダクトIDが無効な場合はアラートを出して終了
   if ([response.invalidProductIdentifiers count] > 0) {
-    [self showAlert:@"エラー" message:@"プロダクトIDが無効です"];
+    [self showAlert:NSLocalizedString(@"Purchase06", nil) message:NSLocalizedString(@"Purchase08", nil)];
         
     return;
   }
@@ -190,7 +190,7 @@ static DCInAppPurchase *_sharedInstance = nil;
       if (transaction.error.code != SKErrorPaymentCancelled)
       {
         // 購入処理失敗の場合はアラート表示
-        [self showAlert:@"エラー" message:[transaction.error localizedDescription]];
+        [self showAlert:NSLocalizedString(@"Purchase06", nil) message:[transaction.error localizedDescription]];
       }
             
       // インジケータ非表示
@@ -207,7 +207,7 @@ static DCInAppPurchase *_sharedInstance = nil;
     else if (transaction.transactionState == SKPaymentTransactionStateRestored)
     {
       // リストア処理開始
-      [self showAlert:@"復元完了" message:@"購入アイテムを復元しました"];
+      [self showAlert:NSLocalizedString(@"Purchase09", nil) message:NSLocalizedString(@"Purchase10", nil)];
             
       // 購入済みのプロダクトのロックを再解除する
       [self restoreTransaction:transaction];
@@ -257,7 +257,7 @@ static DCInAppPurchase *_sharedInstance = nil;
   // 購入済みでなかった場合アラート表示
   if (!isRestored)
   {
-    [self showAlert:@"エラー" message:@"復元するアイテムがありませんでした"];
+    [self showAlert:NSLocalizedString(@"Purchase06", nil) message:NSLocalizedString(@"Purchase11", nil)];
   }
     
   // 処理中フラグを下ろす
@@ -272,7 +272,7 @@ static DCInAppPurchase *_sharedInstance = nil;
     NSLog(@"%@", transaction);
         
     // リストア失敗のアラート表示
-    [self showAlert:@"エラー" message:@"アイテムの復元に失敗しました"];
+    [self showAlert:NSLocalizedString(@"Purchase06", nil) message:NSLocalizedString(@"Purchase12", nil)];
   }
 }
 
@@ -346,7 +346,7 @@ static DCInAppPurchase *_sharedInstance = nil;
   UIAlertController* alert = [UIAlertController alertControllerWithTitle:title message:message
                                  preferredStyle:UIAlertControllerStyleAlert];
 
-  UIAlertAction* okAction = [UIAlertAction actionWithTitle:@"OK"
+  UIAlertAction* okAction = [UIAlertAction actionWithTitle:NSLocalizedString(@"Purchase13", nil)
                                 style:UIAlertActionStyleDefault
                                 handler:^(UIAlertAction * action)
                                 {

@@ -25,7 +25,7 @@
         [ 0.5, 0.58 ]
       ],
       "font": "jp",
-      "text": "制限時間を３分に延長する"
+      "text": "Purchase01"
     },
     {
       "identifier": "price-01",
@@ -35,7 +35,7 @@
         [ 0.5, 0.58 ]
       ],
       "font": "jp",
-      "text": "価格不明"
+      "text": "Purchase02"
     },
 
     {
@@ -47,7 +47,7 @@
       ],
 
       "font": "jp",
-      "text": "購入"
+      "text": "Purchase03"
     },
     {
       "identifier": "Purchase",
@@ -89,7 +89,7 @@
       ],
 
       "font": "jp",
-      "text": "復元"
+      "text": "Purchase04"
     },
     {
       "identifier": "Restore",
