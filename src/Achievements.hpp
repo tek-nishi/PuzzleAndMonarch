@@ -72,6 +72,24 @@ public:
                                GameCenter::submitScore(score.total_score, total_panels, score.total_panels);
 
                                {
+                                 // ハイスコア
+                                 static std::pair<const char*, double> tbl[] = {
+                                   { "PM.SCORE5000",   5000 },
+                                   { "PM.SCORE10000",  10000 },
+                                   { "PM.SCORE30000",  30000 },
+                                   { "PM.SCORE50000",  50000 },
+                                   { "PM.SCORE80000",  80000 },
+                                   { "PM.SCORE100000", 100000 },
+                                 };
+
+                                 for (const auto& t : tbl)
+                                 {
+                                   auto rate = std::min((score.total_score * 100.0) / t.second, 100.0);
+                                   GameCenter::submitAchievement(t.first, rate);
+                                 }
+                               }
+
+                               {
                                  // 最大設置数
                                  static std::pair<const char*, double> tbl[] = {
                                    { "PM.PUT30", 30.0 },
