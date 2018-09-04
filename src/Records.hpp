@@ -78,6 +78,15 @@ public:
                                 DOUT << "Back to Title" << std::endl;
                               });
 
+    // 縦持ち横持ちでレイアウトを変える
+    auto layout_params = layoutParams(params["records.layout"]);
+    adjustLayout(layout_params);
+    holder_ += event_.connect("resize",
+                              [this, layout_params](const Connection&, const Arguments&)
+                              {
+                                adjustLayout(layout_params);
+                              });
+
     // ボタンイベント共通Tween
     setupCommonTweens(event_, holder_, canvas_, "agree");
 
@@ -101,6 +110,19 @@ private:
     return active_;
   }
 
+
+  void adjustLayout(const std::vector<std::vector<std::pair<std::string, ci::Rectf>>>& layout_params)
+  {
+    auto aspect = ci::app::getWindowAspectRatio();
+    int index = (aspect > 1.0f) ? 0 : 1;
+    const auto& layout = layout_params[index];
+    for (const auto l : layout)
+    {
+      const auto& id   = l.first;
+      const auto& rect = l.second;
+      canvas_.setWidgetParam(id, "rect", rect);
+    }
+  }
 
   void applyDetail(const Detail& detail) noexcept
   {
@@ -142,6 +164,26 @@ private:
       canvas_.setWidgetText("record:17", text);
     }
   }
+
+  std::vector<std::vector<std::pair<std::string, ci::Rectf>>> layoutParams(const ci::JsonTree& params)
+  {
+    std::vector<std::vector<std::pair<std::string, ci::Rectf>>> values;
+
+    for (const auto& layout : params)
+    {
+      std::vector<std::pair<std::string, ci::Rectf>> val;
+      for (const auto& p : layout)
+      {
+        auto id = p.getValueForKey<std::string>("id");
+        auto rect = Json::getRect<float>(p["rect"]);
+        val.push_back({ id, rect });
+      }
+      values.push_back(val);
+    }
+
+    return values;
+  }
+
 };
 
 }

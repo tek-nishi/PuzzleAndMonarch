@@ -541,7 +541,30 @@
 
   "records": {
     "canvas": "ui_records.json",
-    "tweens": "tw_records.json"
+    "tweens": "tw_records.json",
+
+    "layout": [
+      [
+        {
+          "id":   "page1",
+          "rect": [ -35, -75, -35, 45 ]
+        },
+        {
+          "id":   "page2",
+          "rect": [ 95, -75, 95, 45 ]
+        }
+      ],
+      [
+        {
+          "id":   "page1",
+          "rect": [ 20, -20, 20, 100 ]
+        },
+        {
+          "id":   "page2",
+          "rect": [ 20, -115, 20, 4 ]
+        }
+      ]
+    ]
   },
   
   "gamemain": {
