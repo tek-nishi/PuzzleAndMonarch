@@ -1,20 +1,24 @@
 * TODO Titleを「Puzzle and Monarch」にする？
+* TODO stdのアルゴリズムを積極的に使う
 * TODO Introの演出をもっと工夫する
 * TODO Fontのテクスチャが足りてるか確認
 * TODO Fontの生成を遅らせたい(ローカライズ対策)
 * TODO ゲームのゴールが「得点を稼ぐ」というのを明確に
 * TODO プレイ結果が「うまい」のか「ヘタ」なのかはっきり。特に初心者〜中級者
-* TODO iOS:未ログイン時に課金処理へ移行すると何度もサインインを求められる
 * TODO 試しに繁体字
 * TODO 世界観を作る
 * TODO ローカライズ
 * TODO BGM作る
 * TODO SE作る
 * WAIT カルカソンヌ公式に許可を取る
+* TODO iOS:GameCenterの通知がタイトルロゴにかぶる
+* TODO iOS:未ログイン時に課金処理へ移行すると何度もサインインを求められる
 * TODO iOS:処理の思い箇所を探して修正
 * TODO iOS:AppStore提出に必要な書類や素材
 * TODO iOS:実績のアイコンを用意
 * TODO iOS:サポートサイト用意(特定商取引に関する表示)
+* DONE Records画面のレイアウトが左に寄っている
+CLOSED: [2018-09-08 土 18:01]
 * DONE 達成項目にもハイスコアを入れる
 CLOSED: [2018-08-30 木 23:52]
 * DONE 初回から課金アイコンは出しとく
