@@ -1,5 +1,5 @@
-* TODO Titleを「Puzzle and Monarch」にする？
 * TODO stdのアルゴリズムを積極的に使う
+* TODO 課金済みのタイトル演出修正
 * TODO Introの演出をもっと工夫する
 * TODO Fontのテクスチャが足りてるか確認
 * TODO Fontの生成を遅らせたい(ローカライズ対策)
@@ -17,6 +17,8 @@
 * TODO iOS:AppStore提出に必要な書類や素材
 * TODO iOS:実績のアイコンを用意
 * TODO iOS:サポートサイト用意(特定商取引に関する表示)
+* DONE Titleを「Puzzle and Monarch」にする？
+CLOSED: [2018-09-09 日 12:38]
 * DONE Records画面のレイアウトが左に寄っている
 CLOSED: [2018-09-08 土 18:01]
 * DONE 達成項目にもハイスコアを入れる
