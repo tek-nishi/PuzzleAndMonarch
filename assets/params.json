@@ -512,6 +512,8 @@
     "canvas": "ui_title.json",
     "tweens": "tw_title.json",
 
+    "effect_speed": 2.2,
+
     "menu": [
       "Purchase",
       "GameCenter",

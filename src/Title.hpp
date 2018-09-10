@@ -24,6 +24,7 @@ public:
   Title(const ci::JsonTree& params, Event<Arguments>& event, UI::Drawer& drawer, TweenCommon& tween_common,
         bool first_time, bool saved, bool ranking, bool purchased) noexcept
     : event_(event),
+      effect_speed_(params.getValueForKey<double>("title.effect_speed")),
       canvas_(event, drawer, tween_common,
               params["ui.camera"],
               Params::load(params.getValueForKey<std::string>("title.canvas")),
@@ -199,6 +200,7 @@ public:
     }
     if (purchased)
     {
+      purchased_ = purchased;
       canvas_.enableWidget("purchased");
     }
 
@@ -233,6 +235,13 @@ private:
   bool update(double current_time, double delta_time) noexcept override
   {
     count_exec_.update(delta_time);
+
+    if (purchased_)
+    {
+      // 課金時の演出
+      auto color = ci::hsvToRgb({ std::fmod(current_time * effect_speed_, 1.0), 0.6f, 1 });
+      canvas_.setWidgetParam("logo-icon", "color", color);
+    }
 
     // GameCenterへのログイン状態が変化した
     bool gamecenter = GameCenter::isAuthenticated();
@@ -351,8 +360,11 @@ private:
 
   bool active_ = true;
 
+  double effect_speed_;
+
   bool game_center_ = false;
   bool has_purchase_ = false;
+  bool purchased_ = false;
 
 #if defined (DEBUG)
   // GameCenter強制ON機能
