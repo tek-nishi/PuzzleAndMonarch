@@ -439,7 +439,7 @@ public:
       1.0f,
       index,
       rotate_index,
-      1.0f,
+      0.0f,
     };
 
     field_panel_indices_.insert({ pos, field_panels_.size() });
@@ -689,10 +689,10 @@ public:
         timeline_->applyPtr(&value, complete_diffuse_, complete_begin_duration_, getEaseFunc(complete_begin_ease_));
         timeline_->appendToPtr(&value, 1.0f, complete_end_duration_, getEaseFunc(complete_end_ease_));
       }
-      // {
-      //   auto& value = field_panels_[index].top_y;
-      //   timeline_->applyPtr(&value, 20.0f, 1.5f, getEaseFunc("OutBack"));
-      // }
+      {
+        auto& value = field_panels_[index].top_y;
+        timeline_->applyPtr(&value, 1.0f, 1.2f, getEaseFunc("OutBack"));
+      }
     }
   }
 
@@ -1074,7 +1074,7 @@ private:
     if (panel_disp_)
     {
       field_shader_->uniform("uDiffusePower", 1.0f);
-      field_shader_->uniform("uTopY", 2.0f);
+      field_shader_->uniform("uTopY", 0.0f);
 
       // 手持ちパネル
       auto pos = panel_disp_pos_() + glm::vec3(0, height_offset_, 0);
