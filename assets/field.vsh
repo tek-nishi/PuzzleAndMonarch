@@ -10,7 +10,7 @@ uniform mat3 ciNormalMatrix;
 
 uniform mat4 uShadowMatrix;
 
-float top_y = 2.0;
+uniform float uTopY = 1.0;
 
 in vec3	ciColor;
 in vec4	ciPosition;
@@ -31,7 +31,11 @@ const mat4 biasMatrix = mat4( 0.5, 0.0, 0.0, 0.0,
 void main(void)
 {
   vec4 p = ciPosition;
-  p.y = min(p.y, top_y);
+
+  // Yが2以上の頂点のみスケーリングする
+  float s = step(2.0, p.y);
+  p.y = mix(p.y, (p.y - 2.0) * uTopY + 2.0, s);
+
   vShadowCoord = (biasMatrix * uShadowMatrix * ciModelMatrix) * p;
 	vColor			 = ciColor;
 

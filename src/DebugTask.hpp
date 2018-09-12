@@ -54,6 +54,8 @@ class DebugTask
   float bg_shininess_;
   float bg_ambient_;
 
+  float panel_scaling_ = 1.0f;
+
 
   void createSettings() noexcept
   {
@@ -174,6 +176,8 @@ class DebugTask
                 event_.signal("debug-bg-ambient", args);
               });
 
+    settings_->addSeparator();
+
     settings_->addButton("PLY -> mesh",
                          [this]()
                          {
@@ -192,6 +196,21 @@ class DebugTask
                              Model::writeTriMesh(p, mesh);
                            }
                          });
+
+    settings_->addSeparator();
+
+    settings_->addParam("Panel:Scaling", &panel_scaling_)
+    .min(0.0f)
+    .max(4.0f)
+    .step(0.01f)
+    .updateFn([this]() noexcept
+              {
+                Arguments args{
+                  { "value", panel_scaling_ }
+                };
+                event_.signal("debug-panel-scaling", args);
+              });
+
 
     settings_->show(false);
 

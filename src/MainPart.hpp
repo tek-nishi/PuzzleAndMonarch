@@ -856,6 +856,12 @@ public:
                                 view_.startEffect({ 0, 0 });
                               });
 
+    holder_ += event_.connect("debug-panel-scaling",
+                              [this](const Connection&, Arguments& arg) noexcept
+                              {
+                                auto value = boost::any_cast<float>(arg.at("value"));
+                                view_.setPanelScaling(value);
+                              });
 
     holder_ += event_.connect("Test:PutPanel",
                               [this](const Connection&, Arguments& args) noexcept

@@ -61,6 +61,8 @@ class View
     float diffuse_power;
     int index;
     int rotate_index;
+    // 道や森が完成した時の演出用
+    float top_y;
   };
 
 
@@ -436,7 +438,8 @@ public:
       mtx,
       1.0f,
       index,
-      rotate_index
+      rotate_index,
+      1.0f,
     };
 
     field_panel_indices_.insert({ pos, field_panels_.size() });
@@ -681,10 +684,15 @@ public:
     if (field_panel_indices_.count(pos))
     {
       auto index  = field_panel_indices_.at(pos);
-      auto& value = field_panels_[index].diffuse_power;
-
-      timeline_->applyPtr(&value, complete_diffuse_, complete_begin_duration_, getEaseFunc(complete_begin_ease_));
-      timeline_->appendToPtr(&value, 1.0f, complete_end_duration_, getEaseFunc(complete_end_ease_));
+      {
+        auto& value = field_panels_[index].diffuse_power;
+        timeline_->applyPtr(&value, complete_diffuse_, complete_begin_duration_, getEaseFunc(complete_begin_ease_));
+        timeline_->appendToPtr(&value, 1.0f, complete_end_duration_, getEaseFunc(complete_end_ease_));
+      }
+      // {
+      //   auto& value = field_panels_[index].top_y;
+      //   timeline_->applyPtr(&value, 20.0f, 1.5f, getEaseFunc("OutBack"));
+      // }
     }
   }
 
@@ -862,6 +870,15 @@ public:
   {
     light_pos_ = position;
     setupShadowCamera(glm::vec3());
+  }
+
+  // 強制的にパネルのスケーリングを変更
+  void setPanelScaling(float scale) noexcept
+  {
+    for (auto& panel : field_panels_)
+    {
+      panel.top_y = scale;
+    }
   }
 
 #endif
@@ -1057,6 +1074,7 @@ private:
     if (panel_disp_)
     {
       field_shader_->uniform("uDiffusePower", 1.0f);
+      field_shader_->uniform("uTopY", 2.0f);
 
       // 手持ちパネル
       auto pos = panel_disp_pos_() + glm::vec3(0, height_offset_, 0);
@@ -1134,6 +1152,8 @@ private:
       ci::gl::setModelMatrix(p.matrix);
 
       field_shader_->uniform("uDiffusePower", p.diffuse_power);
+      field_shader_->uniform("uTopY", p.top_y);
+
       const auto& model = getPanelModel(p.index);
       model->draw();
     }
