@@ -1025,16 +1025,19 @@ private:
     ci::gl::clear(GL_DEPTH_BUFFER_BIT);
     ci::gl::setMatrices(light_camera_);
 
-    ci::gl::ScopedGlslProg prog(shadow_shader_);
-
-    drawFieldPanelShadow();
-    drawFieldBlankShadow();
-
-    if (panel_disp_)
     {
-      // 手持ちパネル
-      auto pos = panel_disp_pos_() + glm::vec3(0, height_offset_, 0);
-      drawPanel(info.panel_index, pos, info.panel_rotation, rotate_offset_);
+      ci::gl::ScopedGlslProg prog(shadow_shader_);
+
+      drawFieldPanelShadow();
+      drawFieldBlankShadow();
+
+      if (panel_disp_)
+      {
+        // 手持ちパネル
+        auto pos = panel_disp_pos_() + glm::vec3(0, height_offset_, 0);
+        shadow_shader_->uniform("uTopY", 0.0f);
+        drawPanel(info.panel_index, pos, info.panel_rotation, rotate_offset_);
+      }
     }
 
     // 雲
