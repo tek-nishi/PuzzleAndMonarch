@@ -5,7 +5,7 @@ $version$
 
 uniform mat4 ciModelViewProjection;
 
-uniform float uTopY = 1.0;
+uniform float uTopY;
 
 in vec4 ciPosition;
 

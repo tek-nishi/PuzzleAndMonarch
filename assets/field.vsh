@@ -10,7 +10,7 @@ uniform mat3 ciNormalMatrix;
 
 uniform mat4 uShadowMatrix;
 
-uniform float uTopY = 1.0;
+uniform float uTopY;
 
 in vec3	ciColor;
 in vec4	ciPosition;
