@@ -1138,6 +1138,8 @@ private:
     {
       ci::gl::setModelMatrix(p.matrix);
 
+      shadow_shader_->uniform("uTopY", p.top_y);
+
       const auto& model = getPanelModel(p.index);
       ci::gl::draw(model->getVboMesh());
     }
@@ -1186,6 +1188,7 @@ private:
   void drawFieldBlankShadow()
   {
     if (blank_panels_.empty()) return;
+    shadow_shader_->uniform("uTopY", 1.0f);
     blank_shadow_model_->drawInstanced(int(blank_panels_.size()));
   }
 
