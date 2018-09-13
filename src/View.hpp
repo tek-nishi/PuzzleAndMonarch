@@ -639,7 +639,7 @@ public:
   }
 
   // 得点した時の演出
-  void startEffect(const glm::ivec2& pos) noexcept
+  void startEffect(const glm::ivec2& pos)
   {
     glm::vec3 gpos = vec2ToVec3(pos * int(PANEL_SIZE));
 
@@ -684,16 +684,21 @@ public:
     if (field_panel_indices_.count(pos))
     {
       auto index  = field_panel_indices_.at(pos);
-      {
-        auto& value = field_panels_[index].diffuse_power;
-        timeline_->applyPtr(&value, complete_diffuse_, complete_begin_duration_, getEaseFunc(complete_begin_ease_));
-        timeline_->appendToPtr(&value, 1.0f, complete_end_duration_, getEaseFunc(complete_end_ease_));
-      }
-      {
-        auto& value = field_panels_[index].top_y;
-        timeline_->applyPtr(&value, 1.0f, 1.2f, getEaseFunc("OutBack"));
-      }
+      auto& value = field_panels_[index].diffuse_power;
+      
+      timeline_->applyPtr(&value, complete_diffuse_, complete_begin_duration_, getEaseFunc(complete_begin_ease_));
+      timeline_->appendToPtr(&value, 1.0f, complete_end_duration_, getEaseFunc(complete_end_ease_));
     }
+  }
+
+  // パネルのスケールを戻す
+  void effectPanelScaing(const glm::ivec2& pos, float delay)
+  {
+    auto index  = field_panel_indices_.at(pos);
+    auto& value = field_panels_[index].top_y;
+
+    auto option = timeline_->applyPtr(&value, 1.0f, 1.2f, getEaseFunc("OutBack"));
+    option.delay(delay);
   }
 
 

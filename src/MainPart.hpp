@@ -402,6 +402,12 @@ public:
                                 {
                                   view_.updateBlank(game_->getBlankPositions());
                                 }
+
+                                if (args.count("completed")
+                                    && boost::any_cast<bool>(args.at("completed")))
+                                {
+                                  view_.effectPanelScaing(pos, game_->getPlayTimeRate() + 0.5f);
+                                }
                               });
 
     holder_ += event_.connect("Game:Finish",

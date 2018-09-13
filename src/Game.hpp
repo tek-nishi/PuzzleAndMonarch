@@ -505,18 +505,42 @@ struct Game
     panel_turned_times_ = json.getValueForKey<u_int>("panel_turned_times");
     panel_moved_times_  = json.getValueForKey<u_int>("panel_moved_times");
 
+    // 完成したパネル群
+    std::set<glm::ivec2, LessVec<glm::ivec2>> completed_panels;
+    for (const auto& v : completed_forests)
+    {
+      for (const auto& p : v)
+      {
+        completed_panels.insert(p);
+      }
+    }
+    for (const auto& v : completed_path)
+    {
+      for (const auto& p : v)
+      {
+        completed_panels.insert(p);
+      }
+    }
+    for (const auto& p : completed_church)
+    {
+      completed_panels.insert(p);
+    }
+
     auto panels = field.enumeratePanels();
     double at_time       = params_.getValueForKey<double>("replay.delay") + delay;
     double interval_time = params_.getValueForKey<double>("replay.interval");
     for (const auto& status : panels)
     {
+      bool comp = completed_panels.count(status.position);
+
       count_exec_.add(at_time,
-                      [status, this]() noexcept
+                      [status, comp, this]() noexcept
                       {
                         Arguments args{
                           { "panel",     status.number },
                           { "field_pos", status.position },
                           { "rotation",  status.rotation },
+                          { "completed", comp },
                         };
                         event_.signal("Game:PutPanel", args);
                       });
