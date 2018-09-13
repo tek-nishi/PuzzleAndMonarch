@@ -697,7 +697,7 @@ public:
     auto index  = field_panel_indices_.at(pos);
     auto& value = field_panels_[index].top_y;
 
-    auto option = timeline_->applyPtr(&value, 1.0f, 1.2f, getEaseFunc("OutBack"));
+    auto option = timeline_->applyPtr(&value, 1.0f, 0.8f, getEaseFunc("OutBack"));
     option.delay(delay);
   }
 

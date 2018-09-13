@@ -406,7 +406,7 @@ public:
                                 if (args.count("completed")
                                     && boost::any_cast<bool>(args.at("completed")))
                                 {
-                                  view_.effectPanelScaing(pos, game_->getPlayTimeRate() + 0.5f);
+                                  view_.effectPanelScaing(pos, game_->getPlayTimeRate() + 0.25f);
                                 }
                               });
 
@@ -485,11 +485,14 @@ public:
                              [this](const Connection&, const Arguments& args) noexcept
                              {
                                auto completed = boost::any_cast<std::vector<std::vector<glm::ivec2>>>(args.at("completed"));
+                               float delay = 0.25f;
                                for (const auto& cc : completed)
                                {
                                  for (const auto& p : cc)
                                  {
                                    view_.startEffect(p);
+                                   view_.effectPanelScaing(p, delay);
+                                   delay += 0.1f;
                                  }
 
                                  // UI演出
@@ -508,11 +511,14 @@ public:
                              [this](const Connection&, const Arguments& args) noexcept
                              {
                                auto completed = boost::any_cast<std::vector<std::vector<glm::ivec2>>>(args.at("completed"));
+                               float delay = 0.25f;
                                for (const auto& cc : completed)
                                {
                                  for (const auto& p : cc)
                                  {
                                    view_.startEffect(p);
+                                   view_.effectPanelScaing(p, delay);
+                                   delay += 0.1f;
                                  }
 
                                  // UI演出
@@ -546,9 +552,12 @@ public:
                                    { -1, -1 }
                                  };
 
+                                 float delay = 0.25f;
                                  for (const auto& o : ofs)
                                  {
                                    view_.startEffect(p + o);
+                                   view_.effectPanelScaing(p, delay);
+                                   delay += 0.1f;
                                  }
                                }
 
