@@ -639,56 +639,60 @@ public:
   }
 
   // 得点した時の演出
-  void startEffect(const glm::ivec2& pos)
+  void startEffect(const glm::ivec2& pos, float delay)
   {
-    glm::vec3 gpos = vec2ToVec3(pos * int(PANEL_SIZE));
+    timeline_->add([this, pos]()
+                   {
+                     glm::vec3 gpos = vec2ToVec3(pos * int(PANEL_SIZE));
 
-    for (int i = 0; i < EFFECT_NUM; ++i)
-    {
-      if (effects_.size() == EFFECT_MAX_NUM) break;
+                     for (int i = 0; i < EFFECT_NUM; ++i)
+                     {
+                       if (effects_.size() == EFFECT_MAX_NUM) break;
 
-      glm::vec3 ofs{
-        ci::randFloat(-PANEL_SIZE / 2, PANEL_SIZE / 2),
-        randFromVec2(effect_y_ofs_),
-        ci::randFloat(-PANEL_SIZE / 2, PANEL_SIZE / 2)
-      };
-      effects_.push_back({ true, false, gpos + ofs });
-      auto& effect = effects_.back();
+                       glm::vec3 ofs{
+                         ci::randFloat(-PANEL_SIZE / 2, PANEL_SIZE / 2),
+                         randFromVec2(effect_y_ofs_),
+                         ci::randFloat(-PANEL_SIZE / 2, PANEL_SIZE / 2)
+                       };
+                       effects_.push_back({ true, false, gpos + ofs });
+                       auto& effect = effects_.back();
 
-      auto end_pos = gpos + ofs + glm::vec3(0, randFromVec2(effect_y_move_), 0);
+                       auto end_pos = gpos + ofs + glm::vec3(0, randFromVec2(effect_y_move_), 0);
 
-      float duration = randFromVec2(effect_duration_);
-      float delay    = randFromVec2(effect_delay_);
+                       float duration = randFromVec2(effect_duration_);
+                       float delay    = randFromVec2(effect_delay_);
 
-      auto options = timeline_->applyPtr(&effect.pos, end_pos, duration, getEaseFunc(effect_ease_));
+                       auto options = timeline_->applyPtr(&effect.pos, end_pos, duration, getEaseFunc(effect_ease_));
 
-      options.delay(delay);
-      options.startFn([&effect, this]() noexcept
-                      {
-                        effect.disp  = true;
-                        effect.scale = glm::vec3(randFromVec2(effect_scale_));
-                        glm::vec3 hsv{
-                          randFromVec2(effect_h_), 
-                          randFromVec2(effect_s_),
-                          1.0f
-                        };
-                        effect.color = ci::hsvToRgb(hsv);
-                      });
-      options.finishFn([&effect]() noexcept
-                       {
-                         effect.active = false;
-                       });
-    }
+                       options.delay(delay);
+                       options.startFn([&effect, this]() noexcept
+                                       {
+                                         effect.disp  = true;
+                                         effect.scale = glm::vec3(randFromVec2(effect_scale_));
+                                         glm::vec3 hsv{
+                                           randFromVec2(effect_h_), 
+                                           randFromVec2(effect_s_),
+                                           1.0f
+                                         };
+                                         effect.color = ci::hsvToRgb(hsv);
+                                       });
+                       options.finishFn([&effect]() noexcept
+                                        {
+                                          effect.active = false;
+                                        });
+                     }
 
-    // パネル発光演出
-    if (field_panel_indices_.count(pos))
-    {
-      auto index  = field_panel_indices_.at(pos);
-      auto& value = field_panels_[index].diffuse_power;
+                     // パネル発光演出
+                     if (field_panel_indices_.count(pos))
+                     {
+                       auto index  = field_panel_indices_.at(pos);
+                       auto& value = field_panels_[index].diffuse_power;
       
-      timeline_->applyPtr(&value, complete_diffuse_, complete_begin_duration_, getEaseFunc(complete_begin_ease_));
-      timeline_->appendToPtr(&value, 1.0f, complete_end_duration_, getEaseFunc(complete_end_ease_));
-    }
+                       timeline_->applyPtr(&value, complete_diffuse_, complete_begin_duration_, getEaseFunc(complete_begin_ease_));
+                       timeline_->appendToPtr(&value, 1.0f, complete_end_duration_, getEaseFunc(complete_end_ease_));
+                     }
+                   },
+                   timeline_->getCurrentTime() + delay);
   }
 
   // パネルのスケールを戻す

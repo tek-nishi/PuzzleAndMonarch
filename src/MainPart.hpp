@@ -485,14 +485,14 @@ public:
                              [this](const Connection&, const Arguments& args) noexcept
                              {
                                auto completed = boost::any_cast<std::vector<std::vector<glm::ivec2>>>(args.at("completed"));
-                               float delay = 0.25f;
+                               float delay = 0.2f;
                                for (const auto& cc : completed)
                                {
                                  for (const auto& p : cc)
                                  {
-                                   view_.startEffect(p);
+                                   view_.startEffect(p, delay);
                                    view_.effectPanelScaing(p, delay);
-                                   delay += 0.1f;
+                                   delay += 0.05f;
                                  }
 
                                  // UI演出
@@ -511,14 +511,14 @@ public:
                              [this](const Connection&, const Arguments& args) noexcept
                              {
                                auto completed = boost::any_cast<std::vector<std::vector<glm::ivec2>>>(args.at("completed"));
-                               float delay = 0.25f;
+                               float delay = 0.2f;
                                for (const auto& cc : completed)
                                {
                                  for (const auto& p : cc)
                                  {
-                                   view_.startEffect(p);
+                                   view_.startEffect(p, delay);
                                    view_.effectPanelScaing(p, delay);
-                                   delay += 0.1f;
+                                   delay += 0.05f;
                                  }
 
                                  // UI演出
@@ -541,7 +541,6 @@ public:
                                {
                                  // 周囲８パネルも演出
                                  static glm::ivec2 ofs[] = {
-                                   {  0,  0 },
                                    { -1,  0 },
                                    { -1,  1 },
                                    {  0,  1 },
@@ -549,15 +548,16 @@ public:
                                    {  1,  0 },
                                    {  1, -1 },
                                    {  0, -1 },
-                                   { -1, -1 }
+                                   { -1, -1 },
+                                   {  0,  0 },
                                  };
 
-                                 float delay = 0.25f;
+                                 float delay = 0.2f;
                                  for (const auto& o : ofs)
                                  {
-                                   view_.startEffect(p + o);
+                                   view_.startEffect(p + o, delay);
                                    view_.effectPanelScaing(p, delay);
-                                   delay += 0.1f;
+                                   delay += 0.05f;
                                  }
                                }
 
@@ -868,7 +868,7 @@ public:
     holder_ += event_.connect("debug-effect",
                               [this](const Connection&, Arguments&) noexcept
                               {
-                                view_.startEffect({ 0, 0 });
+                                view_.startEffect({ 0, 0 }, 0);
                               });
 
     holder_ += event_.connect("debug-panel-scaling",
