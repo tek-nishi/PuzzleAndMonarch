@@ -761,6 +761,11 @@ public:
                    timeline_->getCurrentTime() + duration + 0.35f);
   }
 
+  // パネルが尽きた
+  void noNextPanel() noexcept
+  {
+    panel_disp_ = false;
+  }
 
   const ci::AxisAlignedBox& panelAabb(int number) const noexcept
   {

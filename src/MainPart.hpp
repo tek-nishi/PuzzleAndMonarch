@@ -961,11 +961,19 @@ private:
           manipulated_ = true;
           // 適当に大きな値
           draged_length_ = draged_max_length_ * 2;
-            
-          // 次のパネル
-          calcNextPanelPosition();
-          // Fieldの中心を再計算
-          calcViewRange(true);
+
+          if (game_->isPlaying())
+          {
+            // 次のパネル
+            calcNextPanelPosition();
+            // Fieldの中心を再計算
+            calcViewRange(true);
+          }
+          else
+          {
+            // パネルが尽きた
+            view_.noNextPanel();
+          }
         }
       }
     }
@@ -1130,8 +1138,8 @@ private:
   // パネル回転演出
   void startRotatePanelEase() noexcept
   {
-    // // 経過時間で回転速度が上がる
-    // // NOTICE プレイに影響は無い
+    // 経過時間で回転速度が上がる
+    // NOTICE プレイに影響は無い
     view_.startRotatePanelEase(game_->getPlayTimeRate());
   }
 
