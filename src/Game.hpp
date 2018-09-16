@@ -48,6 +48,8 @@ struct Game
 
     // パネルを準備
     preparationPanel(0);
+    // 制限時間無し
+    invalidTimeLimit();
   }
 
   ~Game() = default;
@@ -59,6 +61,7 @@ struct Game
     count_exec_.update(delta_time);
 
     if (isPlaying()
+        && time_limited_
 #ifdef DEBUG
         && time_count
 #endif
@@ -77,6 +80,12 @@ struct Game
     }
   }
 
+
+  // 制限時間無し
+  void invalidTimeLimit() noexcept
+  {
+    time_limited_ = false;
+  }
 
   // ゲームが始まってから進んだ時間 [0, 1]
   double getPlayTimeRate() const noexcept
@@ -583,11 +592,18 @@ struct Game
   // UI更新
   void updateGameUI() const noexcept
   {
-    // UI更新
-    Arguments args{
-      { "remaining_time", getPlayTime() }
-    };
-    event_.signal("Game:UI", args);
+    if (time_limited_)
+    {
+      // UI更新
+      Arguments args{
+        { "remaining_time", getPlayTime() }
+      };
+      event_.signal("Game:UI", args);
+    }
+    else
+    {
+      event_.signal("Game:NoTimeLimit", Arguments());
+    }
   }
 
 
@@ -881,6 +897,8 @@ private:
 
   double initial_play_time_;
   double play_time_;
+  // 制限時間の有無
+  bool time_limited_ = true;
 #if defined (DEBUG)
   bool time_count = true;
 #endif

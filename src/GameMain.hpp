@@ -129,6 +129,13 @@ public:
                                 canvas_.setWidgetParam("time_remain_icon", "color", color);
                               });
 
+    holder_ += event_.connect("Game:NoTimeLimit",
+                              [this](const Connection&, const Arguments&)
+                              {
+                                // 制限時間無し
+                                canvas_.setWidgetText("time_remain", "0'00");
+                              });
+
     holder_ += event_.connect("Game:UpdateScores",
                               [this](const Connection&, const Arguments& args)
                               {
