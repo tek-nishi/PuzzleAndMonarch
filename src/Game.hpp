@@ -47,7 +47,7 @@ struct Game
     std::iota(std::begin(waiting_panels), std::end(waiting_panels), 0);
 
     // パネルを準備
-    preparationPanel();
+    preparationPanel(0);
   }
 
   ~Game() = default;
@@ -101,12 +101,6 @@ struct Game
   {
     // 最初のパネルを設置
     putPanel(start_panel_, { 0, 0 }, ci::randInt(4));
-  }
-
-  void preparationPlay(bool tutorial) noexcept
-  {
-    if (tutorial) orderForTutorial();
-
     // 次のパネルを決めて、置ける場所も探す
     getNextPanel();
   }
@@ -648,33 +642,45 @@ struct Game
 
 private:
   // フィールドに置くパネルの準備
-  void preparationPanel()
+  // tutorial_level >= 0 でチュートリアル用の配置
+  void preparationPanel(int tutorial_level)
   {
-    // 開始パネルを探す
-    std::vector<int> start_panels;
-    for (int i = 0; i < panels_.size(); ++i)
+    if (tutorial_level >= 0)
     {
-      if (panels_[i].getAttribute() & Panel::START)
+      // チュートリアル用準備
+      waiting_panels = Json::getArray<int>(params_["tutorial"][tutorial_level]);
+      // NOTICE 順番はあらかじめ用意されている
+      start_panel_ = waiting_panels[0];
+      waiting_panels.erase(std::begin(waiting_panels));
+    }
+    else
+    {
+      // 開始パネルを探す
+      std::vector<int> start_panels;
+      for (int i = 0; i < panels_.size(); ++i)
       {
-        start_panels.push_back(i);
+        if (panels_[i].getAttribute() & Panel::START)
+        {
+          start_panels.push_back(i);
+        }
       }
-    }
-    assert(!start_panels.empty());
+      assert(!start_panels.empty());
 
-    if (start_panels.size() > 1)
-    {
-      // 開始パネルが何枚かある時はシャッフル
-      std::shuffle(std::begin(start_panels), std::end(start_panels), engine_);
-    }
-    start_panel_ = start_panels[0];
+      if (start_panels.size() > 1)
+      {
+        // 開始パネルが何枚かある時はシャッフル
+        std::shuffle(std::begin(start_panels), std::end(start_panels), engine_);
+      }
+      start_panel_ = start_panels[0];
 
-    {
-      // 最初に置くパネルを取り除いてからシャッフル
-      auto it = std::find(std::begin(waiting_panels), std::end(waiting_panels), start_panel_);
-      assert(it != std::end(waiting_panels));
-      waiting_panels.erase(it);
+      {
+        // 最初に置くパネルを取り除いてからシャッフル
+        auto it = std::find(std::begin(waiting_panels), std::end(waiting_panels), start_panel_);
+        assert(it != std::end(waiting_panels));
+        waiting_panels.erase(it);
 
-      std::shuffle(std::begin(waiting_panels), std::end(waiting_panels), engine_);
+        std::shuffle(std::begin(waiting_panels), std::end(waiting_panels), engine_);
+      }
     }
 
 #if defined (DEBUG)
@@ -858,28 +864,6 @@ private:
       event_.signal("Game:PutPanel", args);
     }
   }
-
-  // チュートリアル用のパネル順にする
-  void orderForTutorial() noexcept
-  {
-    DOUT << "Tutorial order." << std::endl;
-
-    // 並びが固定されているパネル順
-    auto panels = Json::getArray<int>(params_["tutorial"]);
-
-    // panelsに含まれていないパネルをコピー
-    for (auto p : waiting_panels)
-    {
-      if (std::find(std::begin(panels), std::end(panels), p) == std::end(panels)) 
-      {
-        panels.push_back(p);
-      }
-    }
-
-    assert(panels.size() == waiting_panels.size());
-    waiting_panels = panels;
-  }
-
 
 
   // NOTICE 変数をクラス定義の最後に書くテスト

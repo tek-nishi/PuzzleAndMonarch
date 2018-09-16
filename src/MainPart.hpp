@@ -295,7 +295,6 @@ public:
                               [this](const Connection&, const Arguments&) noexcept
                               {
                                 field_camera_.restoreEaseRate();
-                                // game_->putFirstPanel();
                                 // カメラを初期位置へ
                                 prohibited_ = false;
                               });
@@ -334,7 +333,6 @@ public:
                                                   // パネル準備
                                                   view_.clear();
                                                   game_->putFirstPanel();
-                                                  game_->preparationPlay(isTutorial());
 
                                                   if (isTutorial())
                                                   {
@@ -1162,7 +1160,6 @@ private:
     game_.reset();            // TIPS メモリを２重に確保したくないので先にresetする
     game_ = std::make_unique<Game>(params_["game"], event_,
                                    Archive::isPurchased(archive_), panels_);
-    // game_->putFirstPanel();
   }
 
   // カメラから見える範囲のBGを計算
