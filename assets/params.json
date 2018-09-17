@@ -143,7 +143,7 @@
     "force_panel": 0,
     "test_score_": 110000,
     "force_tutorial": true,
-    "tutorial-level": 0,
+    "tutorial-level": 1,
 
     "panel_rate": [ 1.7, 0.3 ],
     "score_rates": [
@@ -170,6 +170,7 @@
         10, 67, 37, 27, 34, 35, 57, 22, 19, 68, 15, 49
       ],
       [
+        4, 70, 42, 29, 5, 47, 51, 54, 62, 20, 61, 16, 28
       ],
       [
       ]
