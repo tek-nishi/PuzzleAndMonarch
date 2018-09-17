@@ -48,6 +48,8 @@ class Archive
             .addChild(ci::JsonTree("average-turn-times",  0.0))
             .addChild(ci::JsonTree("average-put-time",    0.0))
 
+            .addChild(ci::JsonTree("tutorial-level", 0))
+
             .addChild(ci::JsonTree("bgm-enable", true))
             .addChild(ci::JsonTree("se-enable",  true))
 

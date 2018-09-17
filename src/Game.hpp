@@ -47,7 +47,7 @@ struct Game
     std::iota(std::begin(waiting_panels), std::end(waiting_panels), 0);
 
     // パネルを準備
-    preparationPanel(0);
+    preparationPanel(params.getValueForKey<int>("tutorial-level"));
     // 制限時間無し
     invalidTimeLimit();
   }
