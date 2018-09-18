@@ -400,14 +400,14 @@
 
       "childlen": [
         {
-          "rect": [ -100, -14, 100, 19 ],
+          "rect": [ -100, -10, 100, 15 ],
           "anchor": [
             [ 0.5, 0.5 ],
             [ 0.5, 0.5 ]
           ],
 
-          "font": "head",
-          "text": "Secure the territory!"
+          "font": "jp",
+          "text": "パネル置き、領地を広げよ"
         }
       ]
     },

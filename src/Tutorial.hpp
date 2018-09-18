@@ -29,8 +29,9 @@ class Tutorial
 
 
 public:
-  Tutorial(const ci::JsonTree& params, Event<Arguments>& event, UI::Drawer& drawer, TweenCommon& tween_common)
+  Tutorial(const ci::JsonTree& params, Event<Arguments>& event, Archive& archive, UI::Drawer& drawer, TweenCommon& tween_common)
     : event_(event),
+      archive_(archive),
       canvas_(event, drawer, tween_common,
               params["ui.camera"],
               Params::load(params.getValueForKey<std::string>("tutorial.canvas")),
@@ -59,36 +60,43 @@ public:
                               });
 
     // 各種操作
-    holder_ += event_.connect("Game:PutPanel",
-                              [this](const Connection&, const Arguments&)
-                              {
-                                doneOperation(PANEL_PUT);
-                              });
-    holder_ += event_.connect("Game:PanelRotate",
-                              [this](const Connection&, const Arguments&)
-                              {
-                                doneOperation(PANEL_ROTATE);
-                              });
-    holder_ += event_.connect("Game:PanelMove",
-                              [this](const Connection&, const Arguments&)
-                              {
-                                doneOperation(PANEL_MOVE);
-                              });
-    holder_ += event_.connect("Game:completed_forests",
-                              [this](const Connection&, const Arguments&)
-                              {
-                                doneOperation(GET_FOREST);
-                              });
-    holder_ += event_.connect("Game:completed_path",
-                              [this](const Connection&, const Arguments&)
-                              {
-                                doneOperation(GET_TOWN);
-                              });
-    holder_ += event_.connect("Game:completed_church",
-                              [this](const Connection&, const Arguments&)
-                              {
-                                doneOperation(GET_CHURCH);
-                              });
+    struct
+    {
+      std::string key;
+      std::string event;
+      int type; 
+    }
+    info[]
+    {
+      { "tutorial-put-panel",    "Game:PutPanel",    PANEL_PUT },
+      { "tutorial-rotate-panel", "Game:PanelRotate", PANEL_ROTATE },
+      { "tutorial-move-panel",   "Game:PanelMove",   PANEL_MOVE },
+
+      { "tutorial-comp-path",   "Game:completed_path",    GET_TOWN },
+      { "tutorial-comp-forest", "Game:completed_forests", GET_FOREST },
+      { "tutorial-comp-church", "Game:completed_church",  GET_CHURCH },
+    };
+
+    for (const auto& i : info)
+    {
+      if (!archive.getValue(i.key, false))
+      {
+        auto key  = i.key;
+        auto type = i.type;
+        holder_ += event_.connect(i.event,
+                                  [this, type, key](const Connection& connection, const Arguments&)
+                                  {
+                                    doneOperation(type);
+                                    archive_.setRecord(key, true);
+
+                                    connection.disconnect();
+                                  });
+      }
+      else
+      {
+        doneOperation(i.type);
+      }
+    }
 
     // Callback登録
     holder_ += event_.connect("Tutorial:callback",
@@ -258,6 +266,8 @@ private:
   
   Event<Arguments>& event_;
   ConnectionHolder holder_;
+
+  Archive& archive_;
 
   CountExec count_exec_;
 

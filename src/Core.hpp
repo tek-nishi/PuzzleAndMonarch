@@ -64,7 +64,7 @@ public:
                               [this](const Connection&, const Arguments&) noexcept
                               {
                                   DOUT << "Tutorial started." << std::endl;
-                                  tasks_.pushBack<Tutorial>(params_, event_, drawer_, tween_common_);
+                                  tasks_.pushBack<Tutorial>(params_, event_, archive_, drawer_, tween_common_);
                               });
 
     // Title→Credits
