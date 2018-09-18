@@ -217,18 +217,6 @@ private:
             // まだ途中なので適当な間を置いて再チェック
             current_direction_delay_ = 1.0;
           }
-          else if (!completed_)
-          {
-            // すべて表示した
-            completed_ = true;
-            event_.signal("Tutorial:Complete", Arguments());
-            canvas_.startTween("complete");
-            count_exec_.add(5,
-                            [this]()
-                            {
-                              finishTask();
-                            });
-          }
         }
       }
     }
@@ -291,9 +279,8 @@ private:
   // 更新関数
   std::function<void ()> update_;
 
-  bool pause_     = false;
-  bool completed_ = false;
-  bool active_    = true;
+  bool pause_  = false;
+  bool active_ = true;
 };
 
 }
