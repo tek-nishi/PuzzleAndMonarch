@@ -40,15 +40,11 @@ class Archive
             .addChild(ci::JsonTree("max-forest", uint32_t(0)))
             .addChild(ci::JsonTree("max-path",   uint32_t(0)))
 
-            .addChild(ci::JsonTree("tutorial-finish", false))
-
             .addChild(ci::JsonTree("average-score",       0.0))
             .addChild(ci::JsonTree("average-put-panels",  0.0))
             .addChild(ci::JsonTree("average-moved-times", 0.0))
             .addChild(ci::JsonTree("average-turn-times",  0.0))
             .addChild(ci::JsonTree("average-put-time",    0.0))
-
-            .addChild(ci::JsonTree("tutorial-level", 0))
 
             .addChild(ci::JsonTree("bgm-enable", true))
             .addChild(ci::JsonTree("se-enable",  true))

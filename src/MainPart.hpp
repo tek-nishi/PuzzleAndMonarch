@@ -332,6 +332,9 @@ public:
                                                 {
                                                   // パネル準備
                                                   view_.clear();
+
+                                                  auto level = archive_.getValue("tutorial-level", 0);
+                                                  game_->setupPanels(level);
                                                   game_->putFirstPanel();
 
                                                   if (isTutorial())
@@ -349,7 +352,6 @@ public:
                                 view_.updateBlank(game_->getBlankPositions());
                                 calcNextPanelPosition();
 
-                                completed_tutorial_ = false;
                                 {
                                   // Tutorial向けに関数ポインタを送信
                                   std::function<void ()> func = std::bind(&MainPart::sendFieldPositions, this);
@@ -423,11 +425,15 @@ public:
                                 view_.setColor(transition_duration_, transition_color_);
                                 view_.endPlay();
 
-                                // チュートリアル完了判定
-                                if (completed_tutorial_)
                                 {
-                                  archive_.setRecord("tutorial-finish", true);
-                                  event_.signal("Game:Tutorial-Finish", Arguments());
+                                  // チュートリアル
+                                  auto level = archive_.getValue("tutorial-level", 0);
+                                  if (level >= 0)
+                                  {
+                                    level += 1;
+                                    if (level > 2) level = -1;
+                                    archive_.setRecord("tutorial-level", level);
+                                  }
                                 }
 
                                 // スコア計算
@@ -736,14 +742,6 @@ public:
                               {
                                 // 記録を消去
                                 eraseRecords();
-                              });
-    
-    holder_ += event_.connect("Tutorial:Complete",
-                              [this](const Connection&, const Arguments&)
-                              {
-                                // Tutorialコンプリート
-                                completed_tutorial_ = true;
-                                DOUT << "Tutorial completed." << std::endl;
                               });
 
     // Transition
@@ -1485,11 +1483,8 @@ private:
 
   bool isTutorial() const
   {
-    auto tutorial = !archive_.getRecord<bool>("tutorial-finish")
-                  || Json::getValue(params_, "game.force_tutorial", false)
-    ;
-
-    return tutorial;
+    auto level = archive_.getValue("tutorial-level", 0);
+    return level >= 0;
   }
 
 
@@ -1566,7 +1561,6 @@ private:
   AutoRotateCamera rotate_camera_;
 
   // Tutorial向け
-  bool completed_tutorial_ = false;
   std::map<std::string, glm::vec3> tutorial_pos_;
 
 

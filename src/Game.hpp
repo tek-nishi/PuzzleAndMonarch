@@ -41,15 +41,6 @@ struct Game
     // 乱数
     std::random_device seed_gen;
     engine_ = std::mt19937(seed_gen());
-
-    // パネルを通し番号で用意
-    waiting_panels.resize(panels_.size());
-    std::iota(std::begin(waiting_panels), std::end(waiting_panels), 0);
-
-    // パネルを準備
-    preparationPanel(params.getValueForKey<int>("tutorial-level"));
-    // 制限時間無し
-    invalidTimeLimit();
   }
 
   ~Game() = default;
@@ -81,12 +72,6 @@ struct Game
   }
 
 
-  // 制限時間無し
-  void invalidTimeLimit() noexcept
-  {
-    time_limited_ = false;
-  }
-
   // ゲームが始まってから進んだ時間 [0, 1]
   double getPlayTimeRate() const noexcept
   {
@@ -104,6 +89,19 @@ struct Game
     return initial_play_time_;
   }
 
+
+  // パネル準備
+  // tutorial_level >= 0 でチュートリアル用の配置
+  void setupPanels(int level)
+  {
+    // パネルを準備
+    preparationPanel(level);
+    if (level >= 0)
+    {
+      // 制限時間無し
+      invalidTimeLimit();
+    }
+  }
 
   // 本編準備
   void putFirstPanel() noexcept
@@ -671,6 +669,10 @@ private:
     }
     else
     {
+      // パネルを通し番号で用意
+      waiting_panels.resize(panels_.size());
+      std::iota(std::begin(waiting_panels), std::end(waiting_panels), 0);
+
       // 開始パネルを探す
       std::vector<int> start_panels;
       for (int i = 0; i < panels_.size(); ++i)
@@ -707,6 +709,12 @@ private:
       waiting_panels.resize(force_panel);
     }
 #endif
+  }
+
+  // 制限時間無し
+  void invalidTimeLimit() noexcept
+  {
+    time_limited_ = false;
   }
 
   bool getNextPanel() noexcept
