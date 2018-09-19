@@ -209,13 +209,13 @@ public:
     canvas_.enableWidget("GameCenter");
 #endif
 
+    changePlayIcon(false, params);
     layoutIcons(params);
 
     if (first_time)
     {
       // 起動時は特別
       canvas_.startTween("launch");
-      // startIconTweens(params);
       startMainTween(params, 2.5);
     }
     else
@@ -283,6 +283,19 @@ private:
     }
 
     return active_;
+  }
+
+  // Playアイコンの変更
+  void changePlayIcon(bool tutorial, const ci::JsonTree& params)
+  {
+    auto& p = tutorial ? params["title.tutorial-icon"]
+                       : params["title.play-icon"];
+    canvas_.setWidgetText("play:icon", p.getValueForKey<std::string>("text"));
+
+    auto anchor_min = Json::getVec<glm::vec2>(p["anchor"][0]);
+    auto anchor_max = Json::getVec<glm::vec2>(p["anchor"][1]);
+    canvas_.setWidgetParam("play:icon", "anchor_min", anchor_min);
+    canvas_.setWidgetParam("play:icon", "anchor_max", anchor_max);
   }
 
   // アイコンを再レイアウト
