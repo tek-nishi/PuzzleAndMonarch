@@ -216,6 +216,29 @@
     }
   ],
 
+  "tutorial": [
+    {
+      "identifier": "tutorial-comp",
+      "tween": [
+        {
+          "param": "alpha",
+          "type": "float",
+          "body": [
+            {
+              "duration": 1.2,
+              "delay": 3.0,
+              "enable_start": true,
+              "copy_start": true,
+              "ease_func": "None",
+              "start": 0,
+              "end":   1
+            }
+          ]
+        }
+      ]
+    }
+  ],
+
   "start": [
     {
       "identifier": "play",

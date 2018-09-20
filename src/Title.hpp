@@ -21,8 +21,25 @@ class Title
 {
 
 public:
+  // 生成時の諸々の条件
+  struct Condition
+  {
+    // Introから遷移
+    bool first_time;
+    // １回以上プレイした
+    bool saved;
+    // ランキングに記録がある
+    bool ranking;
+    // 課金した
+    bool purchased;
+
+    // チュートリアルレベル
+    int tutorial_level;
+  };
+
+
   Title(const ci::JsonTree& params, Event<Arguments>& event, UI::Drawer& drawer, TweenCommon& tween_common,
-        bool first_time, bool saved, bool ranking, bool purchased) noexcept
+        const Condition& condition) noexcept
     : event_(event),
       effect_speed_(params.getValueForKey<double>("title.effect_speed")),
       canvas_(event, drawer, tween_common,
@@ -31,8 +48,8 @@ public:
               Params::load(params.getValueForKey<std::string>("title.tweens")))
   {
     {
-      auto v = first_time ? "title.se_first"
-                          : "title.se";
+      auto v = condition.first_time ? "title.se_first"
+                                    : "title.se";
       startTimelineSound(event, params, v);
     }
 
@@ -188,19 +205,19 @@ public:
     setupCommonTweens(event_, holder_, canvas_, "play");
 
     // canvas_.enableWidget("Purchase");
-    if (!saved) 
+    if (!condition.saved) 
     {
       // Saveデータがない場合関連するボタンを消す
       canvas_.enableWidget("Records", false);
     }
-    if (!ranking)
+    if (!condition.ranking)
     {
       // Rankingに記録がない場合もボタンを消す
       canvas_.enableWidget("Ranking", false);
     }
-    if (purchased)
+    if (condition.purchased)
     {
-      purchased_ = purchased;
+      purchased_ = true;
       canvas_.enableWidget("purchased");
     }
 
@@ -209,10 +226,10 @@ public:
     canvas_.enableWidget("GameCenter");
 #endif
 
-    changePlayIcon(false, params);
+    changePlayIcon(condition.tutorial_level, params);
     layoutIcons(params);
 
-    if (first_time)
+    if (condition.first_time)
     {
       // 起動時は特別
       canvas_.startTween("launch");
@@ -223,6 +240,11 @@ public:
       canvas_.startCommonTween("root", "in-from-left");
       canvas_.startTween("start");
       startMainTween(params, 0.6);
+    }
+
+    if (condition.tutorial_level >= 0)
+    {
+      canvas_.startTween("tutorial");
     }
 
     event.signal("Title:begin", Arguments());
@@ -286,16 +308,18 @@ private:
   }
 
   // Playアイコンの変更
-  void changePlayIcon(bool tutorial, const ci::JsonTree& params)
+  void changePlayIcon(int tutorial_level, const ci::JsonTree& params)
   {
-    auto& p = tutorial ? params["title.tutorial-icon"]
-                       : params["title.play-icon"];
+    auto& p = (tutorial_level >= 0) ? params["title.tutorial-icon"]
+                                    : params["title.play-icon"];
     canvas_.setWidgetText("play:icon", p.getValueForKey<std::string>("text"));
 
     auto anchor_min = Json::getVec<glm::vec2>(p["anchor"][0]);
     auto anchor_max = Json::getVec<glm::vec2>(p["anchor"][1]);
     canvas_.setWidgetParam("play:icon", "anchor_min", anchor_min);
     canvas_.setWidgetParam("play:icon", "anchor_max", anchor_max);
+
+    canvas_.setWidgetText("tutorial-comp", std::to_string(tutorial_level));
   }
 
   // アイコンを再レイアウト

@@ -295,8 +295,16 @@ private:
 
   void startTitle(bool first_time)
   {
-    tasks_.pushBack<Title>(params_, event_, drawer_, tween_common_,
-                           first_time, archive_.isSaved(), archive_.existsRanking(), Archive::isPurchased(archive_));
+    Title::Condition condition
+    {
+      first_time,
+      archive_.isSaved(),
+      archive_.existsRanking(),
+      Archive::isPurchased(archive_),
+      archive_.getValue("tutorial-level", 0)
+    };
+
+    tasks_.pushBack<Title>(params_, event_, drawer_, tween_common_, condition);
   }
 
 

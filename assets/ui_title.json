@@ -119,6 +119,45 @@
     },
 
     {
+      "identifier": "tutorial-comp",
+      "rect": [ 30, -17, 30, 3 ],
+      "anchor": [
+        [ 0.5, 0.45 ],
+        [ 0.5, 0.45 ]
+      ],
+
+      "enable": false,
+
+      "font": "en",
+      "text": "0",
+      "layout": [ 0, 0.5 ],
+
+      "childlen": [
+        {
+          "rect": [ 12, -14, 12, 8 ],
+          "anchor": [
+            [ 0.5, 0.5 ],
+            [ 0.5, 0.5 ]
+          ],
+
+          "font": "en",
+          "text": "/"
+        },
+        {
+          "rect": [ 22, -19, 22, 1 ],
+          "anchor": [
+            [ 0.5, 0.5 ],
+            [ 0.5, 0.5 ]
+          ],
+
+          "font": "en",
+          "text": "3",
+          "layout": [ 1, 0.5 ]
+        }
+      ]
+    },
+
+    {
       "identifier": "copyright",
       "rect": [ 0, -10, 0, 0 ],
       "anchor": [
