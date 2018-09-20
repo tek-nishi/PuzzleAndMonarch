@@ -423,7 +423,6 @@ public:
                                 game_event_.insert("Game:finish");
 
                                 calcViewRange(false);
-                                view_.setColor(transition_duration_, transition_color_);
                                 view_.endPlay();
 
                                 {
@@ -459,7 +458,9 @@ public:
                                 // 最長道
                                 auto max_path = boost::any_cast<u_int>(args.at("max_path"));
 
-                                count_exec_.add(params_.getValueForKey<double>("field.result_begin_delay"),
+                                auto delay = boost::any_cast<bool>(args.at("no_panels")) ? 2.5 : 0.0;
+                                view_.setColor(transition_duration_, transition_color_, delay);
+                                count_exec_.add(params_.getValueForKey<double>("field.result_begin_delay") + delay,
                                                 [this, score, rank_in, ranking,
                                                  high_score, total_panels,
                                                  max_forest, max_path]() noexcept

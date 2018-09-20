@@ -66,7 +66,7 @@ struct Game
       {
         // 時間切れ
         DOUT << "Time Up." << std::endl;
-        endPlay();
+        endPlay(false);
       }
     }
   }
@@ -120,7 +120,7 @@ struct Game
   }
 
   // 本編終了
-  void endPlay() noexcept
+  void endPlay(bool no_panels) noexcept
   {
     finished = true;
     calcResults();
@@ -140,6 +140,8 @@ struct Game
 
       { "completed_forest", &completed_forests },
       { "completed_path",   &completed_path },
+
+      { "no_panels", no_panels },
     };
     event_.signal("Game:Finish", args);
     
@@ -218,7 +220,7 @@ struct Game
     {
       // 全パネルを使い切った
       DOUT << "End of panels." << std::endl;
-      endPlay();
+      endPlay(true);
     }
   }
 
@@ -327,7 +329,7 @@ struct Game
     {
       // 全パネルを使い切った
       DOUT << "End of panels." << std::endl;
-      endPlay();
+      endPlay(true);
     }
   }
 #endif

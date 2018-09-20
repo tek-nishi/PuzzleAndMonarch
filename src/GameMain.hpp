@@ -147,15 +147,20 @@ public:
     // ゲーム完了
     auto end_delay = params.getValueForKey<double>("gamemain.end_delay");
     holder_ += event_.connect("Game:Finish",
-                              [this, end_delay](const Connection&, const Arguments&) noexcept
+                              [this, end_delay](const Connection&, const Arguments& args) noexcept
                               {
+                                auto delay = boost::any_cast<bool>(args.at("no_panels")) ? 2.5 : 0.0;
                                 canvas_.active(false);
-                                canvas_.startTween("end");
-                                count_exec_.add(end_delay,
-                                                [this]() noexcept
+                                count_exec_.add(delay,
+                                                [this, end_delay]()
                                                 {
-                                                  active_ = false;
-                                                  DOUT << "GameMain:end" << std::endl;
+                                                  canvas_.startTween("end");
+                                                  count_exec_.add(end_delay,
+                                                                  [this]() noexcept
+                                                                  {
+                                                                    active_ = false;
+                                                                    DOUT << "GameMain:end" << std::endl;
+                                                                  });
                                                 });
                               });
 

@@ -1,10 +1,7 @@
 * TODO stdのアルゴリズムを積極的に使う
-* TODO Tutorialを中断しても進捗がリセットされない
-* TODO TutorialとArchiveの依存を断ち切る
 * TODO ちょっと回転しただけで、長押し置きが無効になる
 * TODO 教会が完成していないのに道で繋がると完成したように見える
 * TODO 最初は60秒で、徐々に時間を増やし、最終的に３分に
-* TODO Tutorial時間表示が1:30になっている
 * TODO 得点タイミングで「こんだけ繋がった!!」をしっかり伝える
 * TODO Introの演出をもっと工夫する
 * TODO Fontのテクスチャが足りてるか確認
@@ -22,6 +19,12 @@
 * TODO iOS:AppStore提出に必要な書類や素材
 * TODO iOS:実績のアイコンを用意
 * TODO iOS:サポートサイト用意(特定商取引に関する表示)
+* DONE Tutorial終了時に少しdelayを入れる
+CLOSED: [2018-09-21 Fri 07:45]
+* DONE Tutorial時間表示が1:30になっている
+CLOSED: [2018-09-21 Fri 07:11]
+* DONE Tutorialを中断しても進捗がリセットされない
+CLOSED: [2018-09-21 Fri 07:11]
 * DONE 「これは街？」とユーザーが見た目で迷う
 CLOSED: [2018-09-20 Thu 19:42]
 * DONE 「とにかく道を長く繋げて得点する」を強調
@@ -754,6 +757,8 @@ CLOSED: [2018-01-09 火 16:27]
 CLOSED: [2018-01-09 Tue 00:32]
 * DONE iOS:縦画面→非アクティブ→横画面→アクティブ→画面乱れる
 CLOSED: [2018-03-17 土 17:19]
+* ABORT TutorialとArchiveの依存を断ち切る
+CLOSED: [2018-09-21 Fri 07:12]
 * ABORT クリア判定にカスタマイズポイントを設ける
 CLOSED: [2018-09-19 Wed 11:35]
 * ABORT カルカソンヌ公式に許可を取る
