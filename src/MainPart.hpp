@@ -500,7 +500,6 @@ public:
                                  }
 
                                  // UI演出
-                                 if (!isTutorial())
                                  {
                                    Arguments comp_args{
                                      { "positions", cc },
@@ -526,7 +525,6 @@ public:
                                  }
 
                                  // UI演出
-                                 if (!isTutorial())
                                  {
                                    Arguments comp_args{
                                      { "positions", cc },
@@ -560,13 +558,11 @@ public:
                                  for (const auto& o : ofs)
                                  {
                                    view_.startEffect(p + o, delay);
-                                   view_.effectPanelScaing(p, delay);
                                    delay += 0.05f;
                                  }
+                                 view_.effectPanelScaing(p, delay);
                                }
 
-                               // UI演出
-                               if (!isTutorial())
                                {
                                  Arguments comp_args{
                                    { "positions", completed },

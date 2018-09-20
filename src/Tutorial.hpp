@@ -64,37 +64,36 @@ public:
     {
       std::string key;
       std::string event;
-      int type; 
+      int type;
+      bool like;
     }
     info[]
     {
-      { "tutorial-put-panel",    "Game:PutPanel",    PANEL_PUT },
-      { "tutorial-rotate-panel", "Game:PanelRotate", PANEL_ROTATE },
-      { "tutorial-move-panel",   "Game:PanelMove",   PANEL_MOVE },
+      { "tutorial-put-panel",    "Game:PutPanel",    PANEL_PUT,    true },
+      { "tutorial-rotate-panel", "Game:PanelRotate", PANEL_ROTATE, true },
+      { "tutorial-move-panel",   "Game:PanelMove",   PANEL_MOVE,   true },
 
-      { "tutorial-comp-path",   "Game:completed_path",    GET_TOWN },
-      { "tutorial-comp-forest", "Game:completed_forests", GET_FOREST },
-      { "tutorial-comp-church", "Game:completed_church",  GET_CHURCH },
+      { "tutorial-comp-path",   "Game:completed_path",    GET_TOWN,   false },
+      { "tutorial-comp-forest", "Game:completed_forests", GET_FOREST, false },
+      { "tutorial-comp-church", "Game:completed_church",  GET_CHURCH, false },
     };
 
     for (const auto& i : info)
     {
       if (!archive.getValue(i.key, false))
       {
-        auto key  = i.key;
-        auto type = i.type;
         holder_ += event_.connect(i.event,
-                                  [this, type, key](const Connection& connection, const Arguments&)
+                                  [this, i](const Connection& connection, const Arguments&)
                                   {
-                                    doneOperation(type);
-                                    archive_.setRecord(key, true);
+                                    doneOperation(i.type, i.like);
+                                    archive_.setRecord(i.key, true);
 
                                     connection.disconnect();
                                   });
       }
       else
       {
-        doneOperation(i.type);
+        doneOperation(i.type, false);
       }
     }
 
@@ -232,7 +231,7 @@ private:
   }
 
   // 操作完了
-  void doneOperation(int type)
+  void doneOperation(int type, bool like)
   {
     if (disp_ && (disp_type_ == type))
     {
@@ -240,9 +239,9 @@ private:
       disp_ = false;
       canvas_.startTween("end");
       canvas_.setWidgetParam("like", "offset", cur_ofs_);
-      canvas_.startTween("like");
+      if (like) canvas_.startTween("like");
 
-      if (!operation_.count(type))
+      // if (!operation_.count(type))
       {
         // 最初に条件を満たした時は少し長めの待ち時間
         current_direction_delay_ = direction_delay_;
