@@ -204,7 +204,6 @@ public:
     setupCommonTweens(event_, holder_, canvas_, "purchase");
     setupCommonTweens(event_, holder_, canvas_, "play");
 
-    // canvas_.enableWidget("Purchase");
     if (!condition.saved) 
     {
       // Saveデータがない場合関連するボタンを消す
@@ -244,7 +243,9 @@ public:
 
     if (condition.tutorial_level >= 0)
     {
-      canvas_.startTween("tutorial");
+      const auto* id = condition.first_time ? "tutorial-first"
+                                            : "tutorial";
+      canvas_.startTween(id);
     }
 
     event.signal("Title:begin", Arguments());
