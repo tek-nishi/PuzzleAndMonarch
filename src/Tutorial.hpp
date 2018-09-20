@@ -86,7 +86,12 @@ public:
                                   [this, i](const Connection& connection, const Arguments&)
                                   {
                                     doneOperation(i.type, i.like);
-                                    archive_.setRecord(i.key, true);
+
+                                    Arguments args
+                                    {
+                                      { "key", i.key },
+                                    };
+                                    event_.signal("Tutorial:Complete", args);
 
                                     connection.disconnect();
                                   });
@@ -239,13 +244,10 @@ private:
       disp_ = false;
       canvas_.startTween("end");
       canvas_.setWidgetParam("like", "offset", cur_ofs_);
+      // 必要なら演出
       if (like) canvas_.startTween("like");
 
-      // if (!operation_.count(type))
-      {
-        // 最初に条件を満たした時は少し長めの待ち時間
-        current_direction_delay_ = direction_delay_;
-      }
+      current_direction_delay_ = direction_delay_;
     }
     operation_.insert(type);
   }

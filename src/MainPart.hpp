@@ -433,6 +433,12 @@ public:
                                     level += 1;
                                     if (level > 2) level = -1;
                                     archive_.setRecord("tutorial-level", level);
+
+                                    // 達成項目を記録
+                                    for (const auto& key : tutorial_completed_)
+                                    {
+                                      archive_.setRecord(key, true);
+                                    }
                                   }
                                 }
 
@@ -482,6 +488,13 @@ public:
     holder_ += event.connect("Tutorial:Begin",
                              [this](const Connection&, Arguments&)
                              {
+                             });
+
+    holder_ += event.connect("Tutorial:Complete",
+                             [this](const Connection&, const Arguments& args)
+                             {
+                               const auto& key = boost::any_cast<const std::string&>(args.at("key"));
+                               tutorial_completed_.insert(key);
                              });
 
     // 得点時の演出
@@ -1558,6 +1571,7 @@ private:
 
   // Tutorial向け
   std::map<std::string, glm::vec3> tutorial_pos_;
+  std::set<std::string> tutorial_completed_;
 
 
 #if defined (DEBUG)
