@@ -324,6 +324,10 @@ public:
 
                                 // ここで色々リセット
                                 resetGame();
+
+                                auto level = archive_.getValue("tutorial-level", 0);
+                                game_->setupPanels(level);
+
                                 // NOTICE 開始演出終わりに残り時間が正しく表示されているために必要
                                 game_->updateGameUI();
 
@@ -332,9 +336,6 @@ public:
                                                 {
                                                   // パネル準備
                                                   view_.clear();
-
-                                                  auto level = archive_.getValue("tutorial-level", 0);
-                                                  game_->setupPanels(level);
                                                   game_->putFirstPanel();
 
                                                   if (isTutorial())
