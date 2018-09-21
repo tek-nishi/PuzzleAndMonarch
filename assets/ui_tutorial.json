@@ -75,6 +75,19 @@
           "text": ""
         }
       ]
+    },
+
+    {
+      "identifier": "advice",
+      "rect": [ 0, -10, 0, 10 ],
+      "anchor": [
+        [ 0.5, 0.5 ],
+        [ 0.5, 0.5 ]
+      ],
+      "enable": false,
+      
+      "font": "jp",
+      "text": "道が長いほど、高得点"
     }
   ]
 }

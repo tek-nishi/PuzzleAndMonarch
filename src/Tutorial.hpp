@@ -162,7 +162,15 @@ public:
     holder_ += event_.connect("Game:Finish",
                               [this](const Connection&, const Arguments&)
                               {
-                                finishTask();
+                                pause_ = true;
+                                canvas_.startTween("pause");
+                                canvas_.startTween("advice");
+
+                                count_exec_.add(7,
+                                                [this]()
+                                                {
+                                                  finishTask();
+                                                });
                               });
 
     holder_ += event_.connect("Game:Aborted",
@@ -180,10 +188,10 @@ public:
 private:
   bool update(double current_time, double delta_time) noexcept override
   {
-    if (pause_) return active_;
-    
-    // 更新関数を呼ぶ
     count_exec_.update(delta_time);
+    if (pause_) return active_;
+
+    // 更新関数を実行
     update_();
 
     // 必須操作が無いと催促する感じ
