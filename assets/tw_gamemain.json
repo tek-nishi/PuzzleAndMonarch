@@ -157,9 +157,9 @@
     }
   ],
 
-  "like1": [
+  "like0": [
     {
-      "identifier": "like1",
+      "identifier": "like0",
       "tween": [
         {
           "param": "alpha",
@@ -198,9 +198,9 @@
       ]
     }
   ],
-  "like2": [
+  "like": [
     {
-      "identifier": "like2",
+      "identifier": "like1",
       "tween": [
         {
           "param": "alpha",
@@ -232,89 +232,7 @@
               "copy_start": true,
               "ease_func": "OutQuint",
               "start": [ -20, 28, 0, 28 ],
-              "end": [ -20, 43, 0, 43 ]
-            }
-          ]
-        }
-      ]
-    }
-  ],
-  "like3": [
-    {
-      "identifier": "like3",
-      "tween": [
-        {
-          "param": "alpha",
-          "type": "float",
-          "body": [
-            {
-              "duration": 0.4,
-              "copy_start": true,
-              "enable_start": true,
-              "ease_func": "None",
-              "start": 1,
-              "end": 1
-            },
-            {
-              "duration": 0.8,
-              "disable_end": true,
-              "ease_func": "None",
-              "start": 1,
-              "end": 0
-            }
-          ]
-        },
-        {
-          "param": "rect",
-          "type": "rect",
-          "body": [
-            {
-              "duration": 0.8,
-              "copy_start": true,
-              "ease_func": "OutQuint",
-              "start": [ -20, 28, 0, 28 ],
-              "end": [ -20, 43, 0, 43 ]
-            }
-          ]
-        }
-      ]
-    }
-  ],
-  "like4": [
-    {
-      "identifier": "like4",
-      "tween": [
-        {
-          "param": "alpha",
-          "type": "float",
-          "body": [
-            {
-              "duration": 0.4,
-              "copy_start": true,
-              "enable_start": true,
-              "ease_func": "None",
-              "start": 1,
-              "end": 1
-            },
-            {
-              "duration": 0.8,
-              "disable_end": true,
-              "ease_func": "None",
-              "start": 1,
-              "end": 0
-            }
-          ]
-        },
-        {
-          "param": "rect",
-          "type": "rect",
-          "body": [
-            {
-              "duration": 0.8,
-              "copy_start": true,
-              "ease_func": "OutQuint",
-              "start": [ -20, 28, 0, 28 ],
-              "end": [ -20, 43, 0, 43 ]
+              "end": [ -20, 42, 0, 42 ]
             }
           ]
         }

@@ -218,22 +218,28 @@ public:
                               {
                                 DOUT << "Game:completed" << std::endl;
                                 const auto& positions = boost::any_cast<const std::vector<glm::ivec2>&>(args.at("positions"));
-                                completedEffect(positions);
+                                // completedEffect(positions);
 
                                 // 演出開始
-                                auto ndc_pos = like_func_(like_pos_);
-                                auto ofs = canvas_.ndcToPos(ndc_pos);
+                                double delay = 0.2;
+                                for (const auto& p : positions)
+                                {
+                                  count_exec_.add(delay,
+                                                  [this, p]()
+                                                  {
+                                                    auto ndc_pos = like_func_(p);
+                                                    auto ofs     = canvas_.ndcToPos(ndc_pos);
 
-                                const static std::string tbl[] = {
-                                  "like1",
-                                  "like2",
-                                  "like3",
-                                  "like4",
-                                };
+                                                    char id[16];
+                                                    sprintf(id, "like%d", like_index_);
+                                                    like_index_ = (like_index_ + 1) % 8;
 
-                                canvas_.setWidgetParam(tbl[like_index_], "offset", ofs);
-                                canvas_.startTween(tbl[like_index_]);
-                                like_index_ = (like_index_ + 1) & 0b11;
+                                                    canvas_.setTweenTarget(id, "like", 0);
+                                                    canvas_.setWidgetParam(id, "offset", ofs);
+                                                    canvas_.startTween("like");
+                                                  });
+                                  delay += 0.1;
+                                }
                               });
 
     setupCommonTweens(event_, holder_, canvas_, "pause");

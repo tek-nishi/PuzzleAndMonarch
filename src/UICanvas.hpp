@@ -130,6 +130,12 @@ public:
     }
   }
 
+  void setTweenTarget(const std::string& id, const std::string& name, size_t index)
+  {
+    auto& contents = tweens_.at(name);
+    contents[index].identifier = id;
+  }
+
 
   void startCommonTween(const std::string& id, const std::string& name) noexcept
   {

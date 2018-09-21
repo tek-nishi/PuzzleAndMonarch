@@ -49,7 +49,12 @@ public:
   ~TweenContainer() = default;
 
 
-  const std::vector<Contents>& at(const std::string& name) const noexcept
+  const std::vector<Contents>& at(const std::string& name) const
+  {
+    return tweens_.at(name);
+  }
+
+  std::vector<Contents>& at(const std::string& name)
   {
     return tweens_.at(name);
   }
