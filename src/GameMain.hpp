@@ -292,14 +292,6 @@ private:
     std::sprintf(id, "score:%d", index + 1);
     canvas_.setWidgetParam(id, "text", std::to_string(score));
 
-    auto option = timeline_->applyPtr(&scores_color_[index],
-                                      ci::Color(1, 0, 0), ci::Color::white(),
-                                      0.8);
-    option.updateFn([this, id, index]() noexcept
-                    {
-                      canvas_.setWidgetParam(id, "color", scores_color_[index]);
-                    });
-
     canvas_.setTweenTarget(id, "score", 0);
     canvas_.startTween("score");
   }
