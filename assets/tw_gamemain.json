@@ -238,5 +238,30 @@
         }
       ]
     }
+  ],
+  "score": [
+    {
+      "identifier": "score:0",
+      "tween": [
+        {
+          "param": "scale",
+          "type": "vec2",
+          "body": [
+            {
+              "duration": 0.2,
+              "copy_start": true,
+              "ease_func": "OutCubic",
+              "start": [   1,   1 ],
+              "end":   [ 1.8, 1.8 ]
+            },
+            {
+              "duration": 0.15,
+              "ease_func": "OutBack",
+              "end": [ 1, 1 ]
+            }
+          ]
+        }
+      ]
+    }
   ]
 }

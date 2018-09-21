@@ -299,6 +299,9 @@ private:
                     {
                       canvas_.setWidgetParam(id, "color", scores_color_[index]);
                     });
+
+    canvas_.setTweenTarget(id, "score", 0);
+    canvas_.startTween("score");
   }
 
   void updateScores(const std::vector<u_int>& scores)
@@ -329,29 +332,6 @@ private:
     }
   }
 
-
-  // 森や街が完成した時の演出
-  void completedEffect(const std::vector<glm::ivec2>& positions)
-  {
-    // 一番真ん中を探す
-    auto center = std::accumulate(std::begin(positions), std::end(positions), glm::ivec2()) / int(positions.size());
-
-    // 中心から一番近いパネルに「いいね!!」を表示
-    u_int near_l = std::numeric_limits<u_int>::max();
-    glm::ivec2 c;
-    for (const auto& p : positions)
-    {
-      auto d = p - center;
-      u_int l = d.x * d.x + d.y * d.y;
-      if (l < near_l)
-      {
-        near_l = l;
-        c = p;
-      }
-    }
-
-    like_pos_ = c;
-  }
 
   void startPauseTweens()
   {
@@ -387,7 +367,6 @@ private:
   bool active_ = true;
 
   // いいね!!
-  glm::vec2 like_pos_;
   std::function<glm::vec3 (const glm::ivec2&)> like_func_;
   u_int like_index_ = 0;
 };
