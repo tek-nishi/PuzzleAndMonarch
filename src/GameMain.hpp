@@ -280,9 +280,6 @@ private:
     auto num = widget->getChildNum() / 2;
     scores_.resize(num);
     std::fill(std::begin(scores_), std::end(scores_), u_int(0));
-
-    scores_color_.resize(num);
-    std::fill(std::begin(scores_color_), std::end(scores_color_), ci::Color::white());
   }
 
 
@@ -354,7 +351,6 @@ private:
   ci::TimelineRef timeline_;
 
   std::vector<u_int> scores_;
-  std::vector<ci::Color> scores_color_;
 
   bool active_ = true;
 
