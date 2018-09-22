@@ -434,7 +434,12 @@ public:
                                 {
                                   auto level = archive_.getValue("tutorial-level", 0);
                                   level += 1;
-                                  if (level > 2) level = -1;
+                                  if (level > 2)
+                                  {
+                                    level = -1;
+                                    // Tutorial完了
+                                    event_.signal("Game:Tutorial-Finish", Arguments());
+                                  }
                                   archive_.setRecord("tutorial-level", level);
 
                                   // 達成項目を記録
@@ -468,7 +473,8 @@ public:
                                 count_exec_.add(params_.getValueForKey<double>("field.result_begin_delay") + delay,
                                                 [this, score, rank_in, ranking,
                                                  high_score, total_panels,
-                                                 max_forest, max_path]() noexcept
+                                                 max_forest, max_path,
+                                                 is_tutorial]() noexcept
                                                 {
                                                   Arguments a{
                                                     { "score",        score },
@@ -478,6 +484,7 @@ public:
                                                     { "total_panels", total_panels },
                                                     { "max_forest",   max_forest },
                                                     { "max_path",     max_path },
+                                                    { "tutorial",     is_tutorial },
                                                   };
                                                   event_.signal("Result:begin", a);
                                                   view_.setColor(transition_duration_, ci::Color::white());

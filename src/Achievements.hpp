@@ -47,8 +47,12 @@ public:
 
     // ゲーム内容
     holder_ += event.connect("Game:Finish",
-                             [this](const Connection&, const Arguments&)
+                             [this](const Connection&, const Arguments& args)
                              {
+                               // Tutorialは無視
+                               auto tutorial = boost::any_cast<bool>(args.at("tutorial"));
+                               if (tutorial) return;
+
                                GameCenter::submitAchievement("PM.CLEAR");
                              });
     holder_ += event.connect("Game:Tutorial-Finish",
@@ -71,14 +75,16 @@ public:
                                const auto& score = boost::any_cast<const Score&>(args.at("score"));
                                GameCenter::submitScore(score.total_score, total_panels, score.total_panels);
 
+                               auto is_tutorial = boost::any_cast<bool>(args.at("tutorial"));
+
                                {
                                  // ハイスコア
                                  static std::pair<const char*, double> tbl[] = {
-                                   { "PM.SCORE5000",   5000 },
-                                   { "PM.SCORE10000",  10000 },
-                                   { "PM.SCORE30000",  30000 },
-                                   { "PM.SCORE50000",  50000 },
-                                   { "PM.SCORE80000",  80000 },
+                                   { "PM.SCORE5000",     5000 },
+                                   { "PM.SCORE10000",   10000 },
+                                   { "PM.SCORE30000",   30000 },
+                                   { "PM.SCORE50000",   50000 },
+                                   { "PM.SCORE80000",   80000 },
                                    { "PM.SCORE100000", 100000 },
                                  };
 
@@ -107,7 +113,7 @@ public:
                                }
 
                                // 実績解除判定
-                               if (score.perfect)
+                               if (score.perfect && !is_tutorial)
                                {
                                  // 全てのパネルを置いた
                                  GameCenter::submitAchievement("PM.PERFECT");

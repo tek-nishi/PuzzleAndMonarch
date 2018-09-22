@@ -330,6 +330,9 @@ private:
   UI::Drawer drawer_;
 
   TweenCommon tween_common_;
+
+  // Title初回演出
+  bool title_initial_ = true;
 };
 
 }

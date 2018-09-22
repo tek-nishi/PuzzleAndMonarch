@@ -13,13 +13,14 @@
 * TODO ローカライズ
 * TODO BGM作る
 * TODO SE作る
-* TODO iOS:Tutorialで「全パネル配置」実績が解除される
 * TODO iOS:GameCenterの通知がタイトルロゴにかぶる
 * TODO iOS:未ログイン時に課金処理へ移行すると何度もサインインを求められる
 * TODO iOS:処理の思い箇所を探して修正
 * TODO iOS:AppStore提出に必要な書類や素材
 * TODO iOS:実績のアイコンを用意
 * TODO iOS:サポートサイト用意(特定商取引に関する表示)
+* DONE iOS:Tutorialで「全パネル配置」実績が解除される
+CLOSED: [2018-09-22 土 17:35]
 * DONE Shareのアイコンを変える
 CLOSED: [2018-09-22 土 16:08]
 * DONE ゲームのゴールが「得点を稼ぐ」というのを明確に
