@@ -8,7 +8,7 @@
           "type": "vec2",
           "body": [
             {
-              "duration": 1.0,
+              "duration": 0.8,
               "copy_start": true,
               "ease_func": "OutCubic",
               "start": [ 4, 4 ],
