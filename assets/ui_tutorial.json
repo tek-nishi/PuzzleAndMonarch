@@ -85,9 +85,89 @@
         [ 0.5, 0.5 ]
       ],
       "enable": false,
-      
-      "font": "jp",
-      "text": "道が長いほど、高得点"
+
+      "childlen": [
+        {
+          "identifier": "check0",
+          "rect": [ -55, 17, -55, 35 ],
+          "anchor": [
+            [ 0.5, 0.5 ],
+            [ 0.5, 0.5 ]
+          ],
+          "enable": false,
+
+          "font": "icon",
+          "text": "",
+          "layout": [ 1, 1 ]
+        },
+        {
+          "identifier": "advice0",
+          "rect": [ -55, 15, -55, 35 ],
+          "anchor": [
+            [ 0.5, 0.5 ],
+            [ 0.5, 0.5 ]
+          ],
+          "enable": false,
+
+          "font": "jp",
+          "text": "道が長いほど、高得点",
+          "layout": [ 0, 1 ]
+        },
+
+        {
+          "identifier": "check1",
+          "rect": [ -55, -8, -55, 10 ],
+          "anchor": [
+            [ 0.5, 0.5 ],
+            [ 0.5, 0.5 ]
+          ],
+          "enable": false,
+
+          "font": "icon",
+          "text": "",
+          "layout": [ 1, 1 ]
+        },
+        {
+          "identifier": "advice1",
+          "rect": [ -55, -10, -55, 10 ],
+          "anchor": [
+            [ 0.5, 0.5 ],
+            [ 0.5, 0.5 ]
+          ],
+          "enable": false,
+
+          "font": "jp",
+          "text": "道が長いほど、高得点",
+          "layout": [ 0, 1 ]
+        },
+
+        {
+          "identifier": "check2",
+          "rect": [ -55, -33, -55, -15 ],
+          "anchor": [
+            [ 0.5, 0.5 ],
+            [ 0.5, 0.5 ]
+          ],
+          "enable": false,
+
+          "font": "icon",
+          "text": "",
+          "layout": [ 1, 1 ]
+        },
+        {
+          "identifier": "advice2",
+          "rect": [ -55, -35, -55, -15 ],
+          "anchor": [
+            [ 0.5, 0.5 ],
+            [ 0.5, 0.5 ]
+          ],
+          "enable": false,
+          
+          "font": "jp",
+          "text": "道が長いほど、高得点",
+          "layout": [ 0, 1 ]
+        }
+      ]
     }
   ]
 }

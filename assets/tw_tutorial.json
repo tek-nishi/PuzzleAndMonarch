@@ -169,19 +169,124 @@
           "type": "float",
           "body": [
             {
-              "duration": 0.4,
+              "duration": 5,
+              "enable_start": true,
+              "ease_func": "None",
+              "start": 1,
+              "end": 1
+            },
+            {
+              "duration": 0.5,
+              "ease_func": "None",
+              "end": 0
+            }
+          ]
+        }
+      ]
+    }
+  ],
+
+  "check": [
+    {
+      "identifier": "check0",
+      "tween": [
+        {
+          "param": "offset",
+          "type": "vec2",
+          "body": [
+            {
+              "duration": 0.8,
+              "delay": 1,
+              "copy_start": true,
+              "enable_start": true,
+              "ease_func": "OutExpo",
+              "start": [ 0, -10 ],
+              "end":   [ 0, 0 ]
+            }
+          ]
+        },
+        {
+          "param": "alpha",
+          "type": "float",
+          "body": [
+            {
+              "duration": 0.2,
               "delay": 1,
               "copy_start": true,
               "enable_start": true,
               "ease_func": "None",
               "start": 0,
-              "end": 1
-            },
+              "end":  1 
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "identifier": "check1",
+      "tween": [
+        {
+          "param": "offset",
+          "type": "vec2",
+          "body": [
             {
-              "duration": 0.6,
-              "delay": 3,
+              "duration": 0.8,
+              "delay": 1.2,
+              "copy_start": true,
+              "enable_start": true,
+              "ease_func": "OutExpo",
+              "start": [ 0, -10 ],
+              "end":   [ 0, 0 ]
+            }
+          ]
+        },
+        {
+          "param": "alpha",
+          "type": "float",
+          "body": [
+            {
+              "duration": 0.2,
+              "delay": 1.2,
+              "copy_start": true,
+              "enable_start": true,
               "ease_func": "None",
-              "end": 0
+              "start": 0,
+              "end":  1 
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "identifier": "check2",
+      "tween": [
+        {
+          "param": "offset",
+          "type": "vec2",
+          "body": [
+            {
+              "duration": 0.8,
+              "delay": 1.4,
+              "copy_start": true,
+              "enable_start": true,
+              "ease_func": "OutExpo",
+              "start": [ 0, -10 ],
+              "end":   [ 0, 0 ]
+            }
+          ]
+        },
+        {
+          "param": "alpha",
+          "type": "float",
+          "body": [
+            {
+              "duration": 0.2,
+              "delay": 1.4,
+              "copy_start": true,
+              "enable_start": true,
+              "ease_func": "None",
+              "start": 0,
+              "end":  1 
             }
           ]
         }

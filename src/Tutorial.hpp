@@ -29,7 +29,8 @@ class Tutorial
 
 
 public:
-  Tutorial(const ci::JsonTree& params, Event<Arguments>& event, Archive& archive, UI::Drawer& drawer, TweenCommon& tween_common)
+  Tutorial(const ci::JsonTree& params, Event<Arguments>& event, Archive& archive, UI::Drawer& drawer, TweenCommon& tween_common,
+           int level)
     : event_(event),
       archive_(archive),
       canvas_(event, drawer, tween_common,
@@ -43,6 +44,9 @@ public:
   {
     // TIPS コールバック関数にダミーを割り当てておく
     update_ = []() {};
+
+    // 最後に表示する助言をあらかじめ決めておく
+    setupAdvice(level, params);
 
     // Pause操作
     holder_ += event_.connect("GameMain:pause",
@@ -164,7 +168,7 @@ public:
                               {
                                 pause_ = true;
                                 canvas_.startTween("pause");
-                                canvas_.startTween("advice");
+                                dispAdvice();
 
                                 count_exec_.add(7,
                                                 [this]()
@@ -259,7 +263,43 @@ private:
     }
     operation_.insert(type);
   }
- 
+
+  // Tutorialのレベルに応じた助言を表示
+  void setupAdvice(int level, const ci::JsonTree& params)
+  {
+    const auto& advice = params["tutorial.advice"][level];
+    int index = 0;
+    for (const auto t : advice)
+    {
+      char id[16];
+      sprintf(id, "advice%d", index);
+      canvas_.setWidgetText(id, t.getValue<std::string>());
+
+      ++index;
+    }
+  }
+
+  void dispAdvice()
+  {
+    canvas_.startTween("advice");
+
+    static const char* tbl[]{
+      "check%d",
+      "advice%d",
+    };
+
+    for (const auto* t : tbl)
+    {
+      for (size_t i = 0; i < 3; ++i)
+      {
+        char id[16];
+        sprintf(id, t, i);
+        canvas_.setTweenTarget(id, "check", i);
+      }
+      canvas_.startTween("check");
+    }
+  }
+
   
   Event<Arguments>& event_;
   ConnectionHolder holder_;

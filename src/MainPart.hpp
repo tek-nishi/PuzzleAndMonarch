@@ -332,7 +332,7 @@ public:
                                 game_->updateGameUI();
 
                                 count_exec_.add(1.4,
-                                                [this]()
+                                                [this, level]()
                                                 {
                                                   // パネル準備
                                                   view_.clear();
@@ -341,7 +341,10 @@ public:
                                                   if (isTutorial())
                                                   {
                                                     // チュートリアル開始
-                                                    event_.signal("Tutorial:begin", Arguments());
+                                                    Arguments args{
+                                                      { "level", level }
+                                                    };
+                                                    event_.signal("Tutorial:begin", args);
                                                   }
                                                 });
                               });
@@ -425,20 +428,19 @@ public:
                                 calcViewRange(false);
                                 view_.endPlay();
 
+                                // チュートリアル
+                                auto is_tutorial = boost::any_cast<bool>(args.at("tutorial"));
+                                if (is_tutorial)
                                 {
-                                  // チュートリアル
                                   auto level = archive_.getValue("tutorial-level", 0);
-                                  if (level >= 0)
-                                  {
-                                    level += 1;
-                                    if (level > 2) level = -1;
-                                    archive_.setRecord("tutorial-level", level);
+                                  level += 1;
+                                  if (level > 2) level = -1;
+                                  archive_.setRecord("tutorial-level", level);
 
-                                    // 達成項目を記録
-                                    for (const auto& key : tutorial_completed_)
-                                    {
-                                      archive_.setRecord(key, true);
-                                    }
+                                  // 達成項目を記録
+                                  for (const auto& key : tutorial_completed_)
+                                  {
+                                    archive_.setRecord(key, true);
                                   }
                                 }
 
@@ -458,8 +460,11 @@ public:
                                 // 最長道
                                 auto max_path = boost::any_cast<u_int>(args.at("max_path"));
 
-                                auto delay = boost::any_cast<bool>(args.at("no_panels")) ? 2.5 : 0.0;
+                                // パネルを置き切った時は少し待つ
+                                auto delay = boost::any_cast<bool>(args.at("no_panels")) ? 1.5 : 0.0;
                                 view_.setColor(transition_duration_, transition_color_, delay);
+                                // Tutorial中はさらに待つ
+                                if (is_tutorial) delay += 4;
                                 count_exec_.add(params_.getValueForKey<double>("field.result_begin_delay") + delay,
                                                 [this, score, rank_in, ranking,
                                                  high_score, total_panels,

@@ -142,6 +142,8 @@ struct Game
       { "completed_path",   &completed_path },
 
       { "no_panels", no_panels },
+
+      { "tutorial", is_tutorial_ },
     };
     event_.signal("Game:Finish", args);
     
@@ -668,6 +670,8 @@ private:
       // NOTICE 順番はあらかじめ用意されている
       start_panel_ = waiting_panels[0];
       waiting_panels.erase(std::begin(waiting_panels));
+      // FIXME Tutorialであることを覚えたくない
+      is_tutorial_ = true;
     }
     else
     {
@@ -912,6 +916,8 @@ private:
 #if defined (DEBUG)
   bool time_count = true;
 #endif
+
+  bool is_tutorial_ = false;
 
   // 配置するパネル
   std::vector<int> waiting_panels;

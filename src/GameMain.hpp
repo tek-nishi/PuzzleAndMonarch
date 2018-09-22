@@ -149,7 +149,8 @@ public:
     holder_ += event_.connect("Game:Finish",
                               [this, end_delay](const Connection&, const Arguments& args) noexcept
                               {
-                                auto delay = boost::any_cast<bool>(args.at("no_panels")) ? 2.5 : 0.0;
+                                auto delay = boost::any_cast<bool>(args.at("no_panels")) ? 1.5 : 0.0;
+                                if (boost::any_cast<bool>(args.at("tutorial"))) delay += 4;
                                 canvas_.active(false);
                                 count_exec_.add(delay,
                                                 [this, end_delay]()
