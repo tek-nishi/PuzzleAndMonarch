@@ -170,7 +170,7 @@ public:
                                 canvas_.startTween("pause");
                                 dispAdvice();
 
-                                count_exec_.add(7,
+                                count_exec_.add(8,
                                                 [this]()
                                                 {
                                                   finishTask();
@@ -273,7 +273,7 @@ private:
     {
       char id[16];
       sprintf(id, "advice%d", index);
-      canvas_.setWidgetText(id, t.getValue<std::string>());
+      canvas_.setWidgetText(id, Localize::get(t.getValue<std::string>()));
 
       ++index;
     }

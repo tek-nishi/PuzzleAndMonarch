@@ -169,7 +169,7 @@
           "type": "float",
           "body": [
             {
-              "duration": 5,
+              "duration": 6,
               "enable_start": true,
               "ease_func": "None",
               "start": 1,
@@ -196,7 +196,7 @@
           "body": [
             {
               "duration": 0.8,
-              "delay": 1,
+              "delay": 1.5,
               "copy_start": true,
               "enable_start": true,
               "ease_func": "OutExpo",
@@ -211,7 +211,7 @@
           "body": [
             {
               "duration": 0.2,
-              "delay": 1,
+              "delay": 1.5,
               "copy_start": true,
               "enable_start": true,
               "ease_func": "None",
@@ -231,7 +231,7 @@
           "body": [
             {
               "duration": 0.8,
-              "delay": 1.2,
+              "delay": 1.7,
               "copy_start": true,
               "enable_start": true,
               "ease_func": "OutExpo",
@@ -246,7 +246,7 @@
           "body": [
             {
               "duration": 0.2,
-              "delay": 1.2,
+              "delay": 1.7,
               "copy_start": true,
               "enable_start": true,
               "ease_func": "None",
@@ -266,7 +266,7 @@
           "body": [
             {
               "duration": 0.8,
-              "delay": 1.4,
+              "delay": 1.9,
               "copy_start": true,
               "enable_start": true,
               "ease_func": "OutExpo",
@@ -281,7 +281,7 @@
           "body": [
             {
               "duration": 0.2,
-              "delay": 1.4,
+              "delay": 1.9,
               "copy_start": true,
               "enable_start": true,
               "ease_func": "None",
