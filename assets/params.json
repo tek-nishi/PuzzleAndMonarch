@@ -495,7 +495,7 @@
 
     "field_delay": 1.2,
     "touch_delay": 0.5,
-    "finish_delay": 0.5,
+    "finish_delay": 0.1,
 
     "distance": 650,
 

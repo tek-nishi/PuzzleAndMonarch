@@ -9,10 +9,25 @@
           "body": [
             {
               "duration": 0.8,
+              "delay": 0.5,
               "copy_start": true,
               "ease_func": "OutCubic",
               "start": [ 4, 4 ],
               "end":   [ 1, 1 ]
+            }
+          ]
+        },
+        {
+          "param": "alpha",
+          "type": "float",
+          "body": [
+            {
+              "duration": 0.3,
+              "delay": 0.5,
+              "copy_start": true,
+              "ease_func": "None",
+              "start": 0,
+              "end": 1
             }
           ]
         }
