@@ -469,7 +469,7 @@ public:
                                 auto delay = boost::any_cast<bool>(args.at("no_panels")) ? 1.5 : 0.0;
                                 view_.setColor(transition_duration_, transition_color_, delay);
                                 // Tutorial中はさらに待つ
-                                if (is_tutorial) delay += 5.5;
+                                if (is_tutorial) delay += 5.2;
                                 count_exec_.add(params_.getValueForKey<double>("field.result_begin_delay") + delay,
                                                 [this, score, rank_in, ranking,
                                                  high_score, total_panels,

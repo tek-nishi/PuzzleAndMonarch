@@ -280,7 +280,55 @@
 
   "tutorial-end": [
     {
-      "identifier": "main",
+      "identifier": "time_remain_icon",
+      "tween": [
+        {
+          "param": "alpha",
+          "type": "float",
+          "body": [
+            {
+              "duration": 0.4,
+              "ease_func": "None",
+              "end": 0
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "identifier": "time_remain",
+      "tween": [
+        {
+          "param": "alpha",
+          "type": "float",
+          "body": [
+            {
+              "duration": 0.4,
+              "ease_func": "None",
+              "end": 0
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "identifier": "pause",
+      "tween": [
+        {
+          "param": "alpha",
+          "type": "float",
+          "body": [
+            {
+              "duration": 0.4,
+              "ease_func": "None",
+              "end": 0
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "identifier": "scores",
       "tween": [
         {
           "param": "alpha",
