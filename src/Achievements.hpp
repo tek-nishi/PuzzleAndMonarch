@@ -167,6 +167,7 @@ public:
                              [this](const Connection&, const Arguments&) noexcept
                              {
                                GameCenter::resetAchievement();
+                               GameCenter::writeCachedAchievement();
                              });
 #endif
   }
