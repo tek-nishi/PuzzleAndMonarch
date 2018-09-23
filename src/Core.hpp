@@ -49,7 +49,7 @@ public:
     holder_ += event_.connect("Intro:finished",
                               [this](const Connection&, const Arguments&) noexcept
                               {
-                                startTitle(true);
+                                startTitle();
                               });
 
     // Title→GameMain
@@ -68,6 +68,13 @@ public:
                                 tasks_.pushBack<Tutorial>(params_, event_, archive_, drawer_, tween_common_, level);
                               });
 
+
+    holder_ += event_.connect("Game:Tutorial-Finish",
+                              [this](const Connection&, const Arguments&) noexcept
+                              {
+                                // Title演出再び
+                                title_initial_ = true;
+                              });
     // Title→Credits
     holder_ += event_.connect("Credits:begin",
                               [this](const Connection&, const Arguments&) noexcept
@@ -78,7 +85,7 @@ public:
     holder_ += event_.connect("Credits:Finished",
                               [this](const Connection&, const Arguments&) noexcept
                               {
-                                startTitle(false);
+                                startTitle();
                               });
     // Title→Settings
     holder_ += event_.connect("Settings:begin",
@@ -102,7 +109,7 @@ public:
                                 archive_.setRecord("se-enable",  boost::any_cast<bool>(args.at("se-enable")));
                                 archive_.save();
 
-                                startTitle(false);
+                                startTitle();
                               });
 
     // Title→Purchase
@@ -115,7 +122,7 @@ public:
     holder_ += event_.connect("Purchase:Finished",
                               [this](const Connection&, const Arguments&) noexcept
                               {
-                                startTitle(false);
+                                startTitle();
                               });
 
     // Title→Records
@@ -148,7 +155,7 @@ public:
     holder_ += event_.connect("Records:Finished",
                               [this](const Connection&, const Arguments&) noexcept
                               {
-                                startTitle(false);
+                                startTitle();
                               });
     // Title→Ranking
     holder_ += event_.connect("Ranking:begin",
@@ -167,7 +174,7 @@ public:
     holder_ += event_.connect("Ranking:Finished",
                               [this](const Connection&, const Arguments&) noexcept
                               {
-                                startTitle(false);
+                                startTitle();
                               });
 
     // 本編開始
@@ -180,7 +187,7 @@ public:
     holder_ += event_.connect("Game:Aborted",
                               [this](const Connection&, const Arguments&) noexcept
                               {
-                                startTitle(false);
+                                startTitle();
                               });
     // GameMain→Result
     holder_ += event_.connect("Result:begin",
@@ -206,7 +213,7 @@ public:
                                 }
                                 else
                                 {
-                                  startTitle(false);
+                                  startTitle();
                                 }
                               });
 
@@ -294,11 +301,11 @@ private:
   }
 
 
-  void startTitle(bool first_time)
+  void startTitle()
   {
     Title::Condition condition
     {
-      first_time,
+      title_initial_,
       archive_.isSaved(),
       archive_.existsRanking(),
       Archive::isPurchased(archive_),
@@ -306,6 +313,8 @@ private:
     };
 
     tasks_.pushBack<Title>(params_, event_, drawer_, tween_common_, condition);
+    // 初回起動の判定
+    title_initial_ = false;
   }
 
 

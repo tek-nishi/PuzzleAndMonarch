@@ -1,5 +1,9 @@
 * TODO stdのアルゴリズムを積極的に使う
-* TODO Tutorialが完了したらタイトル演出を改めて
+* TODO Tutorialが終わった後のTitle演出が直前の画面と被る
+* TODO Tutorial中はTitleのアイコンを制限
+* TODO Tutorial中Achievementが進まない
+* TODO Tutorial中にPauseで指示が出っぱなしになる
+* TODO Achievementの誤植
 * TODO Creditsに床井先生を追加
 * TODO Tutorialのテキスト見直す
 * WAIT ちょっと回転しただけで、長押し置きが無効になる
@@ -19,6 +23,8 @@
 * TODO iOS:AppStore提出に必要な書類や素材
 * TODO iOS:実績のアイコンを用意
 * TODO iOS:サポートサイト用意(特定商取引に関する表示)
+* DONE Tutorialが完了したらタイトル演出を改めて
+CLOSED: [2018-09-23 日 11:32]
 * DONE iOS:Tutorialで「全パネル配置」実績が解除される
 CLOSED: [2018-09-22 土 17:35]
 * DONE Shareのアイコンを変える
