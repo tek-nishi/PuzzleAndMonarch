@@ -276,5 +276,24 @@
         }
       ]
     }
+  ],
+
+  "tutorial-end": [
+    {
+      "identifier": "main",
+      "tween": [
+        {
+          "param": "alpha",
+          "type": "float",
+          "body": [
+            {
+              "duration": 0.4,
+              "ease_func": "None",
+              "end": 0
+            }
+          ]
+        }
+      ]
+    }
   ]
 }
