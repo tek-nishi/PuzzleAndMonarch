@@ -1,9 +1,7 @@
 * TODO stdのアルゴリズムを積極的に使う
 * TODO 道つき教会は街に変更
-* TODO Creditsに床井先生を追加
 * TODO Tutorialのテキスト見直す
 * WAIT ちょっと回転しただけで、長押し置きが無効になる
-* TODO 教会が完成していないのに道で繋がると完成したように見える
 * TODO Introの演出をもっと工夫する
 * TODO Fontのテクスチャが足りてるか確認
 * TODO Fontの生成を遅らせたい(ローカライズ対策)
@@ -19,6 +17,10 @@
 * TODO iOS:AppStore提出に必要な書類や素材
 * TODO iOS:実績のアイコンを用意
 * TODO iOS:サポートサイト用意(特定商取引に関する表示)
+* DONE 教会が完成していないのに道で繋がると完成したように見える
+CLOSED: [2018-09-23 Sun 23:01]
+* DONE Creditsに床井先生を追加
+CLOSED: [2018-09-23 Sun 22:56]
 * DONE Tutorial終了時の助言が消えるタイミングの調整
 CLOSED: [2018-09-23 日 15:16]
 * DONE Tutorial終了時に「イイね」演出まで消えてしまう
