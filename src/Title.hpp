@@ -204,12 +204,14 @@ public:
     setupCommonTweens(event_, holder_, canvas_, "purchase");
     setupCommonTweens(event_, holder_, canvas_, "play");
 
-    if (!condition.saved) 
+    auto is_tutorial = condition.tutorial_level >= 0;
+
+    if (!condition.saved || is_tutorial) 
     {
       // Saveデータがない場合関連するボタンを消す
       canvas_.enableWidget("Records", false);
     }
-    if (!condition.ranking)
+    if (!condition.ranking || is_tutorial)
     {
       // Rankingに記録がない場合もボタンを消す
       canvas_.enableWidget("Ranking", false);
@@ -219,10 +221,17 @@ public:
       purchased_ = true;
       canvas_.enableWidget("purchased");
     }
+    if (is_tutorial)
+    {
+      canvas_.enableWidget("Credits", false);
+    }
 
 #if defined (CINDER_COCOA_TOUCH)
-    // GameCenter
-    canvas_.enableWidget("GameCenter");
+    if (!is_tutorial)
+    {
+      // GameCenter
+      canvas_.enableWidget("GameCenter");
+    }
 #endif
 
     changePlayIcon(condition.tutorial_level, params);
