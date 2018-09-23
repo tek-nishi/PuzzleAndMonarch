@@ -37,6 +37,11 @@ public:
                              {
                                GameCenter::submitAchievement("PM.RANKING");
                              });
+    holder_ += event.connect("Purchase:begin",
+                             [this](const Connection&, const Arguments&)
+                             {
+                               GameCenter::submitAchievement("PM.PURCHASE");
+                             });
 
     // 各種機能
     holder_ += event.connect("Share:completed",

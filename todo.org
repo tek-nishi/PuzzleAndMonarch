@@ -13,13 +13,14 @@
 * TODO ローカライズ
 * TODO BGM作る
 * TODO SE作る
-* TODO iOS:課金画面確認の実績
 * TODO iOS:GameCenterの通知がタイトルロゴにかぶる
 * TODO iOS:未ログイン時に課金処理へ移行すると何度もサインインを求められる
 * TODO iOS:処理の思い箇所を探して修正
 * TODO iOS:AppStore提出に必要な書類や素材
 * TODO iOS:実績のアイコンを用意
 * TODO iOS:サポートサイト用意(特定商取引に関する表示)
+* DONE iOS:課金画面確認の実績
+CLOSED: [2018-09-23 日 14:37]
 * DONE Tutorial中にPauseで指示が出っぱなしになる
 CLOSED: [2018-09-23 日 14:28]
 * DONE Tutorial中はTitleのアイコンを制限
