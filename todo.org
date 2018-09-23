@@ -1,6 +1,5 @@
 * TODO stdのアルゴリズムを積極的に使う
-* TODO Tutorial終了時の助言が消えるタイミングの調整
-* TODO Tutorial終了時に「イイね」演出まで消えてしまう
+* TODO 道つき教会は街に変更
 * TODO Creditsに床井先生を追加
 * TODO Tutorialのテキスト見直す
 * WAIT ちょっと回転しただけで、長押し置きが無効になる
@@ -20,6 +19,10 @@
 * TODO iOS:AppStore提出に必要な書類や素材
 * TODO iOS:実績のアイコンを用意
 * TODO iOS:サポートサイト用意(特定商取引に関する表示)
+* DONE Tutorial終了時の助言が消えるタイミングの調整
+CLOSED: [2018-09-23 日 15:16]
+* DONE Tutorial終了時に「イイね」演出まで消えてしまう
+CLOSED: [2018-09-23 日 15:16]
 * DONE Tutorialが終わった後のTitle演出が直前の画面と被る
 CLOSED: [2018-09-23 日 14:51]
 * DONE iOS:課金画面確認の実績

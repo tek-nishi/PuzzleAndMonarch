@@ -155,7 +155,7 @@ std::vector<Panel> createPanels() noexcept
    
     { 0, Panel::GRASS, Panel::PATH,   Panel::GRASS,  Panel::PATH },
     { Panel::TOWN, Panel::PATH | Panel::EDGE,  Panel::PATH | Panel::EDGE,   Panel::GRASS,  Panel::PATH | Panel::EDGE },
-    { Panel::CHURCH, Panel::GRASS, Panel::GRASS,  Panel::GRASS,  Panel::PATH | Panel::EDGE },
+    { Panel::CASTLE, Panel::GRASS, Panel::GRASS,  Panel::GRASS,  Panel::PATH | Panel::EDGE },
     { 0, Panel::GRASS, Panel::FOREST | Panel::EDGE, Panel::FOREST | Panel::EDGE, Panel::GRASS },
 
     // d
@@ -171,7 +171,7 @@ std::vector<Panel> createPanels() noexcept
 
     { 0, Panel::GRASS, Panel::PATH,   Panel::GRASS,  Panel::PATH },
     { Panel::TOWN, Panel::PATH | Panel::EDGE,  Panel::PATH | Panel::EDGE,   Panel::GRASS,  Panel::PATH | Panel::EDGE },
-    { Panel::CHURCH, Panel::GRASS, Panel::GRASS,  Panel::GRASS,  Panel::PATH | Panel::EDGE },
+    { Panel::CASTLE, Panel::GRASS, Panel::GRASS,  Panel::GRASS,  Panel::PATH | Panel::EDGE },
     { 0, Panel::GRASS, Panel::FOREST | Panel::EDGE, Panel::FOREST | Panel::EDGE, Panel::GRASS },
 
     // f 
@@ -183,7 +183,7 @@ std::vector<Panel> createPanels() noexcept
     { 0, Panel::FOREST, Panel::FOREST, Panel::PATH,   Panel::PATH },
     { Panel::DEEP_FOREST, Panel::FOREST, Panel::FOREST, Panel::FOREST, Panel::FOREST },
     { Panel::DEEP_FOREST, Panel::FOREST, Panel::PATH | Panel::EDGE,   Panel::FOREST, Panel::FOREST },
-    { Panel::TOWN, Panel::PATH | Panel::EDGE,   Panel::PATH | Panel::EDGE,   Panel::PATH | Panel::EDGE,   Panel::PATH | Panel::EDGE },
+    { Panel::CASTLE, Panel::PATH | Panel::EDGE,   Panel::PATH | Panel::EDGE,   Panel::PATH | Panel::EDGE,   Panel::PATH | Panel::EDGE },
 
     { 0, Panel::PATH, Panel::GRASS, Panel::PATH, Panel::GRASS },
     { 0, Panel::FOREST, Panel::GRASS, Panel::FOREST, Panel::GRASS },

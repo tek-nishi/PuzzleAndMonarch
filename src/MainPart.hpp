@@ -1478,7 +1478,7 @@ private:
     }
 
     // 街の位置
-    addAttributePanel(args, "town", Panel::TOWN, camera);
+    addAttributePanel(args, "town", Panel::TOWN | Panel::CASTLE, camera);
     // 教会の位置
     addAttributePanel(args, "church", Panel::CHURCH, camera);
 
