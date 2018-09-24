@@ -3,7 +3,6 @@
 * TODO Tutorialのテキスト見直す
 * WAIT ちょっと回転しただけで、長押し置きが無効になる
 * TODO Introの演出をもっと工夫する
-* TODO Fontのテクスチャが足りてるか確認
 * TODO Fontの生成を遅らせたい(ローカライズ対策)
 * TODO プレイ結果が「うまい」のか「ヘタ」なのかはっきり。特に初心者〜中級者
 * TODO 試しに繁体字
@@ -12,11 +11,14 @@
 * TODO BGM作る
 * TODO SE作る
 * TODO iOS:GameCenterの通知がタイトルロゴにかぶる
+* WAIT iOS:Pauseの実績がプレイ中以外でも解除される
 * TODO iOS:未ログイン時に課金処理へ移行すると何度もサインインを求められる
 * TODO iOS:処理の思い箇所を探して修正
 * TODO iOS:AppStore提出に必要な書類や素材
 * TODO iOS:実績のアイコンを用意
 * TODO iOS:サポートサイト用意(特定商取引に関する表示)
+* DONE Fontのテクスチャが足りてるか確認
+CLOSED: [2018-09-24 月 18:04]
 * DONE 教会が完成していないのに道で繋がると完成したように見える
 CLOSED: [2018-09-23 Sun 23:01]
 * DONE Creditsに床井先生を追加

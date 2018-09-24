@@ -65,7 +65,7 @@ public:
                              {
                                GameCenter::submitAchievement("PM.TUTORIAL");
                              });
-    holder_ += event.connect("pause:touch_ended",
+    holder_ += event.connect("GameMain:pause",
                              [this](const Connection&, const Arguments&)
                              {
                                GameCenter::submitAchievement("PM.PAUSE");
