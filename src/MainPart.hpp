@@ -338,7 +338,7 @@ public:
                                                   view_.clear();
                                                   game_->putFirstPanel();
 
-                                                  if (isTutorial())
+                                                  if (Archive::isTutorial(archive_))
                                                   {
                                                     // チュートリアル開始
                                                     Arguments args{
@@ -1502,12 +1502,6 @@ private:
       auto ndc_pos = camera.worldToNdc(tutorial_pos_.at(id));
       args.insert({ id, ndc_pos });
     }
-  }
-
-  bool isTutorial() const
-  {
-    auto level = archive_.getValue("tutorial-level", 0);
-    return level >= 0;
   }
 
 

@@ -258,7 +258,12 @@ public:
     // 最初のタスクを登録
     tasks_.pushBack<Sound>(params_, event_);
     tasks_.pushBack<MainPart>(params_, event_, archive_);
-    tasks_.pushBack<Intro>(params_, event_, drawer_, tween_common_);
+    {
+      Intro::Condition condition{
+        Archive::isTutorial(archive_),
+      };
+      tasks_.pushBack<Intro>(params_, event_, drawer_, tween_common_, condition);
+    }
 
     {
       // Sound初期設定

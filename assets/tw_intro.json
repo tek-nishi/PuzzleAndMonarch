@@ -17,7 +17,7 @@
             },
             {
               "duration": 0.3,
-              "delay": 2.5,
+              "delay": 2.0,
               "ease_func": "None",
               "end": 0
             }

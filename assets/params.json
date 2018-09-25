@@ -493,7 +493,7 @@
     "canvas": "ui_intro.json",
     "tweens": "tw_intro.json",
 
-    "field_delay": 1.2,
+    "field_delay": 3.0,
     "touch_delay": 0.5,
     "finish_delay": 0.1,
 
@@ -502,7 +502,7 @@
     "camera_ease_rate": [ 0.85, 1.5 ],
 
     "cloud_erase_duration": 0.6,
-    "cloud_erase_delay": 1.8,
+    "cloud_erase_delay": 3.8,
 
     "text": [
       [ "Intro01", "Intro02" ],

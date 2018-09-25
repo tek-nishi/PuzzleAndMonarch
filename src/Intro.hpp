@@ -18,7 +18,14 @@ class Intro
 {
 
 public:
-  Intro(const ci::JsonTree& params, Event<Arguments>& event, UI::Drawer& drawer, TweenCommon& tween_common) noexcept
+  struct Condition
+  {
+    bool tutorial;
+  };
+
+
+  Intro(const ci::JsonTree& params, Event<Arguments>& event, UI::Drawer& drawer, TweenCommon& tween_common,
+        const Condition& condition)
     : event_(event),
       canvas_(event, drawer, tween_common,
               params["ui.camera"],
@@ -38,7 +45,8 @@ public:
                     });
 
     // 用意されたテキストから選ぶ
-    int index = ci::randInt(int(params["intro.text"].getNumChildren()));
+    int index = condition.tutorial ? 0
+                                   : ci::randInt(int(params["intro.text"].getNumChildren()));
     const auto& text = params["intro.text"][index];
     canvas_.setWidgetParam("0", "text", Localize::get(text.getValueAtIndex<std::string>(0)));
     canvas_.setWidgetParam("1", "text", Localize::get(text.getValueAtIndex<std::string>(1)));
