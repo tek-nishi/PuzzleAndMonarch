@@ -107,7 +107,7 @@ struct Game
   void putFirstPanel() noexcept
   {
     // 最初のパネルを設置
-    putPanel(start_panel_, { 0, 0 }, ci::randInt(4));
+    putPanel(start_panel_, { 0, 0 }, ci::randInt(4), true);
     // 次のパネルを決めて、置ける場所も探す
     getNextPanel();
   }
@@ -546,6 +546,7 @@ struct Game
                           { "field_pos", status.position },
                           { "rotation",  status.rotation },
                           { "completed", comp },
+                          { "first",     true },
                         };
                         event_.signal("Game:PutPanel", args);
                       });
@@ -881,7 +882,7 @@ private:
 
 
   // パネルを追加してイベント送信
-  void putPanel(int panel, const glm::ivec2& pos, u_int rotation) noexcept
+  void putPanel(int panel, const glm::ivec2& pos, u_int rotation, bool first = false) noexcept
   {
     // Panel端をここで調べる
     const auto p = panels_[panel];
@@ -896,6 +897,7 @@ private:
         { "field_pos",    pos },
         { "rotation",     rotation },
         { "total_panels", total_panels },
+        { "first",        first },
       };
       event_.signal("Game:PutPanel", args);
     }

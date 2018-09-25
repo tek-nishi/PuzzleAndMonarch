@@ -329,8 +329,8 @@
     },
 
     "height_ease_start": 90,
-    "height_ease_duration": 0.6,
-    "height_ease_name": "OutQuint",
+    "height_ease_duration": 0.65,
+    "height_ease_name": "OutExpo",
 
     "put_duration": [ 0.6, 0.4 ],
     "put_ease":     "OutExpo",

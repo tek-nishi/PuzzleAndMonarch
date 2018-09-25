@@ -404,8 +404,9 @@ public:
                                 auto panel      = boost::any_cast<int>(args.at("panel"));
                                 const auto& pos = boost::any_cast<glm::ivec2>(args.at("field_pos"));
                                 auto rotation   = boost::any_cast<u_int>(args.at("rotation"));
+                                auto first      = boost::any_cast<bool>(args.at("first"));
                                 view_.addPanel(panel, pos, rotation);
-                                view_.startPutEase(game_->getPlayTimeRate());
+                                view_.startPutEase(game_->getPlayTimeRate(), first);
                                 if (game_->isPlaying())
                                 {
                                   view_.updateBlank(game_->getBlankPositions());

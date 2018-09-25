@@ -531,24 +531,28 @@ public:
   }
 
   // パネルを置く時の演出
-  void startPutEase(double time_rate) noexcept
+  // under  下から出現
+  void startPutEase(double time_rate, bool under) noexcept
   {
     auto duration = glm::mix(put_duration_.x, put_duration_.y, time_rate);
 
     auto& p = field_panels_.back();
-    p.position.y = panel_height_;
+    p.position.y = under ? -10
+                         : panel_height_;
+
+    auto ease = under ? "OutBack"
+                      : put_ease_;
     auto option = timeline_->applyPtr(&p.position.y, 0.0f,
-                                      duration, getEaseFunc(put_ease_));
+                                      duration, getEaseFunc(ease));
 
-    // FIXME 同じ計算を２回書いている
-    p.matrix = glm::translate(p.position)
-               * glm::eulerAngleXYZ(p.rotation.x, p.rotation.y, p.rotation.z);
-
-    option.updateFn([&p]()
-                    {
-                      p.matrix = glm::translate(p.position)
-                                 * glm::eulerAngleXYZ(p.rotation.x, p.rotation.y, p.rotation.z);
-                    });
+    // 事前計算も必要なので、関数ポインタを利用
+    auto func = [&p]()
+                {
+                  p.matrix = glm::translate(p.position)
+                           * glm::eulerAngleXYZ(p.rotation.x, p.rotation.y, p.rotation.z);
+                };
+    func();
+    option.updateFn(func);
   }
 
   // 次のパネルの出現演出
