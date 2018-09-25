@@ -290,6 +290,10 @@ public:
                               [this](const Connection&, const Arguments&) noexcept
                               {
                                 view_.setColor(0.5f, ci::Color::white());
+                                view_.setCloudAlpha(params_.getValueForKey<float>("intro.cloud_erase_duration"),
+                                                    0.0f);
+
+                                game_->skipPanelEffect();
                               });
     holder_ += event_.connect("Intro:finished",
                               [this](const Connection&, const Arguments&) noexcept

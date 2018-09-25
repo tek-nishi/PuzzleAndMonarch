@@ -560,6 +560,12 @@ struct Game
     sendScores();
   }
 
+  // 演出Skip
+  void skipPanelEffect()
+  {
+    count_exec_.skipToFirst();
+  }
+
 
   // Fieldの中心位置と広さを計算
   std::pair<glm::vec3, float> getFieldCenterAndDistance(bool blank = true) const noexcept

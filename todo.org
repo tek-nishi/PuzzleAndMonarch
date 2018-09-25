@@ -1,9 +1,7 @@
 * TODO stdのアルゴリズムを積極的に使う
-* TODO Introはturoeialが終わるまで同じ内容
 * TODO 道つき教会は街に変更
 * TODO Tutorialのテキスト見直す
 * WAIT ちょっと回転しただけで、長押し置きが無効になる
-* TODO Introの演出をもっと工夫する
 * TODO Fontの生成を遅らせたい(ローカライズ対策)
 * TODO プレイ結果が「うまい」のか「ヘタ」なのかはっきり。特に初心者〜中級者
 * TODO 試しに繁体字
@@ -18,6 +16,10 @@
 * TODO iOS:AppStore提出に必要な書類や素材
 * TODO iOS:実績のアイコンを用意
 * TODO iOS:サポートサイト用意(特定商取引に関する表示)
+* DONE Introの演出をもっと工夫する
+CLOSED: [2018-09-25 火 10:45]
+* DONE Introはturoeialが終わるまで同じ内容
+CLOSED: [2018-09-25 火 09:51]
 * DONE Fontのテクスチャが足りてるか確認
 CLOSED: [2018-09-24 月 18:04]
 * DONE 教会が完成していないのに道で繋がると完成したように見える

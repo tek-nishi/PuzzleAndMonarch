@@ -81,6 +81,24 @@ public:
     pause_ = enable;
   }
 
+  // 最初に実行する関数ポインタまで時間を進める
+  void skipToFirst() noexcept
+  {
+    if (callbacks_.empty()) return;
+
+    auto t = std::numeric_limits<double>::max();
+    for (const auto& cb : callbacks_)
+    {
+      // FIXME 最小値を探す
+      if (t > cb.time_remain) t = cb.time_remain;
+    }
+
+    for (auto& cb : callbacks_)
+    {
+      cb.time_remain -= t;
+    }
+  }
+
 };
 
 }
