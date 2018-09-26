@@ -67,7 +67,7 @@ public:
 
     // 操作
     holder_ += event_.connect("single_touch_began",
-                              [this](const Connection&, Arguments& arg) noexcept
+                              [this](const Connection&, const Arguments& arg) noexcept
                               {
                                 if (paused_ || prohibited_) return;
 
@@ -115,7 +115,7 @@ public:
                               });
 
     holder_ += event_.connect("multi_touch_began",
-                              [this](const Connection&, Arguments& arg) noexcept
+                              [this](const Connection&, const Arguments& arg) noexcept
                               {
                                 if (touch_put_)
                                 {
@@ -131,7 +131,7 @@ public:
                               });
 
     holder_ += event_.connect("single_touch_moved",
-                              [this](const Connection&, Arguments& arg) noexcept
+                              [this](const Connection&, const Arguments& arg) noexcept
                               {
                                 if (paused_ || prohibited_) return;
 
@@ -162,7 +162,7 @@ public:
                               });
 
     holder_ += event_.connect("single_touch_ended",
-                              [this](const Connection&, Arguments& arg) noexcept
+                              [this](const Connection&, const Arguments& arg) noexcept
                               {
                                 if (!game_->isPlaying() || paused_ || prohibited_) return;
 
@@ -505,7 +505,7 @@ public:
 
     // Tutorial
     holder_ += event.connect("Tutorial:Begin",
-                             [this](const Connection&, Arguments&)
+                             [this](const Connection&, const Arguments&)
                              {
                              });
 
@@ -790,87 +790,87 @@ public:
 
 #if defined (DEBUG)
     holder_ += event_.connect("debug-info",
-                              [this](const Connection&, Arguments&) noexcept
+                              [this](const Connection&, const Arguments&) noexcept
                               {
                                 disp_debug_info_ = !disp_debug_info_;
                               });
     
     holder_ += event_.connect("debug-main-draw",
-                              [this](const Connection&, Arguments&) noexcept
+                              [this](const Connection&, const Arguments&) noexcept
                               {
                                 debug_draw_ = !debug_draw_;
                               });
     
     holder_ += event_.connect("debug-shadowmap",
-                              [this](const Connection&, Arguments&) noexcept
+                              [this](const Connection&, const Arguments&) noexcept
                               {
                                 disp_shadowmap_ = !disp_shadowmap_;
                               });
 
     holder_ += event_.connect("debug-polygon-factor",
-                              [this](const Connection&, Arguments& args) noexcept
+                              [this](const Connection&, const Arguments& args) noexcept
                               {
                                 auto value = boost::any_cast<float>(args.at("value"));
                                 view_.setPolygonFactor(value);
                               });
     holder_ += event_.connect("debug-polygon-units",
-                              [this](const Connection&, Arguments& args) noexcept
+                              [this](const Connection&, const Arguments& args) noexcept
                               {
                                 auto value = boost::any_cast<float>(args.at("value"));
                                 view_.setPolygonUnits(value);
                               });
 
     holder_ += event_.connect("debug-field-specular",
-                              [this](const Connection&, Arguments& args) noexcept
+                              [this](const Connection&, const Arguments& args) noexcept
                               {
                                 auto value = boost::any_cast<ci::ColorA>(args.at("value"));
                                 view_.setFieldSpecular(value);
                               });
 
     holder_ += event_.connect("debug-field-shininess",
-                              [this](const Connection&, Arguments& args) noexcept
+                              [this](const Connection&, const Arguments& args) noexcept
                               {
                                 auto value = boost::any_cast<float>(args.at("value"));
                                 view_.setFieldShininess(value);
                               });
 
     holder_ += event_.connect("debug-field-ambient",
-                              [this](const Connection&, Arguments& args) noexcept
+                              [this](const Connection&, const Arguments& args) noexcept
                               {
                                 auto value = boost::any_cast<float>(args.at("value"));
                                 view_.setFieldAmbient(value);
                               });
 
     holder_ += event_.connect("debug-bg-specular",
-                              [this](const Connection&, Arguments& args) noexcept
+                              [this](const Connection&, const Arguments& args) noexcept
                               {
                                 auto value = boost::any_cast<ci::ColorA>(args.at("value"));
                                 view_.setBgSpecular(value);
                               });
 
     holder_ += event_.connect("debug-bg-shininess",
-                              [this](const Connection&, Arguments& args) noexcept
+                              [this](const Connection&, const Arguments& args) noexcept
                               {
                                 auto value = boost::any_cast<float>(args.at("value"));
                                 view_.setBgShininess(value);
                               });
 
     holder_ += event_.connect("debug-bg-ambient",
-                              [this](const Connection&, Arguments& args) noexcept
+                              [this](const Connection&, const Arguments& args) noexcept
                               {
                                 auto value = boost::any_cast<float>(args.at("value"));
                                 view_.setBgAmbient(value);
                               });
     
     holder_ += event_.connect("debug-light-position",
-                              [this](const Connection&, Arguments& args) noexcept
+                              [this](const Connection&, const Arguments& args) noexcept
                               {
                                 auto value = boost::any_cast<glm::vec3>(args.at("value"));
                                 view_.setLightPosition(value);
                               });
 
     holder_ += event_.connect("debug-score-test",
-                              [this](const Connection&, Arguments&) noexcept
+                              [this](const Connection&, const Arguments&) noexcept
                               {
                                 view_.clear();
                                 auto path = game_->game_path;
@@ -909,7 +909,7 @@ public:
                               });
 
     holder_ += event_.connect("Test:PutPanel",
-                              [this](const Connection&, Arguments& args) noexcept
+                              [this](const Connection&, const Arguments& args) noexcept
                               {
                                 auto panel    = boost::any_cast<int>(args.at("panel"));
                                 auto rotation = boost::any_cast<u_int>(args.at("rotation"));

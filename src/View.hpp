@@ -537,7 +537,7 @@ public:
     auto duration = glm::mix(put_duration_.x, put_duration_.y, time_rate);
 
     auto& p = field_panels_.back();
-    p.position.y = under ? -10
+    p.position.y = under ? -15
                          : panel_height_;
 
     auto ease = under ? "OutBack"

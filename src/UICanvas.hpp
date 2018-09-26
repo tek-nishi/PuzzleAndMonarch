@@ -72,13 +72,13 @@ public:
 
 #if defined (DEBUG)
     holder_ += event_.connect("debug-info",
-                              [this](const Connection&, Arguments& arg) noexcept
+                              [this](const Connection&, const Arguments&) noexcept
                               {
                                 debug_info_ = !debug_info_;
                               });
     
     holder_ += event_.connect("debug-canvas-draw",
-                              [this](const Connection&, Arguments& arg) noexcept
+                              [this](const Connection&, const Arguments&) noexcept
                               {
                                 debug_draw_ = !debug_draw_;
                               });
@@ -438,7 +438,7 @@ private:
   }
 
 
-  void multiTouchBegan(const Connection&, Arguments& arg) noexcept
+  void multiTouchBegan(const Connection&, const Arguments& arg) noexcept
   {
     if (touching_widget_.expired()) return;
 
