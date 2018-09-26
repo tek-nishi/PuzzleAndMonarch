@@ -183,27 +183,6 @@ struct Game
     return std::find(std::begin(blank_), std::end(blank_), field_pos) != std::end(blank_);
   }
 
-
-#if defined (DEBUG)
-
-  void testPutPanel(const glm::ivec2& field_pos, int panel, u_int rotation)
-  {
-    putPanel(panel, field_pos, rotation);
-    checkFieldStatus(field_pos);
-  }
-
-  void testCalcResults()
-  {
-    calcResults();
-    DOUT << "Score: " << total_score << std::endl;
-    DOUT << " Rank: " << total_ranking << std::endl;
-    
-    sendScores();
-  }
-
-#endif
-
-
   // 操作
   void putHandPanel(const glm::ivec2& field_pos) noexcept
   {
@@ -322,19 +301,6 @@ struct Game
       event_.signal("Game:UpdateScores", args);
     }
   }
-
-#if defined (DEBUG)
-  // 強制的に次のカード
-  void forceNextHandPanel() noexcept
-  {
-    if (!getNextPanel())
-    {
-      // 全パネルを使い切った
-      DOUT << "End of panels." << std::endl;
-      endPlay(true);
-    }
-  }
-#endif
 
   void rotationHandPanel() noexcept
   {
@@ -617,6 +583,32 @@ struct Game
 
 
 #if defined (DEBUG)
+  // 強制的に次のカード
+  void forceNextHandPanel() noexcept
+  {
+    if (!getNextPanel())
+    {
+      // 全パネルを使い切った
+      DOUT << "End of panels." << std::endl;
+      endPlay(true);
+    }
+  }
+
+  void testPutPanel(const glm::ivec2& field_pos, int panel, u_int rotation)
+  {
+    putPanel(panel, field_pos, rotation);
+    checkFieldStatus(field_pos);
+  }
+
+  void testCalcResults()
+  {
+    calcResults();
+    DOUT << "Score: " << total_score << std::endl;
+    DOUT << " Rank: " << total_ranking << std::endl;
+    
+    sendScores();
+  }
+
   // 時間の進みON/OFF
   void pauseTimeCount() noexcept
   {
@@ -661,6 +653,11 @@ struct Game
     }
 
     return around_panels;
+  }
+
+  void forceTimeup()
+  {
+    play_time_ = 0.0;
   }
 #endif
 

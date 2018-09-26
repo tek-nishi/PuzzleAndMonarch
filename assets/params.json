@@ -13,7 +13,8 @@
       [ "b", "debug-disp-clouds" ],
       [ "g", "debug-gamecenter" ],
       [ "e", "debug-effect" ],
-      [ "p", "debug-purchase" ]
+      [ "p", "debug-purchase" ],
+      [ "w", "debug-timeout" ]
     ],
 
     "app_size": [

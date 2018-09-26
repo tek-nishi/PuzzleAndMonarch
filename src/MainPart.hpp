@@ -884,22 +884,28 @@ public:
                               });
 
     holder_ += event_.connect("debug-disp-clouds",
-                              [this](const Connection&, Arguments&) noexcept
+                              [this](const Connection&, const Arguments&) noexcept
                               {
                                 view_.toggleCloud();
                               });
 
     holder_ += event_.connect("debug-effect",
-                              [this](const Connection&, Arguments&) noexcept
+                              [this](const Connection&, const Arguments&) noexcept
                               {
                                 view_.startEffect({ 0, 0 }, 0);
                               });
 
     holder_ += event_.connect("debug-panel-scaling",
-                              [this](const Connection&, Arguments& arg) noexcept
+                              [this](const Connection&, const Arguments& arg) noexcept
                               {
                                 auto value = boost::any_cast<float>(arg.at("value"));
                                 view_.setPanelScaling(value);
+                              });
+
+    holder_ += event_.connect("debug-timeout",
+                              [this](const Connection&, const Arguments&) noexcept
+                              {
+                                game_->forceTimeup();
                               });
 
     holder_ += event_.connect("Test:PutPanel",
