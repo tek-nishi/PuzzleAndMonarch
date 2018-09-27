@@ -848,10 +848,15 @@ private:
   // ランキングを決める
   u_int calcRanking(int score) const noexcept
   {
-    // NOTICE ランキングは線形に上昇する
-    int rate = params_.getValueForKey<int>("ranking_rate");
-    // 0は「ランク無し」
-    return score / rate + 1;
+    auto rate = Json::getVec<glm::vec3>(params_["ranking_rate"]);
+    u_int rank;
+    for (rank = 0; rank < 9; ++rank)
+    {
+      int s = std::pow(rate.x, rank * rate.y) * rate.z;
+      if (score < s) break;
+    }
+
+    return rank;
   }
 
   // スコアを送信
