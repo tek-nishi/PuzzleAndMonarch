@@ -11,6 +11,7 @@
 * TODO BGM作る
 * TODO SE作る
 * TODO iOS:GameCenterの通知がタイトルロゴにかぶる
+* TODO iOS:スコア達成の実績はスコアをRankに合わせて変更
 * WAIT iOS:Pauseの実績がプレイ中以外でも解除される
 * TODO iOS:未ログイン時に課金処理へ移行すると何度もサインインを求められる
 * TODO iOS:処理の思い箇所を探して修正

@@ -850,8 +850,10 @@ private:
   {
     auto rate = Json::getVec<glm::vec3>(params_["ranking_rate"]);
     u_int rank;
+    // FIXME Magic Number
     for (rank = 0; rank < 9; ++rank)
     {
+      // ランク後半ほど高得点が必要になる
       int s = std::pow(rate.x, rank * rate.y) * rate.z;
       if (score < s) break;
     }

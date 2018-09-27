@@ -550,18 +550,68 @@
       "text": "Your Rank",
       "layout": [ 1, 0 ]
     },
+
     {
-      "identifier": "score:21",
-      "rect": [ -35, -8, -35, 6 ],
+      "identifier": "score:21-0",
+      "rect": [ -28, -8, -28, 6 ],
       "anchor": [
         [ 0.83, 0.3 ],
         [ 0.83, 0.3 ]
       ],
       
       "font": "icon",
-      "text": "",
-      "layout": [ 0, 0 ]
+      "text": "",
+      "layout": [ 0.5, 0 ]
     },
+    {
+      "identifier": "score:21-1",
+      "rect": [ -15, -8, -15, 6 ],
+      "anchor": [
+        [ 0.83, 0.3 ],
+        [ 0.83, 0.3 ]
+      ],
+      
+      "font": "icon",
+      "text": "",
+      "layout": [ 0.5, 0 ]
+    },
+    {
+      "identifier": "score:21-2",
+      "rect": [ -2, -8, -2, 6 ],
+      "anchor": [
+        [ 0.83, 0.3 ],
+        [ 0.83, 0.3 ]
+      ],
+      
+      "font": "icon",
+      "text": "",
+      "layout": [ 0.5, 0 ]
+    },
+    {
+      "identifier": "score:21-3",
+      "rect": [ 11, -8, 11, 6 ],
+      "anchor": [
+        [ 0.83, 0.3 ],
+        [ 0.83, 0.3 ]
+      ],
+      
+      "font": "icon",
+      "text": "",
+      "layout": [ 0.5, 0 ]
+    },
+    {
+      "identifier": "score:21-4",
+      "rect": [ 24, -8, 24, 6 ],
+      "anchor": [
+        [ 0.83, 0.3 ],
+        [ 0.83, 0.3 ]
+      ],
+      
+      "font": "icon",
+      "text": "",
+      "layout": [ 0.5, 0 ]
+    },
+
     {
       "identifier": "score:high-score",
       "rect": [ -35, -28, -35, -15 ],

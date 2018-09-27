@@ -12,7 +12,6 @@
 #include "Share.h"
 #include "Capture.h"
 #include "EventSupport.hpp"
-#include "ConvertRank.hpp" 
 #include "UISupport.hpp" 
 
 
@@ -269,6 +268,7 @@ private:
   void tweenTotalScore(const ci::JsonTree& params) noexcept
   {
     {
+      // Tweenでカウントアップ
       auto option = timeline_->apply(&disp_score_, 0, total_score_,
                                      params.getValueForKey<float>("result.disp_duration"),
                                      getEaseFunc(params.getValueForKey<std::string>("result.disp_ease")));
@@ -290,14 +290,45 @@ private:
       }
     }
     {
-      auto option = timeline_->apply(&disp_rank_, 0, total_rank_,
-                                     params.getValueForKey<float>("result.disp_duration"),
-                                     getEaseFunc(params.getValueForKey<std::string>("result.disp_ease")));
-      option.delay(params.getValueForKey<float>("result.disp_delay"));
-      option.updateFn([this]() noexcept
-                      {
-                        convertRankToText(disp_rank_, canvas_, "score:21", ranking_text_);
-                      });
+      // あらかじめ星の数を調べ、演出を決める
+      auto total_num = total_rank_ / 2 + (total_rank_ & 1);
+
+      double delay = 1.8;
+      auto rank_icon = Json::getArray<std::string>(params["result.rank_icon"]);
+      auto num = total_rank_ / 2;
+      int i = 0;
+      for (; i < num; ++i)
+      {
+        char id[16];
+        sprintf(id, "score:21-%d", i);
+
+        --total_num;
+        delay += total_num ? 0.2
+                           : 0.7;
+
+        count_exec_.add(delay,
+                        [this, id, rank_icon]()
+                        {
+                          canvas_.setWidgetText(id, rank_icon[0]);
+                          canvas_.setTweenTarget(id, "rank", 0);
+                          canvas_.startTween("rank");
+                          // canvas_.setWidgetParam(id, "scale", glm::vec2(1.3, 1.3));
+                        });
+      }
+      if (total_rank_ & 1)
+      {
+        char id[16];
+        sprintf(id, "score:21-%d", i);
+        delay += 0.7;
+        count_exec_.add(delay,
+                        [this, id, rank_icon]()
+                        {
+                          canvas_.setWidgetText(id, rank_icon[1]);
+                          canvas_.setTweenTarget(id, "rank", 0);
+                          canvas_.startTween("rank");
+                          // canvas_.setWidgetParam(id, "scale", glm::vec2(1.3, 1.3));
+                        });
+      }
     }
   }
 
