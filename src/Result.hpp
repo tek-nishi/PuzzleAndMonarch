@@ -199,7 +199,7 @@ public:
       { "touch", "touch:icon" },
       { "share", "share:icon" }
     };
-    UI::startButtonTween(count_exec_, canvas_, 2.6, 0.2, widgets);
+    UI::startButtonTween(count_exec_, canvas_, disp_delay_2 + 0.25, 0.2, widgets);
   }
 
   ~Result() = default;
