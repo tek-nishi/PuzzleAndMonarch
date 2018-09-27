@@ -30,16 +30,16 @@
       ],
 
       "font": "logo",
-      "text": "&Monarch",
-      "layout": [ 0.5, 0.5 ]
+      "text": "&Monarch"
     },
     {
       "identifier": "logo-icon",
-      "rect": [ 43, 10, 43, 52 ],
+      "rect": [ 43, 9, 43, 53 ],
       "anchor": [
         [ 0.5, 0.75 ],
         [ 0.5, 0.75 ]
       ],
+      "pivot": [ 1, 0.5 ],
 
       "font": "icon",
       "text": ""
