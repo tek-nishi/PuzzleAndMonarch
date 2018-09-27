@@ -629,13 +629,13 @@
     "disp_duration": 1.7,
     "disp_delay": 0.15,
     "disp_ease": "InCubic",
-    "disp_delay_2": 2.4,
+    "disp_delay_2": 0.1,
 
-    "force_score": 80000,
-    "force_rank": 9,
-    "force_rank_in": true,
-    "force_high_score": true,
-    "result.force_perfect": true
+    "force_score_": 40000,
+    "force_rank_": 9,
+    "force_rank_in_": true,
+    "force_high_score_": true,
+    "force_perfect_": true
   },
 
   "ranking": {

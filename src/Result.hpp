@@ -157,7 +157,7 @@ public:
     applyScore(score);
     auto duration = tweenTotalScore(params);
     // ランクイン時の演出
-    auto disp_delay_2 = duration; //params.getValueForKey<float>("result.disp_delay_2");
+    auto disp_delay_2 = duration + params.getValueForKey<float>("result.disp_delay_2");
     if (high_score_ || rank_in_)
     {
       count_exec_.add(disp_delay_2,
@@ -192,9 +192,6 @@ public:
                       });
     }
 
-
-
-
     canvas_.startCommonTween("root", "in-from-left");
 
     // ボタン演出
@@ -219,9 +216,15 @@ private:
       auto color = ci::hsvToRgb({ std::fmod(current_time * effect_speed_, 1.0), 0.75f, 1 });
       if (high_score_ || rank_in_)
       {
-        canvas_.setWidgetParam("score:20", "color", color);
+        canvas_.setWidgetParam("score:20",         "color", color);
         canvas_.setWidgetParam("score:high-score", "color", color);
-        canvas_.setWidgetParam("score:rank-in", "color", color);
+        canvas_.setWidgetParam("score:rank-in",    "color", color);
+        // for (int i = 0; i < rank_icon_num_; ++i)
+        // {
+        //   char id[16];
+        //   sprintf(id, "score:21-%d", i);
+        //   canvas_.setWidgetParam(id, "color", color);
+        // }
       }
       if (perfect_)
       {
@@ -305,7 +308,7 @@ private:
       // あらかじめ星の数を調べ、演出を決める
       auto total_num = total_rank_ / 2 + (total_rank_ & 1);
 
-      double delay = duration;
+      double delay = duration + 0.1;
       auto rank_icon = Json::getArray<std::string>(params["result.rank_icon"]);
       auto num = total_rank_ / 2;
       int i = 0;
