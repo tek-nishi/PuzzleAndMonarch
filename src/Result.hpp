@@ -74,6 +74,14 @@ public:
     total_rank_  = score.total_ranking;
     perfect_     = score.perfect;
 
+#if defined (DEBUG)
+    rank_in_     = Json::getValue(params, "result.force_rank_in",    rank_in_);
+    high_score_  = Json::getValue(params, "result.force_high_score", high_score_);
+    total_score_ = Json::getValue(params, "result.force_score",      total_score_);
+    total_rank_  = Json::getValue(params, "result.force_rank",       total_rank_);
+    perfect_     = Json::getValue(params, "result.force_perfect",    perfect_);
+#endif
+
     share_text_ = replaceString(Localize::get(params.getValueForKey<std::string>("result.share")),
                                 "%1",
                                 std::to_string(score.total_score));
@@ -131,8 +139,25 @@ public:
                                                 });
                               });
 
+    if (Share::canPost() && Capture::canExec())
+    {
+      // Share機能と画面キャプチャが有効ならUIも有効
+      canvas_.enableWidget("share");
+      
+      // ボタンのレイアウト変更
+      auto p = canvas_.getWidgetParam("share", "offset");
+      glm::vec2 ofs = *(boost::any_cast<glm::vec2*>(p));
+      ofs.x = -ofs.x;
+      canvas_.setWidgetParam("touch", "offset", ofs);
+    }
+
+    setupCommonTweens(event_, holder_, canvas_, "agree");
+    setupCommonTweens(event_, holder_, canvas_, "share");
+
+    applyScore(score);
+    auto duration = tweenTotalScore(params);
     // ランクイン時の演出
-    auto disp_delay_2 = params.getValueForKey<float>("result.disp_delay_2");
+    auto disp_delay_2 = duration; //params.getValueForKey<float>("result.disp_delay_2");
     if (high_score_ || rank_in_)
     {
       count_exec_.add(disp_delay_2,
@@ -167,23 +192,8 @@ public:
                       });
     }
 
-    if (Share::canPost() && Capture::canExec())
-    {
-      // Share機能と画面キャプチャが有効ならUIも有効
-      canvas_.enableWidget("share");
-      
-      // ボタンのレイアウト変更
-      auto p = canvas_.getWidgetParam("share", "offset");
-      glm::vec2 ofs = *(boost::any_cast<glm::vec2*>(p));
-      ofs.x = -ofs.x;
-      canvas_.setWidgetParam("touch", "offset", ofs);
-    }
 
-    setupCommonTweens(event_, holder_, canvas_, "agree");
-    setupCommonTweens(event_, holder_, canvas_, "share");
 
-    applyScore(score);
-    tweenTotalScore(params);
 
     canvas_.startCommonTween("root", "in-from-left");
 
@@ -265,12 +275,14 @@ private:
   }
 
 
-  void tweenTotalScore(const ci::JsonTree& params) noexcept
+  // 演出時間を返却
+  double tweenTotalScore(const ci::JsonTree& params) noexcept
   {
+    double duration = params.getValueForKey<float>("result.disp_duration");
     {
       // Tweenでカウントアップ
       auto option = timeline_->apply(&disp_score_, 0, total_score_,
-                                     params.getValueForKey<float>("result.disp_duration"),
+                                     duration,
                                      getEaseFunc(params.getValueForKey<std::string>("result.disp_ease")));
       option.delay(params.getValueForKey<float>("result.disp_delay"));
       option.updateFn([this]() noexcept
@@ -293,7 +305,7 @@ private:
       // あらかじめ星の数を調べ、演出を決める
       auto total_num = total_rank_ / 2 + (total_rank_ & 1);
 
-      double delay = 1.8;
+      double delay = duration;
       auto rank_icon = Json::getArray<std::string>(params["result.rank_icon"]);
       auto num = total_rank_ / 2;
       int i = 0;
@@ -302,9 +314,8 @@ private:
         char id[16];
         sprintf(id, "score:21-%d", i);
 
-        --total_num;
-        delay += total_num ? 0.2
-                           : 0.7;
+        delay += ((i + 1) < total_num) ? 0.2
+                                       : 0.7;
 
         count_exec_.add(delay,
                         [this, id, rank_icon]()
@@ -327,7 +338,11 @@ private:
                           canvas_.startTween("rank");
                         });
       }
+
+      // 最終的な演出時間
+      duration = delay + 0.5;
     }
+    return duration;
   }
 
 };
