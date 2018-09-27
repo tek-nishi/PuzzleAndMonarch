@@ -312,7 +312,6 @@ private:
                           canvas_.setWidgetText(id, rank_icon[0]);
                           canvas_.setTweenTarget(id, "rank", 0);
                           canvas_.startTween("rank");
-                          // canvas_.setWidgetParam(id, "scale", glm::vec2(1.3, 1.3));
                         });
       }
       if (total_rank_ & 1)
@@ -326,7 +325,6 @@ private:
                           canvas_.setWidgetText(id, rank_icon[1]);
                           canvas_.setTweenTarget(id, "rank", 0);
                           canvas_.startTween("rank");
-                          // canvas_.setWidgetParam(id, "scale", glm::vec2(1.3, 1.3));
                         });
       }
     }

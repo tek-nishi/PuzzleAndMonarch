@@ -84,13 +84,14 @@ public:
 
                                {
                                  // ハイスコア
-                                 static std::pair<const char*, double> tbl[] = {
-                                   { "PM.SCORE5000",     5000 },
-                                   { "PM.SCORE10000",   10000 },
-                                   { "PM.SCORE30000",   30000 },
-                                   { "PM.SCORE50000",   50000 },
-                                   { "PM.SCORE80000",   80000 },
-                                   { "PM.SCORE100000", 100000 },
+                                 static std::pair<const char*, double> tbl[]
+                                 {
+                                   { "PM.SCORE5000",    10000 },
+                                   { "PM.SCORE10000",   30000 },
+                                   { "PM.SCORE30000",   50000 },
+                                   { "PM.SCORE50000",   70000 },
+                                   { "PM.SCORE80000",  100000 },
+                                   { "PM.SCORE100000", 150000 },
                                  };
 
                                  for (const auto& t : tbl)
@@ -102,7 +103,8 @@ public:
 
                                {
                                  // 最大設置数
-                                 static std::pair<const char*, double> tbl[] = {
+                                 static std::pair<const char*, double> tbl[]
+                                 {
                                    { "PM.PUT30", 30.0 },
                                    { "PM.PUT40", 40.0 },
                                    { "PM.PUT50", 50.0 },
@@ -127,7 +129,8 @@ public:
                                {
                                  // 最大森
                                  auto max_forest = double(boost::any_cast<u_int>(args.at("max_forest")));
-                                 static std::pair<const char*, double> tbl[] = {
+                                 static std::pair<const char*, double> tbl[]
+                                 {
                                    { "PM.FOREST5",   5.0 },
                                    { "PM.FOREST10", 10.0 },
                                    { "PM.FOREST15", 15.0 },
@@ -144,7 +147,8 @@ public:
                                {
                                  // 最大道
                                  auto max_path = double(boost::any_cast<u_int>(args.at("max_path")));
-                                 static std::pair<const char*, double> tbl[] = {
+                                 static std::pair<const char*, double> tbl[]
+                                 {
                                    { "PM.PATH5",   5.0 },
                                    { "PM.PATH10", 10.0 },
                                    { "PM.PATH15", 15.0 },
