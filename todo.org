@@ -1,7 +1,5 @@
 * TODO stdのアルゴリズムを積極的に使う
-* TODO Tutorial中にPerfect演出が出る
-* TODO Tutorial終了時、もう少し余韻を
-* TODO チュートリアルのパネルは必ず目標を達成できるようにする
+* WAIT チュートリアルのパネルは必ず目標を達成できるようにする
 * TODO 道つき教会は街に変更
 * TODO Tutorialのテキスト見直す
 * TODO ちょっと回転しただけで、長押し置きが無効になる
@@ -17,6 +15,10 @@
 * TODO iOS:処理の思い箇所を探して修正
 * TODO iOS:AppStore提出に必要な書類や素材
 * TODO iOS:実績のアイコンを用意
+* DONE Tutorial終了時、もう少し余韻を
+CLOSED: [2018-09-28 金 11:39]
+* DONE Tutorial中にPerfect演出が出る
+CLOSED: [2018-09-28 金 11:27]
 * DONE チュートリアルのパネルは必ず目標を達成できるようにする
 CLOSED: [2018-09-28 金 10:34]
 * DONE ボタン演出を少し遅く

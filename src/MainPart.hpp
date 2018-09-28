@@ -471,7 +471,7 @@ public:
                                 auto max_path = boost::any_cast<u_int>(args.at("max_path"));
 
                                 // パネルを置き切った時は少し待つ
-                                auto delay = boost::any_cast<bool>(args.at("no_panels")) ? 1.5 : 0.0;
+                                auto delay = boost::any_cast<bool>(args.at("no_panels")) ? 2.0 : 0.0;
                                 view_.setColor(transition_duration_, transition_color_, delay);
                                 // Tutorial中はさらに待つ
                                 if (is_tutorial) delay += 5.2;

@@ -151,7 +151,7 @@ public:
                               {
                                 canvas_.active(false);
                                 
-                                auto delay = boost::any_cast<bool>(args.at("no_panels")) ? 1.5 : 0.0;
+                                auto delay = boost::any_cast<bool>(args.at("no_panels")) ? 2.0 : 0.0;
                                 if (boost::any_cast<bool>(args.at("tutorial")))
                                 {
                                   delay += 5.2;
