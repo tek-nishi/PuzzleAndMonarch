@@ -14,7 +14,8 @@
       [ "g", "debug-gamecenter" ],
       [ "e", "debug-effect" ],
       [ "p", "debug-purchase" ],
-      [ "w", "debug-timeout" ]
+      [ "w", "debug-timeout" ],
+      [ "a", "debug-reset-camera" ]
     ],
 
     "app_size": [
@@ -164,6 +165,9 @@
     },
 
     "tutorial": [
+      [
+        0, 1
+      ],
       [
         37, 56, 67, 23, 36, 35, 58
       ],

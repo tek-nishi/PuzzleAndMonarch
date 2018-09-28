@@ -393,7 +393,6 @@ public:
                                                 [this]() noexcept
                                                 {
                                                   abortGame();
-                                                  // field_camera_.resetAll();
                                                 },
                                                 true);
                               });
@@ -620,7 +619,6 @@ public:
                                                   [this]() noexcept
                                                   {
                                                     abortGame();
-                                                    // field_camera_.resetAll();
                                                   },
                                                   true);
                                 }
@@ -667,7 +665,6 @@ public:
                                                 [this]() noexcept
                                                 {
                                                   abortGame();
-                                                  // field_camera_.resetAll();
                                                 });
                               });
 
@@ -906,6 +903,12 @@ public:
                               [this](const Connection&, const Arguments&) noexcept
                               {
                                 game_->forceTimeup();
+                              });
+
+    holder_ += event_.connect("debug-reset-camera",
+                              [this](const Connection&, const Arguments&) noexcept
+                              {
+                                field_camera_.resetAll();
                               });
 
     holder_ += event_.connect("Test:PutPanel",
