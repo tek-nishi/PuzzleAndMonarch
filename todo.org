@@ -1,4 +1,5 @@
 * TODO stdのアルゴリズムを積極的に使う
+* TODO Tutorial終了時、もう少し余韻を
 * TODO チュートリアルのパネルは必ず目標を達成できるようにする
 * TODO 道つき教会は街に変更
 * TODO Tutorialのテキスト見直す
