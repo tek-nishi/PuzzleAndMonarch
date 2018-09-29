@@ -1,0 +1,81 @@
+jp	en
+Settings01	Erase record
+Settings02	Record was erased.
+Settings03	Record will be erased.
+Settings04	Your play record will be erased
+Settings05	and all past record will be gone.
+Settings06	Erase record
+Settings07	Stop erase
+Records01		Total plays:
+Records02		Total panels:
+Records03		Total Panel movement:
+Records04		Total Panel rotation:
+Records05		Total Share:
+Records06		Total launch count:
+Records07		Total suspensions:
+Records08		Max Number of Panels:
+Records09		The largest forest:
+Records10		The longest road:
+Records11		Avg. score:
+Records12		Avg. number of panels:
+Records13		Avg. panel movement:
+Records14		Avg. panel rotation:
+Records15		Avg. panel put time:
+Ranking01		Forest:
+Ranking02		Road:
+Ranking03		Building:
+Ranking04		Chapel:
+Ranking05		Total Panel:
+Result01		Forest:
+Result02		Road:
+Result03		Building:
+Result04		Chapel:
+Result05		Total Panel:
+GameMain01	Forest:
+GameMain02	Road:
+GameMain03	Building:
+GameMain04	Chapel:
+GameMain05	Total Panel:
+GameMain06	Like!!
+GameMain07	Resume
+GameMain08	Abort
+GameMain09	Put panels, Spread territory
+Tutorial01	Like!!
+Tutorial02	Good lick!!
+Tutorial03	Tap here to move
+Tutorial04	Tap here to rotation
+Tutorial05	Long tap to put
+Tutorial06	Connect buildings together
+Tutorial07	Complete forest
+Tutorial08	Fill the surroundings of the building
+Intro01		Welcome to the Puzzle Monarch.
+Intro02		Now let's expand the territory!!
+Intro03		Time is limited.
+Intro04		Expanding territory systematically.
+Intro05		If you aim for a high score,
+Intro06		Sometimes boldly.
+Share01		I gained %1points in #PuzzleAndMonarch.
+Share02		It is the result of playing #PuzzleAndMonarch.
+Credits01		Touge-Bu Kange-Bu
+Purchase01	Extend the time limit to 3 minutes.
+Purchase02	Unknown price.
+Purchase03	Buy
+Purchase04	Restore
+Purchase05	In-app billing is not allowed
+Purchase06	Error
+Purchase07	No response
+Purchase08	Invalid product ID
+Purchase09	Restoration complete
+Purchase10	Purchased item restored
+Purchase11	There were no items to restore
+Purchase12	Purchased item restore failed
+Purchase13	OK
+Advice01	Make score
+Advice02	Connect buildings
+Advice03	To get score more long path
+Advice04	Comprete forest
+Advice05	To get score big forest
+Advice06	Complete building and forest
+Advice07	Complete church
+Advice08	72 panels ready at the game
+Advice09	Are you ready?

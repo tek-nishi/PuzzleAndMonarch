@@ -12,6 +12,7 @@
 #include "Params.hpp"
 #include "JsonUtil.hpp"
 #include "TouchEvent.hpp"
+#include "AppText.hpp"
 #include "Core.hpp"
 #include "Debug.hpp"
 #include "GameCenter.h"
@@ -32,13 +33,13 @@ public:
   // TIPS cinder 0.9.1はコンストラクタが使える
   MyApp() noexcept
   : params_(Params::load("params.json")),
-    touch_event_(event_),
-    worker_(std::make_unique<Worker>(params_, event_))
+    touch_event_(event_)
   {
     DOUT << "Window size: " << getWindowSize() << std::endl;
     DOUT << "Resolution:  " << ci::app::toPixels(getWindowSize()) << std::endl;
 
     ci::Rand::randomize();
+    AppText::init(Localize::get("LangFile"));
 
 #if defined (DEBUG)
     initial_window_size_ = getWindowSize();
@@ -134,7 +135,9 @@ public:
                              // 課金成功
                              event_.signal("purchase-completed", Arguments());
                            });
- 
+
+    // 実行クラス生成
+    worker_ = std::make_unique<Worker>(params_, event_);
     prev_time_ = getElapsedSeconds();
   }
 

@@ -212,7 +212,7 @@ private:
         {
           if (!operation_.count(i) && waiting_.count(i))
           {
-            canvas_.setWidgetText("blank:text", Localize::get(text_[i]));
+            canvas_.setWidgetText("blank:text", AppText::get(text_[i]));
             disp_type_ = i;
             disp = true;
             break;
@@ -273,7 +273,7 @@ private:
     {
       char id[16];
       sprintf(id, "advice%d", index);
-      canvas_.setWidgetText(id, Localize::get(t.getValue<std::string>()));
+      canvas_.setWidgetText(id, AppText::get(t.getValue<std::string>()));
 
       ++index;
     }

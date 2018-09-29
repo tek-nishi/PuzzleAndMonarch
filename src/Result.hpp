@@ -83,7 +83,7 @@ public:
     perfect_     = Json::getValue(params, "result.force_perfect",    perfect_);
 #endif
 
-    share_text_ = replaceString(Localize::get(params.getValueForKey<std::string>("result.share")),
+    share_text_ = replaceString(AppText::get(params.getValueForKey<std::string>("result.share")),
                                 "%1",
                                 std::to_string(score.total_score));
 
