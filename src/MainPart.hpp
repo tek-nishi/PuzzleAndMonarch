@@ -106,8 +106,11 @@ public:
                                   current_putdown_time_ = glm::mix(putdown_time_.x, putdown_time_.y, game_->getPlayTimeRate());
                                   put_remaining_ = current_putdown_time_;
 
+                                  // FIXME Cinderにあまり依存したくない
+                                  touch_began_time_ = ci::app::getElapsedSeconds();
+
                                   auto ndc_pos = camera_.body().worldToNdc(cursor_pos_);
-                                  Arguments args = {
+                                  Arguments args{
                                     { "pos", ndc_pos }
                                   };
                                   event_.signal("Game:PutBegin", args);
@@ -143,20 +146,24 @@ public:
                                 float e = std::numeric_limits<float>::epsilon();
                                 if (glm::distance2(touch.pos, touch.prev_pos) < e) return;
 
-                                // ドラッグの距離を調べて、タップかドラッグか判定
-                                draged_length_ += glm::distance(touch.pos, touch.prev_pos);
-                                auto manip = draged_length_ > draged_max_length_;
-                                if (on_blank_ && manip && !manipulated_)
+                                // タップ開始から一定時間内はドラッグ可
+                                auto t = ci::app::getElapsedSeconds() - touch_began_time_;
+                                if (t > 0.2)
                                 {
-                                  view_.blankTouchCancelEase(grid_pos_);
+                                  // ドラッグの距離を調べて、タップかドラッグか判定
+                                  draged_length_ += glm::distance(touch.pos, touch.prev_pos);
+                                  auto manip = draged_length_ > draged_max_length_;
+                                  if (on_blank_ && manip && !manipulated_)
+                                  {
+                                    view_.blankTouchCancelEase(grid_pos_);
+                                  }
+                                  if (touch_put_ && manip)
+                                  {
+                                    touch_put_ = false;
+                                    event_.signal("Game:PutEnd", Arguments());
+                                  }
+                                  manipulated_ = manip;
                                 }
-                                if (touch_put_ && manip)
-                                {
-                                  touch_put_ = false;
-                                  event_.signal("Game:PutEnd", Arguments());
-                                }
-                                manipulated_ = manip;
-
                                 // Field回転操作
                                 rotateField(touch);
                               });
@@ -975,7 +982,7 @@ private:
         {
           auto ndc_pos = camera_.body().worldToNdc(cursor_pos_);
           auto scale   = 1.0f - glm::clamp(float(put_remaining_ / current_putdown_time_), 0.0f, 1.0f);
-          Arguments args = {
+          Arguments args{
             { "pos",   ndc_pos },
             { "scale", scale },
           };
@@ -1016,7 +1023,7 @@ private:
     // ゲーム内で起こったイベントをSoundに丸投げする
     if (!game_event_.empty())
     {
-      Arguments args {
+      Arguments args{
         { "event", game_event_ }
       };
       event_.signal("Game:Event", args);
@@ -1552,6 +1559,7 @@ private:
   float draged_length_;
   float draged_max_length_;
   bool touch_put_;
+  double touch_began_time_;
   double put_remaining_;
 
   bool manipulated_ = false;

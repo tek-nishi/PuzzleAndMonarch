@@ -24,13 +24,13 @@ struct TouchEvent
   void touchBegan(const ci::app::MouseEvent& event) noexcept
   {
     const auto& pos = event.getPos();
-    Touch touch = {
+    Touch touch{
       MOUSE_ID,
       false,
       pos,
-      pos
+      pos,
     };
-    Arguments arg = {
+    Arguments arg{
       { "touch", touch }
     };
     event_.signal("single_touch_began", arg);
@@ -41,14 +41,14 @@ struct TouchEvent
   void touchMoved(const ci::app::MouseEvent& event) noexcept
   {
     const auto& pos = event.getPos();
-    Touch touch = {
+    Touch touch{
       MOUSE_ID,
       false,
       pos,
       m_prev_pos_
     };
 
-    Arguments arg = {
+    Arguments arg{
       { "touch", touch }
     };
     event_.signal("single_touch_moved", arg);
@@ -59,14 +59,14 @@ struct TouchEvent
   void touchEnded(const ci::app::MouseEvent& event) noexcept
   {
     const auto& pos = event.getPos();
-    Touch touch = {
+    Touch touch{
       MOUSE_ID,
       false,
       pos,
       m_prev_pos_
     };
 
-    Arguments arg = {
+    Arguments arg{
       { "touch", touch }
     };
     event_.signal("single_touch_ended", arg);
@@ -107,7 +107,7 @@ struct TouchEvent
       m_diagonal_prev_pos_ = pos2;
     }
 
-    Arguments arg = {
+    Arguments arg{
       { "touches", touches }
     };
     event_.signal("multi_touch_moved", arg);
@@ -134,13 +134,13 @@ struct TouchEvent
     {
       // イベント送信
       const auto& t = touches[0];
-      Touch touch = {
+      Touch touch{
         t.getId(),
         false,
         t.getPos(),
         t.getPrevPos()
       };
-      Arguments arg = {
+      Arguments arg{
         { "touch", touch }
       };
       event_.signal("single_touch_began", arg);
@@ -176,7 +176,7 @@ struct TouchEvent
         touches_event.emplace_back(t.getId(), false, t.getPos(), t.getPrevPos());
       }
 
-      Arguments arg = {
+      Arguments arg{
         { "touches", touches_event }
       };
       event_.signal("multi_touch_moved", arg);
@@ -185,13 +185,13 @@ struct TouchEvent
     {
       const auto& t = touches[0];
 
-      Touch touch = {
+      Touch touch{
         t.getId(),
         false,
         t.getPos(),
         t.getPrevPos()
       };
-      Arguments arg = {
+      Arguments arg{
         { "touch", touch }
       };
       event_.signal("single_touch_moved", arg);
@@ -209,13 +209,13 @@ struct TouchEvent
     {
       const auto& t = touches[0];
       // イベント送信
-      Touch touch = {
+      Touch touch{
         t.getId(),
         false,
         t.getPos(),
         t.getPrevPos()
       };
-      Arguments arg = {
+      Arguments arg{
         { "touch", touch }
       };
       event_.signal("single_touch_ended", arg);
