@@ -164,12 +164,12 @@
 		00692BD914FF149000D0FFFF /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				4738A3D520693EEC00B590F3 /* InfoPlist.strings */,
 				4794916021201D9E0043F15B /* Localizable.strings */,
 				00748057165D41390024B57A /* assets */,
 				D9BFC250AE1146EB97135C4B /* Images.xcassets */,
 				257B6E3315A4490FA0602ED1 /* LaunchScreen.xib */,
 				4F061B89F5B245658DFC98A3 /* Info.plist */,
-				4738A3D520693EEC00B590F3 /* InfoPlist.strings */,
 			);
 			name = Resources;
 			sourceTree = "<group>";

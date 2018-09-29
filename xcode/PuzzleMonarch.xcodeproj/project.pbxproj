@@ -22,6 +22,7 @@
 		47E3D93D203F2CDF00275D6D /* CoreVideo.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5323E6B10EAFCA74003A9687 /* CoreVideo.framework */; };
 		47E3D93E203F2CEA00275D6D /* CoreAudio.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 00B784B20FF439BC000DE1D7 /* CoreAudio.framework */; };
 		47E3D940203F2CF800275D6D /* AudioToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 00B784B00FF439BC000DE1D7 /* AudioToolbox.framework */; };
+		47EB6399215F79E000DFDF01 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 47EB639B215F79E000DFDF01 /* InfoPlist.strings */; };
 		DEF6DCA10C6640E1A34580DD /* AppIcon.icns in Resources */ = {isa = PBXBuildFile; fileRef = 89197F6F9146454BA89F6920 /* AppIcon.icns */; };
 /* End PBXBuildFile section */
 
@@ -46,6 +47,8 @@
 		47979CC2210F5EAF00F54AA1 /* en */ = {isa = PBXFileReference; fileEncoding = 10; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Localizable.strings; sourceTree = "<group>"; };
 		47979CC4210F5EB200F54AA1 /* ja */ = {isa = PBXFileReference; fileEncoding = 10; lastKnownFileType = text.plist.strings; name = ja; path = ja.lproj/Localizable.strings; sourceTree = "<group>"; };
 		47A6E5532045C3D800AC0CA3 /* TextCodec.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = TextCodec.cpp; path = ../src/TextCodec.cpp; sourceTree = "<group>"; };
+		47EB639A215F79E000DFDF01 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		47EB639C215F79E900DFDF01 /* ja */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ja; path = ja.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		5323E6B10EAFCA74003A9687 /* CoreVideo.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreVideo.framework; path = /System/Library/Frameworks/CoreVideo.framework; sourceTree = "<absolute>"; };
 		82A083D7206440548816D769 /* MyApp.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = MyApp.cpp; path = ../src/MyApp.cpp; sourceTree = "<group>"; };
 		89197F6F9146454BA89F6920 /* AppIcon.icns */ = {isa = PBXFileReference; lastKnownFileType = image.icns; name = AppIcon.icns; path = ../resources/AppIcon.icns; sourceTree = "<group>"; };
@@ -154,6 +157,7 @@
 				476F8B99200329D400A394F0 /* assets */,
 				89197F6F9146454BA89F6920 /* AppIcon.icns */,
 				25C101A44F8D496FB5CB84D7 /* Info.plist */,
+				47EB639B215F79E000DFDF01 /* InfoPlist.strings */,
 				47979CC3210F5EAF00F54AA1 /* Localizable.strings */,
 			);
 			name = Resources;
@@ -224,6 +228,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				DEF6DCA10C6640E1A34580DD /* AppIcon.icns in Resources */,
+				47EB6399215F79E000DFDF01 /* InfoPlist.strings in Resources */,
 				47979CC1210F5EAF00F54AA1 /* Localizable.strings in Resources */,
 				476F8B9A200329D400A394F0 /* assets in Resources */,
 			);
@@ -283,6 +288,16 @@
 				47979CC4210F5EB200F54AA1 /* ja */,
 			);
 			name = Localizable.strings;
+			path = ../resources;
+			sourceTree = "<group>";
+		};
+		47EB639B215F79E000DFDF01 /* InfoPlist.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				47EB639A215F79E000DFDF01 /* en */,
+				47EB639C215F79E900DFDF01 /* ja */,
+			);
+			name = InfoPlist.strings;
 			path = ../resources;
 			sourceTree = "<group>";
 		};
