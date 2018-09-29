@@ -7,6 +7,7 @@
 * TODO ローカライズ
 * TODO BGM作る
 * TODO SE作る
+* TODO Windowsでのローカライズ
 * TODO iOS:GameCenterの通知がタイトルロゴにかぶる
 * WAIT iOS:Pauseの実績がプレイ中以外でも解除される
 * TODO iOS:未ログイン時に課金処理へ移行すると何度もサインインを求められる
