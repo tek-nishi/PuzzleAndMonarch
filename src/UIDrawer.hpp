@@ -27,7 +27,7 @@ struct Drawer
       const auto& p = json[i];
 
       const auto& name = p.getValueForKey<std::string>("name");
-      const auto& path = p.getValueForKey<std::string>("path");
+      auto path        = AppText::get(p.getValueForKey<std::string>("path"));
       int initial_size = p.getValueForKey<int>("size");
       int tex_size = texture_size;
       if (p.hasChild("texture_size")) {
