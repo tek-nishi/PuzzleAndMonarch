@@ -10,6 +10,10 @@
 #include "Path.hpp"
 #undef  NGS_PATH_IMPLEMENTATION
 
+#define NGS_ASSET_IMPLEMENTATION
+#include "Asset.hpp"
+#undef  NGS_ASSET_IMPLEMENTATION
+
 #define NGS_FONT_IMPLEMENTATION
 #include "Font.hpp"
 #undef  NGS_FONT_IMPLEMENTATION

@@ -5,12 +5,12 @@
 //   GLSL3.30と3.0ESの違いを吸収する
 //
 
-#include <fstream>
 #include <utility>
 #include <regex>
 #include <cassert>
 #include <cinder/gl/GlslProg.h>
 #include "Path.hpp"
+#include "Asset.hpp"
 
 
 namespace ngs {
@@ -26,13 +26,7 @@ ci::gl::GlslProgRef createShader(const std::string& vertex_path,
 // テキストファイル -> std::string
 std::string readFile(const std::string& path) noexcept
 {
-  std::ifstream ifs(getAssetPath(path).string());
-  assert(ifs);
-
-  std::string str((std::istreambuf_iterator<char>(ifs)),
-                  std::istreambuf_iterator<char>());
-
-  return str;
+  return ci::loadString(Asset::load(path));
 }
 
 

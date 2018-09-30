@@ -9,7 +9,6 @@
 
 #include "Defines.hpp"
 #include "Path.hpp"
-#include <fstream>
 #include <sstream> 
 #include <vector> 
 #include <glm/gtc/random.hpp>
@@ -42,13 +41,7 @@ std::vector<std::string> split(const std::string& text) noexcept
 // ファイルから読み込んでstringstreamにする
 std::istringstream createStringStream(const std::string& path)
 {
-  std::ifstream ifs(getAssetPath(path).string());
-  assert(ifs);
-
-  // ファイルから一気に読み込む
-  std::string str((std::istreambuf_iterator<char>(ifs)),
-                  std::istreambuf_iterator<char>());
-
+  auto str = ci::loadString(Asset::load(path));
   return std::istringstream(str);
 }
 

@@ -10,9 +10,16 @@
 
 namespace ngs { namespace Asset {
 
+ci::DataSourceRef load(const std::string& path);
+
+
+#if defined (NGS_ASSET_IMPLEMENTATION)
+
 ci::DataSourceRef load(const std::string& path)
 {
   return ci::loadFile(getAssetPath(path));
 }
+
+#endif
 
 } }
