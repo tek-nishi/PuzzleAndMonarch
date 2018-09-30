@@ -8,12 +8,13 @@
 * TODO ローカライズ
 * TODO BGM作る
 * TODO SE作る
-* TODO Windowsでのローカライズ
 * TODO iOS:GameCenterの通知がタイトルロゴにかぶる
 * TODO iOS:未ログイン時に課金処理へ移行すると何度もサインインを求められる
 * TODO iOS:処理の思い箇所を探して修正
 * TODO iOS:AppStore提出に必要な書類や素材
 * TODO iOS:実績のローカライズ
+* DONE Windowsでのローカライズ
+CLOSED: [2018-09-30 日 14:46]
 * DONE iOS:Pauseの実績がプレイ中以外でも解除される
 CLOSED: [2018-09-29 土 14:27]
 * DONE iOS:実績のアイコンを用意
