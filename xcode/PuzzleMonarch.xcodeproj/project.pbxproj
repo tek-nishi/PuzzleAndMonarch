@@ -15,7 +15,7 @@
 		43498AFBC90B40CEABDC634D /* MyApp.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 82A083D7206440548816D769 /* MyApp.cpp */; };
 		47559FD12003441100833AB0 /* Framework.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 47559FD02003441000833AB0 /* Framework.cpp */; };
 		476F8B9A200329D400A394F0 /* assets in Resources */ = {isa = PBXBuildFile; fileRef = 476F8B99200329D400A394F0 /* assets */; };
-		47979CBE210F4AE400F54AA1 /* Localize.mm in Sources */ = {isa = PBXBuildFile; fileRef = 47979CBD210F4AE400F54AA1 /* Localize.mm */; };
+		479022C421608A33000B47A6 /* OsMac.mm in Sources */ = {isa = PBXBuildFile; fileRef = 479022C321608A33000B47A6 /* OsMac.mm */; };
 		47979CC1210F5EAF00F54AA1 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 47979CC3210F5EAF00F54AA1 /* Localizable.strings */; };
 		47A6E5542045C3D800AC0CA3 /* TextCodec.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 47A6E5532045C3D800AC0CA3 /* TextCodec.cpp */; };
 		47A6E5572045C58200AC0CA3 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1058C7A1FEA54F0111CA2CBB /* Cocoa.framework */; };
@@ -43,7 +43,7 @@
 		37ED1BFD95724281A4782197 /* PuzzleMonarch_Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PuzzleMonarch_Prefix.pch; sourceTree = "<group>"; };
 		47559FD02003441000833AB0 /* Framework.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Framework.cpp; path = ../src/Framework.cpp; sourceTree = "<group>"; };
 		476F8B99200329D400A394F0 /* assets */ = {isa = PBXFileReference; lastKnownFileType = folder; name = assets; path = ../assets; sourceTree = "<group>"; };
-		47979CBD210F4AE400F54AA1 /* Localize.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = Localize.mm; path = ../src/Localize.mm; sourceTree = "<group>"; };
+		479022C321608A33000B47A6 /* OsMac.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = OsMac.mm; path = ../src/OsMac.mm; sourceTree = "<group>"; };
 		47979CC2210F5EAF00F54AA1 /* en */ = {isa = PBXFileReference; fileEncoding = 10; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Localizable.strings; sourceTree = "<group>"; };
 		47979CC4210F5EB200F54AA1 /* ja */ = {isa = PBXFileReference; fileEncoding = 10; lastKnownFileType = text.plist.strings; name = ja; path = ja.lproj/Localizable.strings; sourceTree = "<group>"; };
 		47A6E5532045C3D800AC0CA3 /* TextCodec.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = TextCodec.cpp; path = ../src/TextCodec.cpp; sourceTree = "<group>"; };
@@ -86,10 +86,10 @@
 		080E96DDFE201D6D7F000001 /* Source */ = {
 			isa = PBXGroup;
 			children = (
+				479022C321608A33000B47A6 /* OsMac.mm */,
 				47A6E5532045C3D800AC0CA3 /* TextCodec.cpp */,
 				47559FD02003441000833AB0 /* Framework.cpp */,
 				82A083D7206440548816D769 /* MyApp.cpp */,
-				47979CBD210F4AE400F54AA1 /* Localize.mm */,
 			);
 			name = Source;
 			sourceTree = "<group>";
@@ -273,8 +273,8 @@
 			files = (
 				47559FD12003441100833AB0 /* Framework.cpp in Sources */,
 				43498AFBC90B40CEABDC634D /* MyApp.cpp in Sources */,
-				47979CBE210F4AE400F54AA1 /* Localize.mm in Sources */,
 				47A6E5542045C3D800AC0CA3 /* TextCodec.cpp in Sources */,
+				479022C421608A33000B47A6 /* OsMac.mm in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -5,7 +5,6 @@
 //
 
 #include "UIWidgetBase.hpp"
-#include "Localize.h"
 #include <glm/gtx/transform.hpp>
 
 

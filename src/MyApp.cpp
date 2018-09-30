@@ -7,12 +7,13 @@
 #include <cinder/app/RendererGl.h>
 #include <cinder/gl/gl.h>
 #include <cinder/Rand.h>
+#include "Os.hpp"
+#include "AppText.hpp"
 #include "Event.hpp"
 #include "Arguments.hpp"
 #include "Params.hpp"
 #include "JsonUtil.hpp"
 #include "TouchEvent.hpp"
-#include "AppText.hpp"
 #include "Core.hpp"
 #include "Debug.hpp"
 #include "GameCenter.h"
@@ -39,7 +40,7 @@ public:
     DOUT << "Resolution:  " << ci::app::toPixels(getWindowSize()) << std::endl;
 
     ci::Rand::randomize();
-    AppText::init(Localize::get("LangFile"));
+    AppText::init(Os::lang());
 
 #if defined (DEBUG)
     initial_window_size_ = getWindowSize();
