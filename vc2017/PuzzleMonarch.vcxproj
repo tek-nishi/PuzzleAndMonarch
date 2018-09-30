@@ -123,6 +123,7 @@
   <ItemGroup>
     <ClCompile Include="..\src\Framework.cpp" />
     <ClCompile Include="..\src\MyApp.cpp" />
+    <ClCompile Include="..\src\OsMsw.cpp" />
     <ClCompile Include="..\src\TextCodec.cpp" />
   </ItemGroup>
   <ItemGroup>

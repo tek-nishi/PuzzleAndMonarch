@@ -38,5 +38,8 @@
     <ClCompile Include="..\src\TextCodec.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="..\src\OsMsw.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>
