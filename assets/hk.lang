@@ -1,4 +1,11 @@
 Senobi-Gothic-Regular.ttf		wt024.ttf
+Settings01	刪除保存的數據
+Settings02	保存的數據已刪除
+Settings03	我可以刪除保存的數據
+Settings04	刪除所有以前的播放歷史記錄並
+Settings05	將其恢復為乾淨狀態
+Settings06	刪除保存的數據
+Settings07	要取消
 Intro01		歡迎來到謎題和王子的世界
 Intro02		來吧！讓我們分散領土！
 Intro03		歡迎來到謎題和王子的世界
@@ -9,8 +16,8 @@ GameMain01	一片森林:
 GameMain02	一條路:
 GameMain03	一座建築:
 GameMain04	一座教堂:
-GameMain05	號碼已下:
-GameMain06	喜歡它!!
-GameMain07	復牌
+GameMain05	面板數量:
+GameMain06	喜歡它！
+GameMain07	恢復
 GameMain08	中斷
 GameMain09	放置面板，展開領土
