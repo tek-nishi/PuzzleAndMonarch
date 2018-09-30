@@ -45,6 +45,8 @@
 		473BE16F2160A3C700273E38 /* zh-HK */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-HK"; path = "zh-HK.lproj/Localizable.strings"; sourceTree = "<group>"; };
 		47559FD02003441000833AB0 /* Framework.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Framework.cpp; path = ../src/Framework.cpp; sourceTree = "<group>"; };
 		476F8B99200329D400A394F0 /* assets */ = {isa = PBXFileReference; lastKnownFileType = folder; name = assets; path = ../assets; sourceTree = "<group>"; };
+		4777A3262160E8AD007BE8EE /* zh-Hant */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hant"; path = "zh-Hant.lproj/InfoPlist.strings"; sourceTree = "<group>"; };
+		4777A3272160E8AD007BE8EE /* zh-Hant */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hant"; path = "zh-Hant.lproj/Localizable.strings"; sourceTree = "<group>"; };
 		479022C321608A33000B47A6 /* OsMac.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = OsMac.mm; path = ../src/OsMac.mm; sourceTree = "<group>"; };
 		47979CC2210F5EAF00F54AA1 /* en */ = {isa = PBXFileReference; fileEncoding = 10; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Localizable.strings; sourceTree = "<group>"; };
 		47979CC4210F5EB200F54AA1 /* ja */ = {isa = PBXFileReference; fileEncoding = 10; lastKnownFileType = text.plist.strings; name = ja; path = ja.lproj/Localizable.strings; sourceTree = "<group>"; };
@@ -215,6 +217,7 @@
 				German,
 				ja,
 				"zh-HK",
+				"zh-Hant",
 			);
 			mainGroup = 29B97314FDCFA39411CA2CEA /* ApprenticeMonarch */;
 			projectDirPath = "";
@@ -290,6 +293,7 @@
 				47979CC2210F5EAF00F54AA1 /* en */,
 				47979CC4210F5EB200F54AA1 /* ja */,
 				473BE16F2160A3C700273E38 /* zh-HK */,
+				4777A3272160E8AD007BE8EE /* zh-Hant */,
 			);
 			name = Localizable.strings;
 			path = ../resources;
@@ -301,6 +305,7 @@
 				47EB639A215F79E000DFDF01 /* en */,
 				47EB639C215F79E900DFDF01 /* ja */,
 				473BE16E2160A3C700273E38 /* zh-HK */,
+				4777A3262160E8AD007BE8EE /* zh-Hant */,
 			);
 			name = InfoPlist.strings;
 			path = ../resources;
