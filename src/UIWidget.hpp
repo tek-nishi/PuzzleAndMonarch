@@ -57,9 +57,14 @@ public:
     return se_;
   }
 
+  void setSe(const std::string& se)
+  {
+    se_ = se;
+  }
+
   bool hasSe() const noexcept
   {
-    return has_se_;
+    return !se_.empty();
   }
 
   // Touch-Moveでも反応する
@@ -306,8 +311,7 @@ public:
 
     if (params.hasChild("se"))
     {
-      widget->se_     = params.getValueForKey<std::string>("se");
-      widget->has_se_ = true;
+      widget->se_ = params.getValueForKey<std::string>("se");
     }
 
     return widget;
@@ -387,7 +391,6 @@ private:
 
   bool move_event_;
 
-  bool has_se_ = false;
   std::string se_;
 
   float alpha_;

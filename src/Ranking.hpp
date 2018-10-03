@@ -44,6 +44,7 @@ public:
 
       canvas_.enableWidget("touch_back", false);
       canvas_.enableWidget("touch_agree");
+      canvas_.at("touch")->setSe("selected");
     }
 
     auto records = args.count("records") && boost::any_cast<bool>(args.at("records"));
