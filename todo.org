@@ -1,22 +1,24 @@
 * TODO stdのアルゴリズムを積極的に使う
 * TODO PC版セーブファイルはフォルダへ
-* TODO チュートリアル終わりはボタンで進む
 * TODO カメラを引いた時はもう少し上から眺めるように
 * TODO アプリアイコン再検討
 * TODO プレイ中の左下の表示内容を再検討
 * WAIT Tutorial3がまだわかりづらい
-* TODO チュートリアルのパネルは必ず目標を達成できるようにする(Tutorial3まだだめ)
+* WAIT チュートリアルのパネルは必ず目標を達成できるようにする(Tutorial3まだだめ)
 * WAIT ちょっと回転しただけで、長押し置きが無効になる
 * TODO 世界観を作る
 * TODO ローカライズ
 * TODO BGM作る
 * TODO SE作る
 * TODO iOS:GameCenterの通知がタイトルロゴにかぶる
-* TODO iOS:Pauseの実績アイコンはPause時のパネルにする
 * TODO iOS:未ログイン時に課金処理へ移行すると何度もサインインを求められる
 * TODO iOS:処理の思い箇所を探して修正
 * TODO iOS:AppStore提出に必要な書類や素材
 * TODO iOS:実績のローカライズ
+* DONE iOS:Pauseの実績アイコンはPause時のパネルにする
+CLOSED: [2018-10-03 水 22:21]
+* DONE チュートリアル終わりはボタンで進む
+CLOSED: [2018-10-03 水 11:04]
 * DONE 試しに繁体字
 CLOSED: [2018-09-30 日 19:12]
 * DONE Windowsでのローカライズ
