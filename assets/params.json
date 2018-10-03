@@ -126,6 +126,16 @@
       "name": "selecting",
       "path": "selecting.m4a",
       "type": "se"
+    },
+    {
+      "name": "finish",
+      "path": "finish.m4a",
+      "type": "se"
+    },
+    {
+      "name": "logo01",
+      "path": "logo01.m4a",
+      "type": "bgm"
     }
   ],
 
@@ -543,7 +553,7 @@
     },
 
     "se_first": [
-      [ 0.25, "title" ]
+      [ 1.7, "logo01" ]
     ],
 
     "se": [
