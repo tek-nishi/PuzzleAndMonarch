@@ -154,20 +154,30 @@ public:
                                 auto delay = boost::any_cast<bool>(args.at("no_panels")) ? 2.0 : 0.0;
                                 if (boost::any_cast<bool>(args.at("tutorial")))
                                 {
-                                  delay += 5.2;
+                                  // チュートリアルの場合はGameMainを決して終了
                                   canvas_.startTween("tutorial-end");
+                                  count_exec_.add(end_delay,
+                                                  [this]() noexcept
+                                                  {
+                                                    active_ = false;
+                                                    DOUT << "GameMain:end" << std::endl;
+                                                  });
                                 }
-                                count_exec_.add(delay,
-                                                [this, end_delay]()
-                                                {
-                                                  canvas_.startTween("end");
-                                                  count_exec_.add(end_delay,
-                                                                  [this]() noexcept
-                                                                  {
-                                                                    active_ = false;
-                                                                    DOUT << "GameMain:end" << std::endl;
-                                                                  });
-                                                });
+                                else
+                                {
+                                  // 終了演出
+                                  count_exec_.add(delay,
+                                                  [this, end_delay]()
+                                                  {
+                                                    canvas_.startTween("end");
+                                                    count_exec_.add(end_delay,
+                                                                    [this]() noexcept
+                                                                    {
+                                                                      active_ = false;
+                                                                      DOUT << "GameMain:end" << std::endl;
+                                                                    });
+                                                  });
+                                }
                               });
 
     // パネル位置

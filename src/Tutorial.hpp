@@ -162,16 +162,31 @@ public:
                                 }
                               });
 
-    // 本編終了に伴い本タスクも終了
+    // Tutorial終了
     holder_ += event_.connect("Game:Finish",
                               [this](const Connection&, const Arguments&)
                               {
                                 pause_ = true;
                                 canvas_.startTween("pause");
                                 dispAdvice();
+                              });
 
-                                count_exec_.add(8,
-                                                [this]()
+    auto wipe_delay    = params.getValueForKey<double>("ui.wipe.delay");
+    auto wipe_duration = params.getValueForKey<double>("ui.wipe.duration");
+
+    holder_ += event_.connect("agree:touch_ended",
+                              [this, wipe_delay, wipe_duration](const Connection&, const Arguments&) noexcept
+                              {
+                                DOUT << "Agree." << std::endl;
+                                canvas_.active(false);
+                                canvas_.startCommonTween("root", "out-to-right");
+                                count_exec_.add(wipe_delay,
+                                                [this]() noexcept
+                                                {
+                                                  event_.signal("Tutorial:Finished", Arguments());
+                                                });
+                                count_exec_.add(wipe_duration,
+                                                [this]() noexcept
                                                 {
                                                   finishTask();
                                                 });
@@ -183,6 +198,8 @@ public:
                                 finishTask();
                               });
 
+    setupCommonTweens(event_, holder_, canvas_, "agree");
+ 
     event_.signal("Tutorial:Begin", Arguments());
   }
 
@@ -281,7 +298,7 @@ private:
 
   void dispAdvice()
   {
-    canvas_.startTween("advice");
+    canvas_.enableWidget("advice");
 
     static const char* tbl[]{
       "check%d",
@@ -298,6 +315,12 @@ private:
       }
       canvas_.startTween("check");
     }
+
+    canvas_.enableWidget("touch");
+    std::vector<std::pair<std::string, std::string>> widgets{
+      { "touch", "touch:icon" },
+    };
+    UI::startButtonTween(count_exec_, canvas_, 4.0, 0.2, widgets);
   }
 
   

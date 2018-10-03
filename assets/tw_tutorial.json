@@ -158,32 +158,6 @@
     }
   ],
 
-  "advice": [
-    {
-      "identifier": "advice",
-      "tween": [
-        {
-          "param": "alpha",
-          "type": "float",
-          "body": [
-            {
-              "duration": 7,
-              "enable_start": true,
-              "ease_func": "None",
-              "start": 1,
-              "end": 1
-            },
-            {
-              "duration": 0.6,
-              "ease_func": "None",
-              "end": 0
-            }
-          ]
-        }
-      ]
-    }
-  ],
-
   "check": [
     {
       "identifier": "check0",

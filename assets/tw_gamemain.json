@@ -288,6 +288,7 @@
           "body": [
             {
               "duration": 0.4,
+              "delay": 0.6,
               "ease_func": "None",
               "end": 0
             }
@@ -304,6 +305,7 @@
           "body": [
             {
               "duration": 0.4,
+              "delay": 0.6,
               "ease_func": "None",
               "end": 0
             }
@@ -320,6 +322,7 @@
           "body": [
             {
               "duration": 0.4,
+              "delay": 0.6,
               "ease_func": "None",
               "end": 0
             }
@@ -336,6 +339,7 @@
           "body": [
             {
               "duration": 0.4,
+              "delay": 0.6,
               "ease_func": "None",
               "end": 0
             }

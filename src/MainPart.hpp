@@ -479,8 +479,6 @@ public:
                                 // パネルを置き切った時は少し待つ
                                 auto delay = boost::any_cast<bool>(args.at("no_panels")) ? 2.0 : 0.0;
                                 view_.setColor(transition_duration_, transition_color_, delay);
-                                // Tutorial中はさらに待つ
-                                if (is_tutorial) delay += 5.2;
                                 count_exec_.add(params_.getValueForKey<double>("field.result_begin_delay") + delay,
                                                 [this, score, rank_in, ranking,
                                                  high_score, total_panels,
@@ -497,15 +495,23 @@ public:
                                                     { "max_path",     max_path },
                                                     { "tutorial",     is_tutorial },
                                                   };
-                                                  event_.signal("Result:begin", a);
-                                                  view_.setColor(transition_duration_, ci::Color::white());
+
+                                                  // Tutorialの場合は別のきっかけでResultを始める
+                                                  if (is_tutorial)
+                                                  {
+                                                    beginResultAfterTuroial(a);
+                                                  }
+                                                  else
+                                                  {
+                                                    beginResult(a);
+                                                  }
                                                 });
 
                                 count_exec_.add(params_.getValueForKey<double>("field.auto_camera_duration"),
                                                 [this]() noexcept
                                                 {
                                                   field_camera_.force(false);
-                                                  prohibited_   = false;
+                                                  prohibited_ = false;
                                                 });
                               });
 
@@ -1063,7 +1069,30 @@ private:
     }
 #endif
   }
-  
+
+
+  // 結果画面開始
+  void beginResult(Arguments& args)
+  {
+    event_.signal("Result:begin", args);
+    view_.setColor(transition_duration_, ci::Color::white());
+  }
+
+  // チュートリアル終了→結果画面開始
+  void beginResultAfterTuroial(Arguments& args)
+  {
+    holder_ += event_.connect("agree:touch_ended",
+                              [this, args](const Connection& c, const Arguments&)
+                              {
+                                count_exec_.add(0.5,
+                                                [this, args]() mutable
+                                                {
+                                                  beginResult(args);
+                                                });
+                                c.disconnect();
+                              });
+  }
+
 
   // タッチ位置からField上の升目座標を計算する
   std::tuple<bool, glm::ivec2, ci::Ray> calcGridPos(const glm::vec2& pos) const noexcept
