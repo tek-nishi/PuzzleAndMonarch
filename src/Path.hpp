@@ -39,14 +39,14 @@ ci::fs::path getDocumentPath() noexcept
 #elif defined (CINDER_MAC)
 #if defined (DEBUG)
   // Debug時はプロジェクトの場所へ書き出す
-  return ci::fs::path(PREPRO_TO_STR(SRCROOT));
+  return ci::fs::path(PREPRO_TO_STR(SRCROOT) "/savedata");
 #else
   // Release時はアプリコンテンツ内
-  return ci::app::Platform::get()->getResourceDirectory();
+  return ci::app::Platform::get()->getResourceDirectory() / "savedata";
 #endif
 #else
   // Widnowsは実行ファイルと同じ場所
-  return ci::app::getAppPath();
+  return ci::app::getAppPath() / "savedata";
 #endif
 }
 

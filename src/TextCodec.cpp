@@ -107,11 +107,9 @@ void write(const std::string& path, const std::string& input) noexcept
 {
   auto output = encode(input);
 
-  std::ofstream fstr(path, std::ios::binary);
-  assert(fstr);
-
-  // SOURCE: http://blogs.wankuma.com/episteme/archive/2009/01/09/166002.aspx
-  std::copy(output.begin(), output.end(), std::ostreambuf_iterator<char>(fstr));
+  // Cinderにファイル書き出しが用意されていた
+  auto data_ref = ci::writeFile(path);
+  data_ref->getStream()->write(output);
 }
 
 // 読み込み
