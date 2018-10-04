@@ -1,4 +1,5 @@
 * TODO stdのアルゴリズムを積極的に使う
+* TODO Windows版アイコン作る
 * WAIT カメラを引いた時はもう少し上から眺めるように
 * TODO プレイ中の左下の表示内容を再検討
 * WAIT Tutorial3がまだわかりづらい
