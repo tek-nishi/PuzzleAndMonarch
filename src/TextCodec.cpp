@@ -8,6 +8,7 @@
 #include <cassert>
 #include <zlib.h>
 #include <cinder/app/App.h>
+#include <cinder/DataTarget.h>
 #include "TextCodec.hpp"
 
 
