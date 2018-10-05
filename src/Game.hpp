@@ -764,6 +764,7 @@ private:
   // スコア更新
   void updateScores() noexcept
   {
+    // FIXME MagicNumber
     scores_[0] = int(completed_path.size());
     scores_[1] = countTotalAttribute(completed_path, field, panels_);
     scores_[2] = int(completed_forests.size());
@@ -902,6 +903,7 @@ private:
         { "rotation",     rotation },
         { "total_panels", total_panels },
         { "first",        first },
+        { "remain_panel", u_int(waiting_panels.size()) },
       };
       event_.signal("Game:PutPanel", args);
     }

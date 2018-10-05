@@ -222,9 +222,8 @@ public:
     holder_ += event_.connect("Game:PutPanel",
                               [this](const Connection&, const Arguments& args)
                               {
-                                auto panels = boost::any_cast<u_int>(args.at("total_panels"));
-                                scores_[4] = panels;
-                                updateScoreWidget(4, panels);
+                                auto panels = boost::any_cast<u_int>(args.at("remain_panel"));
+                                updateScoreWidget(1, panels);
                               });
 
     // Like演出
@@ -296,50 +295,27 @@ private:
   // 得点時の演出準備
   void setupScores(const ci::JsonTree& params) noexcept
   {
-    // FIXME Canvasのレイアウトから数を特定している
-    const auto& widget = canvas_.at("scores");
-    auto num = widget->getChildNum() / 2;
-    scores_.resize(num);
-    std::fill(std::begin(scores_), std::end(scores_), u_int(0));
-  }
-
-
-  void updateScoreWidget(int index, int score)
-  {
-    char id[16];
-    std::sprintf(id, "score:%d", index + 1);
-    canvas_.setWidgetParam(id, "text", std::to_string(score));
-
-    canvas_.setTweenTarget(id, "score", 0);
-    canvas_.startTween("score");
   }
 
   void updateScores(const std::vector<u_int>& scores)
   {
-    // 森
-    if (scores_[0] != scores[2])
+    // Totalいいね!!
+    int total_like = scores[1] + scores[3] + scores[5] + scores[6];
+    if (total_like_ != total_like)
     {
-      scores_[0] = scores[2];
-      updateScoreWidget(0, scores[2]);
+      total_like_ = total_like;
+      updateScoreWidget(0, total_like);
     }
-    // 道
-    if (scores_[1] != scores[0])
-    {
-      scores_[1] = scores[0];
-      updateScoreWidget(1, scores[0]);
-    }
-    // 街
-    if (scores_[2] != scores[5])
-    {
-      scores_[2] = scores[5];
-      updateScoreWidget(2, scores[5]);
-    }
-    // 教会
-    if (scores_[3] != scores[6])
-    {
-      scores_[3] = scores[6];
-      updateScoreWidget(3, scores[6]);
-    }
+  }
+
+  void updateScoreWidget(int index, int score)
+  {
+    char id[16];
+    std::sprintf(id, "score:%d", index);
+    canvas_.setWidgetParam(id, "text", std::to_string(score));
+
+    canvas_.setTweenTarget(id, "score", 0);
+    canvas_.startTween("score");
   }
 
 
@@ -371,7 +347,7 @@ private:
   UI::Canvas canvas_;
   ci::TimelineRef timeline_;
 
-  std::vector<u_int> scores_;
+  u_int total_like_ = 0;
 
   bool active_ = true;
 
