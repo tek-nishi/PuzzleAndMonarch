@@ -248,7 +248,7 @@
           "type": "vec2",
           "body": [
             {
-              "duration": 0.3,
+              "duration": 0.15,
               "copy_start": true,
               "ease_func": "OutCubic",
               "start": [   1,   1 ],

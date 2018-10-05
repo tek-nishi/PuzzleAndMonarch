@@ -136,14 +136,6 @@ public:
                                 canvas_.setWidgetText("time_remain", "0'00");
                               });
 
-    holder_ += event_.connect("Game:UpdateScores",
-                              [this](const Connection&, const Arguments& args)
-                              {
-                                const auto& scores = boost::any_cast<const std::vector<u_int>&>(args.at("scores"));
-                                updateScores(scores);
-                              });
-
-
     // ゲーム完了
     auto end_delay = params.getValueForKey<double>("gamemain.end_delay");
     holder_ += event_.connect("Game:Finish",
@@ -238,7 +230,6 @@ public:
                               {
                                 DOUT << "Game:completed" << std::endl;
                                 const auto& positions = boost::any_cast<const std::vector<glm::ivec2>&>(args.at("positions"));
-                                // completedEffect(positions);
 
                                 // 演出開始
                                 double delay = 0.2;
@@ -257,6 +248,9 @@ public:
                                                     canvas_.setTweenTarget(id, "like", 0);
                                                     canvas_.setWidgetParam(id, "offset", ofs);
                                                     canvas_.startTween("like");
+
+                                                    total_like_ += 1;
+                                                    updateScoreWidget(0, total_like_);
                                                   });
                                   delay += 0.1;
                                 }
