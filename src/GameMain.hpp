@@ -24,7 +24,8 @@ public:
               params["ui.camera"],
               Params::load(params.getValueForKey<std::string>("gamemain.canvas")),
               Params::load(params.getValueForKey<std::string>("gamemain.tweens"))),
-      timeline_(ci::Timeline::create())
+      timeline_(ci::Timeline::create()),
+      scores_(3, 0)
   {
     DOUT << "GameMain::GameMain" << std::endl;
     startTimelineSound(event, params, "gamemain.se");
@@ -215,7 +216,7 @@ public:
                               [this](const Connection&, const Arguments& args)
                               {
                                 auto panels = boost::any_cast<u_int>(args.at("remain_panel"));
-                                updateScoreWidget(1, panels);
+                                updateScoreWidget(3, panels);
                               });
 
     // Like演出
@@ -230,13 +231,21 @@ public:
                               {
                                 DOUT << "Game:completed" << std::endl;
                                 const auto& positions = boost::any_cast<const std::vector<glm::ivec2>&>(args.at("positions"));
+                                
+                                static std::map<std::string, int> tbl{
+                                  { "forests", 0 },
+                                  { "path",    1 },
+                                  { "church",  2 },
+                                };
+                                const auto* t = boost::any_cast<const char*>(args.at("type"));
+                                int index = tbl.count(t) ? tbl.at(t) : -1;
 
                                 // 演出開始
                                 double delay = 0.2;
                                 for (const auto& p : positions)
                                 {
                                   count_exec_.add(delay,
-                                                  [this, p]()
+                                                  [this, p, index]()
                                                   {
                                                     auto ndc_pos = like_func_(p);
                                                     auto ofs     = canvas_.ndcToPos(ndc_pos);
@@ -249,8 +258,11 @@ public:
                                                     canvas_.setWidgetParam(id, "offset", ofs);
                                                     canvas_.startTween("like");
 
-                                                    total_like_ += 1;
-                                                    updateScoreWidget(0, total_like_);
+                                                    if (index >= 0)
+                                                    {
+                                                      scores_[index] += 1;
+                                                      updateScoreWidget(index, scores_[index]);
+                                                    }
                                                   });
                                   delay += 0.1;
                                 }
@@ -259,8 +271,6 @@ public:
     setupCommonTweens(event_, holder_, canvas_, "pause");
     setupCommonTweens(event_, holder_, canvas_, "resume");
     setupCommonTweens(event_, holder_, canvas_, "abort");
-
-    setupScores(params);
 
     canvas_.active(false);
     canvas_.startTween("start");
@@ -283,23 +293,6 @@ private:
     timeline_->step(delta_time);
 
     return active_;
-  }
-
-
-  // 得点時の演出準備
-  void setupScores(const ci::JsonTree& params) noexcept
-  {
-  }
-
-  void updateScores(const std::vector<u_int>& scores)
-  {
-    // Totalいいね!!
-    int total_like = scores[1] + scores[3] + scores[5] + scores[6];
-    if (total_like_ != total_like)
-    {
-      total_like_ = total_like;
-      updateScoreWidget(0, total_like);
-    }
   }
 
   void updateScoreWidget(int index, int score)
@@ -332,7 +325,6 @@ private:
   }
 
 
-
   Event<Arguments>& event_;
   ConnectionHolder holder_;
 
@@ -341,7 +333,7 @@ private:
   UI::Canvas canvas_;
   ci::TimelineRef timeline_;
 
-  u_int total_like_ = 0;
+  std::vector<u_int> scores_;
 
   bool active_ = true;
 

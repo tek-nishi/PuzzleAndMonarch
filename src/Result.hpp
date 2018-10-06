@@ -239,13 +239,16 @@ private:
   
   void applyScore(const Score& score) noexcept
   {
+    // 森
     panelScore(score.forest, "score:forest%d");
+    // 道
     panelScore(score.path, "score:path%d");
 
     // 街
-    canvas_.setWidgetText("score:1",  std::to_string(score.scores[5]));
+    // canvas_.setWidgetText("score:1",  std::to_string(score.scores[5]));
     // 教会
     canvas_.setWidgetText("score:2",  std::to_string(score.scores[6]));
+    // パネル数
     canvas_.setWidgetText("score:3",  std::to_string(score.total_panels));
   }
 

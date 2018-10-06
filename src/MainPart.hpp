@@ -547,6 +547,7 @@ public:
                                  {
                                    Arguments comp_args{
                                      { "positions", cc },
+                                     { "type",      "forests" }
                                    };
                                    event_.signal("Game:completed", comp_args);
                                  }
@@ -572,6 +573,7 @@ public:
                                  {
                                    Arguments comp_args{
                                      { "positions", cc },
+                                     { "type",      "path" }
                                    };
                                    event_.signal("Game:completed", comp_args);
                                  }
@@ -610,6 +612,7 @@ public:
                                {
                                  Arguments comp_args{
                                    { "positions", completed },
+                                     { "type",    "church" }
                                  };
                                  event_.signal("Game:completed", comp_args);
                                }
