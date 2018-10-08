@@ -21,21 +21,16 @@ Records12		Avg. number of panels:
 Records13		Avg. panel movement:
 Records14		Avg. panel rotation:
 Records15		Avg. panel put time:
-Ranking01		Forest:
-Ranking02		Road:
-Ranking03		Building:
-Ranking04		Chapel:
-Ranking05		Total Panel:
-Result01		Forest:
-Result02		Road:
-Result03		Building:
-Result04		Chapel:
-Result05		Total Panel:
-GameMain01	Forest:
-GameMain02	Road:
-GameMain03	Building:
-GameMain04	Chapel:
-GameMain05	Total Panel:
+Ranking01		Forest
+Ranking02		Road
+Ranking03		Chapel
+Result01		Forest
+Result02		Road
+Result04		Chapel
+GameMain01	Forest
+GameMain02	Road
+GameMain03	Building
+GameMain04	Chapel
 GameMain06	Like!!
 GameMain07	Resume
 GameMain08	Abort
