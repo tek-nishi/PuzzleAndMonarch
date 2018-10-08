@@ -325,17 +325,17 @@ private:
   void applyScore(const Arguments& args)
   {
     {
+      // 森の出来栄え
       auto* forest = boost::any_cast<std::vector<std::vector<glm::ivec2>>*>(args.at("completed_forest"));
       panelScore(forest, "score:forest%d");
     }
     {
+      // 道の出来栄え
       auto* path = boost::any_cast<std::vector<std::vector<glm::ivec2>>*>(args.at("completed_path"));
       panelScore(path, "score:path%d");
     }
 
     const auto& scores = boost::any_cast<const std::vector<u_int>&>(args.at("scores"));
-    // 街
-    canvas_.setWidgetText("score:6",  std::to_string(scores[5]));
     // 教会
     canvas_.setWidgetText("score:7",  std::to_string(scores[6]));
 
