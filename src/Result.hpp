@@ -155,8 +155,9 @@ public:
     setupCommonTweens(event_, holder_, canvas_, "agree");
     setupCommonTweens(event_, holder_, canvas_, "share");
 
-    applyScore(score);
-    auto duration = tweenTotalScore(params);
+    double delay = 0.8;
+    delay = applyScore(score, delay);
+    auto duration = tweenTotalScore(params, delay);
     // ランクイン時の演出
     auto disp_delay_2 = duration + params.getValueForKey<float>("result.disp_delay_2");
     if (high_score_ || rank_in_)
@@ -237,30 +238,52 @@ private:
   }
 
   
-  void applyScore(const Score& score) noexcept
+  double applyScore(const Score& score, double delay) noexcept
   {
     // 森
-    panelScore(score.forest, "score:forest%d");
+    delay = panelScore(score.forest, "score:forest%d", delay);
     // 道
-    panelScore(score.path, "score:path%d");
+    delay = panelScore(score.path, "score:path%d", delay);
 
     // 街
     // canvas_.setWidgetText("score:1",  std::to_string(score.scores[5]));
-    // 教会
-    canvas_.setWidgetText("score:2",  std::to_string(score.scores[6]));
-    // パネル数
-    canvas_.setWidgetText("score:3",  std::to_string(score.total_panels));
+    {
+      // 教会
+      const char* id = "score:2"; 
+      canvas_.setWidgetText(id, std::to_string(score.scores[6]));
+      count_exec_.add(delay,
+                      [this, id]()
+                      {
+                        canvas_.enableWidget(id);
+                      });
+      delay += 0.2;
+    }
+    {
+      // パネル数
+      const char* id = "score:3"; 
+      canvas_.setWidgetText(id, std::to_string(score.total_panels));
+      count_exec_.add(delay,
+                      [this, id]()
+                      {
+                        canvas_.enableWidget(id);
+                      });
+    }
+    return delay;
   }
 
-  void panelScore(const std::vector<u_int>& scores, const char* id_text)
+  double panelScore(const std::vector<u_int>& scores, const char* id_text, double delay)
   {
     if (scores.empty())
     {
+      // スコア無し
       char id[16];
       sprintf(id, id_text, 0);
-      canvas_.enableWidget(id);
-
-      return;
+      count_exec_.add(delay,
+                      [this, id]()
+                      {
+                        canvas_.enableWidget(id);
+                      });
+      return delay + 0.2;
     }
 
     int i = 0;
@@ -273,17 +296,23 @@ private:
       sprintf(id, id_text, i);
 
       canvas_.setWidgetParam(id, "offset", glm::vec2(offset, 0));
-      canvas_.enableWidget(id);
       auto s = std::to_string(f);
       canvas_.setWidgetText(id,  s);
+      count_exec_.add(delay,
+                      [this, id]()
+                      {
+                        canvas_.enableWidget(id);
+                      });
+      delay += 0.2;
       i += 1;
       offset += 6.0f + 5.0f * s.size();
     }
+    return delay;
   }
 
 
   // 演出時間を返却
-  double tweenTotalScore(const ci::JsonTree& params) noexcept
+  double tweenTotalScore(const ci::JsonTree& params, double delay) noexcept
   {
     double duration = params.getValueForKey<float>("result.disp_duration");
     {
@@ -291,7 +320,7 @@ private:
       auto option = timeline_->apply(&disp_score_, 0, total_score_,
                                      duration,
                                      getEaseFunc(params.getValueForKey<std::string>("result.disp_ease")));
-      option.delay(params.getValueForKey<float>("result.disp_delay"));
+      option.delay(params.getValueForKey<float>("result.disp_delay") + delay);
       option.updateFn([this]() noexcept
                       {
                         canvas_.setWidgetText("score:20", std::to_string(disp_score_));
@@ -312,7 +341,7 @@ private:
       // あらかじめ星の数を調べ、演出を決める
       auto total_num = total_rank_ / 2 + (total_rank_ & 1);
 
-      double delay = duration + 0.1;
+      delay = duration + delay + 0.1;
       auto rank_icon = Json::getArray<std::string>(params["result.rank_icon"]);
       auto num = total_rank_ / 2;
       int i = 0;
