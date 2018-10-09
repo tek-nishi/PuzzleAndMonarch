@@ -18,5 +18,26 @@
         }
       ]
     }
+  ],
+
+  "score": [
+    {
+      "identifier": "root",
+      "tween": [
+        {
+          "param": "scale",
+          "type": "vec2",
+          "body": [
+            {
+              "duration": 0.2,
+              "copy_start": true,
+              "ease_func": "OutBack",
+              "start": [1.5 , 1.5 ],
+              "end": [ 1, 1 ]
+            }
+          ]
+        }
+      ]
+    }
   ]
 }

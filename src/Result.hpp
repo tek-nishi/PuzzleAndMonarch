@@ -20,35 +20,6 @@ namespace ngs {
 class Result
   : public Task
 {
-  Event<Arguments>& event_;
-  ConnectionHolder holder_;
-
-  CountExec count_exec_;
-
-  bool rank_in_;
-  u_int ranking_;
-  bool high_score_;
-  bool perfect_;
-
-  std::vector<std::string> ranking_text_;
-
-  int total_score_;
-  int total_rank_;
-  bool effect_ = false;
-  double effect_speed_;
-
-  ci::Anim<int> disp_score_;
-  ci::Anim<int> disp_rank_;
-
-  // Share機能用の文章
-  std::string share_text_;
-
-  ci::TimelineRef timeline_;
-
-  UI::Canvas canvas_;
-  bool active_ = true;
-
-
 
 public:
   Result(const ci::JsonTree& params, Event<Arguments>& event, UI::Drawer& drawer, TweenCommon& tween_common,
@@ -156,7 +127,7 @@ public:
     setupCommonTweens(event_, holder_, canvas_, "share");
 
     double delay = 0.8;
-    delay = applyScore(score, delay);
+    delay = applyScore(score, delay, params);
     auto duration = tweenTotalScore(params, delay);
     // ランクイン時の演出
     auto disp_delay_2 = duration + params.getValueForKey<float>("result.disp_delay_2");
@@ -238,12 +209,14 @@ private:
   }
 
   
-  double applyScore(const Score& score, double delay) noexcept
+  double applyScore(const Score& score, double delay, const ci::JsonTree& params) noexcept
   {
+    auto func = getEaseFunc(params.getValueForKey<std::string>("result.disp_ease"));
+
     // 森
-    delay = panelScore(score.forest, "score:forest%d", delay);
+    delay = panelScore(score.forest, "score:forest%d", delay, func);
     // 道
-    delay = panelScore(score.path, "score:path%d", delay);
+    delay = panelScore(score.path, "score:path%d", delay, func);
 
     // 街
     // canvas_.setWidgetText("score:1",  std::to_string(score.scores[5]));
@@ -254,6 +227,8 @@ private:
       count_exec_.add(delay,
                       [this, id]()
                       {
+                        canvas_.setTweenTarget(id, "score", 0);
+                        canvas_.startTween("score");
                         canvas_.enableWidget(id);
                       });
       delay += 0.2;
@@ -265,13 +240,16 @@ private:
       count_exec_.add(delay,
                       [this, id]()
                       {
+                        canvas_.setTweenTarget(id, "score", 0);
+                        canvas_.startTween("score");
                         canvas_.enableWidget(id);
                       });
+      delay += 0.2;
     }
     return delay;
   }
 
-  double panelScore(const std::vector<u_int>& scores, const char* id_text, double delay)
+  double panelScore(const std::vector<u_int>& scores, const char* id_text, double delay, const ci::EaseFn& func)
   {
     if (scores.empty())
     {
@@ -281,6 +259,8 @@ private:
       count_exec_.add(delay,
                       [this, id]()
                       {
+                        canvas_.setTweenTarget(id, "score", 0);
+                        canvas_.startTween("score");
                         canvas_.enableWidget(id);
                       });
       return delay + 0.2;
@@ -297,16 +277,19 @@ private:
 
       canvas_.setWidgetParam(id, "offset", glm::vec2(offset, 0));
       auto s = std::to_string(f);
-      canvas_.setWidgetText(id,  s);
+      canvas_.setWidgetText(id, s);
       count_exec_.add(delay,
-                      [this, id]()
+                      [this, id, f, func]()
                       {
+                        canvas_.setTweenTarget(id, "score", 0);
+                        canvas_.startTween("score");
                         canvas_.enableWidget(id);
                       });
-      delay += 0.2;
+      delay += 0.15;
       i += 1;
       offset += 6.0f + 5.0f * s.size();
     }
+
     return delay;
   }
 
@@ -315,28 +298,8 @@ private:
   double tweenTotalScore(const ci::JsonTree& params, double delay) noexcept
   {
     double duration = params.getValueForKey<float>("result.disp_duration");
-    {
-      // Tweenでカウントアップ
-      auto option = timeline_->apply(&disp_score_, 0, total_score_,
-                                     duration,
-                                     getEaseFunc(params.getValueForKey<std::string>("result.disp_ease")));
-      option.delay(params.getValueForKey<float>("result.disp_delay") + delay);
-      option.updateFn([this]() noexcept
-                      {
-                        canvas_.setWidgetText("score:20", std::to_string(disp_score_));
-                      });
-
-      if (total_score_ > 0)
-      {
-        option.startFn([this]()
-                       {
-                         Arguments args{
-                           { "name", std::string("drum-roll") }
-                         };
-                         event_.signal("UI:sound", args);
-                       });
-      }
-    }
+    auto func = getEaseFunc(params.getValueForKey<std::string>("result.disp_ease"));
+    setCountupTween("score:20", delay, duration, total_score_, func);
     {
       // あらかじめ星の数を調べ、演出を決める
       auto total_num = total_rank_ / 2 + (total_rank_ & 1);
@@ -381,6 +344,54 @@ private:
     return duration;
   }
 
+  // 数値のカウントアップ演出
+  void setCountupTween(const std::string& id, double delay, float duration, int score, const ci::EaseFn& func)
+  {
+    disp_scores_.insert({ id, 0 });
+
+    count_exec_.add(delay,
+                    [this, id, score, duration, func]()
+                    {
+                      // Tweenでカウントアップ
+                      auto option = timeline_->apply(&disp_scores_[id], score,
+                                                     duration,
+                                                     func);
+                      option.updateFn([this, id]() noexcept
+                                      {
+                                        canvas_.setWidgetText(id, std::to_string(disp_scores_[id]));
+                                      });
+                    });
+  }
+
+
+  Event<Arguments>& event_;
+  ConnectionHolder holder_;
+
+  CountExec count_exec_;
+
+  bool rank_in_;
+  u_int ranking_;
+  bool high_score_;
+  bool perfect_;
+
+  std::vector<std::string> ranking_text_;
+
+  int total_score_;
+  int total_rank_;
+  bool effect_ = false;
+  double effect_speed_;
+
+  ci::Anim<int> disp_score_;
+  ci::Anim<int> disp_rank_;
+  std::map<std::string, ci::Anim<int>> disp_scores_;
+
+  // Share機能用の文章
+  std::string share_text_;
+
+  ci::TimelineRef timeline_;
+
+  UI::Canvas canvas_;
+  bool active_ = true;
 };
 
 }
