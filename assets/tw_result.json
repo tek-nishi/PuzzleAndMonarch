@@ -32,7 +32,7 @@
               "duration": 0.2,
               "copy_start": true,
               "ease_func": "OutBack",
-              "start": [1.5 , 1.5 ],
+              "start": [ 2 , 2 ],
               "end": [ 1, 1 ]
             }
           ]
