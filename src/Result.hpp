@@ -111,6 +111,21 @@ public:
                                                 });
                               });
 
+    // 画面Tapで演出をスキップ
+    count_exec_.add(1.0,
+                    [this]()
+                    {
+                      holder_ += event_.connect("single_touch_ended",
+                                                [this](const Connection& c, const Arguments&)
+                                                {
+                                                  // 強制的に時間を進める
+                                                  count_exec_.update(10);
+                                                  timeline_->step(10);
+                                                  c.disconnect();
+                                                });
+                    });
+
+
     if (Share::canPost() && Capture::canExec())
     {
       // Share機能と画面キャプチャが有効ならUIも有効
