@@ -27,6 +27,7 @@ public:
     : event_(event),
       ranking_text_(Json::getArray<std::string>(params["result.ranking"])),
       effect_speed_(params.getValueForKey<double>("result.effect_speed")),
+      score_interval_(params.getValueForKey<double>("result.score-interval")),
       timeline_(ci::Timeline::create()),
       canvas_(event, drawer, tween_common,
               params["ui.camera"],
@@ -112,7 +113,7 @@ public:
                               });
 
     // 画面Tapで演出をスキップ
-    count_exec_.add(1.0,
+    count_exec_.add(params.getValueForKey<double>("result.skip-delay"),
                     [this]()
                     {
                       holder_ += event_.connect("single_touch_ended",
@@ -246,7 +247,7 @@ private:
                         canvas_.startTween("score");
                         canvas_.enableWidget(id);
                       });
-      delay += 0.2;
+      delay += score_interval_;
     }
     {
       // パネル数
@@ -259,7 +260,7 @@ private:
                         canvas_.startTween("score");
                         canvas_.enableWidget(id);
                       });
-      delay += 0.2;
+      delay += score_interval_;
     }
     return delay;
   }
@@ -278,7 +279,7 @@ private:
                         canvas_.startTween("score");
                         canvas_.enableWidget(id);
                       });
-      return delay + 0.2;
+      return delay + score_interval_;
     }
 
     int i = 0;
@@ -396,8 +397,8 @@ private:
   bool effect_ = false;
   double effect_speed_;
 
-  ci::Anim<int> disp_score_;
-  ci::Anim<int> disp_rank_;
+  double score_interval_;
+
   std::map<std::string, ci::Anim<int>> disp_scores_;
 
   // Share機能用の文章

@@ -609,7 +609,10 @@
   "result": {
     "canvas": "ui_result.json",
     "tweens": "tw_result.json",
-    
+
+    "score-interval": 0.2,
+    "skip-delay": 1,
+
     "se": [
       [ 0.5, "result" ]
     ],
