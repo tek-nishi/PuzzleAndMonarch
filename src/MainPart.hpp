@@ -313,8 +313,6 @@ public:
     holder_ += event_.connect("Title:finished",
                               [this](const Connection&, const Arguments&) noexcept
                               {
-                                game_event_.insert("Game:ready");
-
                                 auto delay = params_.getValueForKey<float>("ui.transition.game_begin_delay");
                                 view_.setColor(transition_duration_, transition_color_, delay);
                                 count_exec_.add(params_.getValueForKey<float>("ui.transition.game_begin_duration"),

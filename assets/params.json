@@ -195,7 +195,6 @@
     "Panel:move":     "panel-move",
     "Panel:put":      "panel-put",
     "Game:completed": "complete",
-    "Game:ready":     "start",
     "Game:finish":    "timeup",
     "Game:countdown": "countdown"
   },
@@ -652,6 +651,10 @@
   "gamemain": {
     "canvas": "ui_gamemain.json",
     "tweens": "tw_gamemain.json",
+
+    "se": [
+      [ 0.5, "start" ]
+    ],
 
     "start_delay": 2.6,
     "end_delay": 3.0
