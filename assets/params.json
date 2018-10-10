@@ -181,6 +181,12 @@
       "name": "logo01",
       "path": "logo01.m4a",
       "type": "bgm"
+    },
+
+    {
+      "name": "advice",
+      "path": "advice.m4a",
+      "type": "se"
     }
   ],
 
