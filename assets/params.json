@@ -97,8 +97,43 @@
       "type": "bgm"
     },
     {
-      "name": "drum-roll",
-      "path": "drum-roll.m4a",
+      "name": "drum-roll-1",
+      "path": "drum-roll-1.m4a",
+      "type": "se"
+    },
+    {
+      "name": "drum-roll-2",
+      "path": "drum-roll-2.m4a",
+      "type": "se"
+    },
+    {
+      "name": "drum-roll-3",
+      "path": "drum-roll-3.m4a",
+      "type": "se"
+    },
+    {
+      "name": "drum-roll-4",
+      "path": "drum-roll-4.m4a",
+      "type": "se"
+    },
+    {
+      "name": "drum-roll-5",
+      "path": "drum-roll-5.m4a",
+      "type": "se"
+    },
+    {
+      "name": "drum-roll-6",
+      "path": "drum-roll-6.m4a",
+      "type": "se"
+    },
+    {
+      "name": "drum-roll-7",
+      "path": "drum-roll-7.m4a",
+      "type": "se"
+    },
+    {
+      "name": "drum-roll-8",
+      "path": "drum-roll-8.m4a",
       "type": "se"
     },
     {
