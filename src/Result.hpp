@@ -332,6 +332,7 @@ private:
     double duration = params.getValueForKey<float>("result.disp_duration");
     auto func = getEaseFunc(params.getValueForKey<std::string>("result.disp_ease"));
     setCountupTween("score:20", delay, duration, total_score_, func);
+
     {
       // あらかじめ星の数を調べ、演出を決める
       auto total_num = total_rank_ / 2 + (total_rank_ & 1);
@@ -339,34 +340,56 @@ private:
       delay = duration + delay + 0.1;
       auto rank_icon = Json::getArray<std::string>(params["result.rank_icon"]);
       auto num = total_rank_ / 2;
+      // i は下でも使っている
       int i = 0;
       for (; i < num; ++i)
       {
         char id[16];
         sprintf(id, "score:21-%d", i);
 
-        delay += ((i + 1) < total_num) ? 0.2
-                                       : 0.7;
+        bool halfway = (i + 1) < total_num;
+
+        delay += halfway ? 0.1
+                         : 0.5;
+
+        const auto* se = halfway ? "rank-1"
+                                 : "rank-2";
 
         count_exec_.add(delay,
-                        [this, id, rank_icon]()
+                        [this, id, rank_icon, se]()
                         {
                           canvas_.setWidgetText(id, rank_icon[0]);
                           canvas_.setTweenTarget(id, "rank", 0);
                           canvas_.startTween("rank");
+
+                          {
+                            // SE
+                            Arguments args{
+                              { "name", std::string(se) }
+                            };
+                            event_.signal("UI:sound", args);
+                          }
                         });
       }
       if (total_rank_ & 1)
       {
         char id[16];
         sprintf(id, "score:21-%d", i);
-        delay += 0.7;
+        delay += 0.5;
         count_exec_.add(delay,
                         [this, id, rank_icon]()
                         {
                           canvas_.setWidgetText(id, rank_icon[1]);
                           canvas_.setTweenTarget(id, "rank", 0);
                           canvas_.startTween("rank");
+
+                          {
+                            // SE
+                            Arguments args{
+                              { "name", std::string("rank-2") }
+                            };
+                            event_.signal("UI:sound", args);
+                          }
                         });
       }
 
