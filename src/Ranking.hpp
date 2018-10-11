@@ -79,10 +79,11 @@ public:
                               });
 
     holder_ += event_.connect("view:touch_ended",
-                              [this, wipe_delay, wipe_duration](const Connection&, const Arguments&) noexcept
+                              [this, wipe_delay, wipe_duration, &params](const Connection&, const Arguments&) noexcept
                               {
                                 canvas_.active(false);
                                 canvas_.startCommonTween("top10", "out-to-left");
+                                startTimelineSound(event_, params, "ranking.next-se");
                                 count_exec_.add(wipe_delay,
                                                 [this]() noexcept
                                                 {
@@ -99,10 +100,11 @@ public:
                               });
     
     holder_ += event_.connect("back:touch_ended",
-                              [this, wipe_delay, wipe_duration](const Connection&, const Arguments&) noexcept
+                              [this, wipe_delay, wipe_duration, &params](const Connection&, const Arguments&) noexcept
                               {
                                 canvas_.active(false);
                                 canvas_.startCommonTween("result", "out-to-right");
+                                startTimelineSound(event_, params, "ranking.back-se");
                                 count_exec_.add(wipe_delay,
                                                 [this]() noexcept
                                                 {

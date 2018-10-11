@@ -75,10 +75,11 @@ public:
 
     // 記録削除画面へ
     holder_ += event_.connect("Trash:touch_ended",
-                              [this, wipe_delay, wipe_duration](const Connection&, const Arguments&) noexcept
+                              [this, wipe_delay, wipe_duration, params](const Connection&, const Arguments&) noexcept
                               {
                                 canvas_.active(false);
                                 canvas_.startCommonTween("main", "out-to-left");
+                                startTimelineSound(event_, params, "settings.next-se");
                                 count_exec_.add(wipe_delay,
                                                 [this]() noexcept
                                                 {
@@ -96,10 +97,11 @@ public:
 
     // 設定画面へ戻る
     holder_ += event_.connect("back:touch_ended",
-                              [this, wipe_delay, wipe_duration](const Connection&, const Arguments&) noexcept
+                              [this, wipe_delay, wipe_duration, &params](const Connection&, const Arguments&) noexcept
                               {
                                 canvas_.active(false);
                                 canvas_.startCommonTween("dust", "out-to-right");
+                                startTimelineSound(event_, params, "settings.back-se");
                                 count_exec_.add(wipe_delay,
                                                 [this]() noexcept
                                                 {
@@ -117,7 +119,7 @@ public:
 
     // 記録を削除して設定画面へ戻る
     holder_ += event_.connect("erase-record:touch_ended",
-                              [this, wipe_delay, wipe_duration](const Connection&, const Arguments&) noexcept
+                              [this, wipe_delay, wipe_duration, &params](const Connection&, const Arguments&) noexcept
                               {
                                 event_.signal("Settings:Trash", Arguments());
                                 enableTrashButton(false);
@@ -125,6 +127,7 @@ public:
                                 canvas_.active(false);
                                 canvas_.startTween("erased");
                                 canvas_.startCommonTween("dust", "out-to-right");
+                                startTimelineSound(event_, params, "settings.back-se");
                                 count_exec_.add(wipe_delay,
                                                 [this]() noexcept
                                                 {

@@ -187,6 +187,17 @@
       "name": "advice",
       "path": "advice.m4a",
       "type": "se"
+    },
+
+    {
+      "name": "slide-left",
+      "path": "slide_left.m4a",
+      "type": "se"
+    },
+    {
+      "name": "slide-right",
+      "path": "slide_right.m4a",
+      "type": "se"
     }
   ],
 
@@ -607,22 +618,42 @@
     ],
 
     "se": [
+      [ 0.25, "slide-left"]
     ]
   },
 
   "credits": {
     "canvas": "ui_credits.json",
-    "tweens": "tw_credits.json"
+    "tweens": "tw_credits.json",
+
+    "se": [
+      [ 0.25, "slide-right"]
+    ]
   },
 
   "settings": {
     "canvas": "ui_settings.json",
-    "tweens": "tw_settings.json"
+    "tweens": "tw_settings.json",
+
+    "se": [
+      [ 0.25, "slide-right"]
+    ],
+
+    "next-se": [
+      [ 0.75, "slide-right" ]
+    ],
+    "back-se": [
+      [ 0.75, "slide-left" ]
+    ]
   },
 
   "records": {
     "canvas": "ui_records.json",
     "tweens": "tw_records.json",
+
+    "se": [
+      [ 0.25, "slide-right"]
+    ],
 
     "layout": [
       [
@@ -710,6 +741,17 @@
     "canvas": "ui_ranking.json",
     "tweens": "tw_ranking.json",
 
+    "se": [
+      [ 0.25, "slide-right" ]
+    ],
+
+    "next-se": [
+      [ 0.75, "slide-right" ]
+    ],
+    "back-se": [
+      [ 0.75, "slide-left" ]
+    ],
+
     "share": "Share02"
   },
 
@@ -759,6 +801,10 @@
 
   "purchase": {
     "canvas": "ui_purchase.json",
-    "tweens": "tw_purchase.json"
+    "tweens": "tw_purchase.json",
+
+    "se": [
+      [ 0.25, "se-right" ]
+    ]
   }
 }
