@@ -316,6 +316,18 @@ private:
       canvas_.startTween("check");
     }
 
+    for (int i = 0; i < 3; ++i)
+    {
+      count_exec_.add(2.0 + i * 0.3,
+                      [this]()
+                      {
+                        Arguments args{
+                          { "name", std::string("advice") }
+                        };
+                        event_.signal("UI:sound", args);
+                      });
+    }
+
     canvas_.enableWidget("touch");
     std::vector<std::pair<std::string, std::string>> widgets{
       { "touch", "touch:icon" },

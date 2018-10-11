@@ -22,6 +22,8 @@ public:
               Params::load(params.getValueForKey<std::string>("purchase.canvas")),
               Params::load(params.getValueForKey<std::string>("purchase.tweens")))
   {
+    startTimelineSound(event_, params, "purchase.se");
+
     auto wipe_delay    = params.getValueForKey<double>("ui.wipe.delay");
     auto wipe_duration = params.getValueForKey<double>("ui.wipe.duration");
 

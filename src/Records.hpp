@@ -57,6 +57,8 @@ public:
               Params::load(params.getValueForKey<std::string>("records.canvas")),
               Params::load(params.getValueForKey<std::string>("records.tweens")))
   {
+    startTimelineSound(event_, params, "records.se");
+
     auto wipe_delay    = params.getValueForKey<double>("ui.wipe.delay");
     auto wipe_duration = params.getValueForKey<double>("ui.wipe.duration");
 

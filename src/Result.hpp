@@ -119,9 +119,12 @@ public:
                       holder_ += event_.connect("single_touch_ended",
                                                 [this](const Connection& c, const Arguments&)
                                                 {
-                                                  // 強制的に時間を進める
-                                                  count_exec_.update(10);
-                                                  timeline_->step(10);
+                                                  if (!active_input_)
+                                                  {
+                                                    // 強制的に時間を進める
+                                                    count_exec_.update(10);
+                                                    timeline_->step(10);
+                                                  }
                                                   c.disconnect();
                                                 });
                     });
@@ -189,6 +192,11 @@ public:
       { "share", "share:icon" }
     };
     UI::startButtonTween(count_exec_, canvas_, disp_delay_2 + 0.25, 0.2, widgets);
+    count_exec_.add(disp_delay_2,
+                    [this]()
+                    {
+                      active_input_ = true;
+                    });
   }
 
   ~Result() = default;
@@ -246,6 +254,8 @@ private:
                         canvas_.setTweenTarget(id, "score", 0);
                         canvas_.startTween("score");
                         canvas_.enableWidget(id);
+
+                        scoreSe();
                       });
       delay += score_interval_;
     }
@@ -259,6 +269,8 @@ private:
                         canvas_.setTweenTarget(id, "score", 0);
                         canvas_.startTween("score");
                         canvas_.enableWidget(id);
+
+                        scoreSe();
                       });
       delay += score_interval_;
     }
@@ -278,6 +290,8 @@ private:
                         canvas_.setTweenTarget(id, "score", 0);
                         canvas_.startTween("score");
                         canvas_.enableWidget(id);
+
+                        scoreSe();
                       });
       return delay + score_interval_;
     }
@@ -300,6 +314,8 @@ private:
                         canvas_.setTweenTarget(id, "score", 0);
                         canvas_.startTween("score");
                         canvas_.enableWidget(id);
+
+                        scoreSe();
                       });
       delay += 0.15;
       i += 1;
@@ -316,6 +332,7 @@ private:
     double duration = params.getValueForKey<float>("result.disp_duration");
     auto func = getEaseFunc(params.getValueForKey<std::string>("result.disp_ease"));
     setCountupTween("score:20", delay, duration, total_score_, func);
+
     {
       // あらかじめ星の数を調べ、演出を決める
       auto total_num = total_rank_ / 2 + (total_rank_ & 1);
@@ -323,34 +340,56 @@ private:
       delay = duration + delay + 0.1;
       auto rank_icon = Json::getArray<std::string>(params["result.rank_icon"]);
       auto num = total_rank_ / 2;
+      // i は下でも使っている
       int i = 0;
       for (; i < num; ++i)
       {
         char id[16];
         sprintf(id, "score:21-%d", i);
 
-        delay += ((i + 1) < total_num) ? 0.2
-                                       : 0.7;
+        bool halfway = (i + 1) < total_num;
+
+        delay += halfway ? 0.1
+                         : 0.5;
+
+        const auto* se = halfway ? "rank-1"
+                                 : "rank-2";
 
         count_exec_.add(delay,
-                        [this, id, rank_icon]()
+                        [this, id, rank_icon, se]()
                         {
                           canvas_.setWidgetText(id, rank_icon[0]);
                           canvas_.setTweenTarget(id, "rank", 0);
                           canvas_.startTween("rank");
+
+                          {
+                            // SE
+                            Arguments args{
+                              { "name", std::string(se) }
+                            };
+                            event_.signal("UI:sound", args);
+                          }
                         });
       }
       if (total_rank_ & 1)
       {
         char id[16];
         sprintf(id, "score:21-%d", i);
-        delay += 0.7;
+        delay += 0.5;
         count_exec_.add(delay,
                         [this, id, rank_icon]()
                         {
                           canvas_.setWidgetText(id, rank_icon[1]);
                           canvas_.setTweenTarget(id, "rank", 0);
                           canvas_.startTween("rank");
+
+                          {
+                            // SE
+                            Arguments args{
+                              { "name", std::string("rank-2") }
+                            };
+                            event_.signal("UI:sound", args);
+                          }
                         });
       }
 
@@ -363,7 +402,10 @@ private:
   // 数値のカウントアップ演出
   void setCountupTween(const std::string& id, double delay, float duration, int score, const ci::EaseFn& func)
   {
+    if (!score) return;
+
     disp_scores_.insert({ id, 0 });
+    se_scores_.insert({ id, 0 });
 
     count_exec_.add(delay,
                     [this, id, score, duration, func]()
@@ -375,8 +417,23 @@ private:
                       option.updateFn([this, id]() noexcept
                                       {
                                         canvas_.setWidgetText(id, std::to_string(disp_scores_[id]));
+                                        if (!((se_scores_[id] += 1) & 0b11))
+                                        {
+                                          scoreSe();
+                                        }
                                       });
                     });
+  }
+
+  void scoreSe()
+  {
+    char text[16];
+    sprintf(text, "drum-roll-%d", drum_index_);
+    Arguments args{
+      { "name", std::string(text) }
+    };
+    event_.signal("UI:sound", args);
+    drum_index_ = std::min(drum_index_ + 1, 8);
   }
 
 
@@ -397,9 +454,14 @@ private:
   bool effect_ = false;
   double effect_speed_;
 
+  bool active_input_ = false;
+
   double score_interval_;
 
+  int drum_index_ = 1;
+
   std::map<std::string, ci::Anim<int>> disp_scores_;
+  std::map<std::string, int> se_scores_;
 
   // Share機能用の文章
   std::string share_text_;
