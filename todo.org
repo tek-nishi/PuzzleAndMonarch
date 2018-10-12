@@ -1,5 +1,4 @@
 * TODO stdのアルゴリズムを積極的に使う
-* TODO param.jsonも難読化する
 * TODO 領地を広げてたくさん「いいね!!」してもらう
 * WAIT カメラを引いた時はもう少し上から眺めるように
 * WAIT Tutorial3がまだわかりづらい
@@ -15,6 +14,8 @@
 * TODO iOS:処理の思い箇所を探して修正
 * TODO iOS:AppStore提出に必要な書類や素材
 * TODO iOS:実績のローカライズ
+* DONE param.jsonも難読化する
+CLOSED: [2018-10-13 土 01:20]
 * DONE Ranking画面へ移行するときにパッと消えずに入れ替えたい
 CLOSED: [2018-10-12 金 16:35]
 * DONE Resultは画面Tapで演出をスキップしたい
