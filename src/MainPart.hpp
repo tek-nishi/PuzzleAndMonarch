@@ -1228,7 +1228,6 @@ private:
   // Game本体初期化
   void resetGame() noexcept
   {
-    // view_.clear();
     view_.removeFieldPanels();
 
     paused_ = false;
@@ -1438,9 +1437,10 @@ private:
     const auto& json = archive_.getRecordArray("games");
     if (json.hasChildren() && json[rank].hasChild("path"))
     {
-      view_.clearAll();
+      // view_.clearAll();
+      auto delay = view_.removeFieldPanels();
       auto full_path = getDocumentPath() / json[rank].getValueForKey<std::string>("path");
-      game_->load(full_path);
+      game_->load(full_path, delay);
       calcViewRange(false);
     }
 

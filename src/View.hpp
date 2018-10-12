@@ -346,6 +346,11 @@ public:
   {
     timeline_->clear();
     force_timeline_->clear();
+    if (field_timeline_)
+    {
+      field_timeline_->clear();
+      field_timeline_->removeSelf();
+    }
     // field_panels_.clear();
     // field_panel_indices_.clear();
     // blank_panels_.clear();
@@ -738,15 +743,22 @@ public:
   }
 
   // Fieldのパネルをリセットする演出
-  void removeFieldPanels() noexcept
+  float removeFieldPanels() noexcept
   {
+    if (field_timeline_)
+    {
+      field_timeline_->clear();
+      field_timeline_->removeSelf();
+    }
+    field_timeline_ = ci::Timeline::create();
+
     glm::vec3 disappear_pos{ 0, -30, 0 };
     float duration = 0.6f;
     for (auto& panel : field_panels_)
     {
-      auto option = timeline_->applyPtr(&panel.position,
-                                        panel.position + disappear_pos,
-                                        duration, getEaseFunc("InBack"));
+      auto option = field_timeline_->applyPtr(&panel.position,
+                                              panel.position + disappear_pos,
+                                              duration, getEaseFunc("InBack"));
 
       auto delay = ci::randFloat(0.0f, 0.25f);
       option.delay(delay);
@@ -756,13 +768,18 @@ public:
                       });
     }
 
-    timeline_->add([this]() noexcept
-                   {
-                     field_panels_.clear();
-                     field_panel_indices_.clear();
-                     // field_rotate_offset_ = 0.0f;
-                   },
-                   timeline_->getCurrentTime() + duration + 0.35f);
+    duration += 0.35f;
+    field_timeline_->add([this]() noexcept
+                         {
+                           field_panels_.clear();
+                           field_panel_indices_.clear();
+                           field_rotate_offset_ = 0.0f;
+                           field_timeline_->removeSelf();
+                         },
+                         field_timeline_->getCurrentTime() + duration);
+    timeline_->add(field_timeline_);
+
+    return duration;
   }
 
   // パネルが尽きた
@@ -1536,6 +1553,8 @@ private:
   ci::TimelineRef force_timeline_;
   // リセットされたくない
   ci::TimelineRef transition_timeline_;
+  // Fieldリセット用
+  ci::TimelineRef field_timeline_;
 };
 
 }
