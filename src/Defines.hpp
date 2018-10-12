@@ -32,6 +32,8 @@
 #define OBFUSCATION_GAME_RECORD
 //不要な記録は削除
 #define REMOVE_UNNECESSARY_RECORD
+// param.jsonの難読化
+#define OBFUSCATION_PARAMS
 #endif
 
 // 実績キャッシュの難読化

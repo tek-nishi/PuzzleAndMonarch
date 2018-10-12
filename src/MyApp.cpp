@@ -33,7 +33,7 @@ class MyApp
 public:
   // TIPS cinder 0.9.1はコンストラクタが使える
   MyApp() noexcept
-  : params_(Params::load("params.json")),
+  : params_(Params::loadParams()),
     touch_event_(event_)
   {
     DOUT << "Window size: " << getWindowSize() << std::endl;
