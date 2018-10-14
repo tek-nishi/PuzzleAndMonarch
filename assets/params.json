@@ -198,13 +198,27 @@
       "name": "slide-right",
       "path": "slide_right.m4a",
       "type": "se"
+    },
+
+    {
+      "name": "panel-in",
+      "path": "panel-in.m4a",
+      "type": "se"
+    },
+    {
+      "name": "panel-out",
+      "path": "panel-out.m4a",
+      "type": "se"
     }
   ],
 
   "game-sound": {
-    "Panel:rotate":   "panel-rotate",
-    "Panel:move":     "panel-move",
-    "Panel:put":      "panel-put",
+    "Panel:rotate":    "panel-rotate",
+    "Panel:move":      "panel-move",
+    "Panel:put":       "panel-put",
+    "Panel:reproduce": "panel-in",
+    "Panel:clear":     "panel-out",
+
     "Game:completed": "complete",
     "Game:finish":    "timeup",
     "Game:countdown": "countdown"

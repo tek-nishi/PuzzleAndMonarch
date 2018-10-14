@@ -415,6 +415,11 @@ public:
                                 {
                                   view_.updateBlank(game_->getBlankPositions());
                                 }
+                                else
+                                {
+                                  // Rankingでの再現SE
+                                  game_event_.insert("Panel:reproduce");
+                                }
 
                                 if (args.count("completed")
                                     && boost::any_cast<bool>(args.at("completed")))
@@ -1229,6 +1234,7 @@ private:
   void resetGame() noexcept
   {
     view_.removeFieldPanels();
+    game_event_.insert("Panel:clear");
 
     paused_ = false;
     count_exec_.pause(false);
@@ -1442,6 +1448,7 @@ private:
       auto full_path = getDocumentPath() / json[rank].getValueForKey<std::string>("path");
       game_->load(full_path, delay);
       calcViewRange(false);
+      game_event_.insert("Panel:clear");
     }
 
     count_exec_.add(params_.getValueForKey<double>("field.auto_camera_duration"),
