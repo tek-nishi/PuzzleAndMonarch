@@ -82,6 +82,11 @@
       "type": "se"
     },
     {
+      "name": "like",
+      "path": "like.m4a",
+      "type": "se"
+    },
+    {
       "name": "countdown",
       "path": "count-down.m4a",
       "type": "se"

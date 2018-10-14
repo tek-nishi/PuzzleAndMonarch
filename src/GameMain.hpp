@@ -257,6 +257,10 @@ public:
                                                     canvas_.setTweenTarget(id, "like", 0);
                                                     canvas_.setWidgetParam(id, "offset", ofs);
                                                     canvas_.startTween("like");
+                                                    Arguments se_args{
+                                                      { "name", std::string("like") }
+                                                    };
+                                                    event_.signal("UI:sound", se_args);
 
                                                     if (index >= 0)
                                                     {

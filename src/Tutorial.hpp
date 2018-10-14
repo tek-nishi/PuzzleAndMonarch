@@ -274,7 +274,14 @@ private:
       canvas_.startTween("end");
       canvas_.setWidgetParam("like", "offset", cur_ofs_);
       // 必要なら演出
-      if (like) canvas_.startTween("like");
+      if (like)
+      {
+        canvas_.startTween("like");
+        Arguments se_args{
+          { "name", std::string("like") }
+        };
+        event_.signal("UI:sound", se_args);
+      }
 
       current_direction_delay_ = direction_delay_;
     }
