@@ -30,11 +30,6 @@
 
   "sound": [
     {
-      "name": "title",
-      "path": "title.m4a",
-      "type": "bgm"
-    },
-    {
       "name": "start",
       "path": "start-jingle.m4a",
       "type": "bgm"
@@ -177,9 +172,20 @@
       "path": "finish.m4a",
       "type": "se"
     },
+
     {
       "name": "logo01",
       "path": "logo01.m4a",
+      "type": "bgm"
+    },
+    {
+      "name": "logo02",
+      "path": "logo02.m4a",
+      "type": "bgm"
+    },
+    {
+      "name": "logo03",
+      "path": "logo03.m4a",
       "type": "bgm"
     },
 
@@ -628,6 +634,8 @@
     },
 
     "se_first": [
+      [ 0.5, "logo02" ],
+      [ 1.2, "logo03" ],
       [ 1.7, "logo01" ]
     ],
 
@@ -713,7 +721,7 @@
     "skip-delay": 1,
 
     "se": [
-      [ 0.5, "result" ]
+      [ 0.6, "result" ]
     ],
 
     "ranking": [
