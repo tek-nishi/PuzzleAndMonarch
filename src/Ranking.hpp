@@ -155,35 +155,45 @@ public:
                                                 });
                               });
 
-    // TOP10を閲覧
+    int rank_num = 0;
     if (!rank_in_)
     {
+      // TOP10を閲覧
       applyRankingEffect(0);
 
       auto num = boost::any_cast<int>(args.at("record_num"));
-      for (int i = 0; i < num; ++i)
+      for (rank_num = 0; rank_num < num; ++rank_num)
       {
         char id[64];
 
         // Tween登録
-        sprintf(id, "rank%d", i);
+        sprintf(id, "rank%d", rank_num);
         setupCommonTweens(event_, holder_, canvas_, id, "rank");
 
         // コールバック登録
-        sprintf(id, "rank%d:touch_ended", i);
+        sprintf(id, "rank%d:touch_ended", rank_num);
         holder_ += event_.connect(id,
-                                  [this, id, i](const Connection&, const Arguments&) noexcept
+                                  [this, id, rank_num](const Connection&, const Arguments&) noexcept
                                   {
-                                    DOUT << i << " " << id << std::endl;
+                                    DOUT << rank_num << " " << id << std::endl;
                                     // セーブデータがあれば読み込む
                                     Arguments args{
-                                      { "rank", i }
+                                      { "rank", rank_num }
                                     };
                                     event_.signal("Ranking:reload", args);
 
-                                    applyRankingEffect(i);
+                                    applyRankingEffect(rank_num);
                                   });
       }
+    }
+    // 不要なイベントを削除
+    for (; rank_num < ranking_records_; ++rank_num)
+    {
+      char id[64];
+
+      sprintf(id, "rank%d", rank_num);
+      auto widget = canvas_.at(id);
+      widget->active(false);
     }
 
     // ボタンイベント共通Tween
