@@ -43,8 +43,7 @@ class Sound
   std::map<std::string, bool> enable_category_;
 
   // Game内サウンド用
-  std::map<std::string, std::string> game_sound_;
-
+  std::map<std::string, std::vector<std::string>> game_sound_;
 
   
   bool update(double current_time, double delta_time) noexcept override
@@ -199,7 +198,20 @@ public:
     // Game内サウンドリスト読み込み
     for (const auto& p : params["game-sound"])
     {
-      game_sound_.insert({ p.getKey(), p.getValue<std::string>() });
+      std::vector<std::string> name;
+      if (p.hasChildren())
+      {
+        for (const auto& n : p)
+        {
+          name.push_back(n.getValue<std::string>());
+        }
+      }
+      else
+      {
+        name.push_back(p.getValue<std::string>());
+      }
+
+      game_sound_.insert({ p.getKey(), name });
     }
 
 
@@ -251,7 +263,9 @@ public:
                                {
                                  if (game_sound_.count(e))
                                  {
-                                   play(game_sound_.at(e));
+                                   const auto& name = game_sound_.at(e);
+                                   auto i = ci::randInt(name.size());
+                                   play(name[i]);
                                  }
                                }
                              });
