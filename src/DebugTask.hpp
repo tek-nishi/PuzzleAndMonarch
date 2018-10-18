@@ -23,40 +23,6 @@ namespace ngs {
 class DebugTask
   : public Task
 {
-  const ci::JsonTree& params_;
-  Event<Arguments>& event_;
-  ConnectionHolder holder_;
-  Camera camera_;
-
-  UI::Drawer& drawer_;
-
-  bool active_ = true;
-  bool disp_   = false;
-
-  u_int disp_index_ = 0;
-  
-  
-  ci::params::InterfaceGlRef settings_;
-
-  float font_buffer_ = 0.5f;
-  float font_gamma_  = 0.03f;
-
-  float polygon_factor_;
-  float polygon_units_;
-
-  glm::vec3 light_pos_;
-
-  ci::ColorA field_specular_;
-  float field_shininess_;
-  float field_ambient_;
-
-  ci::ColorA bg_specular_;
-  float bg_shininess_;
-  float bg_ambient_;
-
-  float panel_scaling_ = 1.0f;
-
-
   void createSettings() noexcept
   {
     settings_ = ci::params::InterfaceGl::create("Settings", glm::ivec2(560, 800));
@@ -211,6 +177,25 @@ class DebugTask
                 event_.signal("debug-panel-scaling", args);
               });
 
+    settings_->addSeparator();
+
+    // サウンドテスト
+    {
+      for (const auto& p : params_["sound"])
+      {
+        sound_list_.push_back(p.getValueForKey<std::string>("name"));
+      }
+
+      settings_->addParam("Sound", sound_list_, &sound_num_);
+      settings_->addButton("Play",
+                           [this]()
+                           {
+                             auto args = Arguments{
+                               { "name", sound_list_[sound_num_] }
+                             };
+                             event_.signal("UI:sound", args);
+                           });
+    }
 
     settings_->show(false);
 
@@ -341,6 +326,44 @@ public:
   }
 
   ~DebugTask() = default;
+
+
+private:
+  const ci::JsonTree& params_;
+  Event<Arguments>& event_;
+  ConnectionHolder holder_;
+  Camera camera_;
+
+  UI::Drawer& drawer_;
+
+  bool active_ = true;
+  bool disp_   = false;
+
+  u_int disp_index_ = 0;
+  
+  
+  ci::params::InterfaceGlRef settings_;
+
+  float font_buffer_ = 0.5f;
+  float font_gamma_  = 0.03f;
+
+  float polygon_factor_;
+  float polygon_units_;
+
+  glm::vec3 light_pos_;
+
+  ci::ColorA field_specular_;
+  float field_shininess_;
+  float field_ambient_;
+
+  ci::ColorA bg_specular_;
+  float bg_shininess_;
+  float bg_ambient_;
+
+  float panel_scaling_ = 1.0f;
+
+  int sound_num_ = 0;
+  std::vector<std::string> sound_list_;
 }; 
 
 }
