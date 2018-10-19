@@ -33,6 +33,8 @@ public:
               Params::load(params.getValueForKey<std::string>("intro.tweens"))),
       finish_delay_(params.getValueForKey<double>("intro.finish_delay"))
   {
+    startTimelineSound(event, params, "intro.se");
+
     count_exec_.add(params.getValueForKey<double>("intro.touch_delay"),
                     [this]()
                     {

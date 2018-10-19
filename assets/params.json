@@ -30,6 +30,11 @@
 
   "sound": [
     {
+      "name": "intro",
+      "path": "intro.m4a",
+      "type": "bgm"
+    },
+    {
       "name": "start",
       "path": "start-jingle.m4a",
       "type": "bgm"
@@ -633,6 +638,10 @@
 
     "cloud_erase_duration": 0.6,
     "cloud_erase_delay": 3.8,
+
+    "se": [
+      [ 0.3, "intro" ]
+    ],
 
     "text": [
       [ "Intro01", "Intro02" ],
