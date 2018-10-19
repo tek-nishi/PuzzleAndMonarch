@@ -66,9 +66,25 @@
       "path": "panel-set.m4a",
       "type": "se"
     },
+
     {
-      "name": "panel-rotate",
-      "path": "panel-rotate.m4a",
+      "name": "panel-rotate01",
+      "path": "panel-rotate01.m4a",
+      "type": "se"
+    },
+    {
+      "name": "panel-rotate02",
+      "path": "panel-rotate02.m4a",
+      "type": "se"
+    },
+    {
+      "name": "panel-rotate03",
+      "path": "panel-rotate03.m4a",
+      "type": "se"
+    },
+    {
+      "name": "panel-rotate04",
+      "path": "panel-rotate04.m4a",
       "type": "se"
     },
     
@@ -241,7 +257,7 @@
   ],
 
   "game-sound": {
-    "Panel:rotate":    "panel-rotate",
+    "Panel:rotate":    [ "panel-rotate01", "panel-rotate02", "panel-rotate03", "panel-rotate04" ],
     "Panel:move":      [ "panel-move01", "panel-move02", "panel-move03", "panel-move04" ], 
     "Panel:put":       "panel-put",
     "Panel:reproduce": "panel-in",
