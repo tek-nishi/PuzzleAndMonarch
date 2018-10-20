@@ -109,6 +109,8 @@ public:
                                   // FIXME Cinderにあまり依存したくない
                                   touch_began_time_ = ci::app::getElapsedSeconds();
 
+                                  game_event_.insert("Panel:00touch");
+
                                   auto ndc_pos = camera_.body().worldToNdc(cursor_pos_);
                                   Arguments args{
                                     { "pos", ndc_pos }
@@ -125,6 +127,7 @@ public:
                                   // シングルタッチ操作解除
                                   touch_put_ = false;
                                   event_.signal("Game:PutEnd", Arguments());
+                                  game_event_.insert("Panel:01cancel");
                                 }
                                 if (on_blank_ && !manipulated_)
                                 {
@@ -161,6 +164,7 @@ public:
                                   {
                                     touch_put_ = false;
                                     event_.signal("Game:PutEnd", Arguments());
+                                    game_event_.insert("Panel:01cancel");
                                   }
                                   manipulated_ = manip;
                                 }
@@ -192,8 +196,9 @@ public:
                                 // 設置操作無効
                                 if (touch_put_)
                                 {
-                                  event_.signal("Game:PutEnd", Arguments());
                                   touch_put_ = false;
+                                  event_.signal("Game:PutEnd", Arguments());
+                                  game_event_.insert("Panel:01cancel");
                                 }
 
                                 if (result.first || result.second)

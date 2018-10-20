@@ -125,6 +125,13 @@
     },
 
     {
+      "name": "panel-touch",
+      "path": "panel-push.m4a",
+      "type": "se",
+      "slot": "panel-push"
+    },
+    
+    {
       "name": "complete",
       "path": "complete.m4a",
       "type": "se",
@@ -294,8 +301,10 @@
   ],
 
   "game-sound": {
-    "Panel:rotate":    [ "panel-rotate01", "panel-rotate02", "panel-rotate03", "panel-rotate04" ],
-    "Panel:move":      [ "panel-move01", "panel-move02", "panel-move03", "panel-move04" ], 
+    "Panel:rotate":    [ true, "panel-rotate01", "panel-rotate02", "panel-rotate03", "panel-rotate04" ],
+    "Panel:move":      [ true, "panel-move01", "panel-move02", "panel-move03", "panel-move04" ],
+    "Panel:00touch":   "panel-touch",
+    "Panel:01cancel":  [ false, "panel-touch" ],
     "Panel:put":       "panel-put",
     "Panel:reproduce": "panel-in",
     "Panel:clear":     "panel-out",

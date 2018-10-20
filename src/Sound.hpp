@@ -41,9 +41,8 @@ class Sound
   std::map<std::string, std::vector<ci::audio::SamplePlayerNodeRef>> category_;
   std::map<std::string, bool> enable_category_;
 
-
   // Game内サウンド用
-  std::map<std::string, std::vector<std::string>> game_sound_;
+  std::map<std::string, std::function<void ()>> game_sound_;
 
   
   bool update(double current_time, double delta_time) noexcept override
@@ -225,6 +224,58 @@ class Sound
   }
 
 
+  // Game内サウンドリスト読み込み
+  void createEventSound(const ci::JsonTree& params)
+  {
+    for (const auto& p : params["game-sound"])
+    {
+      std::function<void ()> func;
+
+      if (p.hasChildren())
+      {
+        std::vector<std::string> list;
+        // 最初のbool値で再生開始なのか、再生中断なのかを決める
+        auto f = p[0].getValue<bool>();
+        if (f)
+        {
+          // ランダムに選んで再生
+          for (int i = 1; i < p.getNumChildren(); ++i)
+          {
+            list.push_back(p[i].getValue<std::string>());
+          }
+
+          func = [this, list]()
+                 {
+                   auto i = ci::randInt(list.size());
+                   play(list[i]);
+                 };
+        }
+        else
+        {
+          // 再生停止
+          auto name = p[1].getValue<std::string>();
+          func = [this, name]()
+                 {
+                   DOUT << ci::app::getElapsedFrames() << ": sound stop: " << name << std::endl;
+                   stop(name);
+                 };
+        }
+      }
+      else
+      {
+        const auto& name = p.getValue<std::string>();
+        func = [this, name]()
+               {
+                 DOUT << ci::app::getElapsedFrames() << ": sound play: " << name << std::endl;
+                 play(name);
+               };
+      }
+
+      game_sound_.insert({ p.getKey(), func });
+    }
+  }
+
+
 public:
   Sound(const ci::JsonTree& params, Event<Arguments>& event) noexcept
     : event_(event)
@@ -275,25 +326,7 @@ public:
            << std::endl;
     }
 
-    // Game内サウンドリスト読み込み
-    for (const auto& p : params["game-sound"])
-    {
-      std::vector<std::string> name;
-      if (p.hasChildren())
-      {
-        for (const auto& n : p)
-        {
-          name.push_back(n.getValue<std::string>());
-        }
-      }
-      else
-      {
-        name.push_back(p.getValue<std::string>());
-      }
-
-      game_sound_.insert({ p.getKey(), name });
-    }
-
+    createEventSound(params);
 
     holder_ += event.connect("Settings:Changed",
                              [this](const Connection&, const Arguments& args) noexcept
@@ -343,10 +376,15 @@ public:
                                {
                                  if (game_sound_.count(e))
                                  {
-                                   const auto& name = game_sound_.at(e);
-                                   auto i = ci::randInt(name.size());
-                                   play(name[i]);
+                                   // TIPS 関数ポインタを使っている
+                                   game_sound_.at(e)();
                                  }
+#if !defined (DEBUG)
+                                 else
+                                 {
+                                   DOUT << "no event: " << e << std::endl;
+                                 }
+#endif
                                }
                              });
 
