@@ -32,232 +32,264 @@
     {
       "name": "intro",
       "path": "intro.m4a",
-      "type": "bgm"
+      "type": "bgm",
+      "slot": "intro"
     },
     {
       "name": "start",
       "path": "start-jingle.m4a",
-      "type": "bgm"
+      "type": "se",
+      "slot": "voice"
     },
     {
       "name": "result",
       "path": "result-jingle.m4a",
-      "type": "bgm"
-    },
-    {
-      "name": "misc",
-      "path": "misc-jingle.m4a",
-      "type": "bgm"
+      "type": "se",
+      "slot": "voice"
     },
 
     {
       "name": "selected",
       "path": "selected.m4a",
-      "type": "se"
+      "type": "se",
+      "slot": "operate"
     },
     {
       "name": "back",
       "path": "back.m4a",
-      "type": "se"
+      "type": "se",
+      "slot": "operate"
     },
     {
       "name": "play",
       "path": "play.m4a",
-      "type": "se"
+      "type": "se",
+      "slot": "play"
     },
 
     {
       "name": "panel-put",
       "path": "panel-set.m4a",
-      "type": "se"
+      "type": "se",
+      "slot": "panel-put"
     },
 
     {
       "name": "panel-rotate01",
       "path": "panel-rotate01.m4a",
-      "type": "se"
+      "type": "se",
+      "slot": "panel-rotate"
     },
     {
       "name": "panel-rotate02",
       "path": "panel-rotate02.m4a",
-      "type": "se"
+      "type": "se",
+      "slot": "panel-rotate"
     },
     {
       "name": "panel-rotate03",
       "path": "panel-rotate03.m4a",
-      "type": "se"
+      "type": "se",
+      "slot": "panel-rotate"
     },
     {
       "name": "panel-rotate04",
       "path": "panel-rotate04.m4a",
-      "type": "se"
+      "type": "se",
+      "slot": "panel-rotate"
     },
     
     {
       "name": "panel-move01",
       "path": "panel-move01.m4a",
-      "type": "se"
+      "type": "se",
+      "slot": "panel-move"
     },
     {
       "name": "panel-move02",
       "path": "panel-move02.m4a",
-      "type": "se"
+      "type": "se",
+      "slot": "panel-move"
     },
     {
       "name": "panel-move03",
       "path": "panel-move03.m4a",
-      "type": "se"
+      "type": "se",
+      "slot": "panel-move"
     },
     {
       "name": "panel-move04",
       "path": "panel-move04.m4a",
-      "type": "se"
+      "type": "se",
+      "slot": "panel-move"
     },
 
     {
       "name": "complete",
       "path": "complete.m4a",
-      "type": "se"
+      "type": "se",
+      "slot": "complete"
     },
     {
       "name": "like",
       "path": "like.m4a",
-      "type": "se"
+      "type": "se",
+      "slot": "like"
     },
     {
       "name": "countdown",
       "path": "count-down.m4a",
-      "type": "se"
-    },
-    {
-      "name": "timeup",
-      "path": "timeup.m4a",
-      "type": "bgm"
+      "type": "se",
+      "slot": "countdown"
     },
     {
       "name": "drum-roll-1",
       "path": "drum-roll-1.m4a",
-      "type": "se"
+      "type": "se",
+      "slot": "drum-roll"
     },
     {
       "name": "drum-roll-2",
       "path": "drum-roll-2.m4a",
-      "type": "se"
+      "type": "se",
+      "slot": "drum-roll"
     },
     {
       "name": "drum-roll-3",
       "path": "drum-roll-3.m4a",
-      "type": "se"
+      "type": "se",
+      "slot": "drum-roll"
     },
     {
       "name": "drum-roll-4",
       "path": "drum-roll-4.m4a",
-      "type": "se"
+      "type": "se",
+      "slot": "drum-roll"
     },
     {
       "name": "drum-roll-5",
       "path": "drum-roll-5.m4a",
-      "type": "se"
+      "type": "se",
+      "slot": "drum-roll"
     },
     {
       "name": "drum-roll-6",
       "path": "drum-roll-6.m4a",
-      "type": "se"
+      "type": "se",
+      "slot": "drum-roll"
     },
     {
       "name": "drum-roll-7",
       "path": "drum-roll-7.m4a",
-      "type": "se"
+      "type": "se",
+      "slot": "drum-roll"
     },
     {
       "name": "drum-roll-8",
       "path": "drum-roll-8.m4a",
-      "type": "se"
+      "type": "se",
+      "slot": "drum-roll"
     },
     {
       "name": "rank-1",
       "path": "rank-1.m4a",
-      "type": "se"
+      "type": "se",
+      "slot": "rank"
     },
     {
       "name": "rank-2",
       "path": "rank-1.m4a",
-      "type": "se"
+      "type": "se",
+      "slot": "rank"
     },
     {
       "name": "rank-in",
       "path": "rank-2.m4a",
-      "type": "se"
+      "type": "se",
+      "slot": "rank"
     },
 
     {
       "name": "pause",
       "path": "pause.m4a",
-      "type": "se"
+      "type": "se",
+      "slot": "operate"
     },
     {
       "name": "bgm-test",
       "path": "toggle-se.m4a",
-      "type": "bgm"
+      "type": "bgm",
+      "slot": "operate"
     },
     {
       "name": "se-test",
       "path": "toggle-se.m4a",
-      "type": "se"
+      "type": "se",
+      "slot": "operate"
     },
     {
       "name": "selecting",
       "path": "selecting.m4a",
-      "type": "se"
+      "type": "se",
+      "slot": "operate"
     },
     {
-      "name": "finish",
+      "name": "timeup",
       "path": "finish.m4a",
-      "type": "se"
+      "type": "se",
+      "slot": "voice"
     },
 
     {
       "name": "logo01",
       "path": "logo01.m4a",
-      "type": "bgm"
+      "type": "se",
+      "slot": "voice"
     },
     {
       "name": "logo02",
       "path": "logo02.m4a",
-      "type": "bgm"
+      "type": "bgm",
+      "slot": "logo02"
     },
     {
       "name": "logo03",
       "path": "logo03.m4a",
-      "type": "bgm"
+      "type": "bgm",
+      "slot": "logo03"
     },
 
     {
       "name": "advice",
       "path": "advice.m4a",
-      "type": "se"
+      "type": "se",
+      "slot": "operate"
     },
 
     {
       "name": "slide-left",
       "path": "slide_left.m4a",
-      "type": "se"
+      "type": "se",
+      "slot": "wipe"
     },
     {
       "name": "slide-right",
       "path": "slide_right.m4a",
-      "type": "se"
+      "type": "se",
+      "slot": "wipe"
     },
 
     {
       "name": "panel-in",
       "path": "panel-in.m4a",
-      "type": "se"
+      "type": "se",
+      "slot": "panel-in"
     },
     {
       "name": "panel-out",
       "path": "panel-out.m4a",
-      "type": "se"
+      "type": "se",
+      "slot": "panel-out"
     }
   ],
 

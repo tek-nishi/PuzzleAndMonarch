@@ -26,21 +26,21 @@ class Sound
 
   struct Detail
   {
-    Detail(const std::string& c, const ci::audio::SamplePlayerNodeRef& n) noexcept
-      : category(c),
-        node(n)
-    {}
-    ~Detail() = default;
-
     std::string category;
-    ci::audio::SamplePlayerNodeRef node;
-  };
 
+    std::function<void ()> play;
+    std::function<void ()> stop;
+  };
   std::map<std::string, Detail> details_;
 
-  // カテゴリ用
+  // BGMとSE別再生Node
+  std::map<std::string, ci::audio::FilePlayerNodeRef> bgm_nodes_;
+  std::map<std::string, ci::audio::BufferPlayerNodeRef> se_nodes_;
+
+  // BGMとSEのカテゴリ別ON-OFF用途 
   std::map<std::string, std::vector<ci::audio::SamplePlayerNodeRef>> category_;
   std::map<std::string, bool> enable_category_;
+
 
   // Game内サウンド用
   std::map<std::string, std::vector<std::string>> game_sound_;
@@ -56,10 +56,15 @@ class Sound
 
   void stopAll() noexcept
   {
-    for (auto& it : details_)
+    for (auto it : bgm_nodes_)
     {
-      it.second.node->stop();
+      it.second->stop();
     }
+    for (auto it : se_nodes_)
+    {
+      it.second->stop();
+    }
+
     disconnectInactiveNode();
   }
 
@@ -92,16 +97,9 @@ class Sound
     }
 
     const auto& detail = details_.at(name);
-    if (!enable_category_[detail.category]) return;
 
-    const auto& output = ci::audio::Context::master()->getOutput();
-    if (detail.node->isEnabled())
-    {
-      detail.node->stop();
-    }
-
-    detail.node >> output;
-    detail.node->start();
+    if (!enable_category_.at(detail.category)) return;
+    detail.play();
   }
 
   void stop(const std::string& name) noexcept
@@ -112,7 +110,8 @@ class Sound
       return;
     }
 
-    details_.at(name).node->stop();
+    const auto& detail = details_.at(name);
+    detail.stop();
 
     disconnectInactiveNode();
   }
@@ -120,7 +119,7 @@ class Sound
   
   void enableCategory(const std::string& category, bool enable) noexcept
   {
-    enable_category_[category] = enable;
+    enable_category_.at(category) = enable;
     if (!enable)
     {
       stopCategory(category);
@@ -142,6 +141,90 @@ class Sound
   }
 
 
+  // BGM向けセットアップ
+  Detail setupBgm(const std::string& type, const std::string& slot,
+                  ci::audio::Context* ctx, const ci::audio::SourceFileRef& source, const ci::audio::Node::Format& format)
+  {
+    if (!bgm_nodes_.count(slot))
+    {
+      auto node = ctx->makeNode(new ci::audio::FilePlayerNode(format));
+      bgm_nodes_.insert({ slot, node});
+
+      category_[type].push_back(node);
+      enable_category_[type] = true;
+    }
+
+    auto node = bgm_nodes_.at(slot);
+
+    // 再生と停止
+    auto play = [node, source]()
+                {
+                  if (node->isEnabled())
+                  {
+                    node->stop();
+                  }
+                  auto* ctx = ci::audio::Context::master();
+
+                  node->setSourceFile(source);
+
+                  node >> ctx->getOutput();
+                  node->start();
+                };
+
+    auto stop = [node]()
+                {
+                  if (node->isEnabled())
+                  {
+                    node->stop();
+                  }
+                };
+
+    return { type, play, stop };
+  }
+
+  // SE向けセットアップ
+  Detail setupSe(const std::string& type, const std::string& slot,
+                 ci::audio::Context* ctx, const ci::audio::SourceFileRef& source, const ci::audio::Node::Format& format)
+  {
+    if (!se_nodes_.count(slot))
+    {
+      auto node = ctx->makeNode(new ci::audio::BufferPlayerNode(format));
+      se_nodes_.insert({ slot, node});
+
+      category_[type].push_back(node);
+      enable_category_[type] = true;
+    }
+
+    auto node   = se_nodes_.at(slot);
+    auto buffer = source->loadBuffer();
+
+    auto play = [node, buffer]()
+                {
+                  if (node->isEnabled())
+                  {
+                    node->stop();
+                  }
+
+                  auto* ctx = ci::audio::Context::master();
+
+                  node->setBuffer(buffer);
+          
+                  node >> ctx->getOutput();
+                  node->start();
+                };
+
+    auto stop = [node]()
+                {
+                  if (node->isEnabled())
+                  {
+                    node->stop();
+                  }
+                };
+
+    return { type, play, stop };
+  }
+
+
 public:
   Sound(const ci::JsonTree& params, Event<Arguments>& event) noexcept
     : event_(event)
@@ -157,19 +240,19 @@ public:
 
     // カテゴリ別のNode生成
     std::map<std::string,
-             std::function<ci::audio::SamplePlayerNodeRef (ci::audio::Context* ctx, const ci::audio::SourceFileRef&)>> funcs {
+             std::function<Detail (const std::string&, const std::string&,
+                                   ci::audio::Context*, const ci::audio::SourceFileRef&)>> funcs {
       { "bgm",
-        [format](ci::audio::Context* ctx, const ci::audio::SourceFileRef& source) noexcept
+        [this, format](const std::string& type, const std::string& slot,
+                 ci::audio::Context* ctx, const ci::audio::SourceFileRef& source) noexcept
         {
-          // Streaming
-          return ctx->makeNode(new ci::audio::FilePlayerNode(source, true, format));
+          return setupBgm(type, slot, ctx, source, format);
         }},
       { "se",
-        [format](ci::audio::Context* ctx, const ci::audio::SourceFileRef& source) noexcept
+        [this, format](const std::string& type, const std::string& slot,
+                 ci::audio::Context* ctx, const ci::audio::SourceFileRef& source) noexcept
         {
-          // あらかじめBufferに読み込む
-          auto buffer = source->loadBuffer();
-          return ctx->makeNode(new ci::audio::BufferPlayerNode(buffer, format));
+          return setupSe(type, slot, ctx, source, format);
         }},
     };
 
@@ -179,18 +262,15 @@ public:
       auto source = ci::audio::load(Asset::load(path), ctx->getSampleRate());
 
       const auto& type = p.getValueForKey<std::string>("type");
-      auto node = funcs.at(type)(ctx, source);
-      node->setAutoEnabled(true);
+      auto slot        = Json::getValue(p, "slot", type);
+      auto detail = funcs.at(type)(type, slot, ctx, source);
 
       const auto& name = p.getValueForKey<std::string>("name");
-      details_.emplace(std::piecewise_construct,
-                       std::forward_as_tuple(name),
-                       std::forward_as_tuple(type, node));
-      category_[type].push_back(node);
-      enable_category_[type] = true;
+      details_.insert({ name, detail });
 
       DOUT << "Sound: " << name
            << " type: " << type
+           << " slot: " << slot
            << " path: " << path
            << std::endl;
     }

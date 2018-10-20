@@ -162,11 +162,6 @@ public:
                                   count_exec_.add(delay,
                                                   [this, end_delay]()
                                                   {
-                                                    Arguments a{
-                                                      { "name", std::string("finish") }
-                                                    };
-                                                    event_.signal("UI:sound", a);
-
                                                     canvas_.startTween("end");
                                                     count_exec_.add(end_delay,
                                                                     [this]() noexcept
