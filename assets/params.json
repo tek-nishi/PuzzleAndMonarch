@@ -198,6 +198,55 @@
       "slot": "drum-roll"
     },
     {
+      "name": "drum-roll-9",
+      "path": "drum-roll-9.m4a",
+      "type": "se",
+      "slot": "drum-roll"
+    },
+    {
+      "name": "drum-roll-10",
+      "path": "drum-roll-10.m4a",
+      "type": "se",
+      "slot": "drum-roll"
+    },
+    {
+      "name": "drum-roll-11",
+      "path": "drum-roll-11.m4a",
+      "type": "se",
+      "slot": "drum-roll"
+    },
+    {
+      "name": "drum-roll-12",
+      "path": "drum-roll-12.m4a",
+      "type": "se",
+      "slot": "drum-roll"
+    },
+    {
+      "name": "drum-roll-13",
+      "path": "drum-roll-13.m4a",
+      "type": "se",
+      "slot": "drum-roll"
+    },
+    {
+      "name": "drum-roll-14",
+      "path": "drum-roll-14.m4a",
+      "type": "se",
+      "slot": "drum-roll"
+    },
+    {
+      "name": "drum-roll-15",
+      "path": "drum-roll-15.m4a",
+      "type": "se",
+      "slot": "drum-roll"
+    },
+    {
+      "name": "drum-roll-16",
+      "path": "drum-roll-16.m4a",
+      "type": "se",
+      "slot": "drum-roll"
+    },
+
+    {
       "name": "rank-1",
       "path": "rank-1.m4a",
       "type": "se",

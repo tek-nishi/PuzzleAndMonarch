@@ -433,7 +433,7 @@ private:
       { "name", std::string(text) }
     };
     event_.signal("UI:sound", args);
-    drum_index_ = std::min(drum_index_ + 1, 8);
+    drum_index_ = std::min(drum_index_ + 1, 16);
   }
 
 
