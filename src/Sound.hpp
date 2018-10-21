@@ -16,14 +16,6 @@ namespace ngs {
 class Sound
   : public Task
 {
-  Event<Arguments>& event_;
-  ConnectionHolder holder_;
-
-  CountExec count_exec_;
-
-  bool active_ = true;
-
-
   struct Detail
   {
     std::string category;
@@ -31,18 +23,6 @@ class Sound
     std::function<void ()> play;
     std::function<void ()> stop;
   };
-  std::map<std::string, Detail> details_;
-
-  // BGMとSE別再生Node
-  std::map<std::string, ci::audio::FilePlayerNodeRef> bgm_nodes_;
-  std::map<std::string, ci::audio::BufferPlayerNodeRef> se_nodes_;
-
-  // BGMとSEのカテゴリ別ON-OFF用途 
-  std::map<std::string, std::vector<ci::audio::SamplePlayerNodeRef>> category_;
-  std::map<std::string, bool> enable_category_;
-
-  // Game内サウンド用
-  std::map<std::string, std::function<void ()>> game_sound_;
 
   
   bool update(double current_time, double delta_time) noexcept override
@@ -147,7 +127,7 @@ class Sound
     if (!bgm_nodes_.count(slot))
     {
       auto node = ctx->makeNode(new ci::audio::FilePlayerNode(format));
-      bgm_nodes_.insert({ slot, node});
+      bgm_nodes_.insert({ slot, node });
 
       category_[type].push_back(node);
       enable_category_[type] = true;
@@ -188,7 +168,7 @@ class Sound
     if (!se_nodes_.count(slot))
     {
       auto node = ctx->makeNode(new ci::audio::BufferPlayerNode(format));
-      se_nodes_.insert({ slot, node});
+      se_nodes_.insert({ slot, node });
 
       category_[type].push_back(node);
       enable_category_[type] = true;
@@ -402,6 +382,29 @@ public:
 
   //   DOUT << "~Sound()" << std::endl;
   // }
+
+
+private:
+  Event<Arguments>& event_;
+  ConnectionHolder holder_;
+
+  CountExec count_exec_;
+
+  bool active_ = true;
+
+  std::map<std::string, Detail> details_;
+
+  // BGMとSE別再生Node
+  std::map<std::string, ci::audio::FilePlayerNodeRef> bgm_nodes_;
+  std::map<std::string, ci::audio::BufferPlayerNodeRef> se_nodes_;
+
+  // BGMとSEのカテゴリ別ON-OFF用途 
+  std::map<std::string, std::vector<ci::audio::SamplePlayerNodeRef>> category_;
+  std::map<std::string, bool> enable_category_;
+
+  // Game内サウンド用
+  std::map<std::string, std::function<void ()>> game_sound_;
+
 };
 
 }
