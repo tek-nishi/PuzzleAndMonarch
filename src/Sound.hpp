@@ -43,8 +43,6 @@ class Sound
     {
       it.second->stop();
     }
-
-    disconnectInactiveNode();
   }
 
   void stopCategory(const std::string& category) noexcept
@@ -60,8 +58,6 @@ class Sound
     {
       node->stop();
     }
-
-    disconnectInactiveNode();
   }
 
 
@@ -91,10 +87,7 @@ class Sound
 
     const auto& detail = details_.at(name);
     detail.stop();
-
-    disconnectInactiveNode();
   }
-
   
   void enableCategory(const std::string& category, bool enable) noexcept
   {
@@ -109,7 +102,7 @@ class Sound
   static void disconnectInactiveNode()
   {
     const auto& output = ci::audio::Context::master()->getOutput();
-    // DOUT << "active nodes:" << output->getNumConnectedInputs() << std::endl;
+    DOUT << "active nodes:" << output->getNumConnectedInputs() << std::endl;
 
     // NOTICE disconnectするとイテレーターが無効になるので意図的にコピーを受け取っている
     auto nodes = output->getInputs();
@@ -142,10 +135,9 @@ class Sound
                   {
                     node->stop();
                   }
+
                   auto* ctx = ci::audio::Context::master();
-
                   node->setSourceFile(source);
-
                   node >> ctx->getOutput();
                   node->start();
                 };
@@ -155,6 +147,8 @@ class Sound
                   if (node->isEnabled())
                   {
                     node->stop();
+                    auto* ctx = ci::audio::Context::master();
+                    node->disconnect(ctx->getOutput());
                   }
                 };
 
@@ -183,11 +177,9 @@ class Sound
                   {
                     node->stop();
                   }
-
+                  
                   auto* ctx = ci::audio::Context::master();
-
                   node->setBuffer(buffer);
-          
                   node >> ctx->getOutput();
                   node->start();
                 };
@@ -197,6 +189,8 @@ class Sound
                   if (node->isEnabled())
                   {
                     node->stop();
+                    auto* ctx = ci::audio::Context::master();
+                    node->disconnect(ctx->getOutput());
                   }
                 };
 

@@ -975,7 +975,7 @@
     "tweens": "tw_purchase.json",
 
     "se": [
-      [ 0.25, "se-right" ]
+      [ 0.25, "slide-right" ]
     ]
   }
 }
