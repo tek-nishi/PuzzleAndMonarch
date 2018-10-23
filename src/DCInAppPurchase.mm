@@ -7,10 +7,22 @@
 
 #import "DCInAppPurchase.h"
 #include <functional>
+#include "AppText.hpp"
 
 
 // FIXME グローバル変数をやめる
 std::function<void ()> purchase_completed;
+
+namespace ngs
+{
+
+NSString* localizeText(const char* text)
+{
+  auto t = AppText::get(text);
+  return [NSString stringWithUTF8String:t.c_str()];
+}
+
+}
 
 
 @implementation DCInAppPurchase
@@ -54,7 +66,7 @@ static DCInAppPurchase *_sharedInstance = nil;
 {
   if (![self canMakePayments]) {
     // アプリ内課金が許可されていなければアラートを出して終了
-    [self showAlert:NSLocalizedString(@"Purchase06", nil) message:NSLocalizedString(@"Purchase05", nil)];
+    [self showAlert:ngs::localizeText("Purchase06") message:ngs::localizeText("Purchase05")];
 
     return;
   }
@@ -89,7 +101,7 @@ static DCInAppPurchase *_sharedInstance = nil;
 // デリゲートメソッド (アクセスエラー)
 - (void)request:(SKRequest *)request didFailWithError:(NSError *)error
 {
-  [self showAlert:NSLocalizedString(@"Purchase06", nil) message:[error localizedDescription]];
+  [self showAlert:ngs::localizeText("Purchase06") message:[error localizedDescription]];
 }
 
 // デリゲートメソッド (プロダクト情報を取得)
@@ -97,14 +109,14 @@ static DCInAppPurchase *_sharedInstance = nil;
 {
   // レスポンスがなければエラー処理
   if (response == nil) {
-    [self showAlert:NSLocalizedString(@"Purchase06", nil) message:NSLocalizedString(@"Purchase07", nil)];
+    [self showAlert:ngs::localizeText("Purchase06") message:ngs::localizeText("Purchase07")];
         
     return;
   }
     
   // プロダクトIDが無効な場合はアラートを出して終了
   if ([response.invalidProductIdentifiers count] > 0) {
-    [self showAlert:NSLocalizedString(@"Purchase06", nil) message:NSLocalizedString(@"Purchase08", nil)];
+    [self showAlert:ngs::localizeText("Purchase06") message:ngs::localizeText("Purchase08")];
         
     return;
   }
@@ -190,7 +202,7 @@ static DCInAppPurchase *_sharedInstance = nil;
       if (transaction.error.code != SKErrorPaymentCancelled)
       {
         // 購入処理失敗の場合はアラート表示
-        [self showAlert:NSLocalizedString(@"Purchase06", nil) message:[transaction.error localizedDescription]];
+        [self showAlert:ngs::localizeText("Purchase06") message:[transaction.error localizedDescription]];
       }
             
       // インジケータ非表示
@@ -207,7 +219,7 @@ static DCInAppPurchase *_sharedInstance = nil;
     else if (transaction.transactionState == SKPaymentTransactionStateRestored)
     {
       // リストア処理開始
-      [self showAlert:NSLocalizedString(@"Purchase09", nil) message:NSLocalizedString(@"Purchase10", nil)];
+      [self showAlert:ngs::localizeText("Purchase09") message:ngs::localizeText("Purchase10")];
             
       // 購入済みのプロダクトのロックを再解除する
       [self restoreTransaction:transaction];
@@ -257,7 +269,7 @@ static DCInAppPurchase *_sharedInstance = nil;
   // 購入済みでなかった場合アラート表示
   if (!isRestored)
   {
-    [self showAlert:NSLocalizedString(@"Purchase06", nil) message:NSLocalizedString(@"Purchase11", nil)];
+    [self showAlert:ngs::localizeText("Purchase06") message:ngs::localizeText("Purchase11")];
   }
     
   // 処理中フラグを下ろす
@@ -272,7 +284,7 @@ static DCInAppPurchase *_sharedInstance = nil;
     NSLog(@"%@", transaction);
         
     // リストア失敗のアラート表示
-    [self showAlert:NSLocalizedString(@"Purchase06", nil) message:NSLocalizedString(@"Purchase12", nil)];
+    [self showAlert:ngs::localizeText("Purchase06") message:ngs::localizeText("Purchase12")];
   }
 }
 
@@ -346,7 +358,7 @@ static DCInAppPurchase *_sharedInstance = nil;
   UIAlertController* alert = [UIAlertController alertControllerWithTitle:title message:message
                                  preferredStyle:UIAlertControllerStyleAlert];
 
-  UIAlertAction* okAction = [UIAlertAction actionWithTitle:NSLocalizedString(@"Purchase13", nil)
+  UIAlertAction* okAction = [UIAlertAction actionWithTitle:ngs::localizeText("Purchase13")
                                 style:UIAlertActionStyleDefault
                                 handler:^(UIAlertAction * action)
                                 {

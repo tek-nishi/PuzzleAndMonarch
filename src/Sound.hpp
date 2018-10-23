@@ -226,7 +226,7 @@ class Sound
 
           func = [this, list]()
                  {
-                   auto i = ci::randInt(list.size());
+                   auto i = ci::randInt(int(list.size()));
                    play(list[i]);
                  };
         }

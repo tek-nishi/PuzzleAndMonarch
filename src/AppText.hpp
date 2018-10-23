@@ -15,6 +15,12 @@
 
 namespace ngs { namespace AppText {
 
+void init(const std::string& path);
+const std::string& get(const std::string& key);
+
+
+#if defined (NGS_APPTEXT_IMPLEMENTATION)
+
 std::map<std::string, std::string> contents;
 
 
@@ -39,5 +45,7 @@ const std::string& get(const std::string& key)
   if (!contents.count(key)) return key;
   return contents.at(key);
 }
+
+#endif
 
 } }

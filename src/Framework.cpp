@@ -37,3 +37,8 @@
 #define NGS_GL_IMPLEMENTATION
 #include "gl.hpp"
 #undef  NGS_GL_IMPLEMENTATION
+
+#define NGS_APPTEXT_IMPLEMENTATION
+#include "AppText.hpp"
+#undef NGS_APPTEXT_IMPLEMENTATION
+
