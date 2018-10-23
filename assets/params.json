@@ -254,15 +254,15 @@
     },
     {
       "name": "rank-2",
-      "path": "rank-1.m4a",
+      "path": "rank-2.m4a",
       "type": "se",
       "slot": "rank"
     },
     {
       "name": "rank-in",
-      "path": "rank-2.m4a",
+      "path": "rank-in.m4a",
       "type": "se",
-      "slot": "rank"
+      "slot": "rank-in"
     },
 
     {
