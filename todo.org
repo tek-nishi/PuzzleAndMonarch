@@ -12,6 +12,7 @@
 * TODO ローカライズ
 * TODO BGM作る
 * TODO SE作る
+* TODO iOS:モノラルスピーカーで音が小さくなる問題再発
 * TODO iOS:iPhone6のスピーカー←→イヤフォンで音が正しくなり続けるか確認
 * TODO iOS:iPhone7のスピーカー←→イヤフォンで音が正しくなり続けるか確認
 * TODO iOS:Cinder0.9.2を試す

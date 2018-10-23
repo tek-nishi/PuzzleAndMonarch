@@ -336,8 +336,20 @@
     },
 
     {
-      "name": "panel-in",
-      "path": "panel-in.m4a",
+      "name": "panel-in1",
+      "path": "panel-in1.m4a",
+      "type": "se",
+      "slot": "panel-in"
+    },
+    {
+      "name": "panel-in2",
+      "path": "panel-in2.m4a",
+      "type": "se",
+      "slot": "panel-in"
+    },
+    {
+      "name": "panel-in3",
+      "path": "panel-in3.m4a",
       "type": "se",
       "slot": "panel-in"
     },
@@ -355,7 +367,7 @@
     "Panel:00touch":   "panel-touch",
     "Panel:01cancel":  [ false, "panel-touch" ],
     "Panel:put":       "panel-put",
-    "Panel:reproduce": "panel-in",
+    "Panel:reproduce": [ true, "panel-in1", "panel-in2", "panel-in3" ],
     "Panel:clear":     "panel-out",
 
     "Game:completed": "complete",
