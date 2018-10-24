@@ -812,16 +812,6 @@ public:
     renderField(info);
   }
 
-
-  void toggleCloud() noexcept
-  {
-    disp_cloud_ = !disp_cloud_;
-    if (disp_cloud_)
-    {
-      setCloudAlpha(1.0f);
-    }
-  }
-
   void setCloudAlpha(float alpha) noexcept
   {
     transition_timeline_->removeTarget(&cloud_color_.a);
@@ -844,6 +834,21 @@ public:
 
 
 #if defined (DEBUG)
+  
+  void toggleCloud() noexcept
+  {
+    disp_cloud_ = !disp_cloud_;
+    if (disp_cloud_)
+    {
+      setCloudAlpha(1.0f);
+    }
+  }
+
+  void toggleCloudShadow() noexcept
+  {
+    disp_cloud_shadow_ = !disp_cloud_shadow_;
+  }
+
 
   void drawShadowMap() noexcept
   {
@@ -1076,7 +1081,12 @@ private:
     }
 
     // 雲
-    drawClouds();
+#if defined (DEBUG)
+    if (disp_cloud_shadow_)
+#endif
+    {
+      drawClouds();
+    }
 
     // Disable polygon offset for final render
     ci::gl::disable(GL_POLYGON_OFFSET_FILL);
@@ -1545,7 +1555,9 @@ private:
   float cloud_area_;
   ci::ColorA cloud_color_;
   bool disp_cloud_ = true;
-
+#if defined (DEBUG)
+  bool disp_cloud_shadow_ = true;
+#endif
 
   // Tween用
   ci::TimelineRef timeline_;

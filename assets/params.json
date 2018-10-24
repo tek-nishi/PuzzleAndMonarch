@@ -11,6 +11,7 @@
       [ "k", "debug-shadowmap" ],
       [ "t", "debug-score-test" ],
       [ "b", "debug-disp-clouds" ],
+      [ "n", "debug-disp-cloud-shadow" ],
       [ "g", "debug-gamecenter" ],
       [ "e", "debug-effect" ],
       [ "p", "debug-purchase" ],

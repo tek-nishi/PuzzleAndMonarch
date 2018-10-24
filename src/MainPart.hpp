@@ -910,6 +910,12 @@ public:
                                 view_.toggleCloud();
                               });
 
+    holder_ += event_.connect("debug-disp-cloud-shadow",
+                              [this](const Connection&, const Arguments&) noexcept
+                              {
+                                view_.toggleCloudShadow();
+                              });
+
     holder_ += event_.connect("debug-effect",
                               [this](const Connection&, const Arguments&) noexcept
                               {
