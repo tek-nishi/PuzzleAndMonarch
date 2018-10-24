@@ -134,7 +134,8 @@ public:
                               [this](const Connection&, const Arguments&)
                               {
                                 // 制限時間無し
-                                canvas_.setWidgetText("time_remain", "0'00");
+                                canvas_.enableWidget("time_remain_icon", false);
+                                canvas_.enableWidget("time_remain", false);
                               });
 
     // ゲーム完了
