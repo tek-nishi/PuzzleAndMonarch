@@ -731,7 +731,7 @@
     "canvas": "ui_intro.json",
     "tweens": "tw_intro.json",
 
-    "field_delay": 4.5,
+    "field_delay": 3.5,
     "touch_delay": 0.5,
     "finish_delay": 0.1,
 
