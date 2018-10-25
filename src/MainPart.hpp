@@ -287,13 +287,17 @@ public:
                                 // 演出用Field
                                 loadIntroField(params_.getValueForKey<double>("intro.field_delay"));
 
-                                // カメラをジワーッと寄せる
+                                // カメラ設定
+                                field_camera_.setActive(false);
+                                field_camera_.beginDemo(params_.getValueForKey<float>("intro.camera_ease_duration"),
+                                                        params_.getValueForKey<std::string>("intro.camera_ease_type"),
+                                                        params_.getValueForKey<float>("intro.start_distance"));
+
                                 prohibited_ = true;
-                                field_camera_.setCurrentDistance(params_.getValueForKey<float>("intro.distance"));
-                                field_camera_.setEaseRate(Json::getVec<glm::dvec2>(params_["intro.camera_ease_rate"]));
                                 view_.setColor(ci::Color::black());
                                 view_.setColor(2.0f, ci::Color::white());
 
+                                // 雲のAlpha演出
                                 view_.setCloudAlpha(params_.getValueForKey<float>("intro.cloud_erase_duration"),
                                                     0.0f,
                                                     params_.getValueForKey<float>("intro.cloud_erase_delay"));
@@ -310,8 +314,7 @@ public:
     holder_ += event_.connect("Intro:finished",
                               [this](const Connection&, const Arguments&) noexcept
                               {
-                                field_camera_.restoreEaseRate();
-                                // カメラを初期位置へ
+                                field_camera_.setActive(true);
                                 prohibited_ = false;
                               });
 
@@ -976,7 +979,6 @@ private:
     }
 
     game_->update(delta_time);
-    fixed_exec_.update(delta_time);
 
     // カメラの中心位置変更
     field_camera_.update(delta_time);
@@ -1236,7 +1238,6 @@ private:
   {
     paused_ = false;
     count_exec_.pause(false);
-    fixed_exec_.clear();
     tutorial_pos_.clear();
     game_->abortPlay();
   }
@@ -1249,7 +1250,6 @@ private:
 
     paused_ = false;
     count_exec_.pause(false);
-    fixed_exec_.clear();
     tutorial_pos_.clear();
 
     // Game再生成
@@ -1591,7 +1591,6 @@ private:
   ConnectionHolder holder_;
 
   CountExec count_exec_;
-  FixedTimeExec fixed_exec_;
 
   // プレイ記録 
   Archive& archive_;

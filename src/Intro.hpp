@@ -89,9 +89,6 @@ private:
     DOUT << "Intro:finished" << std::endl;
   }
 
-
-
-
   
   Event<Arguments>& event_;
   ConnectionHolder holder_;

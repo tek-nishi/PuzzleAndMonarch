@@ -731,19 +731,19 @@
     "canvas": "ui_intro.json",
     "tweens": "tw_intro.json",
 
-    "field_delay": 3.0,
+    "field_delay": 4.5,
     "touch_delay": 0.5,
     "finish_delay": 0.1,
 
-    "distance": 650,
-
-    "camera_ease_rate": [ 0.85, 1.5 ],
+    "camera_ease_type": "OutQuad",
+    "camera_ease_duration": 5.0,
+    "start_distance": 700,
 
     "cloud_erase_duration": 0.6,
-    "cloud_erase_delay": 3.8,
+    "cloud_erase_delay": 1.7,
 
     "se": [
-      [ 0.3, "intro" ]
+      [ 0.7, "intro" ]
     ],
 
     "text": [

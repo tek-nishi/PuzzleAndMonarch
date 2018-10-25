@@ -22,8 +22,6 @@ public:
       angle_range_(toRadians(Json::getVec<glm::vec2>(params["camera_angle_range"]))),
       ease_rate_(Json::getVec<glm::dvec2>(params["camera_ease_rate"])),
       rotate_rate_(Json::getVec<glm::dvec2>(params["camera_rotate_rate"])),
-      target_ease_rate_(ease_rate_),
-      initial_ease_rate_(ease_rate_),
       retarget_rect_(Json::getRect<float>(params["camera_retarget"])),
       field_center_(target_position_),
       field_distance_(distance_),
@@ -39,12 +37,32 @@ public:
 
   void update(double delta_time)
   {
-    ease_rate_ += (target_ease_rate_ - ease_rate_) * (1.0 - std::pow(0.1, delta_time));
+    if (demo_)
+    {
+      demo_time_ += delta_time;
+      if (demo_time_ >= demo_duration_)
+      {
+        demo_time_ = demo_duration_;
+        demo_ = false;
+      }
+      auto t = demo_time_ / demo_duration_;
+
+      distance_ = demo_start_distance_ + demo_difference_ * demo_ease_(t);
+    }
+
+    if (!active_) return;
 
     target_position_ += (field_center_ - target_position_) * float(1 - std::pow(ease_rate_.x, delta_time * ease_rate_.y));
     distance_ += (field_distance_ - distance_) * float(1 - std::pow(ease_rate_.x, delta_time * ease_rate_.y));
 
     rotation_.y += (rotation_y_ - rotation_.y) * float(1 - std::pow(rotate_rate_.x, delta_time * rotate_rate_.y));
+  }
+
+
+  void setActive(bool active)
+  {
+    active_ = active;
+    demo_   = false;
   }
 
 
@@ -91,6 +109,10 @@ public:
     rotation_y_ += r;
   }
 
+  void distance(float d)
+  {
+    distance_ = d;
+  }
 
   // 距離設定
   void setDistance(float rate)
@@ -231,33 +253,31 @@ public:
     view.setupShadowCamera(target_position_);
   }
 
-
-  // 現在の距離を直接指定
-  void setCurrentDistance(float distance) noexcept
-  {
-    distance_ = distance;
-  }
-
-  void setEaseRate(const glm::dvec2 rate) noexcept
-  {
-    target_ease_rate_.x = rate.x;
-    target_ease_rate_.y = rate.y;
-    ease_rate_ = target_ease_rate_;
-  }
-
-  void restoreEaseRate() noexcept
-  {
-    target_ease_rate_ = initial_ease_rate_;
-  }
-
   const glm::vec3& getTargetPosition() const noexcept
   {
     return target_position_;
   }
 
+  // distanceのeaseデモ開始
+  void beginDemo(float duration, const std::string& easing, float distance)
+  {
+    active_ = false;
+    demo_   = true;
+
+    demo_time_           = 0.0f;
+    demo_duration_       = duration;
+    demo_start_distance_ = distance;
+    demo_difference_     = field_distance_ - distance;
+    demo_ease_           = getEaseFunc(easing);
+
+    distance_ = distance;
+  }
 
 
 private:
+  bool active_ = true;
+  bool demo_   = false;
+
   // 向きと注視点からの距離
   glm::vec2 rotation_;
   float distance_;
@@ -277,8 +297,6 @@ private:
   // 補間用係数
   glm::dvec2 ease_rate_;
   glm::dvec2 rotate_rate_;
-  glm::dvec2 target_ease_rate_;
-  glm::dvec2 initial_ease_rate_;
 
   // 再追尾用の範囲
   ci::Rectf retarget_rect_; 
@@ -295,6 +313,13 @@ private:
   float field_distance_;
 
   glm::vec3 map_center_;
+
+  // 演出用
+  float demo_duration_;
+  float demo_time_;
+  float demo_start_distance_;
+  float demo_difference_;
+  ci::EaseFn demo_ease_;
 
   // カメラを初期状態に戻すための変数
   glm::vec2 initial_rotation_;

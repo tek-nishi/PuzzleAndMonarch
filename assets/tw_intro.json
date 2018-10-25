@@ -9,7 +9,7 @@
           "body": [
             {
               "duration": 0.5,
-              "delay": 0.5,
+              "delay": 2.0,
               "copy_start": true,
               "ease_func": "None",
               "start": 0,
@@ -18,6 +18,11 @@
             {
               "duration": 0.3,
               "delay": 2.0,
+              "ease_func": "None",
+              "end": 0
+            },
+            {
+              "duration": 0.3,
               "ease_func": "None",
               "end": 0
             }
