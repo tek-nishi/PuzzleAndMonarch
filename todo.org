@@ -1,4 +1,5 @@
 * TODO stdのアルゴリズムを積極的に使う
+* TODO Rank確定の効果音変える
 * TODO UI:soundを減らす
 * TODO ローカライズ
 * TODO iOS:iPhoneXでレイアウトをチェック
