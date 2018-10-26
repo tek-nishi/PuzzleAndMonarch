@@ -216,12 +216,18 @@ private:
         canvas_.setWidgetParam("score:20",         "color", color);
         canvas_.setWidgetParam("score:high-score", "color", color);
         canvas_.setWidgetParam("score:rank-in",    "color", color);
-        // for (int i = 0; i < rank_icon_num_; ++i)
-        // {
-        //   char id[16];
-        //   sprintf(id, "score:21-%d", i);
-        //   canvas_.setWidgetParam(id, "color", color);
-        // }
+
+        // ランクの星は１つずつ
+        auto t = current_time;
+        for (int i = 0; i < 5; ++i)
+        {
+          auto c = ci::hsvToRgb({ std::fmod(t * effect_speed_, 1.0), 0.75f, 1 });
+          t -= 3.0 * delta_time;
+
+          char id[16];
+          sprintf(id, "score:21-%d", i);
+          canvas_.setWidgetParam(id, "color", c);
+        }
       }
       if (perfect_)
       {
