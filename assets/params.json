@@ -893,7 +893,7 @@
       ""
     ],
 
-    "effect_speed": 2.2,
+    "effect_speed": [ 2.2, -3, 0 ],
 
     "share": "Share01",
 

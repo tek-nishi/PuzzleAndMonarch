@@ -26,7 +26,7 @@ public:
          const Arguments& args) noexcept
     : event_(event),
       ranking_text_(Json::getArray<std::string>(params["result.ranking"])),
-      effect_speed_(params.getValueForKey<double>("result.effect_speed")),
+      effect_speed_(Json::getVec<glm::vec3>(params["result.effect_speed"])),
       score_interval_(params.getValueForKey<double>("result.score-interval")),
       timeline_(ci::Timeline::create()),
       canvas_(event, drawer, tween_common,
@@ -210,27 +210,32 @@ private:
 
     if (effect_)
     {
-      auto color = ci::hsvToRgb({ std::fmod(current_time * effect_speed_, 1.0), 0.75f, 1 });
       if (high_score_ || rank_in_)
       {
-        canvas_.setWidgetParam("score:20",         "color", color);
-        canvas_.setWidgetParam("score:high-score", "color", color);
-        canvas_.setWidgetParam("score:rank-in",    "color", color);
+        auto color = ci::hsvToRgb({ std::fmod(current_time * effect_speed_.x, 1.0), 0.75f, 1 });
+        canvas_.setWidgetParam("score:20", "color", color);
+        current_time += effect_speed_.y * delta_time;
 
         // ランクの星は１つずつ
         auto t = current_time;
         for (int i = 0; i < 5; ++i)
         {
-          auto c = ci::hsvToRgb({ std::fmod(t * effect_speed_, 1.0), 0.75f, 1 });
-          t -= 3.0 * delta_time;
+          auto c = ci::hsvToRgb({ std::fmod(t * effect_speed_.x, 1.0), 0.75f, 1 });
+          t += effect_speed_.z * delta_time;
 
           char id[16];
           sprintf(id, "score:21-%d", i);
           canvas_.setWidgetParam(id, "color", c);
         }
+        current_time += effect_speed_.y * delta_time;
+
+        color = ci::hsvToRgb({ std::fmod(current_time * effect_speed_.x, 1.0), 0.75f, 1 });
+        canvas_.setWidgetParam("score:high-score", "color", color);
+        canvas_.setWidgetParam("score:rank-in",    "color", color);
       }
       if (perfect_)
       {
+        auto color = ci::hsvToRgb({ std::fmod(current_time * effect_speed_.x, 1.0), 0.75f, 1 });
         canvas_.setWidgetParam("score:perfect", "color", color);
       }
     }
@@ -458,7 +463,7 @@ private:
   int total_score_;
   int total_rank_;
   bool effect_ = false;
-  double effect_speed_;
+  glm::vec3 effect_speed_;
 
   bool active_input_ = false;
 
