@@ -892,7 +892,7 @@ error:
 
 static FILE* fons__fopen(const char* filename, const char* mode)
 {
-#ifdef _WIN32
+#if 0
 	int len = 0;
 	int fileLen = strlen(filename);
 	int modeLen = strlen(mode);
