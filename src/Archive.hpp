@@ -72,7 +72,7 @@ class Archive
     {
       records_ = ci::JsonTree(text);
     }
-    catch (ci::JsonTree::ExcJsonParserError& exc)
+    catch (ci::JsonTree::ExcJsonParserError&)
     {
       DOUT << "Archive broken." << std::endl;
       create();
@@ -82,7 +82,7 @@ class Archive
     {
       records_ = ci::JsonTree(ci::loadFile(full_path_));
     }
-    catch (ci::JsonTree::ExcJsonParserError& exc)
+    catch (ci::JsonTree::ExcJsonParserError&)
     {
       DOUT << "Archive broken." << std::endl;
       create();

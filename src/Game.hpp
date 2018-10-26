@@ -446,7 +446,7 @@ struct Game
     {
       json = ci::JsonTree(text);
     }
-    catch (ci::JsonTree::ExcJsonParserError& exc)
+    catch (ci::JsonTree::ExcJsonParserError&)
     {
       DOUT << "Game record broken." << std::endl;
       return;
@@ -456,7 +456,7 @@ struct Game
     {
       json = ci::JsonTree(ci::loadFile(path));
     }
-    catch (ci::JsonTree::ExcJsonParserError& exc)
+    catch (ci::JsonTree::ExcJsonParserError&)
     {
       DOUT << "Game record broken." << std::endl;
       return;
