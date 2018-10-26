@@ -116,14 +116,16 @@ private:
   void adjustLayout(const std::vector<std::vector<std::pair<std::string, ci::Rectf>>>& layout_params)
   {
     auto aspect = ci::app::getWindowAspectRatio();
-    int index = (aspect > 1.0f) ? 0 : 1;
+    int index   = (aspect > 1.0f) ? 0 : 1;
+
     const auto& layout = layout_params[index];
-    for (const auto l : layout)
-    {
-      const auto& id   = l.first;
-      const auto& rect = l.second;
-      canvas_.setWidgetParam(id, "rect", rect);
-    }
+    std::for_each(std::begin(layout), std::end(layout),
+                  [this](const auto& it)
+                  {
+                    const auto& id   = it.first;
+                    const auto& rect = it.second;
+                    canvas_.setWidgetParam(id, "rect", rect);
+                  });
   }
 
   void applyDetail(const Detail& detail) noexcept

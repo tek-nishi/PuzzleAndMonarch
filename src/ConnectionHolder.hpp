@@ -14,7 +14,14 @@ namespace ngs {
 class ConnectionHolder
   : private boost::noncopyable
 {
-  std::vector<Connection> connections_;
+  void disconnectAll()
+  {
+    std::for_each(std::begin(connections_), std::end(connections_),
+                  [](const auto& it)
+                  {
+                    it.disconnect();
+                  });
+  }
 
 
 public:
@@ -26,20 +33,13 @@ public:
 
   ~ConnectionHolder()
   {
-    for (auto& connection : connections_)
-    {
-      connection.disconnect();
-    }
+    disconnectAll();
   }
 
 
   void clear() noexcept
   {
-    for (auto& connection : connections_)
-    {
-      connection.disconnect();
-    }
-    
+    disconnectAll();
     connections_.clear();
   }
 
@@ -54,6 +54,9 @@ public:
     connections_.push_back(connection);
   }
   
+
+private:
+  std::vector<Connection> connections_;
 };
 
 }

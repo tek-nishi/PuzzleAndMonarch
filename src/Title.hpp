@@ -338,12 +338,12 @@ private:
     const auto& menu = params["title.menu"];
 
     // 有効なアイコンを数える
-    int num = 0;
-    for (const auto& w : menu)
-    {
-      const auto& name = w.getValue<std::string>();
-      if (canvas_.isEnableWidget(name)) num += 1;
-    }
+    int num = (int)std::count_if(std::begin(menu), std::end(menu),
+                                 [this](const auto& it)
+                                 {
+                                   const auto& name = it.getValue();
+                                   return canvas_.isEnableWidget(name);
+                                 });
 
     // FIXME マジックナンバー
     float x = -(20 * num + 15 * (num - 1)) * 0.5f;

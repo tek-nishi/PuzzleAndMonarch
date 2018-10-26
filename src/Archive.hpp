@@ -113,26 +113,22 @@ public:
   bool existsRanking() const
   {
     const auto& games = records_["games"];
-
-    for (const auto& g : games)
-    {
-      if (g.hasChild("path")) return true;
-    }
-
-    return false;
+    return std::any_of(std::begin(games), std::end(games),
+                       [](const auto& it)
+                       {
+                         return it.hasChild("path");
+                       });
   }
 
   // 記録されている数を調べる
   int countRanking() const
   {
-    int number = 0;
     const auto& games = records_["games"];
-    for (const auto& g : games)
-    {
-      if (!g.hasChild("path")) break;
-      number += 1;
-    }
-    return number;
+    return (int)std::count_if(std::begin(games), std::end(games),
+                              [](const auto& it)
+                              {
+                                return it.hasChild("path");
+                              });
   }
 
   // プレイ結果を記録
