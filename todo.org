@@ -1,5 +1,4 @@
 * TODO stdのアルゴリズムを積極的に使う
-* TODO Starを一個も取っていないときのランクイン演出を変える
 * TODO ローカライズ
 * TODO iOS:iPhoneXでレイアウトをチェック
 * TODO iOS:iPhoneX 縦画面 ポーズボタンが上すぎる
@@ -8,6 +7,8 @@
 * TODO iOS:処理の思い箇所を探して修正
 * TODO iOS:AppStore提出に必要な書類や素材
 * TODO iOS:実績のローカライズ
+* DONE Starを一個も取っていないときのランクイン演出を変える
+CLOSED: [2018-10-27 土 11:37]
 * DONE Rank確定の効果音変える
 CLOSED: [2018-10-27 土 09:59]
 * DONE UI:soundを減らす
