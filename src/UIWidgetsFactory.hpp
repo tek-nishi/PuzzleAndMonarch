@@ -10,6 +10,7 @@
 #include "UIRoundRect.hpp"
 #include "UICircle.hpp"
 #include "UIRect.hpp"
+#include "SafeArea.h"
 
 
 namespace ngs { namespace UI {
@@ -20,7 +21,7 @@ class WidgetsFactory
   // JSONから生成(階層構造も含む)
   WidgetPtr create(const ci::JsonTree& params) const noexcept
   {
-    auto widget = UI::Widget::createFromParams(params);
+    auto widget = UI::Widget::createFromParams(params, has_safe_area_);
 
     // タイプ別
     if (params.hasChild("text"))
@@ -65,7 +66,12 @@ class WidgetsFactory
 
   
 public:
-  WidgetsFactory()  = default; 
+  WidgetsFactory()
+    : has_safe_area_(SafeArea::check())
+  {
+    DOUT << "WidgetsFactory::hasSafeArea: " << has_safe_area_ << std::endl;
+  }
+
   ~WidgetsFactory() = default;
 
 
@@ -77,7 +83,11 @@ public:
 
     return widget;
   }
-  
+
+
+private:
+  bool has_safe_area_;
+
 };
 
 } }

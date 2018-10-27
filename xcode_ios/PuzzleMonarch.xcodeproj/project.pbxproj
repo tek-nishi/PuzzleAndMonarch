@@ -21,6 +21,7 @@
 		4796585A2160EB46005C22F9 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 479658582160EB46005C22F9 /* InfoPlist.strings */; };
 		479658602160EB65005C22F9 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 4796585E2160EB64005C22F9 /* Localizable.strings */; };
 		47A6E5562045C4C200AC0CA3 /* TextCodec.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 47A6E5552045C4C200AC0CA3 /* TextCodec.cpp */; };
+		47A8AD59218453B100F25EF6 /* SafeArea.mm in Sources */ = {isa = PBXBuildFile; fileRef = 47A8AD58218453B100F25EF6 /* SafeArea.mm */; };
 		47E3D938203F20CD00275D6D /* AudioSession.mm in Sources */ = {isa = PBXBuildFile; fileRef = 47E3D937203F20CD00275D6D /* AudioSession.mm */; };
 		47E3D939203F210300275D6D /* AudioToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C7FB19D5124BC0D70045AFD2 /* AudioToolbox.framework */; };
 		47E3D93B203F213100275D6D /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 28FD15070DC6FC5B0079059D /* QuartzCore.framework */; };
@@ -64,6 +65,7 @@
 		479658622160EB6D005C22F9 /* zh-Hant */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hant"; path = "../resources/zh-Hant.lproj/Localizable.strings"; sourceTree = "<group>"; };
 		479658632160EB70005C22F9 /* zh-HK */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-HK"; path = "../resources/zh-HK.lproj/Localizable.strings"; sourceTree = "<group>"; };
 		47A6E5552045C4C200AC0CA3 /* TextCodec.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = TextCodec.cpp; path = ../src/TextCodec.cpp; sourceTree = "<group>"; };
+		47A8AD58218453B100F25EF6 /* SafeArea.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = SafeArea.mm; path = ../src/SafeArea.mm; sourceTree = "<group>"; };
 		47E3D937203F20CD00275D6D /* AudioSession.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = AudioSession.mm; path = ../src/AudioSession.mm; sourceTree = "<group>"; };
 		47E542842003933D0002BD5F /* Framework.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Framework.cpp; path = ../src/Framework.cpp; sourceTree = "<group>"; };
 		47E542852003933D0002BD5F /* MyApp.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = MyApp.cpp; path = ../src/MyApp.cpp; sourceTree = "<group>"; };
@@ -159,6 +161,7 @@
 				47EF72EA2043D228002900CF /* Capture.mm */,
 				47EF72E22043BEF8002900CF /* Share.mm */,
 				47E3D937203F20CD00275D6D /* AudioSession.mm */,
+				47A8AD58218453B100F25EF6 /* SafeArea.mm */,
 				47E542842003933D0002BD5F /* Framework.cpp */,
 				47E542852003933D0002BD5F /* MyApp.cpp */,
 			);
@@ -309,6 +312,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				47A8AD59218453B100F25EF6 /* SafeArea.mm in Sources */,
 				47E542862003933D0002BD5F /* Framework.cpp in Sources */,
 				472CB8DD20FD9711007481E6 /* PurchaseDelegate.mm in Sources */,
 				47E3D938203F20CD00275D6D /* AudioSession.mm in Sources */,

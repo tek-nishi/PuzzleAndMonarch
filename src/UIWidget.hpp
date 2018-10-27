@@ -278,7 +278,7 @@ public:
 
 
   // パラメーターから生成
-  static WidgetPtr createFromParams(const ci::JsonTree& params) noexcept
+  static WidgetPtr createFromParams(const ci::JsonTree& params, bool safe_area) noexcept
   {
     auto rect   = Json::getRect<float>(params["rect"]);
     auto widget = std::make_shared<UI::Widget>(rect);
@@ -292,10 +292,18 @@ public:
     widget->active_ = Json::getValue(params, "active", true);
     widget->alpha_  = Json::getValue(params, "alpha",  1.0f);
 
-    if (params.hasChild("anchor"))
+    if (safe_area && params.hasChild("anchor_safe"))
     {
-      widget->anchor_min_ = Json::getVec<glm::vec2>(params["anchor"][0]);
-      widget->anchor_max_ = Json::getVec<glm::vec2>(params["anchor"][1]);
+      // SafeAreaがある場合は専用アンカー
+      const auto& p = params["anchor_safe"];
+      widget->anchor_min_ = Json::getVec<glm::vec2>(p[0]);
+      widget->anchor_max_ = Json::getVec<glm::vec2>(p[1]);
+    }
+    else if (params.hasChild("anchor"))
+    {
+      const auto& p = params["anchor"];
+      widget->anchor_min_ = Json::getVec<glm::vec2>(p[0]);
+      widget->anchor_max_ = Json::getVec<glm::vec2>(p[1]);
     }
 
     widget->scale_  = Json::getVec(params, "scale",  glm::vec2(1));
