@@ -1,5 +1,4 @@
 * TODO stdのアルゴリズムを積極的に使う
-* TODO Rank確定の効果音変える
 * TODO ローカライズ
 * TODO iOS:iPhoneXでレイアウトをチェック
 * TODO iOS:iPhoneX 縦画面 ポーズボタンが上すぎる
@@ -8,6 +7,8 @@
 * TODO iOS:処理の思い箇所を探して修正
 * TODO iOS:AppStore提出に必要な書類や素材
 * TODO iOS:実績のローカライズ
+* DONE Rank確定の効果音変える
+CLOSED: [2018-10-27 土 09:59]
 * DONE UI:soundを減らす
 CLOSED: [2018-10-26 Fri 18:28]
 * DONE 「いいね!!」がたくさん出ると画面が見辛い
