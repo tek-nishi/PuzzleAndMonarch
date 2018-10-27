@@ -1,4 +1,5 @@
 * TODO stdのアルゴリズムを積極的に使う
+* TODO Starを一個も取っていないときのランクイン演出を変える
 * TODO ローカライズ
 * TODO iOS:iPhoneXでレイアウトをチェック
 * TODO iOS:iPhoneX 縦画面 ポーズボタンが上すぎる
