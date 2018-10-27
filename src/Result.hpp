@@ -216,16 +216,19 @@ private:
         canvas_.setWidgetParam("score:20", "color", color);
         current_time += effect_speed_.y * delta_time;
 
-        // ランクの星は１つずつ
-        auto t = current_time;
-        for (int i = 0; i < 5; ++i)
+        if (total_rank_ > 0)
         {
-          auto c = ci::hsvToRgb({ std::fmod(t * effect_speed_.x, 1.0), 0.75f, 1 });
-          t += effect_speed_.z * delta_time;
+          // ランクの星は１つずつ
+          auto t = current_time;
+          for (int i = 0; i < 5; ++i)
+          {
+            auto c = ci::hsvToRgb({ std::fmod(t * effect_speed_.x, 1.0), 0.75f, 1 });
+            t += effect_speed_.z * delta_time;
 
-          char id[16];
-          sprintf(id, "score:21-%d", i);
-          canvas_.setWidgetParam(id, "color", c);
+            char id[16];
+            sprintf(id, "score:21-%d", i);
+            canvas_.setWidgetParam(id, "color", c);
+          }
         }
         current_time += effect_speed_.y * delta_time;
 
