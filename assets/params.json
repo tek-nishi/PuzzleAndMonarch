@@ -260,6 +260,24 @@
       "slot": "rank"
     },
     {
+      "name": "rank-3",
+      "path": "rank-3.m4a",
+      "type": "se",
+      "slot": "rank"
+    },
+    {
+      "name": "rank-4",
+      "path": "rank-4.m4a",
+      "type": "se",
+      "slot": "rank"
+    },
+    {
+      "name": "rank-5",
+      "path": "rank-5.m4a",
+      "type": "se",
+      "slot": "rank"
+    },
+    {
       "name": "rank-in",
       "path": "rank-in.m4a",
       "type": "se",

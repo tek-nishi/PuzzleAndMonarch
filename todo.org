@@ -1,16 +1,22 @@
 * TODO stdのアルゴリズムを積極的に使う
-* TODO UI:soundを減らす
-* TODO 「いいね!!」がたくさん出ると画面が見辛い
-* TODO 世界観を作る
 * TODO ローカライズ
 * TODO iOS:iPhoneXでレイアウトをチェック
 * TODO iOS:iPhoneX 縦画面 ポーズボタンが上すぎる
 * TODO iOS:iPhoneX 横画面 決定ボタンが下すぎる
-* TODO iOS:GameCenterの通知がタイトルロゴにかぶる
 * TODO iOS:未ログイン時に課金処理へ移行すると何度もサインインを求められる
 * TODO iOS:処理の思い箇所を探して修正
 * TODO iOS:AppStore提出に必要な書類や素材
 * TODO iOS:実績のローカライズ
+* DONE Starを一個も取っていないときのランクイン演出を変える
+CLOSED: [2018-10-27 土 11:37]
+* DONE Rank確定の効果音変える
+CLOSED: [2018-10-27 土 09:59]
+* DONE UI:soundを減らす
+CLOSED: [2018-10-26 Fri 18:28]
+* DONE 「いいね!!」がたくさん出ると画面が見辛い
+CLOSED: [2018-10-26 Fri 18:21]
+* DONE iOS:GameCenterの通知がタイトルロゴにかぶる
+CLOSED: [2018-10-26 Fri 18:21]
 * DONE ランクインした時にランクの星の演出をかっこいく
 CLOSED: [2018-10-26 Fri 15:37]
 * DONE Introの文章が読みづらい
@@ -829,8 +835,6 @@ CLOSED: [2018-01-29 月 18:08]
 CLOSED: [2018-01-29 月 18:08]
 * DONE Win・macOS:フルスクリーンモード
 CLOSED: [2018-01-29 月 01:01]
-* DONE ゲーム中断
-CLOSED: [2018-01-29 月 17:33]
 * DONE Counterをリアル時間へ変更する
 CLOSED: [2018-01-29 月 00:55]
 * DONE 時限式カウンター＋関数ポインタ
@@ -851,6 +855,8 @@ CLOSED: [2018-01-25 木 22:28]
 CLOSED: [2018-01-25 木 14:50]
 * DONE macOS: ReleaseビルドでCanvas内容が表示されない
 CLOSED: [2018-01-23 火 21:15]
+* DONE ゲーム中断
+CLOSED: [2018-01-29 月 17:33]
 * DONE 開始時のパネルは「T字路に森の端」にする
 CLOSED: [2018-01-23 火 00:10]
 * DONE Canvasを縦画面で読み込むとfovの初期化が正しく行われない
@@ -882,7 +888,9 @@ CLOSED: [2018-01-09 Tue 00:32]
 * DONE iOS:縦画面→非アクティブ→横画面→アクティブ→画面乱れる
 CLOSED: [2018-03-17 土 17:19]
 * ABORT ランキング画面でスコアをクリックできることを伝えたい
-CLOSED: [2018-10-26 Fri 18:01]
+CLOSED: [2018-10-26 Fri 18:25]
+* ABORT 世界観を作る
+CLOSED: [2018-10-26 Fri 18:22]
 * ABORT iOS:Cinder0.9.2を試す
 CLOSED: [2018-10-24 水 00:11]
 * ABORT 街もLike対象に

@@ -168,8 +168,12 @@ struct Game
   bool canPutToBlank(const glm::ivec2& field_pos) const noexcept
   {
     bool can_put = false;
-    
-    if (std::find(std::begin(blank_), std::end(blank_), field_pos) != std::end(blank_))
+    bool blank = std::any_of(std::begin(blank_), std::end(blank_),
+                    [&field_pos](const auto& it)
+                    {
+                      return it == field_pos;
+                    });
+    if (blank)
     {
       can_put = canPutPanel(panels_[hand_panel], field_pos, hand_rotation, field);
     }
@@ -251,14 +255,13 @@ struct Game
       {
         // 得点
         DOUT << "  Path: " << completed.size() << '\n';
-        for (const auto& comp : completed)
-        {
-          // 最大の大きさを保存
-          max_path_ = std::max(max_path_, u_int(comp.size()));
-
-          DOUT << " Point: " << comp.size() << '\n';
-        }
-        DOUT << "Max path: " << max_path_ << '\n';
+        std::for_each(std::begin(completed), std::end(completed),
+                      [this](const auto& it)
+                      {
+                        max_path_ = std::max(max_path_, u_int(it.size()));
+                        DOUT << " Point: " << it.size() << '\n';
+                      });
+        DOUT << "Max path: " << max_path_;
         DOUT << std::endl;
 
         appendContainer(completed, completed_path);
@@ -443,7 +446,7 @@ struct Game
     {
       json = ci::JsonTree(text);
     }
-    catch (ci::JsonTree::ExcJsonParserError& exc)
+    catch (ci::JsonTree::ExcJsonParserError&)
     {
       DOUT << "Game record broken." << std::endl;
       return;
@@ -453,7 +456,7 @@ struct Game
     {
       json = ci::JsonTree(ci::loadFile(path));
     }
-    catch (ci::JsonTree::ExcJsonParserError& exc)
+    catch (ci::JsonTree::ExcJsonParserError&)
     {
       DOUT << "Game record broken." << std::endl;
       return;

@@ -51,13 +51,11 @@ struct CheckedEdge
 
 bool isCheckedEdge(const glm::ivec2& pos, u_int direction, const std::vector<CheckedEdge>& checked)
 {
-  auto it = std::find_if(std::begin(checked), std::end(checked),
-                         [&pos, direction](const CheckedEdge& value)
-                         {
-                           return (value.pos == pos) && (value.direction == direction);
-                         });
-
-  return it != std::end(checked);
+  return std::any_of(std::begin(checked), std::end(checked),
+                     [&pos, direction](const CheckedEdge& value)
+                     {
+                       return (value.pos == pos) && (value.direction == direction);
+                     });
 }
 
 
@@ -94,7 +92,12 @@ bool checkAttributeEdge(const glm::ivec2& pos, u_int direction,
   }
 
   // 調査ずみ？
-  if (std::find(std::begin(checked), std::end(checked), pos) != std::end(checked))
+  bool is_checked = std::any_of(std::begin(checked), std::end(checked),
+                                [pos](const auto& it)
+                                {
+                                  return it == pos;
+                                });
+  if (is_checked)
   {
     // 調査続行
     return true;

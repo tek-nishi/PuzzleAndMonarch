@@ -194,7 +194,6 @@ public:
         {               0, 0,  PANEL_SIZE / 2 },
       };
 
-      // 次のパネルが画面内に収まるか調べる
       bool in_view = true;
       for (const auto& ofs : tbl)
       {

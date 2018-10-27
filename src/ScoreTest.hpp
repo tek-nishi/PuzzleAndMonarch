@@ -31,7 +31,7 @@ public:
     {
       json = ci::JsonTree(text);
     }
-    catch (ci::JsonTree::ExcJsonParserError& exc)
+    catch (ci::JsonTree::ExcJsonParserError&)
     {
       DOUT << "Game record broken." << std::endl;
       return;
@@ -41,7 +41,7 @@ public:
     {
       json = ci::JsonTree(ci::loadFile(full_path));
     }
-    catch (ci::JsonTree::ExcJsonParserError& exc)
+    catch (ci::JsonTree::ExcJsonParserError&)
     {
       DOUT << "Game record broken." << std::endl;
       return;

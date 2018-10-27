@@ -33,16 +33,20 @@ class Sound
   }
 
 
+  template <typename T>
+  void stopAll(const T& array)
+  {
+    std::for_each(std::begin(array), std::end(array),
+    [](const auto& it)
+    {
+      it.second->stop();
+    });
+  }
+
   void stopAll() noexcept
   {
-    for (auto it : bgm_nodes_)
-    {
-      it.second->stop();
-    }
-    for (auto it : se_nodes_)
-    {
-      it.second->stop();
-    }
+    stopAll(bgm_nodes_);
+    stopAll(se_nodes_);
   }
 
   void stopCategory(const std::string& category) noexcept
