@@ -13,7 +13,7 @@ bool check();
 #else
 
 template <typename T = void>
-bool check() { return true; }
+bool check() { return false; }
 
 #endif
 
