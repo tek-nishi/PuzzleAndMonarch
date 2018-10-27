@@ -1,12 +1,14 @@
 * TODO stdのアルゴリズムを積極的に使う
 * TODO ローカライズ
 * TODO iOS:iPhoneXでレイアウトをチェック
-* TODO iOS:iPhoneX 縦画面 ポーズボタンが上すぎる
-* TODO iOS:iPhoneX 横画面 決定ボタンが下すぎる
 * TODO iOS:未ログイン時に課金処理へ移行すると何度もサインインを求められる
 * TODO iOS:処理の思い箇所を探して修正
 * TODO iOS:AppStore提出に必要な書類や素材
 * TODO iOS:実績のローカライズ
+* DONE iOS:iPhoneX 縦画面 ポーズボタンが上すぎる
+CLOSED: [2018-10-27 土 17:49]
+* DONE iOS:iPhoneX 横画面 決定ボタンが下すぎる
+CLOSED: [2018-10-27 土 17:43]
 * DONE Starを一個も取っていないときのランクイン演出を変える
 CLOSED: [2018-10-27 土 11:37]
 * DONE Rank確定の効果音変える
