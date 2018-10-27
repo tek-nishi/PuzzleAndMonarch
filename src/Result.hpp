@@ -340,31 +340,27 @@ private:
   // 演出時間を返却
   double tweenTotalScore(const ci::JsonTree& params, double delay) noexcept
   {
+    // スコアのカウントアップ
     double duration = params.getValueForKey<float>("result.disp_duration");
     auto func = getEaseFunc(params.getValueForKey<std::string>("result.disp_ease"));
     setCountupTween("score:20", delay, duration, total_score_, func);
 
     {
-      // あらかじめ星の数を調べ、演出を決める
-      auto total_num = total_rank_ / 2 + (total_rank_ & 1);
-
+      // ランク演出
       delay = duration + delay + 0.1;
       auto rank_icon = Json::getArray<std::string>(params["result.rank_icon"]);
       auto num = total_rank_ / 2;
-      // i は下でも使っている
+      // 「半分の星」を下で表示している
       int i = 0;
       for (; i < num; ++i)
       {
         char id[16];
         sprintf(id, "score:21-%d", i);
 
-        bool halfway = (i + 1) < total_num;
+        char se[16];
+        sprintf(se, "rank-%d", i + 1);
 
-        delay += halfway ? 0.1
-                         : 0.5;
-
-        const auto* se = halfway ? "rank-1"
-                                 : "rank-2";
+        delay += 0.1f;
 
         count_exec_.add(delay,
                         [this, id, rank_icon, se]()
@@ -386,9 +382,14 @@ private:
       {
         char id[16];
         sprintf(id, "score:21-%d", i);
-        delay += 0.5;
+
+        char se[16];
+        sprintf(se, "rank-%d", i + 1);
+
+        delay += 0.1f;
+
         count_exec_.add(delay,
-                        [this, id, rank_icon]()
+                        [this, id, rank_icon, se]()
                         {
                           canvas_.setWidgetText(id, rank_icon[1]);
                           canvas_.setTweenTarget(id, "rank", 0);
@@ -397,7 +398,7 @@ private:
                           {
                             // SE
                             Arguments args{
-                              { "name", std::string("rank-2") }
+                              { "name", std::string(se) }
                             };
                             event_.signal("UI:sound", args);
                           }
@@ -405,7 +406,7 @@ private:
       }
 
       // 最終的な演出時間
-      duration = delay + 0.5;
+      duration = delay + 0.3;
     }
     return duration;
   }
