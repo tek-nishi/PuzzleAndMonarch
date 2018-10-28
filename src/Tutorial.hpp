@@ -291,9 +291,16 @@ private:
   // Tutorialのレベルに応じた助言を表示
   void setupAdvice(int level, const ci::JsonTree& params)
   {
+    // 言語圏によって表示位置を変更
+    auto offset_x = std::stof(AppText::get("Tutorial09"));
+    auto* rect = boost::any_cast<ci::Rectf*>(canvas_.getWidgetParam("advice", "rect"));
+    rect->x1 += offset_x;
+    rect->x2 += offset_x;
+    canvas_.setWidgetParam("advice", "rect", *rect);
+
     const auto& advice = params["tutorial.advice"][level];
     int index = 0;
-    for (const auto t : advice)
+    for (const auto& t : advice)
     {
       char id[16];
       sprintf(id, "advice%d", index);
