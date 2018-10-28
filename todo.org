@@ -1,11 +1,12 @@
 * TODO stdのアルゴリズムを積極的に使う
-* TODO SafeAreaできたので他の機種はギリまでレイアウトする
 * TODO ローカライズ
 * TODO iOS:iPhoneXでレイアウトをチェック
 * TODO iOS:未ログイン時に課金処理へ移行すると何度もサインインを求められる
 * TODO iOS:処理の思い箇所を探して修正
 * TODO iOS:AppStore提出に必要な書類や素材
 * TODO iOS:実績のローカライズ
+* DONE SafeAreaできたので他の機種はギリまでレイアウトする
+CLOSED: [2018-10-28 日 17:42]
 * DONE 助言をどうにかしてセンタリングする
 CLOSED: [2018-10-28 日 12:07]
 * DONE iOS:iPhoneX 縦画面 ポーズボタンが上すぎる
