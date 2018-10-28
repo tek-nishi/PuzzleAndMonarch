@@ -2,6 +2,7 @@
 
 //
 // セーフエリアが存在するか調べる
+// FIXME Canvas生成の度に調査している
 //
 
 namespace ngs { namespace SafeArea {
