@@ -58,12 +58,8 @@
 		479022C521608C43000B47A6 /* OsMac.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = OsMac.mm; path = ../src/OsMac.mm; sourceTree = "<group>"; };
 		479658592160EB46005C22F9 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = ../resources/en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		4796585B2160EB4E005C22F9 /* ja */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ja; path = ../resources/ja.lproj/InfoPlist.strings; sourceTree = "<group>"; };
-		4796585C2160EB51005C22F9 /* zh-Hant */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hant"; path = "../resources/zh-Hant.lproj/InfoPlist.strings"; sourceTree = "<group>"; };
-		4796585D2160EB54005C22F9 /* zh-HK */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-HK"; path = "../resources/zh-HK.lproj/InfoPlist.strings"; sourceTree = "<group>"; };
 		4796585F2160EB64005C22F9 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = ../resources/en.lproj/Localizable.strings; sourceTree = "<group>"; };
 		479658612160EB6B005C22F9 /* ja */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ja; path = ../resources/ja.lproj/Localizable.strings; sourceTree = "<group>"; };
-		479658622160EB6D005C22F9 /* zh-Hant */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hant"; path = "../resources/zh-Hant.lproj/Localizable.strings"; sourceTree = "<group>"; };
-		479658632160EB70005C22F9 /* zh-HK */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-HK"; path = "../resources/zh-HK.lproj/Localizable.strings"; sourceTree = "<group>"; };
 		47A6E5552045C4C200AC0CA3 /* TextCodec.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = TextCodec.cpp; path = ../src/TextCodec.cpp; sourceTree = "<group>"; };
 		47A8AD58218453B100F25EF6 /* SafeArea.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = SafeArea.mm; path = ../src/SafeArea.mm; sourceTree = "<group>"; };
 		47E3D937203F20CD00275D6D /* AudioSession.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = AudioSession.mm; path = ../src/AudioSession.mm; sourceTree = "<group>"; };
@@ -250,8 +246,6 @@
 			knownRegions = (
 				en,
 				ja,
-				"zh-Hant",
-				"zh-HK",
 			);
 			mainGroup = 00692BC414FF149000D0A05E;
 			productRefGroup = 00692BD014FF149000D0A05E /* Products */;
@@ -334,8 +328,6 @@
 			children = (
 				479658592160EB46005C22F9 /* en */,
 				4796585B2160EB4E005C22F9 /* ja */,
-				4796585C2160EB51005C22F9 /* zh-Hant */,
-				4796585D2160EB54005C22F9 /* zh-HK */,
 			);
 			name = InfoPlist.strings;
 			sourceTree = "<group>";
@@ -345,8 +337,6 @@
 			children = (
 				4796585F2160EB64005C22F9 /* en */,
 				479658612160EB6B005C22F9 /* ja */,
-				479658622160EB6D005C22F9 /* zh-Hant */,
-				479658632160EB70005C22F9 /* zh-HK */,
 			);
 			name = Localizable.strings;
 			sourceTree = "<group>";
