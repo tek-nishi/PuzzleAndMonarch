@@ -245,12 +245,11 @@ bool isPanelAroundPos(const glm::ivec2& pos, const Field& field) noexcept
     { -1,  1 },
   };
 
-  for (const auto& ofs : offsets)
-  {
-    if (!field.existsPanel(pos + ofs)) return false;
-  }
-
-  return true;
+  return std::all_of(std::begin(offsets), std::end(offsets),
+                     [&pos, &field](const auto ofs)
+                     {
+                       return field.existsPanel(pos + ofs);
+                     });
 }
 
 // 教会が完成したか調査

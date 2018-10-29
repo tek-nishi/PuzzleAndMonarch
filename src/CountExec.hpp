@@ -86,13 +86,13 @@ public:
   {
     if (callbacks_.empty()) return;
 
-    auto t = std::numeric_limits<double>::max();
-    for (const auto& cb : callbacks_)
-    {
-      // FIXME 最小値を探す
-      if (t > cb.time_remain) t = cb.time_remain;
-    }
+    auto it = std::min_element(std::begin(callbacks_), std::end(callbacks_),
+                               [](const auto& a, const auto& b)
+                               {
+                                 return a.time_remain < b.time_remain;
+                               });
 
+    auto t = it->time_remain;
     for (auto& cb : callbacks_)
     {
       cb.time_remain -= t;

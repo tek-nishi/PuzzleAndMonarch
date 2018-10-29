@@ -176,6 +176,8 @@ public:
     // 強制モード
     if (force_camera_)
     {
+      DOUT << "Force mode" << std::endl;
+
       field_center_.x = map_center_.x;
       field_center_.z = map_center_.z;
       field_distance_ = ci::clamp(distance,
@@ -187,28 +189,42 @@ public:
     // パネルを置く前にカメラ操作があった
     if (skip_easing_)
     {
+      DOUT << "Skip Easing" << std::endl;
+
       static glm::vec3 tbl[] = {
-        { -PANEL_SIZE / 2, 0,               0 },
-        {  PANEL_SIZE / 2, 0,               0 },
-        {               0, 0, -PANEL_SIZE / 2 },
-        {               0, 0,  PANEL_SIZE / 2 },
+        { -PANEL_SIZE / 2, 0, -PANEL_SIZE / 2 },
+        {  PANEL_SIZE / 2, 0, -PANEL_SIZE / 2 },
+        { -PANEL_SIZE / 2, 0,  PANEL_SIZE / 2 },
+        {  PANEL_SIZE / 2, 0,  PANEL_SIZE / 2 },
       };
 
-      bool in_view = true;
-      for (const auto& ofs : tbl)
-      {
-        auto p1 = camera.worldToNdc(put_pos + ofs);
-        glm::vec2 p(p1.x, p1.y);
-        if (!retarget_rect_.contains(p))
-        {
-          in_view = false;
-          break;
-        }
-      }
+      auto in_view = std::all_of(std::begin(tbl), std::end(tbl),
+                                 [this, &camera, &put_pos](const auto& ofs)
+                                 {
+                                   auto p1 = camera.worldToNdc(put_pos + ofs);
+                                   glm::vec2 p{ p1.x, p1.y };
+                                   return retarget_rect_.contains(p);
+                                 });
+
+      // bool in_view = true;
+      // for (const auto& ofs : tbl)
+      // {
+      //   auto p1 = camera.worldToNdc(put_pos + ofs);
+
+      //   DOUT << p1 << std::endl;
+
+      //   glm::vec2 p(p1.x, p1.y);
+      //   if (!retarget_rect_.contains(p))
+      //   {
+      //     in_view = false;
+      //     break;
+      //   }
+      // }
 
       if (in_view)
       {
         // パネルを置く場所が画面からはみ出しそうでなければそのまま
+        DOUT << "Keep camera" << std::endl; 
         return;
       }
 

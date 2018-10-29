@@ -388,7 +388,7 @@ private:
   {
     std::vector<std::pair<std::string, std::string>> widgets;
     const auto& menu = params["title.menu"];
-    for (const auto m : menu)
+    for (const auto& m : menu)
     {
       const auto& id = m.getValue<std::string>();
       widgets.push_back({ id, id + ":icon" });

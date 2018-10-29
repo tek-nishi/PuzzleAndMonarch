@@ -228,12 +228,18 @@ struct Game
           deep_num += deep;
           deep_forest.push_back(deep);
 
-          // 最大の大きさを保存
-          max_forest_ = std::max(max_forest_, u_int(comp.size()));
-
           DOUT << " Point: " << comp.size() << '\n';
           DOUT << "  Deep: " << deep << '\n';
         }
+
+        // 最大森
+        auto it = std::max_element(std::begin(completed), std::end(completed),
+                                   [](const auto& a, const auto& b)
+                                   {
+                                     return a.size() < b.size();
+                                   });
+        max_forest_ = u_int(it->size());
+
         DOUT << "Total Deep: " << deep_num << '\n';
         DOUT << "Max forest: " << max_forest_ << '\n';
         DOUT << std::endl;
@@ -796,21 +802,22 @@ private:
 
     // 道の計算
     // TIPS 長い道ほど指数関数的に得点が上がる
-    float path_score = 0;
-    for (const auto path : completed_path)
-    {
-      float s = std::pow(float(path.size()), panel_rate.x) * panel_rate.y * score_rates[0];
-      path_score += s;
-      DOUT << path.size() << " : " << s << std::endl;
-    }
-    score += path_score;
+    auto path_score = std::accumulate(std::begin(completed_path), std::end(completed_path),
+                                      0.0f,
+                                      [this, &panel_rate, &score_rates](auto value, const auto& path)
+                                      {
+                                        auto s = std::pow(float(path.size()), panel_rate.x) * panel_rate.y * score_rates[0];
+                                        DOUT << path.size() << " : " << s << std::endl;
+                                        return value + s;
+                                      });
     DOUT << "Path: " << path_score << std::endl;
+    score += path_score;
 
     // 森の計算
     // TIPS 面積が大きいほど指数関数的に得点が上がる
     float forest_score = 0;
     size_t index = 0;
-    for (const auto forest : completed_forests)
+    for (const auto& forest : completed_forests)
     {
       auto count = forest.size() + deep_forest[index] * score_rates[2];
       float s = std::pow(float(count), panel_rate.x) * panel_rate.y * score_rates[1];

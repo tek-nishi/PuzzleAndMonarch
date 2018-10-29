@@ -15,7 +15,6 @@
 #include "Params.hpp"
 #include "JsonUtil.hpp"
 #include "Game.hpp"
-#include "Counter.hpp"
 #include "View.hpp"
 #include "Shader.hpp"
 #include "Camera.hpp"
@@ -1391,24 +1390,22 @@ private:
   bool isRankIn(u_int score) const noexcept
   {
     const auto& ranking = archive_.getRecordArray("games");
-    for (const auto& r : ranking)
-    {
-      if (score == r.getValueForKey<u_int>("score")) return true;
-    }
-    return false;
+    return std::any_of(std::begin(ranking), std::end(ranking),
+                       [score](const auto& r)
+                       {
+                         return score == r.template getValueForKey<u_int>("score");
+                       });
   }
 
   u_int getRanking(u_int score) const noexcept
   {
     const auto& ranking = archive_.getRecordArray("games");
-    u_int i;
-    for (i = 0; i < ranking.getNumChildren(); ++i)
-    {
-      if (score == ranking[i].getValueForKey<u_int>("score")) return i;
-    }
-
-    // NOTICE 見つからない場合は最大値
-    return std::numeric_limits<u_int>::max();
+    auto it = std::find_if(std::begin(ranking), std::end(ranking),
+                           [score](const auto& r)
+                           {
+                             return score == r.template getValueForKey<u_int>("score");
+                           });
+    return u_int(std::distance(std::begin(ranking), it));
   }
 
 

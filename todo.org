@@ -1,4 +1,7 @@
 * TODO stdのアルゴリズムを積極的に使う
+* TODO Game中Cameraがforceのまんま
+* TODO パネルを置くルールがわかりづらい
+* TODO チュートリアルがだるい
 * TODO ローカライズ
 * TODO iOS:iPhoneXでレイアウトをチェック
 * TODO iOS:未ログイン時に課金処理へ移行すると何度もサインインを求められる

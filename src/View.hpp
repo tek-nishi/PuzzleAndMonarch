@@ -1026,11 +1026,11 @@ private:
   // Blank Panel関連
   bool searchBlank(const glm::ivec2& pos) noexcept
   {
-    for (const auto& b : blank_panels_)
-    {
-      if (b.field_pos == pos) return true;
-    }
-    return false;
+    return std::any_of(std::begin(blank_panels_), std::end(blank_panels_),
+                       [&pos](const auto& it)
+                       {
+                         return it.field_pos == pos; 
+                       });
   }
 
   Blank* searchBlankPosition(const glm::ivec2& pos) noexcept
@@ -1044,12 +1044,11 @@ private:
 
   bool existsBlank(const glm::ivec2& pos, const std::vector<glm::ivec2>& blanks) noexcept
   {
-    for (const auto& p : blanks)
-    {
-      if (p == pos) return true;
-    }
-
-    return false;
+    return std::any_of(std::begin(blanks), std::end(blanks),
+                       [&pos](const auto& p)
+                       {
+                         return p == pos; 
+                       });
   }
 
   // 影のレンダリング

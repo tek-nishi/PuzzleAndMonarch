@@ -58,10 +58,11 @@ class Sound
     }
 
     const auto& details = category_.at(category);
-    for (const auto& node : details)
-    {
-      node->stop();
-    }
+    std::for_each(std::begin(details), std::end(details),
+                  [](const auto& node)
+                  {
+                    node->stop();
+                  });
   }
 
 
