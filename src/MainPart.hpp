@@ -371,6 +371,8 @@ public:
                                 game_->beginPlay();
                                 view_.updateBlank(game_->getBlankPositions());
                                 calcNextPanelPosition();
+                                // 強制モード解除
+                                field_camera_.force(false);
 
                                 {
                                   // Tutorial向けに関数ポインタを送信
