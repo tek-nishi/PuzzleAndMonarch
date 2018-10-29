@@ -1,12 +1,16 @@
-* TODO Game中Cameraがforceのまんま
 * TODO パネルを置くルールがわかりづらい
 * TODO チュートリアルがだるい
-* TODO ローカライズ
+* TODO iOS:プライバシーポリシーの作成とアプリ内からのリンク
 * TODO iOS:iPhoneXでレイアウトをチェック
 * TODO iOS:未ログイン時に課金処理へ移行すると何度もサインインを求められる
 * TODO iOS:処理の思い箇所を探して修正
 * TODO iOS:AppStore提出に必要な書類や素材
-* TODO iOS:実績のローカライズ
+* DONE ローカライズ
+CLOSED: [2018-10-29 月 23:01]
+* DONE iOS:実績のローカライズ
+CLOSED: [2018-10-29 月 23:01]
+* DONE Game中Cameraがforceのまんま
+CLOSED: [2018-10-29 月 20:15]
 * DONE stdのアルゴリズムを積極的に使う
 CLOSED: [2018-10-29 月 17:39]
 * DONE SafeAreaできたので他の機種はギリまでレイアウトする
