@@ -133,15 +133,14 @@ static void loadCachedAchievement()
   }
 #endif
 
-  std::for_each(std::begin(json), std::end(json),
-                [](const auto& data)
-                {
-                  Achievement achievement{
-                    data.getValueForKey<double>("rate"),
-                    data.getValueForKey<bool>("submited"),
-                    };
-                  cached_achievements.insert({ data.getKey(), achievement });
-                });
+  for (const auto& data : json)
+  {
+    Achievement achievement{
+      data.getValueForKey<double>("rate"),
+      data.getValueForKey<bool>("submited"),
+      };
+    cached_achievements.insert({ data.getKey(), achievement });
+  }
   
   NSLOG(@"loadCachedAchievement: %zu", json.getNumChildren());
 }
