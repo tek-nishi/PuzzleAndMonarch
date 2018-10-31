@@ -320,7 +320,7 @@ int countTotalAttribute(const std::vector<std::vector<glm::ivec2>>& completed,
     {
       area.insert(p);
     }
-    num += area.size();
+    num += int(area.size());
   }
   return num;
 }

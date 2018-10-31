@@ -16,11 +16,10 @@ class ConnectionHolder
 {
   void disconnectAll()
   {
-    std::for_each(std::begin(connections_), std::end(connections_),
-                  [](const auto& it)
-                  {
-                    it.disconnect();
-                  });
+    for (const auto& c : connections_)
+    {
+      c.disconnect();
+    }
   }
 
 

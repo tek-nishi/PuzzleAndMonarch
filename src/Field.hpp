@@ -33,16 +33,15 @@ struct Field
   // Jsonから状況を復元
   Field(const ci::JsonTree& json) noexcept
   {
-    std::for_each(std::begin(json), std::end(json),
-                  [this](const auto& obj)
-                  {
-                    auto number   = obj.template getValueForKey<int>("number");
-                    auto pos      = Json::getVec<glm::ivec2>(obj["pos"]);
-                    auto rotation = obj.template getValueForKey<u_int>("rotation");
-                    auto edge     = Json::getValue<uint64_t>(obj, "edge", 0);
+    for (const auto& obj : json)
+    {
+      auto number   = obj.template getValueForKey<int>("number");
+      auto pos      = Json::getVec<glm::ivec2>(obj["pos"]);
+      auto rotation = obj.template getValueForKey<u_int>("rotation");
+      auto edge     = Json::getValue<uint64_t>(obj, "edge", 0);
 
-                    addPanel(number, pos, rotation, edge);
-                  });
+      addPanel(number, pos, rotation, edge);
+    }
   }
 
 

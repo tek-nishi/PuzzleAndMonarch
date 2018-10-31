@@ -275,11 +275,10 @@ private:
   {
     if (!rank_effects_.empty())
     {
-      std::for_each(std::begin(rank_effects_), std::end(rank_effects_),
-                    [this](const auto& it)
-                    {
-                      canvas_.setWidgetParam(it, "color", ci::Color::white());
-                    });
+      for (const auto& effect : rank_effects_)
+      {
+        canvas_.setWidgetParam(effect, "color", ci::Color::white());
+      }
     }
 
     rank_effects_.clear();

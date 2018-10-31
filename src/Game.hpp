@@ -259,14 +259,14 @@ struct Game
       auto completed = isCompleteAttribute(Panel::PATH, field_pos, field, panels_);
       if (!completed.empty())
       {
-        // 得点
         DOUT << "  Path: " << completed.size() << '\n';
-        std::for_each(std::begin(completed), std::end(completed),
-                      [this](const auto& it)
-                      {
-                        max_path_ = std::max(max_path_, u_int(it.size()));
-                        DOUT << " Point: " << it.size() << '\n';
-                      });
+        auto it = std::max_element(std::begin(completed), std::end(completed),
+                                   [](const auto& a, const auto& b)
+                                   {
+                                     return a.size() < b.size();
+                                   });
+        max_path_ = int(it->size());
+
         DOUT << "Max path: " << max_path_;
         DOUT << std::endl;
 

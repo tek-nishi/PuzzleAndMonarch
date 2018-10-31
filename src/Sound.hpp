@@ -36,11 +36,10 @@ class Sound
   template <typename T>
   void stopAll(const T& array)
   {
-    std::for_each(std::begin(array), std::end(array),
-    [](const auto& it)
+    for (const auto& it : array)
     {
       it.second->stop();
-    });
+    }
   }
 
   void stopAll() noexcept
@@ -58,11 +57,10 @@ class Sound
     }
 
     const auto& details = category_.at(category);
-    std::for_each(std::begin(details), std::end(details),
-                  [](const auto& node)
-                  {
-                    node->stop();
-                  });
+    for (const auto& node : details)
+    {
+      node->stop();
+    }
   }
 
 
