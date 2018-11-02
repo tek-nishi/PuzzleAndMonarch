@@ -61,6 +61,15 @@ public:
                                                 });
                               });
 
+#if defined (CINDER_MSW)
+    {
+      canvas_.enableWidget("privacy", false);
+      // ボタンのレイアウト変更
+      glm::vec2 ofs;
+      canvas_.setWidgetParam("touch", "offset", ofs);
+    }
+#endif
+
     // ボタンイベント共通Tween
     setupCommonTweens(event_, holder_, canvas_, "agree");
     setupCommonTweens(event_, holder_, canvas_, "privacy");
