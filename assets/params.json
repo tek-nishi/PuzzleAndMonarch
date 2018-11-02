@@ -817,6 +817,8 @@
     "canvas": "ui_credits.json",
     "tweens": "tw_credits.json",
 
+    "privacy": "https://www.facebook.com/notes/new-game-style/privacy-policy/2565344923483620/",
+
     "se": [
       [ 0.25, "slide-right"]
     ]

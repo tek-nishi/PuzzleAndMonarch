@@ -44,15 +44,34 @@ public:
                                 DOUT << "Back to Title" << std::endl;
                               });
 
+    auto url = params.getValueForKey<std::string>("credits.privacy");
+    holder_ += event_.connect("privacy:touch_ended",
+                              [this, url, wipe_delay, wipe_duration](const Connection&, const Arguments&) noexcept
+                              {
+                                canvas_.active(false);
+                                count_exec_.add(wipe_delay,
+                                                [this, url]() noexcept
+                                                {
+                                                  Os::openURL(url);
+                                                });
+                                count_exec_.add(wipe_duration,
+                                                [this]() noexcept
+                                                {
+                                                  canvas_.active(true);
+                                                });
+                              });
+
     // ボタンイベント共通Tween
     setupCommonTweens(event_, holder_, canvas_, "agree");
+    setupCommonTweens(event_, holder_, canvas_, "privacy");
     canvas_.startCommonTween("root", "in-from-right");
 
     // ボタン演出
     std::vector<std::pair<std::string, std::string>> widgets{
-      { "touch", "touch:icon" }
+      { "touch",   "touch:icon" },
+      { "privacy", "privacy:icon" }
     };
-    UI::startButtonTween(count_exec_, canvas_, 0.55, 0.0, widgets);
+    UI::startButtonTween(count_exec_, canvas_, 0.55, 0.2, widgets);
   }
 
   ~Credits() = default;

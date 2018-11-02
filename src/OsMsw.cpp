@@ -29,4 +29,8 @@ std::string lang()
   return path;
 }
 
+void openURL(const std::string& url)
+{
+}
+
 } }

@@ -221,10 +221,10 @@ public:
       purchased_ = true;
       canvas_.enableWidget("purchased");
     }
-    if (is_tutorial)
-    {
-      canvas_.enableWidget("Credits", false);
-    }
+    // if (is_tutorial)
+    // {
+    //   canvas_.enableWidget("Credits", false);
+    // }
 
 #if defined (CINDER_COCOA_TOUCH)
     if (!is_tutorial)
