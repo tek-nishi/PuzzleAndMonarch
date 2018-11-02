@@ -4,6 +4,7 @@
 * TODO iOS:iPhoneXでレイアウトをチェック
 * TODO iOS:未ログイン時に課金処理へ移行すると何度もサインインを求められる
 * TODO iOS:処理の思い箇所を探して修正
+* TODO iOS:DestribitionビルドにReleaseビルドと同じ細工を
 * DONE iOS:AppStore提出に必要な書類や素材
 CLOSED: [2018-11-03 Sat 02:19]
 * DONE iOS:プライバシーポリシーの作成とアプリ内からのリンク
