@@ -35,7 +35,7 @@
 	<key>NSPhotoLibraryAddUsageDescription</key>
 	<string></string>
 	<key>UILaunchStoryboardName</key>
-	<string>LaunchScreen.xib</string>
+	<string>LaunchScreen</string>
 	<key>UIRequiredDeviceCapabilities</key>
 	<array>
 		<string>gamekit</string>
