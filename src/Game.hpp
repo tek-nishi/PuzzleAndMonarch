@@ -584,10 +584,6 @@ struct Game
       };
       event_.signal("Game:UI", args);
     }
-    else
-    {
-      event_.signal("Game:NoTimeLimit", Arguments());
-    }
   }
 
 
