@@ -3,6 +3,18 @@
 //
 // チュートリアル
 //
+// 1. ４箇所のBlankを指し示し「パネル移動」
+//    移動操作で次へ
+// 2. 手持ちパネルを指し示し「パネル回転」
+//    回転操作で次へ
+// 3. 手持ちパネルを指し示し「長押しで設置」
+//    設置操作で次へ
+// 4. 道は道同士、森は森同士、草原は草原同士で繋がらないとパネルは置けない
+// 5. 街と手持ちパネルを指し示し「道で繋ぐ→得点」
+// 6. 森と手持ちパネルを指し示し「森を完成→得点」
+// 7. 教会とその周囲のBlankを指し示し「周囲をパネルで埋める→得点」
+//
+
 
 #include "Task.hpp"
 #include "CountExec.hpp"
@@ -29,178 +41,104 @@ class Tutorial
 
 
 public:
-  Tutorial(const ci::JsonTree& params, Event<Arguments>& event, Archive& archive, UI::Drawer& drawer, TweenCommon& tween_common,
-           int level)
+  Tutorial(const ci::JsonTree& params, Event<Arguments>& event, UI::Drawer& drawer, TweenCommon& tween_common)
     : event_(event),
-      archive_(archive),
       canvas_(event, drawer, tween_common,
               params["ui.camera"],
               Params::load(params.getValueForKey<std::string>("tutorial.canvas")),
-              Params::load(params.getValueForKey<std::string>("tutorial.tweens"))),
-      direction_delay_(params.getValueForKey<double>("tutorial.direction_delay")),
-      current_direction_delay_(direction_delay_),
-      text_(Json::getArray<std::string>(params["tutorial.text"])),
-      offset_(Json::getVecArray<glm::vec2>(params["tutorial.offset"]))
+              Params::load(params.getValueForKey<std::string>("tutorial.tweens")))
   {
     // TIPS コールバック関数にダミーを割り当てておく
-    update_ = []() {};
+    update_ = [](int) { return std::vector<glm::vec3>(); };
 
-    // 最後に表示する助言をあらかじめ決めておく
-    setupAdvice(level, params);
+    holder_ += event.connect("Game:PanelMove",
+                             [this](const Connection& connection, const Arguments&)
+                             {
+                               if (level_ == 0)
+                               {
+                                 ++level_;
+                                 connection.disconnect();
+                               }
+                             });
+    holder_ += event.connect("Game:PanelRotate",
+                             [this](const Connection& connection, const Arguments&)
+                             {
+                               if (level_ == 1)
+                               {
+                                 ++level_;
+                                 connection.disconnect();
+                               }
+                             });
+    holder_ += event.connect("Game:PutPanel",
+                             [this](const Connection& connection, const Arguments&)
+                             {
+                               if (level_ == 2)
+                               {
+                                 ++level_;
+                                 connection.disconnect();
+                               }
+                             });
 
     // Pause操作
-    holder_ += event_.connect("GameMain:pause",
-                              [this](const Connection&, const Arguments&)
-                              {
-                                pause_ = true;
-                                // Pause中はチュートリアルの指示を消す
-                                canvas_.startTween("pause");
-                              });
-    holder_ += event_.connect("GameMain:resume",
-                              [this](const Connection&, const Arguments&)
-                              {
-                                pause_ = false;
-                                canvas_.startTween("resume");
-                              });
-
-    // 各種操作
-    struct
-    {
-      std::string key;
-      std::string event;
-      int type;
-      bool like;
-    }
-    info[]
-    {
-      { "tutorial-put-panel",    "Game:PutPanel",    PANEL_PUT,    true },
-      { "tutorial-rotate-panel", "Game:PanelRotate", PANEL_ROTATE, true },
-      { "tutorial-move-panel",   "Game:PanelMove",   PANEL_MOVE,   true },
-
-      { "tutorial-comp-path",   "Game:completed_path",    GET_TOWN,   false },
-      { "tutorial-comp-forest", "Game:completed_forests", GET_FOREST, false },
-      { "tutorial-comp-church", "Game:completed_church",  GET_CHURCH, false },
-    };
-
-    for (const auto& i : info)
-    {
-      if (!archive.getValue(i.key, false))
-      {
-        holder_ += event_.connect(i.event,
-                                  [this, i](const Connection& connection, const Arguments&)
-                                  {
-                                    doneOperation(i.type, i.like);
-
-                                    Arguments args
-                                    {
-                                      { "key", i.key },
-                                    };
-                                    event_.signal("Tutorial:Complete", args);
-
-                                    connection.disconnect();
-                                  });
-      }
-      else
-      {
-        doneOperation(i.type, false);
-      }
-    }
+    holder_ += event.connect("GameMain:pause",
+                             [this](const Connection&, const Arguments&)
+                             {
+                               pause_ = true;
+                               // Pause中はチュートリアルの指示を消す
+                               canvas_.startTween("pause");
+                             });
+    holder_ += event.connect("GameMain:resume",
+                             [this](const Connection&, const Arguments&)
+                             {
+                               pause_ = false;
+                               canvas_.startTween("resume");
+                             });
 
     // Callback登録
-    holder_ += event_.connect("Tutorial:callback",
-                              [this](const Connection&, const Arguments& args)
-                              {
-                                update_ = boost::any_cast<const std::function<void ()>&>(args.at("callback"));
-                              });
-
-    // 座標計算
-    holder_ += event_.connect("Field:Positions",
-                              [this](const Connection&, const Arguments& args)
-                              {
-                                static const char* label[] = {
-                                  "blank",            // PANEL_MOVE
-                                  "cursor",           // PANEL_ROTATE
-                                  "cursor",           // PANEL_PUT
-
-                                  "town",             // GET_TOWN
-                                  "forest",           // GET_FOREST
-                                  "church",           // GET_CHURCH
-                                };
-
-                                // 表示可能な情報を調査
-                                for (int i = 0; i < text_.size(); ++i)
-                                {
-                                  if (args.count(label[i]))
-                                  {
-                                    waiting_.insert(i);
-                                  }
-                                  else
-                                  {
-                                    waiting_.erase(i);
-                                  }
-                                }
-
-                                if (!disp_) return;
-
-                                if (!args.count(label[disp_type_])) return;
-
-                                const auto& pos = boost::any_cast<glm::vec3>(args.at(label[disp_type_]));
-                                cur_ofs_ = canvas_.ndcToPos(pos) + offset_[disp_type_];
-                                canvas_.setWidgetParam("blank", "offset", cur_ofs_);
-
-                                // 置ける状況の場合だけ指示
-                                if (disp_type_ == PANEL_PUT)
-                                {
-                                  auto can_put = boost::any_cast<bool>(args.at("can_put"));
-                                  if (can_put != active_disp_)
-                                  {
-                                    if (can_put) canvas_.startTween("start");
-                                    else         canvas_.startTween("end");
-
-                                    active_disp_ = can_put;
-                                  }
-                                }
-                              });
+    holder_ += event.connect("Tutorial:callback",
+                             [this](const Connection&, const Arguments& args)
+                             {
+                               DOUT << "Tutorial:callback" << std::endl;
+                               update_ = boost::any_cast<const std::function<std::vector<glm::vec3> (int)>&>(args.at("callback"));
+                             });
 
     // Tutorial終了
-    holder_ += event_.connect("Game:Finish",
+    holder_ += event.connect("Game:Finish",
                               [this](const Connection&, const Arguments&)
                               {
                                 pause_ = true;
                                 canvas_.startTween("pause");
-                                dispAdvice();
                               });
 
     auto wipe_delay    = params.getValueForKey<double>("ui.wipe.delay");
     auto wipe_duration = params.getValueForKey<double>("ui.wipe.duration");
 
-    holder_ += event_.connect("agree:touch_ended",
-                              [this, wipe_delay, wipe_duration](const Connection&, const Arguments&) noexcept
-                              {
-                                DOUT << "Agree." << std::endl;
-                                canvas_.active(false);
-                                canvas_.startCommonTween("root", "out-to-right");
-                                count_exec_.add(wipe_delay,
-                                                [this]() noexcept
-                                                {
-                                                  event_.signal("Tutorial:Finished", Arguments());
-                                                });
-                                count_exec_.add(wipe_duration,
-                                                [this]() noexcept
-                                                {
-                                                  finishTask();
-                                                });
-                              });
+    holder_ += event.connect("agree:touch_ended",
+                             [this, wipe_delay, wipe_duration](const Connection&, const Arguments&) noexcept
+                             {
+                               DOUT << "Agree." << std::endl;
+                               canvas_.active(false);
+                               canvas_.startCommonTween("root", "out-to-right");
+                               count_exec_.add(wipe_delay,
+                                               [this]() noexcept
+                                               {
+                                                 event_.signal("Tutorial:Finished", Arguments());
+                                               });
+                               count_exec_.add(wipe_duration,
+                                               [this]() noexcept
+                                               {
+                                                 finishTask();
+                                               });
+                             });
 
-    holder_ += event_.connect("Game:Aborted",
-                              [this](const Connection&, const Arguments&)
-                              {
-                                finishTask();
-                              });
+    holder_ += event.connect("Game:Aborted",
+                             [this](const Connection&, const Arguments&)
+                             {
+                               finishTask();
+                             });
 
+    canvas_.startTween("start");
     setupCommonTweens(event_, holder_, canvas_, "agree");
- 
-    event_.signal("Tutorial:Begin", Arguments());
   }
 
   ~Tutorial() = default;
@@ -213,50 +151,11 @@ private:
     if (pause_) return active_;
 
     // 更新関数を実行
-    update_();
-
-    // 必須操作が無いと催促する感じ
-    if (!disp_)
-    {
-      current_direction_delay_ -= delta_time;
-      if (current_direction_delay_ < 0.0)
-      {
-        current_direction_delay_ = direction_delay_;
-
-        // 未操作項目を探す
-        bool disp = false;
-        for (int i = 0; i < text_.size(); ++i)
-        {
-          if (!operation_.count(i) && waiting_.count(i))
-          {
-            canvas_.setWidgetText("blank:text", AppText::get(text_[i]));
-            disp_type_ = i;
-            disp = true;
-            break;
-          }
-        }
-
-        disp_ = disp;
-        if (disp)
-        {
-          // 見つかった
-          assert(disp_type_ < text_.size());
-          canvas_.startTween("start");
-        }
-        else
-        {
-          if (operation_.size() < text_.size())
-          {
-            // まだ途中なので適当な間を置いて再チェック
-            current_direction_delay_ = 1.0;
-          }
-        }
-      }
-    }
+    indication_positions_ = update_(level_);
+    updateIndiration();
 
     return active_;
   }
-
   
   // タスク終了
   void finishTask()
@@ -264,118 +163,44 @@ private:
     active_ = false;
   }
 
-  // 操作完了
-  void doneOperation(int type, bool like)
+  // 指示位置表示
+  void updateIndiration()
   {
-    if (disp_ && (disp_type_ == type))
-    {
-      // 指示を表示中なら完了演出を始める
-      disp_ = false;
-      canvas_.startTween("end");
-      canvas_.setWidgetParam("like", "offset", cur_ofs_);
-      // 必要なら演出
-      if (like)
-      {
-        canvas_.startTween("like");
-        Arguments se_args{
-          { "name", std::string("like") }
-        };
-        event_.signal("UI:sound", se_args);
-      }
-
-      current_direction_delay_ = direction_delay_;
-    }
-    operation_.insert(type);
-  }
-
-  // Tutorialのレベルに応じた助言を表示
-  void setupAdvice(int level, const ci::JsonTree& params)
-  {
-    // 言語圏によって表示位置を変更
-    auto offset_x = std::stof(AppText::get("Tutorial09"));
-    auto* rect = boost::any_cast<ci::Rectf*>(canvas_.getWidgetParam("advice", "rect"));
-    rect->x1 += offset_x;
-    rect->x2 += offset_x;
-    canvas_.setWidgetParam("advice", "rect", *rect);
-
-    const auto& advice = params["tutorial.advice"][level];
-    int index = 0;
-    for (const auto& t : advice)
+    int i = 0;
+    for (const auto& pos : indication_positions_)
     {
       char id[16];
-      sprintf(id, "advice%d", index);
-      canvas_.setWidgetText(id, AppText::get(t.getValue<std::string>()));
+      sprintf(id, "arrow%d", i);
+      canvas_.enableWidget(id, true);
 
-      ++index;
+      // 正規化座標→スクリーン座標
+      auto p = canvas_.ndcToPos(pos);
+      canvas_.setWidgetParam(id, "offset", p);
+
+      ++i;
     }
-  }
-
-  void dispAdvice()
-  {
-    canvas_.enableWidget("advice");
-
-    static const char* tbl[]{
-      "check%d",
-      "advice%d",
-    };
-
-    for (const auto* t : tbl)
+    // 残りは非表示
+    for (; i < 4; ++i)
     {
-      for (size_t i = 0; i < 3; ++i)
-      {
-        char id[16];
-        sprintf(id, t, i);
-        canvas_.setTweenTarget(id, "check", i);
-      }
-      canvas_.startTween("check");
+      char id[16];
+      sprintf(id, "arrow%d", i);
+      canvas_.enableWidget(id, false);
     }
-
-    for (int i = 0; i < 3; ++i)
-    {
-      count_exec_.add(2.0 + i * 0.3,
-                      [this]()
-                      {
-                        Arguments args{
-                          { "name", std::string("advice") }
-                        };
-                        event_.signal("UI:sound", args);
-                      });
-    }
-
-    canvas_.enableWidget("touch");
-    std::vector<std::pair<std::string, std::string>> widgets{
-      { "touch", "touch:icon" },
-    };
-    UI::startButtonTween(count_exec_, canvas_, 4.0, 0.2, widgets);
   }
 
   
   Event<Arguments>& event_;
   ConnectionHolder holder_;
 
-  Archive& archive_;
-
   CountExec count_exec_;
 
   UI::Canvas canvas_;
 
-  // 各種操作
-  std::set<int> operation_;
-  std::set<int> waiting_;
+  int level_ = 0;
 
-  double direction_delay_;
-  double current_direction_delay_;
-
-  bool disp_ = false;
-  bool active_disp_ = true;
-  int disp_type_;
-  glm::vec2 cur_ofs_;
-
-  std::vector<std::string> text_;
-  std::vector<glm::vec2> offset_;
-
-  // 更新関数
-  std::function<void ()> update_;
+  // Field座標→UI座標へ変換する関数
+  std::function<std::vector<glm::vec3> (int)> update_;
+  std::vector<glm::vec3> indication_positions_; 
 
   bool pause_  = false;
   bool active_ = true;

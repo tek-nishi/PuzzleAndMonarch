@@ -1,25 +1,6 @@
 {
   "start": [
     {
-      "identifier": "blank:arrow",
-      "tween": [
-        {
-          "param": "offset",
-          "type": "vec2",
-          "body": [
-            {
-              "duration": 0.3,
-              "ease_func": "InCubic",
-              "pingpong": true,
-              "loop": true,
-              "start": [ 0, 0 ],
-              "end": [ 0, -4 ]
-            }
-          ]
-        }
-      ]
-    },
-    {
       "identifier": "blank",
       "tween": [
         {
@@ -34,6 +15,25 @@
               "copy_start": true,
               "start": 0,
               "end": 1
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "identifier": "blank",
+      "tween": [
+        {
+          "param": "offset",
+          "type": "vec2",
+          "body": [
+            {
+              "duration": 0.3,
+              "ease_func": "InCubic",
+              "pingpong": true,
+              "loop": true,
+              "start": [ 0, 0 ],
+              "end": [ 0, -4 ]
             }
           ]
         }

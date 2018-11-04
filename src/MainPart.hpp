@@ -376,7 +376,9 @@ public:
 
                                 {
                                   // Tutorial向けに関数ポインタを送信
-                                  std::function<void ()> func = std::bind(&MainPart::sendFieldPositions, this);
+                                  std::function<std::vector<glm::vec3> (int)> func = std::bind(&MainPart::sendFieldPositions,
+                                                                                               this,
+                                                                                               std::placeholders::_1);
 
                                   Arguments args{
                                     { "callback", func }
@@ -528,11 +530,6 @@ public:
                               });
 
     // Tutorial
-    holder_ += event.connect("Tutorial:Begin",
-                             [this](const Connection&, const Arguments&)
-                             {
-                             });
-
     holder_ += event.connect("Tutorial:Complete",
                              [this](const Connection&, const Arguments& args)
                              {
@@ -1487,70 +1484,100 @@ private:
 
   // チュートリアル向けの座標計算
   // 各種座標をNormalized Device Coordinates変換して送信
-  void sendFieldPositions()
+  std::vector<glm::vec3> sendFieldPositions(int step)
   {
-    Arguments args;
+    std::vector<glm::vec3> panel_positions;
+    switch (step)
+    {
+    case 0:
+      {
+        // Blank
+        const auto& blanks = game_->getBlankPositions();
+        for (const auto& b : blanks)
+        {
+          auto pos = vec2ToVec3(b * int(PANEL_SIZE));
+          panel_positions.push_back(pos);
+        }
+      }
+      break;
+
+    case 1:
+    case 2:
+      {
+        // 手持ちパネル
+        panel_positions.push_back(cursor_pos_);
+      }
+      break;
+    }
 
     const auto& camera = camera_.body();
+    for (auto& pos : panel_positions)
     {
-      // カーソル位置
-      auto cursor_ndc_pos = camera.worldToNdc(cursor_pos_);
-      args.insert({ "cursor",  cursor_ndc_pos });
-      args.insert({ "can_put", can_put_ });
+      pos = camera.worldToNdc(pos);
     }
 
-    // Blank
-    // NOTICE カーソル位置とは別の場所を探している
-    if (!tutorial_pos_.count("blank"))
-    {
-      const auto& blanks = game_->getBlankPositions();
-      auto it = std::find_if(std::begin(blanks), std::end(blanks),
-                             [this](const glm::ivec2& a)
-                             {
-                               return a != field_pos_;
-                             });
-      if (it != std::end(blanks))
-      {
-        auto pos = vec2ToVec3(*it * int(PANEL_SIZE));
-        tutorial_pos_.insert({ "blank", pos });
-      }
-    }
-    else
-    {
-      auto ndc_pos = camera.worldToNdc(tutorial_pos_.at("blank"));
-      args.insert({ "blank",  ndc_pos });
-    }
+    return panel_positions;
 
-    if (!tutorial_pos_.count("forest"))
-    {
-      // 森の位置
-      auto panel = game_->searchAttribute(0, Panel::FOREST);
-      if (std::get<0>(panel))
-      {
-        // Edge部に指示を出したいので、そのオフセットを用意
-        const static glm::vec3 offset[]{
-          {                  0, 0,  PANEL_SIZE * 0.4f },
-          {  PANEL_SIZE * 0.4f, 0,                  0 },
-          {                  0, 0, -PANEL_SIZE * 0.4f },
-          { -PANEL_SIZE * 0.4f, 0,                  0 }
-        };
 
-        auto pos = vec2ToVec3(std::get<1>(panel) * int(PANEL_SIZE)) + offset[std::get<2>(panel)];
-        tutorial_pos_.insert({ "forest", pos });
-      }
-    }
-    else
-    {
-      auto ndc_pos = camera.worldToNdc(tutorial_pos_.at("forest"));
-      args.insert({ "forest", ndc_pos });
-    }
+    // {
+    //   // カーソル位置
+    //   auto cursor_ndc_pos = camera.worldToNdc(cursor_pos_);
+    //   args.insert({ "cursor",  cursor_ndc_pos });
+    //   args.insert({ "can_put", can_put_ });
+    // }
 
-    // 街の位置
-    addAttributePanel(args, "town", Panel::TOWN | Panel::CASTLE, camera);
-    // 教会の位置
-    addAttributePanel(args, "church", Panel::CHURCH, camera);
+    // // Blank
+    // // NOTICE カーソル位置とは別の場所を探している
+    // if (!tutorial_pos_.count("blank"))
+    // {
+    //   const auto& blanks = game_->getBlankPositions();
+    //   auto it = std::find_if(std::begin(blanks), std::end(blanks),
+    //                          [this](const glm::ivec2& a)
+    //                          {
+    //                            return a != field_pos_;
+    //                          });
+    //   if (it != std::end(blanks))
+    //   {
+    //     auto pos = vec2ToVec3(*it * int(PANEL_SIZE));
+    //     tutorial_pos_.insert({ "blank", pos });
+    //   }
+    // }
+    // else
+    // {
+    //   auto ndc_pos = camera.worldToNdc(tutorial_pos_.at("blank"));
+    //   args.insert({ "blank",  ndc_pos });
+    // }
 
-    event_.signal("Field:Positions", args);
+    // if (!tutorial_pos_.count("forest"))
+    // {
+    //   // 森の位置
+    //   auto panel = game_->searchAttribute(0, Panel::FOREST);
+    //   if (std::get<0>(panel))
+    //   {
+    //     // Edge部に指示を出したいので、そのオフセットを用意
+    //     const static glm::vec3 offset[]{
+    //       {                  0, 0,  PANEL_SIZE * 0.4f },
+    //       {  PANEL_SIZE * 0.4f, 0,                  0 },
+    //       {                  0, 0, -PANEL_SIZE * 0.4f },
+    //       { -PANEL_SIZE * 0.4f, 0,                  0 }
+    //     };
+
+    //     auto pos = vec2ToVec3(std::get<1>(panel) * int(PANEL_SIZE)) + offset[std::get<2>(panel)];
+    //     tutorial_pos_.insert({ "forest", pos });
+    //   }
+    // }
+    // else
+    // {
+    //   auto ndc_pos = camera.worldToNdc(tutorial_pos_.at("forest"));
+    //   args.insert({ "forest", ndc_pos });
+    // }
+
+    // // 街の位置
+    // addAttributePanel(args, "town", Panel::TOWN | Panel::CASTLE, camera);
+    // // 教会の位置
+    // addAttributePanel(args, "church", Panel::CHURCH, camera);
+
+    // event_.signal("Field:Positions", args);
   }
 
   // 指定属性のパネルを探して追加

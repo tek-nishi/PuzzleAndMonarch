@@ -61,11 +61,10 @@ public:
 
     // Tutorial起動
     holder_ += event_.connect("Tutorial:begin",
-                              [this](const Connection&, const Arguments& args) noexcept
+                              [this](const Connection&, const Arguments&) noexcept
                               {
                                 DOUT << "Tutorial started." << std::endl;
-                                auto level = boost::any_cast<int>(args.at("level"));
-                                tasks_.pushBack<Tutorial>(params_, event_, archive_, drawer_, tween_common_, level);
+                                tasks_.pushBack<Tutorial>(params_, event_, drawer_, tween_common_);
                               });
 
 

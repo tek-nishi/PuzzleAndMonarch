@@ -110,7 +110,7 @@ public:
   }
 
 
-  void startTween(const std::string& name) noexcept
+  void startTween(const std::string& name)
   {
     const auto& contents = tweens_.at(name);
     for (const auto& c : contents)
@@ -137,7 +137,7 @@ public:
   }
 
 
-  void startCommonTween(const std::string& id, const std::string& name) noexcept
+  void startCommonTween(const std::string& id, const std::string& name)
   {
     auto& tween = tween_common_.at(name);
     const auto& widget = this->at(id);

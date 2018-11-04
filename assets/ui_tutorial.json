@@ -9,31 +9,53 @@
   "childlen": [
     {
       "identifier": "blank",
-      "rect": [ -10, 0, 10, 0 ],
+      "rect": [ 0, 0, 0, 0 ],
       "anchor": [
-        [ 0.5, 0.5 ],
-        [ 0.5, 0.5 ]
+        [ 0, 0 ],
+        [ 1, 1 ]
       ],
-      "enable": false,
 
       "childlen": [
         {
-          "identifier": "blank:text",
-          "rect": [ 0, 18, 0, 31 ],
-          "anchor": [
-            [ 0, 0 ],
-            [ 1, 0 ]
-          ],
-
-          "font": "jp",
-          "text": "ほげ"
-        },
-        {
-          "identifier": "blank:arrow",
+          "identifier": "arrow0",
           "rect": [ 0, 0, 0, 12 ],
           "anchor": [
-            [ 0, 0 ],
-            [ 1, 0 ]
+            [ 0.5, 0.5 ],
+            [ 0.5, 0.5 ]
+          ],
+          "offset": [100, 0],
+
+          "font": "icon",
+          "text": ""
+        },
+        {
+          "identifier": "arrow1",
+          "rect": [ 0, 0, 0, 12 ],
+          "anchor": [
+            [ 0.5, 0.5 ],
+            [ 0.5, 0.5 ]
+          ],
+
+          "font": "icon",
+          "text": ""
+        },
+        {
+          "identifier": "arrow2",
+          "rect": [ 0, 0, 0, 12 ],
+          "anchor": [
+            [ 0.5, 0.5 ],
+            [ 0.5, 0.5 ]
+          ],
+
+          "font": "icon",
+          "text": ""
+        },
+        {
+          "identifier": "arrow3",
+          "rect": [ 0, 0, 0, 12 ],
+          "anchor": [
+            [ 0.5, 0.5 ],
+            [ 0.5, 0.5 ]
           ],
 
           "font": "icon",
