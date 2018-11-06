@@ -51,6 +51,7 @@ public:
     // TIPS コールバック関数にダミーを割り当てておく
     update_ = [](u_int) { return std::vector<glm::vec3>(); };
 
+    setupAdvice();
     startTutorial();
 
     // Pause操作
@@ -82,6 +83,7 @@ public:
                               {
                                 pause_ = true;
                                 canvas_.startTween("pause");
+                                dispAdvice();
                               });
 
     auto wipe_delay    = params.getValueForKey<double>("ui.wipe.delay");
@@ -110,7 +112,6 @@ public:
                              {
                                finishTask();
                              });
-    setTutorialText();
 
     canvas_.startTween("start");
     setupCommonTweens(event_, holder_, canvas_, "agree");
@@ -241,6 +242,59 @@ private:
       canvas_.enableWidget(id, false);
     }
   }
+
+
+  // 言語圏によって表示位置を変更する
+  void setupAdvice()
+  {
+    // 言語圏によって表示位置を変更
+    auto offset_x = std::stof(AppText::get("Tutorial11"));
+    auto* rect = boost::any_cast<ci::Rectf*>(canvas_.getWidgetParam("advice", "rect"));
+    rect->x1 += offset_x;
+    rect->x2 += offset_x;
+    canvas_.setWidgetParam("advice", "rect", *rect);
+  }
+
+  // 助言を表示
+  void dispAdvice()
+  {
+    canvas_.enableWidget("advice");
+
+    static const char* tbl[]{
+      "check%d",
+      "advice%d",
+    };
+
+    for (const auto* t : tbl)
+    {
+      for (size_t i = 0; i < 3; ++i)
+      {
+        char id[16];
+        sprintf(id, t, i);
+        canvas_.setTweenTarget(id, "check", i);
+      }
+      canvas_.startTween("check");
+    }
+
+    for (int i = 0; i < 3; ++i)
+    {
+      count_exec_.add(2.0 + i * 0.3,
+                      [this]()
+                      {
+                        Arguments args{
+                          { "name", std::string("advice") }
+                        };
+                        event_.signal("UI:sound", args);
+                      });
+    }
+
+    canvas_.enableWidget("touch");
+    std::vector<std::pair<std::string, std::string>> widgets{
+      { "touch", "touch:icon" },
+    };
+    UI::startButtonTween(count_exec_, canvas_, 4.0, 0.2, widgets);
+  }
+
 
   
   Event<Arguments>& event_;

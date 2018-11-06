@@ -189,7 +189,7 @@
           "enable": false,
 
           "font": "jp",
-          "text": "道が長いほど、高得点",
+          "text": "Advice01",
           "layout": [ 0, 1 ]
         },
 
@@ -216,7 +216,7 @@
           "enable": false,
 
           "font": "jp",
-          "text": "道が長いほど、高得点",
+          "text": "Advice02",
           "layout": [ 0, 1 ]
         },
 
@@ -243,7 +243,7 @@
           "enable": false,
           
           "font": "jp",
-          "text": "道が長いほど、高得点",
+          "text": "Advice03",
           "layout": [ 0, 1 ]
         }
       ]

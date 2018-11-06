@@ -1,13 +1,15 @@
 * TODO パネルを置くルールがわかりづらい
+* TODO チュートリアル終了時は直接タイトルに戻る
+* TODO 置いたパネルの数も得点に含める
 * TODO tutorial専用サウンドを用意
 * TODO Tutorial中は徐々に操作を解禁したい
 * TODO 砦属性追加
 * TODO いつでもチュートリアルを始めたい
 * TODO 単調なのをゲーム内の動きでカバーできないか??
-* TODO チュートリアルがだるい
 * TODO iOS:iPhoneXでレイアウトをチェック
 * TODO iOS:未ログイン時に課金処理へ移行すると何度もサインインを求められる
 * TODO iOS:処理の思い箇所を探して修正
+* WAIT チュートリアルがだるい
 * DONE iOS:DestribitionビルドにReleaseビルドと同じ細工を
 CLOSED: [2018-11-04 日 13:40]
 * DONE iOS:AppStore提出に必要な書類や素材
