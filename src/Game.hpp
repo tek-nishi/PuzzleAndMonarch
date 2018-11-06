@@ -186,6 +186,11 @@ struct Game
     return std::find(std::begin(blank_), std::end(blank_), field_pos) != std::end(blank_);
   }
 
+  bool isPanel(const glm::ivec2& field_pos) const
+  {
+    return field.existsPanel(field_pos);
+  }
+
   // 操作
   void putHandPanel(const glm::ivec2& field_pos) noexcept
   {

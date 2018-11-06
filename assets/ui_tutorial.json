@@ -60,8 +60,65 @@
 
           "font": "icon",
           "text": ""
+        },
+        {
+          "identifier": "arrow4",
+          "rect": [ 0, 0, 0, 12 ],
+          "anchor": [
+            [ 0.5, 0.5 ],
+            [ 0.5, 0.5 ]
+          ],
+
+          "font": "icon",
+          "text": ""
+        },
+        {
+          "identifier": "arrow5",
+          "rect": [ 0, 0, 0, 12 ],
+          "anchor": [
+            [ 0.5, 0.5 ],
+            [ 0.5, 0.5 ]
+          ],
+
+          "font": "icon",
+          "text": ""
+        },
+        {
+          "identifier": "arrow6",
+          "rect": [ 0, 0, 0, 12 ],
+          "anchor": [
+            [ 0.5, 0.5 ],
+            [ 0.5, 0.5 ]
+          ],
+
+          "font": "icon",
+          "text": ""
+        },
+        {
+          "identifier": "arrow7",
+          "rect": [ 0, 0, 0, 12 ],
+          "anchor": [
+            [ 0.5, 0.5 ],
+            [ 0.5, 0.5 ]
+          ],
+
+          "font": "icon",
+          "text": ""
         }
       ]
+    },
+
+    {
+      "identifier": "text",
+      "rect": [ 0, 0, 0, 18 ],
+      "anchor": [
+        [ 0.5, 0.1 ],
+        [ 0.5, 0.1 ]
+      ],
+      "layout": [ 0.5, 0.5 ],
+
+      "font": "jp",
+      "text": "hogehogefugafuga"
     },
 
     {

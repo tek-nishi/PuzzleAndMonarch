@@ -49,78 +49,9 @@ public:
               Params::load(params.getValueForKey<std::string>("tutorial.tweens")))
   {
     // TIPS コールバック関数にダミーを割り当てておく
-    update_ = [](int) { return std::vector<glm::vec3>(); };
+    update_ = [](u_int) { return std::vector<glm::vec3>(); };
 
-    holder_ += event.connect("Game:PanelMove",
-                             [this](const Connection& connection, const Arguments&)
-                             {
-                               if (level_ == 0)
-                               {
-                                 DOUT << "level: " << level_ << " done." << std::endl;
-                                 ++level_;
-                                 connection.disconnect();
-                               }
-                             });
-    holder_ += event.connect("Game:PanelRotate",
-                             [this](const Connection& connection, const Arguments&)
-                             {
-                               if (level_ == 1)
-                               {
-                                 DOUT << "level: " << level_ << " done." << std::endl;
-                                 ++level_;
-                                 connection.disconnect();
-                               }
-                             });
-    holder_ += event.connect("Game:PutPanel",
-                             [this](const Connection& connection, const Arguments&)
-                             {
-                               if (level_ == 2)
-                               {
-                                 DOUT << "level: " << level_ << " done." << std::endl;
-                                 ++level_;
-                                 connection.disconnect();
-                               }
-                             });
-    holder_ += event.connect("Game:PutPanel",
-                             [this](const Connection& connection, const Arguments&)
-                             {
-                               if (level_ == 3)
-                               {
-                                 DOUT << "level: " << level_ << " done." << std::endl;
-                                 ++level_;
-                                 connection.disconnect();
-                               }
-                             });
-    holder_ += event.connect("Game:completed_path",
-                             [this](const Connection& connection, const Arguments&)
-                             {
-                               if (level_ == 4)
-                               {
-                                 DOUT << "level: " << level_ << " done." << std::endl;
-                                 ++level_;
-                                 connection.disconnect();
-                               }
-                             });
-    holder_ += event.connect("Game:completed_forests",
-                             [this](const Connection& connection, const Arguments&)
-                             {
-                               if (level_ == 5)
-                               {
-                                 DOUT << "level: " << level_ << " done." << std::endl;
-                                 ++level_;
-                                 connection.disconnect();
-                               }
-                             });
-    holder_ += event.connect("Game:completed_church",
-                             [this](const Connection& connection, const Arguments&)
-                             {
-                               if (level_ == 6)
-                               {
-                                 DOUT << "level: " << level_ << " done." << std::endl;
-                                 ++level_;
-                                 connection.disconnect();
-                               }
-                             });
+    startTutorial();
 
     // Pause操作
     holder_ += event.connect("GameMain:pause",
@@ -142,7 +73,7 @@ public:
                              [this](const Connection&, const Arguments& args)
                              {
                                DOUT << "Tutorial:callback" << std::endl;
-                               update_ = boost::any_cast<const std::function<std::vector<glm::vec3> (int)>&>(args.at("callback"));
+                               update_ = boost::any_cast<const std::function<std::vector<glm::vec3> (u_int)>&>(args.at("callback"));
                              });
 
     // Tutorial終了
@@ -179,6 +110,7 @@ public:
                              {
                                finishTask();
                              });
+    setTutorialText();
 
     canvas_.startTween("start");
     setupCommonTweens(event_, holder_, canvas_, "agree");
@@ -194,7 +126,24 @@ private:
     if (pause_) return active_;
 
     // 更新関数を実行
-    indication_positions_ = update_(level_);
+    const u_int kinds[]{
+      0b10,
+      0b1,
+      0b1,
+      0,
+      0,
+      0b101,
+      0b101,
+      0b1001,
+      0b1001,
+      0,
+      0b10000,
+      0b10000,
+      0,
+      0,
+    };
+
+    indication_positions_ = update_(kinds[level_]);
     updateIndiration();
 
     return active_;
@@ -204,6 +153,68 @@ private:
   void finishTask()
   {
     active_ = false;
+  }
+
+
+  // 指示を出す
+  void startTutorial()
+  {
+    const char* id[]{
+      "Game:PanelMove",          // 移動
+      "Game:PanelRotate",        // 回転
+      "Game:PutPanel",           // 設置
+      "Game:PutPanel",           // パネルを置ける条件
+      "Game:PutPanel",           // パネルを置ける条件
+      "Game:PutPanel",           // 道の説明
+      "Game:PutPanel",           // 道の説明
+      "Game:PutPanel",           // 森の説明
+      "Game:PutPanel",           // 森の説明
+      "Game:PutPanel",
+      "Game:PutPanel",           // 教会の説明
+      "Game:PutPanel",           // 教会の説明
+      "Game:PutPanel",
+      nullptr 
+    };
+
+    const auto* p = id[level_];
+
+    if (p)
+    {
+      count_exec_.add(0.2,
+                      [this, p]()
+                      {
+                        holder_ += event_.connect(p,
+                                                  [this](const Connection& connection, const Arguments&)
+                                                  {
+                                                    ++level_;
+                                                    connection.disconnect();
+                                                    // 次の指示
+                                                    startTutorial();
+                                                  });
+                      });
+      setTutorialText();
+    }
+  }
+
+  void setTutorialText()
+  {
+    const char* id[]{
+      "Tutorial02",
+      "Tutorial03",
+      "Tutorial04",
+      "Tutorial05",
+      "Tutorial05",
+      "Tutorial06",
+      "Tutorial06",
+      "Tutorial07",
+      "Tutorial07",
+      "Tutorial08",
+      "Tutorial09",
+      "Tutorial09",
+      "Tutorial10"
+     };
+
+    canvas_.setWidgetText("text", AppText::get(id[level_]));
   }
 
   // 指示位置表示
@@ -223,7 +234,7 @@ private:
       ++i;
     }
     // 残りは非表示
-    for (; i < 4; ++i)
+    for (; i < 8; ++i)
     {
       char id[16];
       sprintf(id, "arrow%d", i);
@@ -242,7 +253,7 @@ private:
   int level_ = 0;
 
   // Field座標→UI座標へ変換する関数
-  std::function<std::vector<glm::vec3> (int)> update_;
+  std::function<std::vector<glm::vec3> (u_int)> update_;
   std::vector<glm::vec3> indication_positions_; 
 
   bool pause_  = false;

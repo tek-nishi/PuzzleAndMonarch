@@ -372,7 +372,7 @@ public:
 
                                 {
                                   // Tutorial向けに関数ポインタを送信
-                                  std::function<std::vector<glm::vec3> (int)> func = std::bind(&MainPart::sendFieldPositions,
+                                  std::function<std::vector<glm::vec3> (u_int)> func = std::bind(&MainPart::sendFieldPositions,
                                                                                                this,
                                                                                                std::placeholders::_1);
 
@@ -1464,54 +1464,64 @@ private:
 
   // チュートリアル向けの座標計算
   // 各種座標をNormalized Device Coordinates変換して送信
-  std::vector<glm::vec3> sendFieldPositions(int step)
+  // 0  手持ち
+  // 1  空白
+  // 2  街
+  // 3  森
+  // 4  教会の周囲の空白
+  std::vector<glm::vec3> sendFieldPositions(u_int kinds)
   {
     std::vector<glm::vec3> panel_positions;
-    switch (step)
+
+    if (kinds & 0b1)
     {
-    case 0:
+      // 手持ちパネル
+      panel_positions.push_back(cursor_pos_);
+    }
+    if (kinds & 0b10)
+    {
+      // Blank
+      const auto& blanks = game_->getBlankPositions();
+      for (const auto& b : blanks)
       {
-        // Blank
-        const auto& blanks = game_->getBlankPositions();
-        for (const auto& b : blanks)
-        {
-          auto pos = vec2ToVec3(b * int(PANEL_SIZE));
-          panel_positions.push_back(pos);
-        }
-      }
-      break;
+        if (b == field_pos_) continue;
 
-    case 1:
-    case 2:
-      {
-        // 手持ちパネル
-        panel_positions.push_back(cursor_pos_);
-      }
-      break;
-
-    case 4:
-      {
-        // 手持ち & 街
-        panel_positions.push_back(cursor_pos_);
-        auto pos = addAttributePanel(Panel::TOWN | Panel::CASTLE);
+        auto pos = vec2ToVec3(b * int(PANEL_SIZE));
         panel_positions.push_back(pos);
       }
-      break;
-
-    case 5:
+    }
+    if (kinds & 0b100)
+    {
+      // 街
+      auto pos = addAttributePanel(Panel::TOWN | Panel::CASTLE);
+      panel_positions.push_back(pos);
+    }
+    if (kinds & 0b1000)
+    {
+      // 森
+      auto pos = addAttributePanel(Panel::FOREST);
+      panel_positions.push_back(pos);
+    }
+    if (kinds & 0b10000)
+    {
+      // 教会の周囲の空白
+      auto panel = game_->searchAttribute(Panel::CHURCH, 0);
+      auto pos = std::get<1>(panel);
+      glm::ivec2 ofs[]{
+        { -1, -1 },
+        {  0, -1 },
+        {  1, -1 },
+        { -1,  0 },
+        {  1,  0 },
+        { -1,  1 },
+        {  0,  1 },
+        {  1,  1 },
+      };
+      for (const auto& o : ofs)
       {
-        // 手持ち & 森
-        panel_positions.push_back(cursor_pos_);
-        auto pos = addAttributePanel(Panel::FOREST);
-        panel_positions.push_back(pos);
-      }
-      break;
-
-    case 6:
-      {
-        // 教会の周囲
-        auto pos = addAttributePanel(Panel::CHURCH);
-        panel_positions.push_back(pos);
+        auto op = pos + o;
+        auto pp = vec2ToVec3(op * int(PANEL_SIZE));
+        panel_positions.push_back(pp);
       }
     }
 
