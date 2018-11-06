@@ -91,12 +91,11 @@ struct Game
 
 
   // パネル準備
-  // tutorial_level >= 0 でチュートリアル用の配置
-  void setupPanels(int level)
+  void setupPanels(bool tutorial)
   {
     // パネルを準備
-    preparationPanel(level);
-    if (level >= 0)
+    preparationPanel(tutorial);
+    if (tutorial)
     {
       // 制限時間無し
       invalidTimeLimit();
@@ -670,12 +669,12 @@ struct Game
 private:
   // フィールドに置くパネルの準備
   // tutorial_level >= 0 でチュートリアル用の配置
-  void preparationPanel(int tutorial_level)
+  void preparationPanel(bool tutorial)
   {
-    if (tutorial_level >= 0)
+    if (tutorial)
     {
       // チュートリアル用準備
-      waiting_panels = Json::getArray<int>(params_["tutorial"][tutorial_level]);
+      waiting_panels = Json::getArray<int>(params_["tutorial"]);
       // NOTICE 順番はあらかじめ用意されている
       start_panel_ = waiting_panels[0];
       waiting_panels.erase(std::begin(waiting_panels));

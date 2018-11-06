@@ -33,8 +33,8 @@ public:
     // 課金した
     bool purchased;
 
-    // チュートリアルレベル
-    int tutorial_level;
+    // チュートリアル中
+    bool tutorial;
   };
 
 
@@ -204,14 +204,12 @@ public:
     setupCommonTweens(event_, holder_, canvas_, "purchase");
     setupCommonTweens(event_, holder_, canvas_, "play");
 
-    auto is_tutorial = condition.tutorial_level >= 0;
-
-    if (!condition.saved || is_tutorial) 
+    if (!condition.saved || condition.tutorial) 
     {
       // Saveデータがない場合関連するボタンを消す
       canvas_.enableWidget("Records", false);
     }
-    if (!condition.ranking || is_tutorial)
+    if (!condition.ranking || condition.tutorial)
     {
       // Rankingに記録がない場合もボタンを消す
       canvas_.enableWidget("Ranking", false);
@@ -221,10 +219,6 @@ public:
       purchased_ = true;
       canvas_.enableWidget("purchased");
     }
-    // if (is_tutorial)
-    // {
-    //   canvas_.enableWidget("Credits", false);
-    // }
 
 #if defined (CINDER_COCOA_TOUCH)
     if (!is_tutorial)
@@ -234,7 +228,7 @@ public:
     }
 #endif
 
-    changePlayIcon(condition.tutorial_level, params);
+    changePlayIcon(condition.tutorial, params);
     layoutIcons(params);
 
     if (condition.first_time)
@@ -250,7 +244,7 @@ public:
       startMainTween(params, 0.6);
     }
 
-    if (condition.tutorial_level >= 0)
+    if (condition.tutorial)
     {
       const auto* id = condition.first_time ? "tutorial-first"
                                             : "tutorial";
@@ -318,18 +312,16 @@ private:
   }
 
   // Playアイコンの変更
-  void changePlayIcon(int tutorial_level, const ci::JsonTree& params)
+  void changePlayIcon(bool tutorial, const ci::JsonTree& params)
   {
-    auto& p = (tutorial_level >= 0) ? params["title.tutorial-icon"]
-                                    : params["title.play-icon"];
+    auto& p = (tutorial) ? params["title.tutorial-icon"]
+                         : params["title.play-icon"];
     canvas_.setWidgetText("play:icon", p.getValueForKey<std::string>("text"));
 
     auto anchor_min = Json::getVec<glm::vec2>(p["anchor"][0]);
     auto anchor_max = Json::getVec<glm::vec2>(p["anchor"][1]);
     canvas_.setWidgetParam("play:icon", "anchor_min", anchor_min);
     canvas_.setWidgetParam("play:icon", "anchor_max", anchor_max);
-
-    canvas_.setWidgetText("tutorial-comp", std::to_string(tutorial_level));
   }
 
   // アイコンを再レイアウト

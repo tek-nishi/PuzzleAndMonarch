@@ -341,14 +341,13 @@ public:
                                 // ここで色々リセット
                                 resetGame();
 
-                                auto level = archive_.getValue("tutorial-level", 0);
-                                game_->setupPanels(level);
+                                game_->setupPanels(Archive::isTutorial(archive_));
 
                                 // NOTICE 開始演出終わりに残り時間が正しく表示されているために必要
                                 game_->updateGameUI();
 
                                 count_exec_.add(1.4,
-                                                [this, level]()
+                                                [this]()
                                                 {
                                                   // パネル準備
                                                   view_.clear();
@@ -357,10 +356,7 @@ public:
                                                   if (Archive::isTutorial(archive_))
                                                   {
                                                     // チュートリアル開始
-                                                    Arguments args{
-                                                      { "level", level }
-                                                    };
-                                                    event_.signal("Tutorial:begin", args);
+                                                    event_.signal("Tutorial:begin", Arguments());
                                                   }
                                                 });
                               });
@@ -454,24 +450,12 @@ public:
                                 view_.endPlay();
 
                                 // チュートリアル
-                                auto is_tutorial = boost::any_cast<bool>(args.at("tutorial"));
+                                auto is_tutorial = Archive::isTutorial(archive_);
                                 if (is_tutorial)
                                 {
-                                  auto level = archive_.getValue("tutorial-level", 0);
-                                  level += 1;
-                                  if (level > 2)
-                                  {
-                                    level = -1;
-                                    // Tutorial完了
-                                    event_.signal("Game:Tutorial-Finish", Arguments());
-                                  }
-                                  archive_.setRecord("tutorial-level", level);
-
-                                  // 達成項目を記録
-                                  for (const auto& key : tutorial_completed_)
-                                  {
-                                    archive_.setRecord(key, true);
-                                  }
+                                  // Tutorial完了
+                                  event_.signal("Game:Tutorial-Finish", Arguments());
+                                  archive_.setRecord("tutorial", false);
                                 }
 
                                 // スコア計算
@@ -533,8 +517,6 @@ public:
     holder_ += event.connect("Tutorial:Complete",
                              [this](const Connection&, const Arguments& args)
                              {
-                               const auto& key = boost::any_cast<const std::string&>(args.at("key"));
-                               tutorial_completed_.insert(key);
                              });
 
     // 得点時の演出
@@ -1236,7 +1218,6 @@ private:
   {
     paused_ = false;
     count_exec_.pause(false);
-    tutorial_pos_.clear();
     game_->abortPlay();
   }
 
@@ -1248,7 +1229,6 @@ private:
 
     paused_ = false;
     count_exec_.pause(false);
-    tutorial_pos_.clear();
 
     // Game再生成
     game_.reset();            // TIPS メモリを２重に確保したくないので先にresetする
@@ -1508,6 +1488,31 @@ private:
         panel_positions.push_back(cursor_pos_);
       }
       break;
+
+    case 4:
+      {
+        // 手持ち & 街
+        panel_positions.push_back(cursor_pos_);
+        auto pos = addAttributePanel(Panel::TOWN | Panel::CASTLE);
+        panel_positions.push_back(pos);
+      }
+      break;
+
+    case 5:
+      {
+        // 手持ち & 森
+        panel_positions.push_back(cursor_pos_);
+        auto pos = addAttributePanel(Panel::FOREST);
+        panel_positions.push_back(pos);
+      }
+      break;
+
+    case 6:
+      {
+        // 教会の周囲
+        auto pos = addAttributePanel(Panel::CHURCH);
+        panel_positions.push_back(pos);
+      }
     }
 
     const auto& camera = camera_.body();
@@ -1580,23 +1585,11 @@ private:
     // event_.signal("Field:Positions", args);
   }
 
-  // 指定属性のパネルを探して追加
-  void addAttributePanel(Arguments& args, const std::string& id, u_int attribute, const ci::CameraPersp& camera)
+  // 指定属性のパネルを１つ探す
+  glm::vec3 addAttributePanel(u_int attribute)
   {
-    if (!tutorial_pos_.count(id))
-    {
-      auto panel = game_->searchAttribute(attribute, 0);
-      if (std::get<0>(panel))
-      {
-        auto pos = vec2ToVec3(std::get<1>(panel) * int(PANEL_SIZE));
-        tutorial_pos_.insert({ id, pos });
-      }
-    }
-    else
-    {
-      auto ndc_pos = camera.worldToNdc(tutorial_pos_.at(id));
-      args.insert({ id, ndc_pos });
-    }
+    auto panel = game_->searchAttribute(attribute, 0);
+    return vec2ToVec3(std::get<1>(panel) * int(PANEL_SIZE));
   }
 
 
@@ -1671,10 +1664,6 @@ private:
   ci::Color transition_color_;
 
   AutoRotateCamera rotate_camera_;
-
-  // Tutorial向け
-  std::map<std::string, glm::vec3> tutorial_pos_;
-  std::set<std::string> tutorial_completed_;
 
 
 #if defined (DEBUG)

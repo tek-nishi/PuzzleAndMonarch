@@ -56,6 +56,7 @@ public:
                              {
                                if (level_ == 0)
                                {
+                                 DOUT << "level: " << level_ << " done." << std::endl;
                                  ++level_;
                                  connection.disconnect();
                                }
@@ -65,6 +66,7 @@ public:
                              {
                                if (level_ == 1)
                                {
+                                 DOUT << "level: " << level_ << " done." << std::endl;
                                  ++level_;
                                  connection.disconnect();
                                }
@@ -74,6 +76,47 @@ public:
                              {
                                if (level_ == 2)
                                {
+                                 DOUT << "level: " << level_ << " done." << std::endl;
+                                 ++level_;
+                                 connection.disconnect();
+                               }
+                             });
+    holder_ += event.connect("Game:PutPanel",
+                             [this](const Connection& connection, const Arguments&)
+                             {
+                               if (level_ == 3)
+                               {
+                                 DOUT << "level: " << level_ << " done." << std::endl;
+                                 ++level_;
+                                 connection.disconnect();
+                               }
+                             });
+    holder_ += event.connect("Game:completed_path",
+                             [this](const Connection& connection, const Arguments&)
+                             {
+                               if (level_ == 4)
+                               {
+                                 DOUT << "level: " << level_ << " done." << std::endl;
+                                 ++level_;
+                                 connection.disconnect();
+                               }
+                             });
+    holder_ += event.connect("Game:completed_forests",
+                             [this](const Connection& connection, const Arguments&)
+                             {
+                               if (level_ == 5)
+                               {
+                                 DOUT << "level: " << level_ << " done." << std::endl;
+                                 ++level_;
+                                 connection.disconnect();
+                               }
+                             });
+    holder_ += event.connect("Game:completed_church",
+                             [this](const Connection& connection, const Arguments&)
+                             {
+                               if (level_ == 6)
+                               {
+                                 DOUT << "level: " << level_ << " done." << std::endl;
                                  ++level_;
                                  connection.disconnect();
                                }

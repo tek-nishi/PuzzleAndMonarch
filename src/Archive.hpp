@@ -288,9 +288,9 @@ public:
 
   static bool isTutorial(const Archive& archive)
   {
-    auto value = Json::getValue(archive.records_, "tutorial-level", 0);
-    DOUT << "Tutorial level: " << value << std::endl;
-    return value >= 0;
+    auto value = Json::getValue(archive.records_, "tutorial", true);
+    DOUT << "Tutorial: " << value << std::endl;
+    return value;
   }
 
 

@@ -313,7 +313,7 @@ private:
       archive_.isSaved(),
       archive_.existsRanking(),
       Archive::isPurchased(archive_),
-      archive_.getValue("tutorial-level", 0)
+      Archive::isTutorial(archive_)
     };
 
     tasks_.pushBack<Title>(params_, event_, drawer_, tween_common_, condition);
