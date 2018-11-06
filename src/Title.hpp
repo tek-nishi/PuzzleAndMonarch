@@ -244,13 +244,6 @@ public:
       startMainTween(params, 0.6);
     }
 
-    if (condition.tutorial)
-    {
-      const auto* id = condition.first_time ? "tutorial-first"
-                                            : "tutorial";
-      canvas_.startTween(id);
-    }
-
     event.signal("Title:begin", Arguments());
   }
 
