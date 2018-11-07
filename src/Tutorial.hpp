@@ -180,7 +180,7 @@ private:
         2
       },
       {
-        0,
+        0b1,
         "Game:PutPanel"s,
         "Tutorial08"s,
         1,
@@ -189,7 +189,7 @@ private:
         0b10000,
         "Game:PutPanel"s,           // 教会の説明
         "Tutorial09"s,
-        3
+        2
       },
       {
         0,
@@ -264,7 +264,7 @@ private:
   {
     canvas_.enableWidget("advice");
 
-    static const char* tbl[]{
+    const char* tbl[]{
       "check%d",
       "advice%d",
     };

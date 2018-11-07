@@ -1,4 +1,5 @@
 * TODO パネルを置くルールがわかりづらい
+* TODO static変数を減らす
 * TODO 置いたパネルの数も得点に含める
 * TODO tutorial専用サウンドを用意
 * TODO Tutorial中は徐々に操作を解禁したい
