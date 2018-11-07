@@ -406,6 +406,22 @@ struct Game
     return { true, *it, rotate };
   }
 
+  // 指定属性のパネルを探す
+  std::vector<glm::ivec2> searchPanels(u_int attribute)
+  {
+    const auto& panel_positions = field.getPanelPositions();
+
+    std::vector<glm::ivec2> positions;
+    for (const auto& p : panel_positions)
+    {
+      const auto& status = field.getPanelStatus(p);
+      const auto& panel  = panels_[status.number];
+      if (panel.getAttribute() & attribute) positions.push_back(p);
+    }
+
+    return positions;
+  }
+
 
   // 保存
   void save(const std::string& name) const noexcept

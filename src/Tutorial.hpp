@@ -29,14 +29,12 @@ namespace ngs {
 class Tutorial 
   : public Task
 {
-  enum {
-    PANEL_MOVE,
-    PANEL_ROTATE,
-    PANEL_PUT,
-
-    GET_TOWN,
-    GET_FOREST,
-    GET_CHURCH,
+  struct Condition
+  {
+    u_int kinds;
+    std::string event;
+    std::string text;
+    int times;
   };
 
 
@@ -126,25 +124,7 @@ private:
     count_exec_.update(delta_time);
     if (pause_) return active_;
 
-    // 更新関数を実行
-    const u_int kinds[]{
-      0b10,
-      0b1,
-      0b1,
-      0,
-      0,
-      0b101,
-      0b101,
-      0b1001,
-      0b1001,
-      0,
-      0b10000,
-      0b10000,
-      0,
-      0,
-    };
-
-    indication_positions_ = update_(kinds[level_]);
+    indication_positions_ = update_(info_kinds_);
     updateIndiration();
 
     return active_;
@@ -160,63 +140,87 @@ private:
   // 指示を出す
   void startTutorial()
   {
-    const char* id[]{
-      "Game:PanelMove",          // 移動
-      "Game:PanelRotate",        // 回転
-      "Game:PutPanel",           // 設置
-      "Game:PutPanel",           // パネルを置ける条件
-      "Game:PutPanel",           // パネルを置ける条件
-      "Game:PutPanel",           // 道の説明
-      "Game:PutPanel",           // 道の説明
-      "Game:PutPanel",           // 森の説明
-      "Game:PutPanel",           // 森の説明
-      "Game:PutPanel",
-      "Game:PutPanel",           // 教会の説明
-      "Game:PutPanel",           // 教会の説明
-      "Game:PutPanel",
-      nullptr 
+    using namespace std::literals;
+
+    const Condition conditions[]{
+      {
+        0b10,
+        "Game:PanelMove"s,          // 移動
+        "Tutorial02"s,
+        1
+      },
+      {
+        0b1,
+        "Game:PanelRotate"s,        // 回転
+        "Tutorial03"s,
+        1
+      },
+      {
+        0b1,
+        "Game:PutPanel"s,           // 設置
+        "Tutorial04"s,
+        1
+      },
+      {
+        0,
+        "Game:PutPanel"s,           // パネルを置ける条件
+        "Tutorial05"s,
+        2
+      },
+      {
+        0b101,
+        "Game:PutPanel"s,           // 道の説明
+        "Tutorial06"s,
+        2
+      },
+      {
+        0b1001,
+        "Game:PutPanel"s,           // 森の説明
+        "Tutorial07"s,
+        2
+      },
+      {
+        0,
+        "Game:PutPanel"s,
+        "Tutorial08"s,
+        1,
+      },
+      {
+        0b10000,
+        "Game:PutPanel"s,           // 教会の説明
+        "Tutorial09"s,
+        3
+      },
+      {
+        0,
+        "Game:PutPanel"s,
+        "Tutorial10"s,
+        3
+      }
     };
 
-    const auto* p = id[level_];
+    const auto& c = conditions[level_];
 
-    if (p)
-    {
-      count_exec_.add(0.2,
-                      [this, p]()
-                      {
-                        holder_ += event_.connect(p,
-                                                  [this](const Connection& connection, const Arguments&)
-                                                  {
-                                                    ++level_;
-                                                    connection.disconnect();
-                                                    // 次の指示
-                                                    startTutorial();
-                                                  });
-                      });
-      setTutorialText();
-    }
+    info_kinds_  = c.kinds;
+    event_times_ = c.times;
+
+    count_exec_.add(0.2,
+                    [this, c]()
+                    {
+                      holder_ += event_.connect(c.event,
+                                                [this](const Connection& connection, const Arguments&)
+                                                {
+                                                  if (--event_times_) return;
+
+                                                  ++level_;
+                                                  connection.disconnect();
+                                                  // 次の指示
+                                                  startTutorial();
+                                                });
+                    });
+    canvas_.setWidgetText("text", AppText::get(c.text));
   }
 
-  void setTutorialText()
-  {
-    const char* id[]{
-      "Tutorial02",
-      "Tutorial03",
-      "Tutorial04",
-      "Tutorial05",
-      "Tutorial05",
-      "Tutorial06",
-      "Tutorial06",
-      "Tutorial07",
-      "Tutorial07",
-      "Tutorial08",
-      "Tutorial09",
-      "Tutorial09",
-      "Tutorial10"
-     };
-
-    canvas_.setWidgetText("text", AppText::get(id[level_]));
-  }
 
   // 指示位置表示
   void updateIndiration()
@@ -305,6 +309,8 @@ private:
   UI::Canvas canvas_;
 
   int level_ = 0;
+  int event_times_ = 0;
+  u_int info_kinds_ = 0;
 
   // Field座標→UI座標へ変換する関数
   std::function<std::vector<glm::vec3> (u_int)> update_;

@@ -1493,8 +1493,13 @@ private:
     if (kinds & 0b100)
     {
       // 街
-      auto pos = addAttributePanel(Panel::TOWN | Panel::CASTLE);
-      panel_positions.push_back(pos);
+      auto panels = game_->searchPanels(Panel::TOWN | Panel::CASTLE);
+      for (const auto& p : panels)
+      {
+        auto pos = vec2ToVec3(p * int(PANEL_SIZE));
+        panel_positions.push_back(pos);
+      }
+
     }
     if (kinds & 0b1000)
     {
@@ -1601,7 +1606,6 @@ private:
     auto panel = game_->searchAttribute(attribute, 0);
     return vec2ToVec3(std::get<1>(panel) * int(PANEL_SIZE));
   }
-
 
   // パネル座標をNDCに変換
   glm::vec3 calcFieldPosition(const glm::ivec2& pos) const
