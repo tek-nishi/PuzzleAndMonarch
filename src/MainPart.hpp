@@ -97,10 +97,13 @@ public:
                                   }
                                 }
 
+                                if (disable_panel_put_) return;
+
                                 // 元々パネルのある位置をタップ→長押しで設置
                                 if (can_put_ && (cursor.first || cursor.second))
                                 {
                                   touch_put_ = true;
+
                                   // ゲーム終盤さっさとパネルを置ける
                                   current_putdown_time_ = glm::mix(putdown_time_.x, putdown_time_.y, game_->getPlayTimeRate());
                                   put_remaining_ = current_putdown_time_;
@@ -189,6 +192,7 @@ public:
                                 auto result = isCursorPos(touch.pos);
                                 if (on_blank_ && !result.first)
                                 {
+                                  // パネル移動準備
                                   view_.blankTouchEndEase(grid_pos_);
                                 }
 
@@ -200,7 +204,7 @@ public:
                                   game_event_.insert("Panel:01cancel");
                                 }
 
-                                if (result.first || result.second)
+                                if ((result.first || result.second) && !disable_panel_rotate_)
                                 {
                                   // パネルを回転
                                   game_->rotationHandPanel();
@@ -357,8 +361,22 @@ public:
                                                   {
                                                     // チュートリアル開始
                                                     event_.signal("Tutorial:begin", Arguments());
+                                                    disable_panel_rotate_ = true;
+                                                    disable_panel_put_    = true;
                                                   }
                                                 });
+                              });
+
+    // Tutorialでの操作封印解除
+    holder_ += event_.connect("Game:enable-rotation",
+                              [this](const Connection&, const Arguments&)
+                              {
+                                disable_panel_rotate_ = false;
+                              });
+    holder_ += event_.connect("Game:enable-panelput",
+                              [this](const Connection&, const Arguments&)
+                              {
+                                disable_panel_put_ = false;
                               });
 
     holder_ += event_.connect("Game:Start",
@@ -1709,6 +1727,10 @@ private:
   ci::Color transition_color_;
 
   AutoRotateCamera rotate_camera_;
+
+  // Tutorial用に操作を封印する
+  bool disable_panel_rotate_ = false;
+  bool disable_panel_put_    = false;
 
 
 #if defined (DEBUG)

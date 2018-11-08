@@ -35,6 +35,7 @@ class Tutorial
     std::string event;
     std::string text;
     int times;
+    std::function<void ()> callback;
   };
 
 
@@ -147,13 +148,21 @@ private:
         0b10,
         "Game:PanelMove"s,          // 移動
         "Tutorial02"s,
-        1
+        1,
+        [this]()
+        {
+          event_.signal("Game:enable-rotation", Arguments());
+        }
       },
       {
         0b1,
         "Game:PanelRotate"s,        // 回転
         "Tutorial03"s,
-        1
+        1,
+        [this]()
+        {
+          event_.signal("Game:enable-panelput", Arguments());
+        }
       },
       {
         0b1,
@@ -203,6 +212,7 @@ private:
 
     info_kinds_  = c.kinds;
     event_times_ = c.times;
+    callback_    = c.callback;
 
     count_exec_.add(0.2,
                     [this, c]()
@@ -214,6 +224,7 @@ private:
 
                                                   ++level_;
                                                   connection.disconnect();
+                                                  if (callback_) callback_();
                                                   // 次の指示
                                                   startTutorial();
                                                 });
@@ -311,6 +322,7 @@ private:
   int level_ = 0;
   int event_times_ = 0;
   u_int info_kinds_ = 0;
+  std::function<void ()> callback_;
 
   // Field座標→UI座標へ変換する関数
   std::function<std::vector<glm::vec3> (u_int)> update_;
