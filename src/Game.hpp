@@ -407,7 +407,7 @@ struct Game
   }
 
   // 指定属性のパネルを探す
-  std::vector<glm::ivec2> searchPanels(u_int attribute)
+  std::vector<glm::ivec2> searchPanels(u_int attribute) const
   {
     const auto& panel_positions = field.getPanelPositions();
 
@@ -420,6 +420,31 @@ struct Game
     }
 
     return positions;
+  }
+
+  // こちらはEdge版
+  // TODO 隣にパネルのある場合は除外
+  std::vector<glm::ivec2> searchPanelsAtEdge(u_int attribute) const
+  {
+    const auto& panel_positions = field.getPanelPositions();
+    uint64_t e = attribute;
+    uint64_t edge_bundled = e | (e << 16) | (e << 32) | (e << 48);
+
+    std::vector<glm::ivec2> positions;
+    for (const auto& p : panel_positions)
+    {
+      const auto& status = field.getPanelStatus(p);
+      if (status.edge & edge_bundled) positions.push_back(p);
+    }
+
+    return positions;
+  }
+
+  // フィールド上のパネルのEdge状態を取得(回転込み)
+  uint64_t getPanelEdge(const glm::ivec2& pos) const
+  {
+    const auto& status = field.getPanelStatus(pos);
+    return status.edge;
   }
 
 

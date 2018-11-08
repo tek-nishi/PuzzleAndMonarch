@@ -1499,13 +1499,33 @@ private:
         auto pos = vec2ToVec3(p * int(PANEL_SIZE));
         panel_positions.push_back(pos);
       }
-
     }
     if (kinds & 0b1000)
     {
       // 森
-      auto pos = addAttributePanel(Panel::FOREST);
-      panel_positions.push_back(pos);
+      const glm::vec3 offset[]{
+        {                  0, 0,  PANEL_SIZE * 0.4f },
+        {  PANEL_SIZE * 0.4f, 0,                  0 },
+        {                  0, 0, -PANEL_SIZE * 0.4f },
+        { -PANEL_SIZE * 0.4f, 0,                  0 }
+      };
+      
+      auto panels = game_->searchPanelsAtEdge(Panel::FOREST);
+      for (const auto& p : panels)
+      {
+        auto pos = vec2ToVec3(p * int(PANEL_SIZE));
+        // 座標をEdgeに合わせる
+        auto edge = game_->getPanelEdge(p);
+        uint64_t e = Panel::FOREST;
+        for (int i = 0; i < 4; ++i)
+        {
+          if (edge & e)
+          {
+            panel_positions.push_back(pos + offset[i]);
+          }
+          e <<= 16;
+        }
+      }
     }
     if (kinds & 0b10000)
     {
