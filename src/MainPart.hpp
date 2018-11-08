@@ -1509,11 +1509,18 @@ private:
         {                  0, 0, -PANEL_SIZE * 0.4f },
         { -PANEL_SIZE * 0.4f, 0,                  0 }
       };
+      const glm::ivec2 offset_pos[]{
+        {  0,  1 },
+        {  1,  0 },
+        {  0, -1 },
+        { -1,  0 },
+      };
       
       auto panels = game_->searchPanelsAtEdge(Panel::FOREST);
       for (const auto& p : panels)
       {
         auto pos = vec2ToVec3(p * int(PANEL_SIZE));
+
         // 座標をEdgeに合わせる
         auto edge = game_->getPanelEdge(p);
         uint64_t e = Panel::FOREST;
@@ -1521,7 +1528,11 @@ private:
         {
           if (edge & e)
           {
-            panel_positions.push_back(pos + offset[i]);
+            // 隣にパネルがなければ追加
+            if (!game_->isPanel(p + offset_pos[i])) 
+            {
+              panel_positions.push_back(pos + offset[i]);
+            }
           }
           e <<= 16;
         }

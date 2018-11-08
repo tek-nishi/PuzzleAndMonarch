@@ -423,7 +423,6 @@ struct Game
   }
 
   // こちらはEdge版
-  // TODO 隣にパネルのある場合は除外
   std::vector<glm::ivec2> searchPanelsAtEdge(u_int attribute) const
   {
     const auto& panel_positions = field.getPanelPositions();
