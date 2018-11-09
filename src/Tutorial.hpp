@@ -1,4 +1,4 @@
-﻿#pragma once
+#pragma once
 
 //
 // チュートリアル
@@ -151,6 +151,7 @@ private:
         1,
         [this]()
         {
+          doneOperation();
           event_.signal("Game:enable-rotation", Arguments());
         }
       },
@@ -161,6 +162,7 @@ private:
         1,
         [this]()
         {
+          doneOperation();
           event_.signal("Game:enable-panelput", Arguments());
         }
       },
@@ -168,7 +170,11 @@ private:
         0b1,
         "Game:PutPanel"s,           // 設置
         "Tutorial04"s,
-        1
+        1,
+        [this]()
+        {
+          doneOperation();
+        }
       },
       {
         0,
@@ -239,13 +245,17 @@ private:
     int i = 0;
     for (const auto& pos : indication_positions_)
     {
-      char id[16];
-      sprintf(id, "arrow%d", i);
-      canvas_.enableWidget(id, true);
+      // 最初の座標はカーソル位置(いいね!!用)
+      if (i > 0)
+      {
+        char id[16];
+        sprintf(id, "arrow%d", i);
+        canvas_.enableWidget(id, true);
 
-      // 正規化座標→スクリーン座標
-      auto p = canvas_.ndcToPos(pos);
-      canvas_.setWidgetParam(id, "offset", p);
+        // 正規化座標→スクリーン座標
+        auto p = canvas_.ndcToPos(pos);
+        canvas_.setWidgetParam(id, "offset", p);
+      }
 
       ++i;
     }
@@ -256,6 +266,23 @@ private:
       sprintf(id, "arrow%d", i);
       canvas_.enableWidget(id, false);
     }
+  }
+
+  // 操作完了時に「いいね!!」を表示
+  void doneOperation()
+  {
+    // 本来ありえないことだが...
+    assert(!indication_positions_.empty());
+    if (indication_positions_.empty()) return;
+
+    auto p = canvas_.ndcToPos(indication_positions_[0]);
+    canvas_.setWidgetParam("like", "offset", p);
+    canvas_.startTween("like");
+
+    Arguments se_args{
+      { "name", std::string("like") }
+    };
+    event_.signal("UI:sound", se_args);
   }
 
 

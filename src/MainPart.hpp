@@ -1494,6 +1494,9 @@ private:
   {
     std::vector<glm::vec3> panel_positions;
 
+    // 先頭には必ずカーソル位置
+    panel_positions.push_back(cursor_pos_);
+
     if (kinds & 0b1)
     {
       // 手持ちパネル
