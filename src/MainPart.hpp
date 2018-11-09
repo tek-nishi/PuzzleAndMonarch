@@ -204,14 +204,17 @@ public:
                                   game_event_.insert("Panel:01cancel");
                                 }
 
-                                if ((result.first || result.second) && !disable_panel_rotate_)
+                                if (result.first || result.second)
                                 {
-                                  // パネルを回転
-                                  game_->rotationHandPanel();
-                                  startRotatePanelEase();
-                                  can_put_ = game_->canPutToBlank(field_pos_);
-                                  game_event_.insert("Panel:rotate");
-                                  event_.signal("Game:PanelRotate", Arguments());
+                                  if (!disable_panel_rotate_)
+                                  {
+                                    // パネルを回転
+                                    game_->rotationHandPanel();
+                                    startRotatePanelEase();
+                                    can_put_ = game_->canPutToBlank(field_pos_);
+                                    game_event_.insert("Panel:rotate");
+                                    event_.signal("Game:PanelRotate", Arguments());
+                                  }
                                   return;
                                 }
 
