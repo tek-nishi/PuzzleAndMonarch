@@ -8,8 +8,8 @@
           "type": "float",
           "body": [
             {
-              "duration": 0.8,
-              "delay": 0.1,
+              "duration": 0.6,
+              "delay": 2.0,
               "enable_start": true,
               "ease_func": "None",
               "copy_start": true,
@@ -47,8 +47,8 @@
           "type": "float",
           "body": [
             {
-              "duration": 0.8,
-              "delay": 0.1,
+              "duration": 0.6,
+              "delay": 2.5,
               "enable_start": true,
               "ease_func": "None",
               "copy_start": true,

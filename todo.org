@@ -1,5 +1,4 @@
 * TODO パネルを置くルールがわかりづらい
-* TODO 同じ場所にパネルを「移動」できる
 * TODO static変数を減らす
 * TODO 置いたパネルの数も得点に含める
 * TODO tutorial専用サウンドを用意
@@ -10,6 +9,8 @@
 * TODO iOS:未ログイン時に課金処理へ移行すると何度もサインインを求められる
 * TODO iOS:処理の思い箇所を探して修正
 * WAIT チュートリアルがだるい
+* DONE 同じ場所にパネルを「移動」できる
+CLOSED: [2018-11-09 金 18:23]
 * DONE Tutorial中は徐々に操作を解禁したい
 CLOSED: [2018-11-09 金 00:53]
 * DONE iOS:DestribitionビルドにReleaseビルドと同じ細工を
