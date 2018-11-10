@@ -950,35 +950,8 @@
     "canvas": "ui_tutorial.json",
     "tweens": "tw_tutorial.json",
 
-    "direction_delay": 1.8,
-
-    "offset": [
-      [ 0, 15 ],
-      [ 0, 20 ],
-      [ 0, 35 ],
-
-      [ 0, 20 ],
-      [ 0, 20 ],
-      [ 0, 20 ]
-    ],
-
-    "advice": [
-      [
-        "Advice01",
-        "Advice02",
-        "Advice03"
-      ],
-      [
-        "Advice04",
-        "Advice05",
-        "Advice06"
-      ],
-      [
-        "Advice07",
-        "Advice08",
-        "Advice09"
-      ]
-    ]
+    "offset_common":  [ 0, 20 ],
+    "offset_special": [ 0, 35 ]
   },
 
   "purchase": {

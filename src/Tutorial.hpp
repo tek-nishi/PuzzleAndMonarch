@@ -45,7 +45,9 @@ public:
       canvas_(event, drawer, tween_common,
               params["ui.camera"],
               Params::load(params.getValueForKey<std::string>("tutorial.canvas")),
-              Params::load(params.getValueForKey<std::string>("tutorial.tweens")))
+              Params::load(params.getValueForKey<std::string>("tutorial.tweens"))),
+      offset_special_(Json::getVec<glm::vec2>(params["tutorial.offset_special"])),
+      offset_common_(Json::getVec<glm::vec2>(params["tutorial.offset_common"]))
   {
     // TIPS コールバック関数にダミーを割り当てておく
     update_ = [](u_int) { return std::vector<glm::vec3>(); };
@@ -163,6 +165,7 @@ private:
         [this]()
         {
           doneOperation();
+          use_special_ = true;
           event_.signal("Game:enable-panelput", Arguments());
         }
       },
@@ -174,13 +177,18 @@ private:
         [this]()
         {
           doneOperation();
+          use_special_ = false;
         }
       },
       {
         0,
         "Game:PutPanel"s,           // パネルを置ける条件
         "Tutorial05"s,
-        2
+        2,
+        [this]()
+        {
+          use_special_ = true;
+        }
       },
       {
         0b101,
@@ -199,6 +207,10 @@ private:
         "Game:PutPanel"s,
         "Tutorial08"s,
         1,
+        [this]()
+        {
+          use_special_ = false;
+        }
       },
       {
         0b10000,
@@ -243,6 +255,7 @@ private:
   void updateIndiration()
   {
     int i = 0;
+    bool use_special = use_special_;
     for (const auto& pos : indication_positions_)
     {
       // 最初の座標はカーソル位置(いいね!!用)
@@ -253,8 +266,11 @@ private:
         canvas_.enableWidget(id, true);
 
         // 正規化座標→スクリーン座標
-        auto p = canvas_.ndcToPos(pos);
+        auto p = canvas_.ndcToPos(pos) + (use_special ? offset_special_
+                                          : offset_common_);
         canvas_.setWidgetParam(id, "offset", p);
+
+        use_special = false;
       }
 
       ++i;
@@ -354,6 +370,10 @@ private:
   // Field座標→UI座標へ変換する関数
   std::function<std::vector<glm::vec3> (u_int)> update_;
   std::vector<glm::vec3> indication_positions_; 
+
+  glm::vec2 offset_special_;
+  glm::vec2 offset_common_;
+  bool use_special_ = false;
 
   bool pause_  = false;
   bool active_ = true;
