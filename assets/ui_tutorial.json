@@ -17,18 +17,6 @@
 
       "childlen": [
         {
-          "identifier": "arrow0",
-          "rect": [ 0, 0, 0, 12 ],
-          "anchor": [
-            [ 0.5, 0.5 ],
-            [ 0.5, 0.5 ]
-          ],
-          "offset": [100, 0],
-
-          "font": "icon",
-          "text": ""
-        },
-        {
           "identifier": "arrow1",
           "rect": [ 0, 0, 0, 12 ],
           "anchor": [
@@ -101,6 +89,18 @@
             [ 0.5, 0.5 ],
             [ 0.5, 0.5 ]
           ],
+
+          "font": "icon",
+          "text": ""
+        },
+        {
+          "identifier": "arrow8",
+          "rect": [ 0, 0, 0, 12 ],
+          "anchor": [
+            [ 0.5, 0.5 ],
+            [ 0.5, 0.5 ]
+          ],
+          "offset": [100, 0],
 
           "font": "icon",
           "text": ""

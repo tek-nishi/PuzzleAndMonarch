@@ -254,6 +254,8 @@ private:
   // 指示位置表示
   void updateIndiration()
   {
+    if (indication_positions_.empty()) return;
+
     int i = 0;
     bool use_special = use_special_;
     for (const auto& pos : indication_positions_)
@@ -276,7 +278,7 @@ private:
       ++i;
     }
     // 残りは非表示
-    for (; i < 8; ++i)
+    for (; i < 9; ++i)
     {
       char id[16];
       sprintf(id, "arrow%d", i);

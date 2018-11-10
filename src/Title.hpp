@@ -52,7 +52,6 @@ public:
                                     : "title.se";
       startTimelineSound(event, params, v);
     }
-
     auto wipe_delay    = params.getValueForKey<double>("ui.wipe.delay");
     auto wipe_duration = params.getValueForKey<double>("ui.wipe.duration");
 
@@ -221,7 +220,7 @@ public:
     }
 
 #if defined (CINDER_COCOA_TOUCH)
-    if (!is_tutorial)
+    if (!condition.tutorial)
     {
       // GameCenter
       canvas_.enableWidget("GameCenter");
