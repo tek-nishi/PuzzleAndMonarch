@@ -1517,7 +1517,7 @@ private:
     if (kinds & 0b100)
     {
       // 街
-      auto panels = game_->searchPanels(Panel::TOWN | Panel::CASTLE);
+      auto panels = game_->searchPanels(Panel::BUILDING);
       for (const auto& p : panels)
       {
         auto pos = vec2ToVec3(p * int(PANEL_SIZE));
@@ -1592,67 +1592,6 @@ private:
     }
 
     return panel_positions;
-
-
-    // {
-    //   // カーソル位置
-    //   auto cursor_ndc_pos = camera.worldToNdc(cursor_pos_);
-    //   args.insert({ "cursor",  cursor_ndc_pos });
-    //   args.insert({ "can_put", can_put_ });
-    // }
-
-    // // Blank
-    // // NOTICE カーソル位置とは別の場所を探している
-    // if (!tutorial_pos_.count("blank"))
-    // {
-    //   const auto& blanks = game_->getBlankPositions();
-    //   auto it = std::find_if(std::begin(blanks), std::end(blanks),
-    //                          [this](const glm::ivec2& a)
-    //                          {
-    //                            return a != field_pos_;
-    //                          });
-    //   if (it != std::end(blanks))
-    //   {
-    //     auto pos = vec2ToVec3(*it * int(PANEL_SIZE));
-    //     tutorial_pos_.insert({ "blank", pos });
-    //   }
-    // }
-    // else
-    // {
-    //   auto ndc_pos = camera.worldToNdc(tutorial_pos_.at("blank"));
-    //   args.insert({ "blank",  ndc_pos });
-    // }
-
-    // if (!tutorial_pos_.count("forest"))
-    // {
-    //   // 森の位置
-    //   auto panel = game_->searchAttribute(0, Panel::FOREST);
-    //   if (std::get<0>(panel))
-    //   {
-    //     // Edge部に指示を出したいので、そのオフセットを用意
-    //     const static glm::vec3 offset[]{
-    //       {                  0, 0,  PANEL_SIZE * 0.4f },
-    //       {  PANEL_SIZE * 0.4f, 0,                  0 },
-    //       {                  0, 0, -PANEL_SIZE * 0.4f },
-    //       { -PANEL_SIZE * 0.4f, 0,                  0 }
-    //     };
-
-    //     auto pos = vec2ToVec3(std::get<1>(panel) * int(PANEL_SIZE)) + offset[std::get<2>(panel)];
-    //     tutorial_pos_.insert({ "forest", pos });
-    //   }
-    // }
-    // else
-    // {
-    //   auto ndc_pos = camera.worldToNdc(tutorial_pos_.at("forest"));
-    //   args.insert({ "forest", ndc_pos });
-    // }
-
-    // // 街の位置
-    // addAttributePanel(args, "town", Panel::TOWN | Panel::CASTLE, camera);
-    // // 教会の位置
-    // addAttributePanel(args, "church", Panel::CHURCH, camera);
-
-    // event_.signal("Field:Positions", args);
   }
 
   // 指定属性のパネルを１つ探す

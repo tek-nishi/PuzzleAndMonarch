@@ -340,7 +340,7 @@ int countTown(const std::vector<std::vector<glm::ivec2>>& completed,
     for (const auto& p : comp)
     {
       const auto& status = field.getPanelStatus(p);
-      if (panels[status.number].getAttribute() & (Panel::TOWN | Panel::CASTLE))
+      if (panels[status.number].getAttribute() & Panel::BUILDING)
       {
         town_num.insert(p);
       }
