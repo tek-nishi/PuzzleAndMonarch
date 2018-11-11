@@ -884,6 +884,10 @@ private:
     score += church_score;
     DOUT << "Church: " << church_score << std::endl;
 
+    // パネル設置数
+    score += total_panels * score_rates[5];
+    DOUT << "Panels: " << score << std::endl;
+
     // Perfect
     if (waiting_panels.empty())
     {
