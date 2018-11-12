@@ -353,7 +353,7 @@ public:
     }
     // field_panels_.clear();
     // field_panel_indices_.clear();
-    // blank_panels_.clear();
+    blank_panels_.clear();
     effects_.clear();
 
     field_rotate_offset_ = 0.0f;
@@ -720,6 +720,7 @@ public:
   {
     abortNextPanelEase();
 
+    blank_panel_remain_ = int(blank_panels_.size());
     for (auto& panel : blank_panels_)
     {
       // Blank Panel消滅演出
@@ -733,13 +734,22 @@ public:
                       {
                         panel.matrix = glm::translate(panel.position);
                       });
+      option.finishFn([this]()
+                      {
+                        --blank_panel_remain_;
+                        if (blank_panel_remain_ <= 0)
+                        {
+                          DOUT << "Cleanup blank pansls." << std::endl;
+                          blank_panels_.clear();
+                        }
+                      });
     }
 
-    timeline_->add([this]() noexcept
-                   {
-                     blank_panels_.clear();
-                   },
-                   timeline_->getCurrentTime() + blank_disappear_duration_ + 0.25f);
+    // timeline_->add([this]() noexcept
+    //                {
+    //                  blank_panels_.clear();
+    //                },
+    //                timeline_->getCurrentTime() + blank_disappear_duration_ + 0.25f);
   }
 
   // Fieldのパネルをリセットする演出
@@ -1454,6 +1464,7 @@ private:
   std::string complete_end_ease_;
 
   std::list<Blank> blank_panels_;
+  int blank_panel_remain_;
 
   ci::gl::GlslProgRef field_shader_;
   ci::Anim<ci::Color> field_color_ = ci::Color::white();
