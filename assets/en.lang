@@ -36,14 +36,16 @@ GameMain07		Resume
 GameMain08		Abort
 GameMain09		Put panels,  Spread territory
 Tutorial01		Like!!
-Tutorial02		Good lick!!
-Tutorial03		Tap here to move
-Tutorial04		Tap here to rotation
-Tutorial05		Long tap to put
+Tutorial02		Tap here to move
+Tutorial03		Tap here to rotation
+Tutorial04		Long tap to put
+Tutorial05		same edge
 Tutorial06		Connect buildings together
 Tutorial07		Complete forest
-Tutorial08		Fill surroundings of the church
-Tutorial09		-20
+Tutorial08		Final tutorial
+Tutorial09		Fill surroundings of the church
+Tutorial10		Good luck!!
+Tutorial11		-20
 Intro01		Welcome to the Puzzle and Monarch.
 Intro02		Spread the territory and get "Like!!"
 Intro03		Expand the territory carefully and boldly.
@@ -67,5 +69,5 @@ Purchase11		There were no items to restore
 Purchase12		Purchased item restore failed
 Purchase13		OK
 Advice01		Spread the territory and earn "Like!!"
-Advice02		If you connect buildings by road, "Like!!"
-Advice03		The longer the road, "Like!!"
+Advice02		put same edge
+Advice03		High scor
