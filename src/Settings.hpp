@@ -170,8 +170,8 @@ public:
     setupCommonTweens(event, holder_, canvas_, "agree");
     setupCommonTweens(event, holder_, canvas_, "BGM");
     setupCommonTweens(event, holder_, canvas_, "SE");
-    setupCommonTweens(event, holder_, canvas_, "Trash");
     setupCommonTweens(event, holder_, canvas_, "Tutorial");
+    setupCommonTweens(event, holder_, canvas_, "Trash");
     setupCommonTweens(event, holder_, canvas_, "back");
     setupCommonTweens(event, holder_, canvas_, "erase-record");
 
@@ -223,10 +223,11 @@ private:
   {
     // ボタン演出
     std::vector<std::pair<std::string, std::string>> widgets{
-      { "BGM",   "BGM:icon" },
-      { "SE",    "SE:icon" },
-      { "Trash", "Trash:icon" },
-      { "touch", "touch:icon" },
+      { "BGM",      "BGM:icon" },
+      { "SE",       "SE:icon" },
+      { "Tutorial", "Tutorial:icon" },
+      { "Trash",    "Trash:icon" },
+      { "touch",    "touch:icon" },
     };
     UI::startButtonTween(count_exec_, canvas_, 0.53, 0.15, widgets);
   }
