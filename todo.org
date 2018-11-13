@@ -2,12 +2,13 @@
 * TODO ローカライズ再チェック
 * TODO static変数を減らす
 * TODO tutorial専用サウンドを用意
-* TODO いつでもチュートリアルを始めたい
 * TODO 単調なのをゲーム内の動きでカバーできないか??
 * TODO iOS:Restore時に画面を止めるか暗くする
 * TODO iOS:未ログイン時に課金処理へ移行すると何度もサインインを求められる
 * TODO iOS:処理の思い箇所を探して修正
 * WAIT チュートリアルがだるい
+* DONE いつでもチュートリアルを始めたい
+CLOSED: [2018-11-13 Tue 18:27]
 * DONE iOS:iPhoneXでレイアウトをチェック
 CLOSED: [2018-11-13 Tue 00:04]
 * DONE 砦属性追加
