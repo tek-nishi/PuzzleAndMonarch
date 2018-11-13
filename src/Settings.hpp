@@ -30,125 +30,150 @@ public:
               Params::load(params.getValueForKey<std::string>("settings.canvas")),
               Params::load(params.getValueForKey<std::string>("settings.tweens")))
   {
-    startTimelineSound(event_, params, "settings.se");
+    startTimelineSound(event, params, "settings.se");
 
     auto wipe_delay    = params.getValueForKey<double>("ui.wipe.delay");
     auto wipe_duration = params.getValueForKey<double>("ui.wipe.duration");
 
-    holder_ += event_.connect("agree:touch_ended",
-                              [this, wipe_delay, wipe_duration](const Connection&, const Arguments&) noexcept
-                              {
-                                canvas_.active(false);
-                                canvas_.startCommonTween("root", "out-to-right");
-                                count_exec_.add(wipe_delay,
-                                                [this]() noexcept
-                                                {
-                                                  Arguments args = {
-                                                    { "bgm-enable", bgm_enable_ },
-                                                    { "se-enable",  se_enable_ }
-                                                  };
-                                                  event_.signal("Settings:Finished", args);
-                                                });
-                                count_exec_.add(wipe_duration,
-                                                [this]() noexcept
-                                                {
-                                                  active_ = false;
-                                                });
-                                DOUT << "Back to Title" << std::endl;
-                              });
+    holder_ += event.connect("agree:touch_ended",
+                             [this, wipe_delay, wipe_duration](const Connection&, const Arguments&) noexcept
+                             {
+                               canvas_.active(false);
+                               canvas_.startCommonTween("root", "out-to-right");
+                               count_exec_.add(wipe_delay,
+                                               [this]() noexcept
+                                               {
+                                                 Arguments args = {
+                                                   { "bgm-enable", bgm_enable_ },
+                                                   { "se-enable",  se_enable_ }
+                                                 };
+                                                 event_.signal("Settings:Finished", args);
+                                               });
+                               count_exec_.add(wipe_duration,
+                                               [this]() noexcept
+                                               {
+                                                 active_ = false;
+                                               });
+                               DOUT << "Back to Title" << std::endl;
+                             });
 
-    holder_ += event_.connect("BGM:touch_ended",
-                              [this](const Connection&, const Arguments&) noexcept
-                              {
-                                bgm_enable_ = !bgm_enable_;
-                                canvas_.setWidgetText("BGM:icon", bgm_enable_ ? u8"" : u8"");
-                                signalSettings();
-                              });
+    holder_ += event.connect("BGM:touch_ended",
+                             [this](const Connection&, const Arguments&) noexcept
+                             {
+                               bgm_enable_ = !bgm_enable_;
+                               canvas_.setWidgetText("BGM:icon", bgm_enable_ ? u8"" : u8"");
+                               signalSettings();
+                             });
 
-    holder_ += event_.connect("SE:touch_ended",
-                              [this](const Connection&, const Arguments&) noexcept
-                              {
-                                se_enable_ = !se_enable_;
-                                canvas_.setWidgetText("SE:icon", se_enable_ ? u8"" : u8"");
-                                signalSettings();
-                              });
+    holder_ += event.connect("SE:touch_ended",
+                             [this](const Connection&, const Arguments&) noexcept
+                             {
+                               se_enable_ = !se_enable_;
+                               canvas_.setWidgetText("SE:icon", se_enable_ ? u8"" : u8"");
+                               signalSettings();
+                             });
 
     // 記録削除画面へ
-    holder_ += event_.connect("Trash:touch_ended",
-                              [this, wipe_delay, wipe_duration, params](const Connection&, const Arguments&) noexcept
-                              {
-                                canvas_.active(false);
-                                canvas_.startCommonTween("main", "out-to-left");
-                                startTimelineSound(event_, params, "settings.next-se");
-                                count_exec_.add(wipe_delay,
-                                                [this]() noexcept
-                                                {
-                                                  canvas_.startCommonTween("dust", "in-from-right");
-                                                  startSubTween();
-                                                });
-                                count_exec_.add(wipe_duration,
-                                                [this]() noexcept
-                                                {
-                                                  canvas_.active(true);
-                                                });
+    holder_ += event.connect("Trash:touch_ended",
+                             [this, wipe_delay, wipe_duration, params](const Connection&, const Arguments&) noexcept
+                             {
+                               canvas_.active(false);
+                               canvas_.startCommonTween("main", "out-to-left");
+                               startTimelineSound(event_, params, "settings.next-se");
+                               count_exec_.add(wipe_delay,
+                                               [this]() noexcept
+                                               {
+                                                 canvas_.startCommonTween("dust", "in-from-right");
+                                                 startSubTween();
+                                               });
+                               count_exec_.add(wipe_duration,
+                                               [this]() noexcept
+                                               {
+                                                 canvas_.active(true);
+                                               });
 
-                                DOUT << "Erase record." << std::endl;
-                              });
+                               DOUT << "Erase record." << std::endl;
+                             });
+
+    // Tutorial開始
+    holder_ += event.connect("Tutorial:touch_ended",
+                             [this, wipe_delay, wipe_duration](const Connection&, const Arguments&) noexcept
+                             {
+                               DOUT << "Begin tutorial" << std::endl;
+
+                               canvas_.active(false);
+                               canvas_.startCommonTween("root", "out-to-right");
+                               count_exec_.add(wipe_delay,
+                                               [this]() noexcept
+                                               {
+                                                 // FIXME かなり無理くり
+                                                 Arguments args{
+                                                   { "force-tutorial", true }
+                                                 };
+                                                 event_.signal("Title:finished", args);
+                                               });
+                               count_exec_.add(wipe_duration,
+                                               [this]() noexcept
+                                               {
+                                                 active_ = false;
+                                               });
+                             });
 
     // 設定画面へ戻る
-    holder_ += event_.connect("back:touch_ended",
-                              [this, wipe_delay, wipe_duration, &params](const Connection&, const Arguments&) noexcept
-                              {
-                                canvas_.active(false);
-                                canvas_.startCommonTween("dust", "out-to-right");
-                                startTimelineSound(event_, params, "settings.back-se");
-                                count_exec_.add(wipe_delay,
-                                                [this]() noexcept
-                                                {
-                                                  canvas_.startCommonTween("main", "in-from-left");
-                                                  startMainTween();
-                                                });
-                                count_exec_.add(wipe_duration,
-                                                [this]() noexcept
-                                                {
-                                                  canvas_.active(true);
-                                                });
+    holder_ += event.connect("back:touch_ended",
+                             [this, wipe_delay, wipe_duration, &params](const Connection&, const Arguments&) noexcept
+                             {
+                               canvas_.active(false);
+                               canvas_.startCommonTween("dust", "out-to-right");
+                               startTimelineSound(event_, params, "settings.back-se");
+                               count_exec_.add(wipe_delay,
+                                               [this]() noexcept
+                                               {
+                                                 canvas_.startCommonTween("main", "in-from-left");
+                                                 startMainTween();
+                                               });
+                               count_exec_.add(wipe_duration,
+                                               [this]() noexcept
+                                               {
+                                                 canvas_.active(true);
+                                               });
 
-                                DOUT << "Back to settings." << std::endl;
-                              });
+                               DOUT << "Back to settings." << std::endl;
+                             });
 
     // 記録を削除して設定画面へ戻る
-    holder_ += event_.connect("erase-record:touch_ended",
-                              [this, wipe_delay, wipe_duration, &params](const Connection&, const Arguments&) noexcept
-                              {
-                                event_.signal("Settings:Trash", Arguments());
-                                enableTrashButton(false);
+    holder_ += event.connect("erase-record:touch_ended",
+                             [this, wipe_delay, wipe_duration, &params](const Connection&, const Arguments&) noexcept
+                             {
+                               event_.signal("Settings:Trash", Arguments());
+                               enableTrashButton(false);
 
-                                canvas_.active(false);
-                                canvas_.startTween("erased");
-                                canvas_.startCommonTween("dust", "out-to-right");
-                                startTimelineSound(event_, params, "settings.back-se");
-                                count_exec_.add(wipe_delay,
-                                                [this]() noexcept
-                                                {
-                                                  canvas_.startCommonTween("main", "in-from-left");
-                                                  startMainTween();
-                                                });
-                                count_exec_.add(wipe_duration,
-                                                [this]() noexcept
-                                                {
-                                                  canvas_.active(true);
-                                                });
+                               canvas_.active(false);
+                               canvas_.startTween("erased");
+                               canvas_.startCommonTween("dust", "out-to-right");
+                               startTimelineSound(event_, params, "settings.back-se");
+                               count_exec_.add(wipe_delay,
+                                               [this]() noexcept
+                                               {
+                                                 canvas_.startCommonTween("main", "in-from-left");
+                                                 startMainTween();
+                                               });
+                               count_exec_.add(wipe_duration,
+                                               [this]() noexcept
+                                               {
+                                                 canvas_.active(true);
+                                               });
 
-                                DOUT << "Erase record and back to settings." << std::endl;
-                              });
+                               DOUT << "Erase record and back to settings." << std::endl;
+                             });
 
-    setupCommonTweens(event_, holder_, canvas_, "agree");
-    setupCommonTweens(event_, holder_, canvas_, "BGM");
-    setupCommonTweens(event_, holder_, canvas_, "SE");
-    setupCommonTweens(event_, holder_, canvas_, "Trash");
-    setupCommonTweens(event_, holder_, canvas_, "back");
-    setupCommonTweens(event_, holder_, canvas_, "erase-record");
+    setupCommonTweens(event, holder_, canvas_, "agree");
+    setupCommonTweens(event, holder_, canvas_, "BGM");
+    setupCommonTweens(event, holder_, canvas_, "SE");
+    setupCommonTweens(event, holder_, canvas_, "Trash");
+    setupCommonTweens(event, holder_, canvas_, "Tutorial");
+    setupCommonTweens(event, holder_, canvas_, "back");
+    setupCommonTweens(event, holder_, canvas_, "erase-record");
 
     applyDetail(detail);
     canvas_.startCommonTween("root", "in-from-right");

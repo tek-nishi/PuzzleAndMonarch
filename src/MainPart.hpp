@@ -325,7 +325,7 @@ public:
                               });
 
     holder_ += event_.connect("Title:finished",
-                              [this](const Connection&, const Arguments&) noexcept
+                              [this](const Connection&, const Arguments& args) noexcept
                               {
                                 auto delay = params_.getValueForKey<float>("ui.transition.game_begin_delay");
                                 view_.setColor(transition_duration_, transition_color_, delay);
@@ -348,7 +348,15 @@ public:
                                 // ここで色々リセット
                                 resetGame();
 
-                                game_->setupPanels(Archive::isTutorial(archive_));
+                                // Tutorial開始判定
+                                is_tutorial_ = Archive::isTutorial(archive_);
+                                if (args.count("force-tutorial"))
+                                {
+                                  // 値に関係なく強制Tutorual
+                                  is_tutorial_ = true;
+                                }
+
+                                game_->setupPanels(is_tutorial_);
 
                                 // NOTICE 開始演出終わりに残り時間が正しく表示されているために必要
                                 game_->updateGameUI();
@@ -360,7 +368,7 @@ public:
                                                   view_.clear();
                                                   game_->putFirstPanel();
 
-                                                  if (Archive::isTutorial(archive_))
+                                                  if (is_tutorial_)
                                                   {
                                                     // チュートリアル開始
                                                     event_.signal("Tutorial:begin", Arguments());
@@ -471,8 +479,7 @@ public:
                                 view_.endPlay();
 
                                 // チュートリアル
-                                auto is_tutorial = Archive::isTutorial(archive_);
-                                if (is_tutorial)
+                                if (is_tutorial_)
                                 {
                                   // Tutorial完了
                                   event_.signal("Game:Tutorial-Finish", Arguments());
@@ -501,8 +508,7 @@ public:
                                 count_exec_.add(params_.getValueForKey<double>("field.result_begin_delay") + delay,
                                                 [this, score, rank_in, ranking,
                                                  high_score, total_panels,
-                                                 max_forest, max_path,
-                                                 is_tutorial]() noexcept
+                                                 max_forest, max_path]() noexcept
                                                 {
                                                   Arguments a{
                                                     { "score",        score },
@@ -512,11 +518,11 @@ public:
                                                     { "total_panels", total_panels },
                                                     { "max_forest",   max_forest },
                                                     { "max_path",     max_path },
-                                                    { "tutorial",     is_tutorial },
+                                                    { "tutorial",     is_tutorial_ },
                                                   };
 
                                                   // Tutorialの場合は別のきっかけでResultを始める
-                                                  if (is_tutorial)
+                                                  if (is_tutorial_)
                                                   {
                                                     beginResultAfterTuroial(a);
                                                   }
@@ -1673,6 +1679,8 @@ private:
 
   AutoRotateCamera rotate_camera_;
 
+  // Tutorial中
+  bool is_tutorial_ = false;
   // Tutorial用に操作を封印する
   bool disable_panel_rotate_ = false;
   bool disable_panel_put_    = false;
