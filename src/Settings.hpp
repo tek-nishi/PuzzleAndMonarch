@@ -3,7 +3,6 @@
 //
 // Settings画面
 //
-
 #include "TweenUtil.hpp"
 #include "UISupport.hpp"
 
@@ -13,17 +12,19 @@ namespace ngs {
 class Settings
   : public Task
 {
+
 public:
-  // FIXME 受け渡しが冗長なのを解決したい
-  struct Detail {
+  struct Condition
+  {
     bool bgm_enable;
     bool se_enable;
     bool has_records;
+    bool is_tutorial;
   };
 
 
   Settings(const ci::JsonTree& params, Event<Arguments>& event, UI::Drawer& drawer, TweenCommon& tween_common,
-           const Detail& detail) noexcept
+           const Condition& condition) noexcept
     : event_(event),
       canvas_(event, drawer, tween_common,
               params["ui.camera"],
@@ -146,7 +147,7 @@ public:
                              [this, wipe_delay, wipe_duration, &params](const Connection&, const Arguments&) noexcept
                              {
                                event_.signal("Settings:Trash", Arguments());
-                               enableTrashButton(false);
+                               disableTrashButton();
 
                                canvas_.active(false);
                                canvas_.startTween("erased");
@@ -175,7 +176,7 @@ public:
     setupCommonTweens(event, holder_, canvas_, "back");
     setupCommonTweens(event, holder_, canvas_, "erase-record");
 
-    applyDetail(detail);
+    applyCondition(condition);
     canvas_.startCommonTween("root", "in-from-right");
     startMainTween();
   }
@@ -191,23 +192,55 @@ private:
   }
 
 
-  void applyDetail(const Detail& detail) noexcept
+  // 各種初期状態を決める
+  void applyCondition(const Condition& condition) noexcept
   {
-    bgm_enable_  = detail.bgm_enable;
-    se_enable_   = detail.se_enable;
-    has_records_ = detail.has_records;
+    bgm_enable_ = condition.bgm_enable;
+    se_enable_  = condition.se_enable;
 
+    // BGMとSE
     canvas_.setWidgetText("BGM:icon", bgm_enable_ ? u8"" : u8"");
     canvas_.setWidgetText("SE:icon",  se_enable_  ? u8"" : u8"");
 
-    enableTrashButton(has_records_);
+    // Tutorial
+    if (condition.is_tutorial)
+    {
+      // ボタン無効
+      canvas_.enableWidget("Tutorial-text", false);
+      canvas_.enableWidget("Tutorial",      false);
+
+      changeSoundButtonsOffset();
+    }
+
+    // 記録の削除
+    if (!condition.has_records)
+    {
+      disableTrashButton();
+    }
   }
 
-  void enableTrashButton(bool enable)
+  // Tutorial中はサウンド設定のボタン位置を変える
+  void changeSoundButtonsOffset()
   {
-    canvas_.enableWidget("Trash-text", enable);
-    canvas_.enableWidget("Trash",      enable);
+    const char* tbl[]{
+      "BGM-text",
+      "BGM",
+      "SE-text",
+      "SE"
+    };
+
+    for (const auto* id : tbl)
+    {
+      canvas_.setWidgetParam(id, "offset", glm::vec2());
+    }
   }
+
+  void disableTrashButton()
+  {
+    canvas_.enableWidget("Trash-text", false);
+    canvas_.enableWidget("Trash",      false);
+  }
+
 
   void signalSettings() noexcept
   {
@@ -254,7 +287,6 @@ private:
 
   bool bgm_enable_;
   bool se_enable_;
-  bool has_records_;
 
   bool active_ = true;
 };

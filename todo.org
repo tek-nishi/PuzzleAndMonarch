@@ -1,4 +1,5 @@
 * TODO パネルを置くルールがわかりづらい
+* TODO Settingsのサウンド設定アイコンをparamsに追い出す
 * TODO ローカライズ再チェック
 * TODO static変数を減らす
 * TODO tutorial専用サウンドを用意
@@ -7,6 +8,8 @@
 * TODO iOS:未ログイン時に課金処理へ移行すると何度もサインインを求められる
 * TODO iOS:処理の思い箇所を探して修正
 * WAIT チュートリアルがだるい
+* DONE Settings画面では有効でないアイコンはグレーアウトする
+CLOSED: [2018-11-14 水 10:15]
 * DONE いつでもチュートリアルを始めたい
 CLOSED: [2018-11-13 Tue 18:27]
 * DONE iOS:iPhoneXでレイアウトをチェック

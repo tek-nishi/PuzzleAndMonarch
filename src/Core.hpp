@@ -90,13 +90,14 @@ public:
     holder_ += event_.connect("Settings:begin",
                               [this](const Connection&, const Arguments&) noexcept
                               {
-                                Settings::Detail detail = {
+                                Settings::Condition condition{
                                   archive_.getRecord<bool>("bgm-enable"),
                                   archive_.getRecord<bool>("se-enable"),
-                                  archive_.isSaved()
+                                  archive_.isSaved(),
+                                  Archive::isTutorial(archive_)
                                 };
 
-                                tasks_.pushBack<Settings>(params_, event_, drawer_, tween_common_, detail);
+                                tasks_.pushBack<Settings>(params_, event_, drawer_, tween_common_, condition);
                               });
 
     // Settings→Title

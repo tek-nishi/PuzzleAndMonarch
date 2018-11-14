@@ -29,22 +29,25 @@
 
       "childlen": [
         {
-          "rect": [ -58, 40, -58, 53 ],
+          "identifier": "BGM-text",
+          "rect": [ -23, 40, -23, 53 ],
           "anchor": [
             [ 0.5, 0.5 ],
             [ 0.5, 0.5 ]
           ],
+          "offset": [ -35, 0 ],
 
           "font": "en",
           "text": "BGM"
         },
         {
           "identifier": "BGM",
-          "rect": [ -70, 13.0, -46, 36.0 ],
+          "rect": [ -35, 13.0, -11, 36.0 ],
           "anchor": [
             [ 0.5, 0.5 ],
             [ 0.5, 0.5 ]
           ],
+          "offset": [ -35, 0 ],
           
           "radius": 1,
           "line_width": 1.5,
@@ -72,22 +75,25 @@
         },
         
         {
-          "rect": [ -12, 40, -12, 53 ],
+          "identifier": "SE-text",
+          "rect": [ 23, 40, 23, 53 ],
           "anchor": [
             [ 0.5, 0.5 ],
             [ 0.5, 0.5 ]
           ],
+          "offset": [ -35, 0 ],
 
           "font": "en",
           "text": "SE"
         },
         {
           "identifier": "SE",
-          "rect": [ -25, 13.0, 1, 36.0 ],
+          "rect": [ 11, 13.0, 35, 36.0 ],
           "anchor": [
             [ 0.5, 0.5 ],
             [ 0.5, 0.5 ]
           ],
+          "offset": [ -35, 0 ],
 
           "radius": 1,
           "line_width": 1.5,
@@ -158,6 +164,7 @@
         },
 
         {
+          "identifier": "Tutorial-text",
           "rect": [ 58, 40, 58, 53 ],
           "anchor": [
             [ 0.5, 0.5 ],
