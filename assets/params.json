@@ -836,7 +836,10 @@
     ],
     "back-se": [
       [ 0.75, "slide-left" ]
-    ]
+    ],
+
+    "sound_enable":  "",
+    "sound_disable": ""
   },
 
   "records": {

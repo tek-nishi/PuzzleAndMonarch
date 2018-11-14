@@ -29,7 +29,9 @@ public:
       canvas_(event, drawer, tween_common,
               params["ui.camera"],
               Params::load(params.getValueForKey<std::string>("settings.canvas")),
-              Params::load(params.getValueForKey<std::string>("settings.tweens")))
+              Params::load(params.getValueForKey<std::string>("settings.tweens"))),
+      sound_enable_(params.getValueForKey<std::string>("settings.sound_enable")),
+      sound_disable_(params.getValueForKey<std::string>("settings.sound_disable"))
   {
     startTimelineSound(event, params, "settings.se");
 
@@ -62,7 +64,7 @@ public:
                              [this](const Connection&, const Arguments&) noexcept
                              {
                                bgm_enable_ = !bgm_enable_;
-                               canvas_.setWidgetText("BGM:icon", bgm_enable_ ? u8"" : u8"");
+                               setSoundButtonIcon("BGM:icon", bgm_enable_);
                                signalSettings();
                              });
 
@@ -70,7 +72,7 @@ public:
                              [this](const Connection&, const Arguments&) noexcept
                              {
                                se_enable_ = !se_enable_;
-                               canvas_.setWidgetText("SE:icon", se_enable_ ? u8"" : u8"");
+                               setSoundButtonIcon("SE:icon", se_enable_);
                                signalSettings();
                              });
 
@@ -199,8 +201,8 @@ private:
     se_enable_  = condition.se_enable;
 
     // BGMとSE
-    canvas_.setWidgetText("BGM:icon", bgm_enable_ ? u8"" : u8"");
-    canvas_.setWidgetText("SE:icon",  se_enable_  ? u8"" : u8"");
+    setSoundButtonIcon("BGM:icon", bgm_enable_);
+    setSoundButtonIcon("SE:icon",  se_enable_);
 
     // Tutorial
     if (condition.is_tutorial)
@@ -241,6 +243,10 @@ private:
     canvas_.enableWidget("Trash",      false);
   }
 
+  void setSoundButtonIcon(const std::string& id, bool enable)
+  {
+    canvas_.setWidgetText(id, enable ? sound_enable_ : sound_disable_);
+  }
 
   void signalSettings() noexcept
   {
@@ -287,6 +293,9 @@ private:
 
   bool bgm_enable_;
   bool se_enable_;
+
+  std::string sound_enable_;
+  std::string sound_disable_;
 
   bool active_ = true;
 };
