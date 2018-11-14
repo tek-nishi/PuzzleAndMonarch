@@ -19,7 +19,6 @@ public:
     bool bgm_enable;
     bool se_enable;
     bool has_records;
-    bool is_tutorial;
   };
 
 
@@ -149,6 +148,7 @@ public:
                              [this, wipe_delay, wipe_duration, &params](const Connection&, const Arguments&) noexcept
                              {
                                event_.signal("Settings:Trash", Arguments());
+                               setupForTutorial();
                                disableTrashButton();
 
                                canvas_.active(false);
@@ -204,24 +204,25 @@ private:
     setSoundButtonIcon("BGM:icon", bgm_enable_);
     setSoundButtonIcon("SE:icon",  se_enable_);
 
-    // Tutorial
-    if (condition.is_tutorial)
-    {
-      // ボタン無効
-      canvas_.enableWidget("Tutorial-text", false);
-      canvas_.enableWidget("Tutorial",      false);
-
-      changeSoundButtonsOffset();
-    }
-
     // 記録の削除
+    // 記録が無い→Tutorial中でもある
     if (!condition.has_records)
     {
+      setupForTutorial();
       disableTrashButton();
     }
   }
 
-  // Tutorial中はサウンド設定のボタン位置を変える
+
+  void setupForTutorial()
+  {
+    // ボタン無効
+    canvas_.enableWidget("Tutorial-text", false);
+    canvas_.enableWidget("Tutorial",      false);
+
+    changeSoundButtonsOffset();
+  }
+
   void changeSoundButtonsOffset()
   {
     const char* tbl[]{
