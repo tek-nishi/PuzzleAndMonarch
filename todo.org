@@ -1,4 +1,6 @@
 * TODO パネルを置くルールがわかりづらい
+* TODO Tutorial、森の配置時の指示が微妙
+* TODO Tutorial、パネルを置けたら「いいね!」
 * TODO ローカライズ再チェック
 * TODO static変数を減らす
 * TODO tutorial専用サウンドを用意
