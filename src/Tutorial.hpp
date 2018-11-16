@@ -34,6 +34,7 @@ class Tutorial
     u_int kinds;
     std::string event;
     std::string text;
+    // 次の状態へ移るための回数
     int times;
     std::function<void ()> callback;
   };
@@ -184,7 +185,17 @@ private:
         0,
         "Game:PutPanel"s,           // パネルを置ける条件
         "Tutorial05"s,
-        2,
+        1,
+        [this]()
+        {
+          doneOperation();
+        }
+      },
+      {
+        0,
+        "Game:PutPanel"s,
+        "Tutorial05"s,
+        1,
         [this]()
         {
           use_special_ = true;
@@ -269,7 +280,7 @@ private:
 
         // 正規化座標→スクリーン座標
         auto p = canvas_.ndcToPos(pos) + (use_special ? offset_special_
-                                          : offset_common_);
+                                                      : offset_common_);
         canvas_.setWidgetParam(id, "offset", p);
 
         use_special = false;
@@ -375,6 +386,7 @@ private:
 
   glm::vec2 offset_special_;
   glm::vec2 offset_common_;
+  // 指示位置にoffset_special_を使う
   bool use_special_ = false;
 
   bool pause_  = false;
