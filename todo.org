@@ -1,5 +1,4 @@
 * TODO パネルを置くルールがわかりづらい
-* TODO Tutorial、森の配置時の指示が微妙
 * TODO ローカライズ再チェック
 * TODO static変数を減らす
 * TODO tutorial専用サウンドを用意
@@ -8,6 +7,8 @@
 * TODO iOS:未ログイン時に課金処理へ移行すると何度もサインインを求められる
 * TODO iOS:処理の思い箇所を探して修正
 * WAIT チュートリアルがだるい
+* DONE Tutorial、森の配置時の指示が微妙
+CLOSED: [2018-11-16 金 19:11]
 * DONE Tutorial、パネルを置けたら「いいね!」
 CLOSED: [2018-11-16 金 18:34]
 * DONE 記録を消去したらSettingsのレイアウトを変更する
