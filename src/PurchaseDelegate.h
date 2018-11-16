@@ -12,7 +12,7 @@ namespace ngs { namespace PurchaseDelegate {
 
 #if defined(CINDER_COCOA_TOUCH)
 
-    void init(const std::function<void ()>& completed);
+    void init(const std::function<void ()>& purchase_completed, const std::function<void ()>& restore_completed);
 
     void start(const std::string& product_id);
     void restore(const std::string& product_id);
@@ -22,8 +22,8 @@ namespace ngs { namespace PurchaseDelegate {
 
 #else
 
-    template <typename T>
-    void init(T) {}
+    template <typename T1, typename T2>
+    void init(T1, T2) {}
 
     template <typename T>
     void start(T) {}

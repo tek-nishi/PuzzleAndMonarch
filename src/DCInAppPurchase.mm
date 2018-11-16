@@ -12,6 +12,7 @@
 
 // FIXME グローバル変数をやめる
 std::function<void ()> purchase_completed;
+std::function<void ()> restore_completed;
 
 namespace ngs
 {
@@ -271,7 +272,9 @@ static DCInAppPurchase *_sharedInstance = nil;
   {
     [self showAlert:ngs::localizeText("Purchase06") message:ngs::localizeText("Purchase11")];
   }
-    
+
+  restore_completed();
+
   // 処理中フラグを下ろす
   isProccessing = NO;
 }

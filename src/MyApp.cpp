@@ -135,6 +135,11 @@ public:
                            {
                              // 課金成功
                              event_.signal("purchase-completed", Arguments());
+                           },
+                           [this]()
+                           {
+                             // 復元完了(失敗も含む)
+                             event_.signal("restore-completed", Arguments());
                            });
 
     // 実行クラス生成

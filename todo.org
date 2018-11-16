@@ -4,6 +4,7 @@
 * TODO tutorial専用サウンドを用意
 * TODO 単調なのをゲーム内の動きでカバーできないか??
 * TODO iOS:Restore時に画面を止めるか暗くする
+* TODO iOS:Restore時に「Restore中」演出が必要
 * TODO iOS:未ログイン時に課金処理へ移行すると何度もサインインを求められる
 * TODO iOS:処理の思い箇所を探して修正
 * WAIT チュートリアルがだるい
