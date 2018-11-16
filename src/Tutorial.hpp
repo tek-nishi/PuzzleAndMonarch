@@ -205,23 +205,23 @@ private:
         0b101,
         "Game:PutPanel"s,           // 道の説明
         "Tutorial06"s,
-        2
+        2,
+        [this]()
+        {
+          use_special_ = false;
+        }
       },
       {
-        0b1001,
+        0b101000,
         "Game:PutPanel"s,           // 森の説明
         "Tutorial07"s,
         2
       },
       {
-        0b1,
+        0b100000,
         "Game:PutPanel"s,
         "Tutorial08"s,
         1,
-        [this]()
-        {
-          use_special_ = false;
-        }
       },
       {
         0b10000,

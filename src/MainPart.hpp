@@ -1491,13 +1491,16 @@ private:
 
   // チュートリアル向けの座標計算
   // 各種座標をNormalized Device Coordinates変換して送信
-  // 0  手持ち
-  // 1  空白
-  // 2  街
-  // 3  森
-  // 4  教会の周囲の空白
   std::vector<glm::vec3> sendFieldPositions(u_int kinds)
   {
+    // パネルのエッジ位置
+    const glm::vec3 edge_offset[]{
+      {                  0, 0,  PANEL_SIZE * 0.4f },
+      {  PANEL_SIZE * 0.4f, 0,                  0 },
+      {                  0, 0, -PANEL_SIZE * 0.4f },
+      { -PANEL_SIZE * 0.4f, 0,                  0 }
+    };
+
     std::vector<glm::vec3> panel_positions;
 
     // 先頭には必ずカーソル位置
@@ -1533,12 +1536,6 @@ private:
     if (kinds & 0b1000)
     {
       // 森
-      const glm::vec3 offset[]{
-        {                  0, 0,  PANEL_SIZE * 0.4f },
-        {  PANEL_SIZE * 0.4f, 0,                  0 },
-        {                  0, 0, -PANEL_SIZE * 0.4f },
-        { -PANEL_SIZE * 0.4f, 0,                  0 }
-      };
       const glm::ivec2 offset_pos[]{
         {  0,  1 },
         {  1,  0 },
@@ -1561,7 +1558,7 @@ private:
             // 隣にパネルがなければ追加
             if (!game_->isPanel(p + offset_pos[i])) 
             {
-              panel_positions.push_back(pos + offset[i]);
+              panel_positions.push_back(pos + edge_offset[i]);
             }
           }
           e <<= 16;
@@ -1588,6 +1585,21 @@ private:
         auto op = pos + o;
         auto pp = vec2ToVec3(op * int(PANEL_SIZE));
         panel_positions.push_back(pp);
+      }
+    }
+    if (kinds & 0b100000)
+    {
+      // 手持ちパネルの森のエッジ
+      auto edge = game_->getHandPanelEdge();
+
+      uint64_t e = Panel::FOREST;
+      for (int i = 0; i < 4; ++i)
+      {
+        if (edge & e)
+        {
+          panel_positions.push_back(cursor_pos_ + edge_offset[i]);
+        }
+        e <<= 16;
       }
     }
 

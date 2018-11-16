@@ -337,6 +337,14 @@ struct Game
     return hand_rotation;
   }
 
+  // 手持ちパネルのエッジ情報
+  uint64_t getHandPanelEdge() const noexcept
+  {
+    const auto p = panels_[hand_panel];
+    return p.getRotatedEdgeValue(hand_rotation);
+  }
+
+
   // 配置可能な場所
   const std::vector<glm::ivec2>& getBlankPositions() const noexcept
   {
