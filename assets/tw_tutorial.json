@@ -142,7 +142,7 @@
           "type": "float",
           "body": [
             {
-              "duration": 0.4,
+              "duration": 0.6,
               "copy_start": true,
               "enable_start": true,
               "ease_func": "None",
@@ -166,8 +166,8 @@
               "duration": 0.8,
               "copy_start": true,
               "ease_func": "OutQuint",
-              "start": [ -20, 30, 0, 30 ],
-              "end": [ -20, 45, 0, 45 ]
+              "start": [ -20, 40, 0, 40 ],
+              "end": [ -20, 50, 0, 50 ]
             }
           ]
         }

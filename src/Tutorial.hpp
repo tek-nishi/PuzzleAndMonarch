@@ -154,7 +154,12 @@ private:
         1,
         [this]()
         {
-          doneOperation();
+          // 位置の更新が１フレーム遅れるための措置
+          count_exec_.add(0.05,
+                          [this]()
+                          {
+                            doneOperation();
+                          });
           event_.signal("Game:enable-rotation", Arguments());
         }
       },
