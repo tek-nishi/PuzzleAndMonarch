@@ -54,9 +54,12 @@ public:
 
     // Title→GameMain
     holder_ += event_.connect("Title:finished",
-                              [this](const Connection&, const Arguments&) noexcept
+                              [this](const Connection&, const Arguments& args) noexcept
                               {
-                                tasks_.pushBack<GameMain>(params_, event_, drawer_, tween_common_);
+                                GameMain::Condition condition{
+                                  args.count("force-tutorial") ? true : false
+                                };
+                                tasks_.pushBack<GameMain>(params_, event_, drawer_, tween_common_, condition);
                               });
 
     // Tutorial起動

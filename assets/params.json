@@ -883,7 +883,9 @@
     ],
 
     "start_delay": 2.6,
-    "end_delay": 3.0
+    "end_delay": 3.0,
+
+    "tutorial": "GameMain10"
   },
   
   "result": {

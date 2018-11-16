@@ -18,7 +18,15 @@ class GameMain
 {
 
 public:
-  GameMain(const ci::JsonTree& params, Event<Arguments>& event, UI::Drawer& drawer, TweenCommon& tween_common) noexcept
+  struct Condition
+  {
+    // チュートリアル中
+    bool tutorial;
+  };
+
+
+  GameMain(const ci::JsonTree& params, Event<Arguments>& event, UI::Drawer& drawer, TweenCommon& tween_common,
+           const Condition& condition) noexcept
     : event_(event),
       canvas_(event, drawer, tween_common,
               params["ui.camera"],
@@ -29,6 +37,12 @@ public:
   {
     DOUT << "GameMain::GameMain" << std::endl;
     startTimelineSound(event, params, "gamemain.se");
+
+    // チュートリアル時は開始時の演出を変える
+    if (condition.tutorial)
+    {
+      canvas_.setWidgetText("begin:text", AppText::get(params.getValueForKey("gamemain.tutorial")));
+    }
 
     // ゲーム開始演出 
     count_exec_.add(params.getValueForKey<double>("gamemain.start_delay"),
