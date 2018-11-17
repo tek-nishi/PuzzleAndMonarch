@@ -54,7 +54,7 @@ public:
                                                {
                                                  PurchaseDelegate::start("PM.PERCHASE01");
                                                });
-                               count_exec_.add(wipe_delay + 0.5,
+                               count_exec_.add(wipe_delay + 1.0,
                                                [this]() noexcept
                                                {
                                                  canvas_.active(true);
@@ -69,7 +69,7 @@ public:
                                                {
                                                  PurchaseDelegate::restore("PM.PERCHASE01");
                                                });
-                               count_exec_.add(wipe_delay + 0.5,
+                               count_exec_.add(wipe_delay + 1.0,
                                                [this]() noexcept
                                                {
                                                  canvas_.active(true);
