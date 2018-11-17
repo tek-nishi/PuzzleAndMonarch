@@ -76,7 +76,6 @@ public:
                                                });
                              });
 
-
     // 課金金額
     if (!price.empty())
     {

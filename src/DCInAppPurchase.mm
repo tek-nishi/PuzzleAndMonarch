@@ -12,7 +12,6 @@
 
 // FIXME グローバル変数をやめる
 std::function<void ()> purchase_completed;
-std::function<void ()> restore_completed;
 
 namespace ngs
 {
@@ -46,7 +45,10 @@ static DCInAppPurchase *_sharedInstance = nil;
 
 - (id)init
 {
-  if (self = [super init]) {
+  DOUT << "DCInAppPurchase:init" << std::endl;
+
+  if (self = [super init])
+  {
     [[SKPaymentQueue defaultQueue] addTransactionObserver:self];
   }
     
@@ -55,6 +57,8 @@ static DCInAppPurchase *_sharedInstance = nil;
 
 - (void)dealloc
 {
+  DOUT << "DCInAppPurchase:dealloc" << std::endl;
+
   [[SKPaymentQueue defaultQueue] removeTransactionObserver:self];
   [super dealloc];
 }
@@ -63,9 +67,10 @@ static DCInAppPurchase *_sharedInstance = nil;
 #pragma mark - In App Purchase
 
 // アプリ内課金処理を開始
-- (void)startPurchase:(NSString *)productId view:(id)view
+- (void)startPurchase:(NSString *)productId view:(id)vc
 {
-  if (![self canMakePayments]) {
+  if (![self canMakePayments])
+  {
     // アプリ内課金が許可されていなければアラートを出して終了
     [self showAlert:ngs::localizeText("Purchase06") message:ngs::localizeText("Purchase05")];
 
@@ -73,20 +78,20 @@ static DCInAppPurchase *_sharedInstance = nil;
   }
     
   // 処理中であれば処理しない
-  if (isProccessing) {
+  if (isProccessing)
+  {
     NSLog(@"処理中");
     return;
   }
-    
-  // リストアフラグ初期化
-  isRestored = NO;
     
   // プロダクトID保持
   proccessingProductId = productId;
     
   // ビュー保持
-  rootView = view;
-    
+  rootView = vc;
+
+  DOUT << "DCInAppPurchase:startPurchase" << std::endl;
+
   // プロダクト情報の取得処理を開始
   NSSet *set = [NSSet setWithObjects:proccessingProductId, nil];
   SKProductsRequest *productsRequest = [[[SKProductsRequest alloc] initWithProductIdentifiers:set] autorelease];
@@ -97,33 +102,39 @@ static DCInAppPurchase *_sharedInstance = nil;
 // デリゲートメソッド (終了通知)
 - (void)requestDidFinish:(SKRequest *)request
 {
+  DOUT << "DCInAppPurchase:requestDidFinish" << std::endl;
 }
 
 // デリゲートメソッド (アクセスエラー)
 - (void)request:(SKRequest *)request didFailWithError:(NSError *)error
 {
+  DOUT << "DCInAppPurchase:request:didFailWithError" << std::endl;
   [self showAlert:ngs::localizeText("Purchase06") message:[error localizedDescription]];
 }
 
 // デリゲートメソッド (プロダクト情報を取得)
 - (void)productsRequest:(SKProductsRequest *)request didReceiveResponse:(SKProductsResponse *)response
 {
+  DOUT << "DCInAppPurchase:productsRequest:didReceiveResponse" << std::endl;
   // レスポンスがなければエラー処理
-  if (response == nil) {
+  if (response == nil)
+  {
     [self showAlert:ngs::localizeText("Purchase06") message:ngs::localizeText("Purchase07")];
         
     return;
   }
     
   // プロダクトIDが無効な場合はアラートを出して終了
-  if ([response.invalidProductIdentifiers count] > 0) {
+  if ([response.invalidProductIdentifiers count] > 0)
+  {
     [self showAlert:ngs::localizeText("Purchase06") message:ngs::localizeText("Purchase08")];
         
     return;
   }
-    
+
   // 購入処理開始
-  for (SKProduct *product in response.products) {
+  for (SKProduct *product in response.products)
+  {
     SKPayment *payment = [SKPayment paymentWithProduct:product];
     [[SKPaymentQueue defaultQueue] addPayment:payment];
   }
@@ -132,6 +143,7 @@ static DCInAppPurchase *_sharedInstance = nil;
 // 購入完了時の処理
 - (void)completeTransaction:(SKPaymentTransaction *)transaction
 {
+  DOUT << "DCInAppPurchase:completeTransaction" << std::endl;
   // トランザクション記録
   [self recordTransaction:transaction];
     
@@ -142,6 +154,7 @@ static DCInAppPurchase *_sharedInstance = nil;
 // リストア完了時の処理
 - (void)restoreTransaction:(SKPaymentTransaction *)transaction
 {
+  DOUT << "DCInAppPurchase:restoreTransaction" << std::endl;
   //リストアフラグを立てる
   isRestored = YES;
     
@@ -172,16 +185,21 @@ static DCInAppPurchase *_sharedInstance = nil;
     if (transaction.transactionState == SKPaymentTransactionStatePurchasing)
     {
       // 購入処理中
-      UIView* view = [(UIViewController*)rootView view];
-      [self startActivityIndicator:view center:CGPointMake(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2)
-          styleId:AI_WHITE hidesWhenStopped:YES];
+      DOUT << "SKPaymentTransactionStatePurchasing" << std::endl;
 
+      {
+        // インジケーター表示開始
+        UIView* view = [(UIViewController*)rootView view];
+        [self startActivityIndicator:view
+              center:CGPointMake(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2)
+              styleId:AI_WHITE hidesWhenStopped:YES];
+      }
       isProccessing = YES;
     }
     else if (transaction.transactionState == SKPaymentTransactionStatePurchased)
     {
       // 購入処理成功
-      // [self showAlert:@"購入完了" message:@"購入ありがとうございます"];
+      DOUT << "SKPaymentTransactionStatePurchased" << std::endl;
             
       // 該当するプロダクトのロックを解除する
       [self completeTransaction:transaction];
@@ -199,6 +217,8 @@ static DCInAppPurchase *_sharedInstance = nil;
     }
     else if (transaction.transactionState == SKPaymentTransactionStateFailed)
     {
+      DOUT << "SKPaymentTransactionStateFailed" << std::endl;
+
       // ユーザーによるキャンセルでなければアラートを出す
       if (transaction.error.code != SKErrorPaymentCancelled)
       {
@@ -219,15 +239,14 @@ static DCInAppPurchase *_sharedInstance = nil;
     }
     else if (transaction.transactionState == SKPaymentTransactionStateRestored)
     {
-      // リストア処理開始
+      DOUT << "SKPaymentTransactionStateRestored" << std::endl;
+      
+      // リストア処理完了
       [self showAlert:ngs::localizeText("Purchase09") message:ngs::localizeText("Purchase10")];
             
       // 購入済みのプロダクトのロックを再解除する
       [self restoreTransaction:transaction];
-            
-      // インジケータ非表示
-      [self stopActivityIndicator];
-            
+
       // 処理中フラグを下ろす
       isProccessing = NO;
             
@@ -242,8 +261,10 @@ static DCInAppPurchase *_sharedInstance = nil;
 #pragma mark - Restore
 
 // リストア
-- (void)restorePurchase:(NSString *)productId view:(id)view
+- (void)restorePurchase:(NSString *)productId view:(id)vc
 {
+  DOUT << "DCInAppPurchase:restorePurchase" << std::endl;
+
   // 処理中であれば処理しない
   if (isProccessing)
   {
@@ -258,8 +279,16 @@ static DCInAppPurchase *_sharedInstance = nil;
   proccessingProductId = productId;
     
   // View保持
-  rootView = view;
-    
+  rootView = vc;
+
+  {
+    // インジゲーター表示開始
+    UIView* view = [(UIViewController*)rootView view];
+    [self startActivityIndicator:view
+          center:CGPointMake(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2)
+          styleId:AI_WHITE hidesWhenStopped:YES];
+  }
+
   // 購入済みプラグインのリストア処理を開始する
   [[SKPaymentQueue defaultQueue] restoreCompletedTransactions];
 }
@@ -267,21 +296,25 @@ static DCInAppPurchase *_sharedInstance = nil;
 // リストア完了
 - (void)paymentQueueRestoreCompletedTransactionsFinished:(SKPaymentQueue *)queue
 {
+  DOUT << "DCInAppPurchase:paymentQueueRestoreCompletedTransactionsFinished" << std::endl;
+
   // 購入済みでなかった場合アラート表示
   if (!isRestored)
   {
     [self showAlert:ngs::localizeText("Purchase06") message:ngs::localizeText("Purchase11")];
   }
 
-  restore_completed();
-
   // 処理中フラグを下ろす
   isProccessing = NO;
+            
+  // インジケータ非表示
+  [self stopActivityIndicator];
 }
 
-// リストアキュー
+// リストア中断(キャンセルも含む)
 - (void)paymentQueue:(SKPaymentQueue *)queue restoreCompletedTransactionsFailedWithError:(NSError *)error
 {
+  DOUT << "DCInAppPurchase:paymentQueue:restoreCompletedTransactionsFailedWithError" << std::endl;
   for (SKPaymentTransaction *transaction in queue.transactions)
   {
     NSLog(@"%@", transaction);
@@ -289,6 +322,9 @@ static DCInAppPurchase *_sharedInstance = nil;
     // リストア失敗のアラート表示
     [self showAlert:ngs::localizeText("Purchase06") message:ngs::localizeText("Purchase12")];
   }
+            
+  // インジケータ非表示
+  [self stopActivityIndicator];
 }
 
 #pragma mark - Activity Indicator

@@ -40,8 +40,8 @@ typedef NS_ENUM(NSUInteger, activityIndicatorStyles) {
 
 #pragma mark - public method
 + (DCInAppPurchase *)sharedManager;
-- (void)startPurchase:(NSString *)productId view:(id)view;
-- (void)restorePurchase:(NSString *)productId view:(id)view;
+- (void)startPurchase:(NSString *)productId view:(id)vc;
+- (void)restorePurchase:(NSString *)productId view:(id)vc;
 
 @end
 
