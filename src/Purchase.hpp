@@ -14,8 +14,15 @@ class Purchase
 {
 
 public:
-  Purchase(const ci::JsonTree& params, Event<Arguments>& event, const std::string& price,
-           UI::Drawer& drawer, TweenCommon& tween_common)
+  struct Condition
+  {
+    std::string price;
+    bool purchased;
+  };
+
+
+  Purchase(const ci::JsonTree& params, Event<Arguments>& event, UI::Drawer& drawer, TweenCommon& tween_common,
+           const Condition& condition)
     : event_(event),
       canvas_(event, drawer, tween_common,
               params["ui.camera"],
@@ -53,6 +60,7 @@ public:
                                                [this]() noexcept
                                                {
                                                  PurchaseDelegate::start("PM.PERCHASE01");
+                                                 purchased();
                                                });
                                count_exec_.add(wipe_delay + 1.0,
                                                [this]() noexcept
@@ -68,6 +76,7 @@ public:
                                                [this]() noexcept
                                                {
                                                  PurchaseDelegate::restore("PM.PERCHASE01");
+                                                 purchased();
                                                });
                                count_exec_.add(wipe_delay + 1.0,
                                                [this]() noexcept
@@ -76,10 +85,16 @@ public:
                                                });
                              });
 
-    // 課金金額
-    if (!price.empty())
+    // 課金してるなら、もう課金はできません
+    if (condition.purchased)
     {
-      canvas_.setWidgetText("price-01", price);
+      purchased();
+    }
+
+    // 課金金額
+    if (!condition.price.empty())
+    {
+      canvas_.setWidgetText("price-01", condition.price);
     }
 
     setupCommonTweens(event_, holder_, canvas_, "agree");
@@ -107,6 +122,17 @@ private:
   {
     count_exec_.update(delta_time);
     return active_;
+  }
+
+  // 課金した
+  void purchased()
+  {
+    canvas_.activeWidget("Purchase", false);
+    canvas_.startTween("PurchaseOff");
+
+    // ついでに復元も
+    canvas_.activeWidget("Restore", false);
+    canvas_.startTween("RestoreOff");
   }
 
 

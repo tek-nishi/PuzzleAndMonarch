@@ -118,7 +118,11 @@ public:
     holder_ += event_.connect("Purchase:begin",
                               [this](const Connection&, const Arguments&) noexcept
                               {
-                                tasks_.pushBack<Purchase>(params_, event_, price_, drawer_, tween_common_);
+                                Purchase::Condition condition{
+                                  price_,
+                                  Archive::isPurchased(archive_)
+                                };
+                                tasks_.pushBack<Purchase>(params_, event_, drawer_, tween_common_, condition);
                               });
     // Purchase→Title
     holder_ += event_.connect("Purchase:Finished",

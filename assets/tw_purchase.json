@@ -1,2 +1,96 @@
 {
+  "PurchaseOff": [
+    {
+      "identifier": "Purchase",
+      "tween": [
+        {
+          "param": "color",
+          "type": "color",
+          "body": [
+            {
+              "duration": 0.3,
+              "end": [ 0.6, 0.6, 0.6, 1 ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "identifier": "Purchase:text",
+      "tween": [
+        {
+          "param": "color",
+          "type": "color",
+          "body": [
+            {
+              "duration": 0.3,
+              "end": [ 0.6, 0.6, 0.6, 1 ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "identifier": "Purchase:icon",
+      "tween": [
+        {
+          "param": "color",
+          "type": "color",
+          "body": [
+            {
+              "duration": 0.3,
+              "end": [ 0.6, 0.6, 0.6, 1 ]
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "RestoreOff": [
+    {
+      "identifier": "Restore",
+      "tween": [
+        {
+          "param": "color",
+          "type": "color",
+          "body": [
+            {
+              "duration": 0.3,
+              "end": [ 0.6, 0.6, 0.6, 1 ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "identifier": "Restore:text",
+      "tween": [
+        {
+          "param": "color",
+          "type": "color",
+          "body": [
+            {
+              "duration": 0.3,
+              "end": [ 0.6, 0.6, 0.6, 1 ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "identifier": "Restore:icon",
+      "tween": [
+        {
+          "param": "color",
+          "type": "color",
+          "body": [
+            {
+              "duration": 0.3,
+              "end": [ 0.6, 0.6, 0.6, 1 ]
+            }
+          ]
+        }
+      ]
+    }
+  ]
 }
