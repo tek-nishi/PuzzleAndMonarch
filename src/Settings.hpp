@@ -19,6 +19,7 @@ public:
     bool bgm_enable;
     bool se_enable;
     bool has_records;
+    bool is_tutorial;
   };
 
 
@@ -148,7 +149,6 @@ public:
                              [this, wipe_delay, wipe_duration, &params](const Connection&, const Arguments&) noexcept
                              {
                                event_.signal("Settings:Trash", Arguments());
-                               setupForTutorial();
                                disableTrashButton();
 
                                canvas_.active(false);
@@ -204,11 +204,14 @@ private:
     setSoundButtonIcon("BGM:icon", bgm_enable_);
     setSoundButtonIcon("SE:icon",  se_enable_);
 
-    // 記録の削除
-    // 記録が無い→Tutorial中でもある
-    if (!condition.has_records)
+    // Tutorial
+    if (condition.is_tutorial)
     {
       setupForTutorial();
+    }
+    // 記録の削除
+    if (!condition.has_records)
+    {
       disableTrashButton();
     }
   }

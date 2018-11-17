@@ -270,10 +270,17 @@ public:
   // 消去
   void erase() noexcept
   {
+    // 一部の情報は引き継ぐ
+    auto purchased = Json::getValue(records_, "PM-PERCHASE01", false);
+    auto tutorial  = Json::getValue(records_, "tutorial", true);
+
     // 保存データの消去
     records_.clear();
 
     this->create();
+
+    this->setRecord("PM-PERCHASE01", purchased);
+    this->setRecord("tutorial", tutorial);
   }
 
 
