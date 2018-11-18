@@ -1,3 +1,4 @@
+* TODO iPad:Shareのpopoverをボタン位置と合わせる
 * TODO パネルを置くルールがわかりづらい
 * TODO ローカライズ再チェック
 * TODO static変数を減らす
@@ -1032,8 +1033,6 @@ CLOSED: [2018-05-14 月 23:43]
 * ABORT Win: ストリーミング再生でassertが出る
 CLOSED: [2018-05-14 月 23:43]
 * ABORT Windows版: イベントハンドルが微妙
-CLOSED: [2018-05-14 月 23:42]
-* ABORT iPad:Shareのpopoverをボタン位置と合わせる
 CLOSED: [2018-05-14 月 23:42]
 * ABORT 電車(乗り物系)が欲しい
 CLOSED: [2018-05-14 月 23:35]
