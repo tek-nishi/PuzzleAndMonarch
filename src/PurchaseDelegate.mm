@@ -8,6 +8,7 @@
 
 
 extern std::function<void ()> purchase_completed;
+extern std::function<void ()> purchase_canceled;
 
 namespace ngs { namespace PurchaseDelegate {
 
@@ -25,10 +26,12 @@ static NSString* createString(const std::string& text)
 }
 
 
-void init(const std::function<void ()>& purchase_completed_)
+void init(const std::function<void ()>& purchase_completed_,
+          const std::function<void ()>& purchase_canceled_)
 {
   inAppPurchase = [[DCInAppPurchase alloc] init];
   purchase_completed = purchase_completed_;
+  purchase_canceled  = purchase_canceled_;
 }
 
 

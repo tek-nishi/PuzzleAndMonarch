@@ -134,7 +134,14 @@ public:
     PurchaseDelegate::init([this]()
                            {
                              // 課金成功
+                             DOUT << "purchase-completed" << std::endl;
                              event_.signal("purchase-completed", Arguments());
+                           },
+                           [this]()
+                           {
+                             // 課金処理中断
+                             DOUT << "purchase-canceled" << std::endl;
+                             event_.signal("purchase-canceled", Arguments());
                            });
 
     // 実行クラス生成

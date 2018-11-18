@@ -60,12 +60,6 @@ public:
                                                [this]() noexcept
                                                {
                                                  PurchaseDelegate::start("PM.PERCHASE01");
-                                                 purchased();
-                                               });
-                               count_exec_.add(wipe_delay + 1.0,
-                                               [this]() noexcept
-                                               {
-                                                 canvas_.active(true);
                                                });
                              });
     holder_ += event.connect("Restore:touch_ended",
@@ -76,13 +70,20 @@ public:
                                                [this]() noexcept
                                                {
                                                  PurchaseDelegate::restore("PM.PERCHASE01");
-                                                 purchased();
                                                });
-                               count_exec_.add(wipe_delay + 1.0,
-                                               [this]() noexcept
-                                               {
-                                                 canvas_.active(true);
-                                               });
+                             });
+
+    // 課金処理コールバック
+    holder_ += event.connect("purchase-completed",
+                             [this](const Connection&, const Arguments&) noexcept
+                             {
+                               canvas_.active(true);
+                               purchased();
+                             });
+    holder_ += event.connect("purchase-canceled",
+                             [this](const Connection&, const Arguments&) noexcept
+                             {
+                               canvas_.active(true);
                              });
 
     // 課金してるなら、もう課金はできません

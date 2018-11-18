@@ -1,4 +1,3 @@
-* TODO iPad:Shareのpopoverをボタン位置と合わせる
 * TODO パネルを置くルールがわかりづらい
 * TODO ローカライズ再チェック
 * TODO static変数を減らす
@@ -8,6 +7,8 @@
 * TODO iOS:課金処理時に画面更新を止める
 * TODO iOS:処理の思い箇所を探して修正
 * WAIT チュートリアルがだるい
+* DONE iPad:Shareのpopoverをボタン位置と合わせる
+CLOSED: [2018-11-18 日 14:46]
 * DONE 記録を消去しても課金記録とTutorialクリア記録は残す
 CLOSED: [2018-11-18 Sun 00:23]
 * DONE iOS:課金ずみの場合はボタンを灰色に

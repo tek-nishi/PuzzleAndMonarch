@@ -12,6 +12,7 @@
 
 // FIXME グローバル変数をやめる
 std::function<void ()> purchase_completed;
+std::function<void ()> purchase_canceled;
 
 namespace ngs
 {
@@ -225,6 +226,8 @@ static DCInAppPurchase *_sharedInstance = nil;
         // 購入処理失敗の場合はアラート表示
         [self showAlert:ngs::localizeText("Purchase06") message:[transaction.error localizedDescription]];
       }
+
+      purchase_canceled();
             
       // インジケータ非表示
       [self stopActivityIndicator];
@@ -234,7 +237,7 @@ static DCInAppPurchase *_sharedInstance = nil;
             
       // ペイメントキューからトランザクションを削除
       [queue finishTransaction:transaction];
-            
+
       return;
     }
     else if (transaction.transactionState == SKPaymentTransactionStateRestored)
@@ -302,6 +305,7 @@ static DCInAppPurchase *_sharedInstance = nil;
   if (!isRestored)
   {
     [self showAlert:ngs::localizeText("Purchase06") message:ngs::localizeText("Purchase11")];
+    purchase_canceled();
   }
 
   // 処理中フラグを下ろす
@@ -322,7 +326,9 @@ static DCInAppPurchase *_sharedInstance = nil;
     // リストア失敗のアラート表示
     [self showAlert:ngs::localizeText("Purchase06") message:ngs::localizeText("Purchase12")];
   }
-            
+
+  purchase_canceled();
+
   // インジケータ非表示
   [self stopActivityIndicator];
 }
