@@ -220,7 +220,7 @@ private:
         0b101000,
         "Game:PutPanel"s,           // 森の説明
         "Tutorial07"s,
-        2
+        3
       },
       {
         0b100000,
@@ -238,7 +238,7 @@ private:
         0,
         "Game:PutPanel"s,
         "Tutorial10"s,
-        3
+        4
       }
     };
 
