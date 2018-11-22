@@ -171,6 +171,15 @@ private:
         [this]()
         {
           doneOperation();
+        }
+      },
+      {
+        0,
+        "Game:PanelMove"s,          // 設置までに１ステップ挟む
+        "Tutorial04"s,
+        1,
+        [this]()
+        {
           use_special_ = true;
           event_.signal("Game:enable-panelput", Arguments());
         }
@@ -178,7 +187,7 @@ private:
       {
         0b1,
         "Game:PutPanel"s,           // 設置
-        "Tutorial04"s,
+        "Tutorial05"s,
         1,
         [this]()
         {
@@ -189,8 +198,8 @@ private:
       {
         0,
         "Game:PutPanel"s,           // パネルを置ける条件
-        "Tutorial05"s,
-        1,
+        "Tutorial06"s,
+        2,
         [this]()
         {
           doneOperation();
@@ -198,8 +207,8 @@ private:
       },
       {
         0,
-        "Game:PutPanel"s,
-        "Tutorial05"s,
+        "Game:PutPanel"s,           // 得点ルール説明までに１ステップ挟む
+        "Tutorial07"s,
         1,
         [this]()
         {
@@ -209,7 +218,7 @@ private:
       {
         0b101,
         "Game:PutPanel"s,           // 道の説明
-        "Tutorial06"s,
+        "Tutorial08"s,
         2,
         [this]()
         {
@@ -219,26 +228,26 @@ private:
       {
         0b101000,
         "Game:PutPanel"s,           // 森の説明
-        "Tutorial07"s,
+        "Tutorial09"s,
         3
       },
       {
-        0b100000,
+        0b1,
         "Game:PutPanel"s,
-        "Tutorial08"s,
+        "Tutorial10"s,             // 教会登場
         1,
       },
       {
         0b10000,
         "Game:PutPanel"s,           // 教会の説明
-        "Tutorial09"s,
+        "Tutorial11"s,
         2
       },
       {
         0,
-        "Game:PutPanel"s,
-        "Tutorial10"s,
-        4
+        "Game:PutPanel"s,           // 説明は以上!!
+        "Tutorial12"s,
+        99                          // 最後なので値は適当に大きく
       }
     };
 
@@ -324,7 +333,7 @@ private:
   void setupAdvice()
   {
     // 言語圏によって表示位置を変更
-    auto offset_x = std::stof(AppText::get("Tutorial11"));
+    auto offset_x = std::stof(AppText::get("Tutorial00"));
     auto* rect = boost::any_cast<ci::Rectf*>(canvas_.getWidgetParam("advice", "rect"));
     rect->x1 += offset_x;
     rect->x2 += offset_x;
