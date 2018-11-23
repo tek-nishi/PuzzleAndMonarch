@@ -15,7 +15,7 @@ Records06		Total launch count:
 Records07		Total suspensions:
 Records08		Max Number of Panels:
 Records09		The largest forest:
-Records10		The longest road:
+Records10		The longest path:
 Records11		Avg. score:
 Records12		Avg. number of panels:
 Records13		Avg. panel movement:
@@ -23,14 +23,14 @@ Records14		Avg. panel rotation:
 Records15		Avg. panel put time:
 Ranking01		Forest
 Ranking02		Path
-Ranking03		Chapel
+Ranking03		Church
 Result01		Forest
 Result02		Path
-Result04		Chapel
+Result04		Church
 GameMain01		Forest
 GameMain02		Path
 GameMain03		Building
-GameMain04		Chapel
+GameMain04		Church
 GameMain06		Like!!
 GameMain07		Resume
 GameMain08		Abort
@@ -73,4 +73,4 @@ Purchase12		Purchased item restore failed
 Purchase13		OK
 Advice01		Spread the territory and earn "Like!!"
 Advice02		The panels are connected to each other
-Advice03		Making roads, forests, churches
+Advice03		Making paths, forests, churches
