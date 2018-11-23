@@ -942,6 +942,8 @@ private:
 
                         { "panel_turned_times", panel_turned_times_ },
                         { "panel_moved_times",  panel_moved_times_ },
+
+                        { "perfect", waiting_panels.empty() }
                       };
                       event_.signal("Ranking:UpdateScores", args);
                     });

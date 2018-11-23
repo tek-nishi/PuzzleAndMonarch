@@ -1233,6 +1233,22 @@
               "font": "icon",
               "text": "I",
               "layout": [ 0, 0 ]
+            },
+
+            {
+              "identifier": "perfect",
+
+              "rect": [ 3, 0, 3, 0 ],
+              "anchor": [
+                [ 0, 0.02 ],
+                [ 0, 0.1 ]
+              ],
+              "pivot": [ 0, 0.5 ],
+              "enable": false,
+
+              "font": "en",
+              "text": "Perfect!!",
+              "layout": [ 0, 0 ]
             }
           ]
         },

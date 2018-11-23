@@ -147,4 +147,15 @@ ci::ColorA mulColor(const ci::ColorA& a, const ci::Color &b) noexcept
   return { a.r * b.r, a.g * b.g, a.b * b.b, a.a };
 }
 
+// 値が存在すればその値を、なければ初期値を返す
+template <typename T>
+T getValue(const Arguments& args, const std::string& key, const T& value)
+{
+  if (args.count(key))
+  {
+    return boost::any_cast<T>(args.at(key));
+  }
+  return value;
+}
+
 }

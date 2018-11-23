@@ -238,6 +238,7 @@ private:
       {
         canvas_.setWidgetParam(id, "color", color);
       }
+      canvas_.setWidgetParam("perfect", "color", color);
     }
 
     return active_;
@@ -356,6 +357,12 @@ private:
 
     auto rank = boost::any_cast<u_int>(args.at("total_ranking"));
     convertRankToText(rank, canvas_, "score:10", ranking_text_);
+
+    // パーフェクト
+    if (getValue(args, "perfect", false))
+    {
+      canvas_.enableWidget("perfect");
+    }
   }
 
   // メイン画面のボタン演出
