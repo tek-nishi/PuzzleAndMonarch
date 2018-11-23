@@ -1350,9 +1350,14 @@ private:
              .addChild(ci::JsonTree("rank",  score.total_ranking))
     ;
 
-    // TIPS const参照からインスタンスを生成している
-    auto json = archive_.getRecordArray("games");
+    // 過去の記録の先頭にプレイ結果を追加する
+    auto json = ci::JsonTree::makeArray("games");
     json.pushBack(game_json);
+    const auto& games = archive_.getRecordArray("games");
+    for (const auto& g : games)
+    {
+      json.pushBack(g);
+    }
                                   
     Json::sort(json,
                [](const ci::JsonTree& a, const ci::JsonTree& b) noexcept

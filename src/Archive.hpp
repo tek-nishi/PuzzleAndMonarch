@@ -16,9 +16,11 @@ class Archive
 {
   void create() noexcept
   {
+    uint32_t high_score = 500;
+
     auto games = ci::JsonTree::makeArray("games");
     // FIXME 初期ランクがハードコーディング
-    auto g = ci::JsonTree::makeObject().addChild(ci::JsonTree("score", uint32_t(500)))
+    auto g = ci::JsonTree::makeObject().addChild(ci::JsonTree("score", uint32_t(high_score)))
                                        .addChild(ci::JsonTree("rank",  uint32_t(0)))
     ;
     
@@ -28,7 +30,7 @@ class Archive
     }
 
     records_.addChild(ci::JsonTree("play-times",         uint32_t(0)))
-            .addChild(ci::JsonTree("high-score",         uint32_t(500)))
+            .addChild(ci::JsonTree("high-score",         uint32_t(high_score)))
             .addChild(ci::JsonTree("total-panels",       uint32_t(0)))
             .addChild(ci::JsonTree("panel-turned-times", uint32_t(0)))
             .addChild(ci::JsonTree("panel-moved-times",  uint32_t(0)))
