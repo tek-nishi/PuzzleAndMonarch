@@ -28,7 +28,7 @@ class Archive
     }
 
     records_.addChild(ci::JsonTree("play-times",         uint32_t(0)))
-            .addChild(ci::JsonTree("high-score",         uint32_t(0)))
+            .addChild(ci::JsonTree("high-score",         uint32_t(500)))
             .addChild(ci::JsonTree("total-panels",       uint32_t(0)))
             .addChild(ci::JsonTree("panel-turned-times", uint32_t(0)))
             .addChild(ci::JsonTree("panel-moved-times",  uint32_t(0)))
