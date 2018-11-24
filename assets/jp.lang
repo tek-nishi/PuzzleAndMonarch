@@ -33,8 +33,8 @@ GameMain04	教会
 GameMain06	いいね!!
 GameMain07	再開
 GameMain08	中断
-GameMain09	パネルを置き、領地を広げよ
-GameMain10	操作方法と得点ルール
+GameMain09	君主候補、準備はいいな？
+GameMain10	国の作り方、教えます
 Tutorial00	-5
 Tutorial01	いいね!!
 Tutorial02	まずは基本操作
@@ -49,7 +49,7 @@ Tutorial10	最後に教会のパネル
 Tutorial11	教会は周囲をすべて埋めると得点
 Tutorial12	では君主目指してゴー!!
 Intro01	パズモナの世界へようこそ!!
-Intro02	領地を広げて「いいね!!」をゲット。
+Intro02	君主候補となって国作り。
 Intro03	領地拡大は慎重かつ大胆に。
 Intro04	与えられた時間は限られています!!
 Intro05	パネルの一歩先を読んで配置。
@@ -70,6 +70,6 @@ Purchase10	購入アイテムを復元しました
 Purchase11	復元するアイテムがありませんでした
 Purchase12	アイテムの復元に失敗しました
 Purchase13	OK
-Advice01	パネルを置いて「いいね!!」をゲット
+Advice01	パネルを置いて国作り!!
 Advice02	パネルは互いに繋がるように置く
-Advice03	道や森、教会を作って高得点
+Advice03	道や森、教会を作り得点を稼げ

@@ -4,7 +4,7 @@ Settings02		Record was erased.
 Settings03		Record will be erased.
 Settings04		Your play record will be erased
 Settings05		and all past record will be gone.
-Settings06		Erase record
+Settings06		Agree
 Settings07		Stop erase
 Records01		Total plays:
 Records02		Total panels:
@@ -39,8 +39,8 @@ GameMain10		Operation and Game rule
 Tutorial00		-20
 Tutorial01		Like!!
 Tutorial02		Basic operation
-Tutorial03		Good, It's moving panel
-Tutorial04		Good, It's rotation panel
+Tutorial03		Good, It’s moving panel
+Tutorial04		Good, It’s rotation panel
 Tutorial05		Long touch to put the panel
 Tutorial06		The panels are connected to each other
 Tutorial07		Next, game rule
