@@ -5,6 +5,7 @@
 #import "DCInAppPurchase.h"
 #include <cinder/app/App.h>
 #include "PurchaseDelegate.h"
+#include "Cocoa.h"
 
 
 extern std::function<void ()> purchase_completed;
@@ -17,13 +18,6 @@ DCInAppPurchase *inAppPurchase;
 // FIXME グローバル変数禁止
 std::function<void (std::string price)> price_completed;
 bool got_price = false;
-
-
-static NSString* createString(const std::string& text)
-{
-  NSString* str = [NSString stringWithUTF8String:text.c_str()];
-  return str;
-}
 
 
 void init(const std::function<void ()>& purchase_completed_,

@@ -8,6 +8,7 @@
 #import "DCInAppPurchase.h"
 #include <functional>
 #include "AppText.hpp"
+#include "Cocoa.h"
 
 
 // FIXME グローバル変数をやめる
@@ -20,7 +21,7 @@ namespace ngs
 NSString* localizeText(const char* text)
 {
   auto t = AppText::get(text);
-  return [NSString stringWithUTF8String:t.c_str()];
+  return createString(t);
 }
 
 }

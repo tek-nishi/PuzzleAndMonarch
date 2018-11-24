@@ -12,6 +12,7 @@
 		1D60589F0D05DD5A006BFB54 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1D30AB110D05D00D00671497 /* Foundation.framework */; };
 		1DF5F4E00D08C38300B7A737 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1DF5F4DF0D08C38300B7A737 /* UIKit.framework */; };
 		28FD15000DC6FC520079059D /* OpenGLES.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 28FD14FF0DC6FC520079059D /* OpenGLES.framework */; };
+		471A8C7A21A8F95A009B392E /* Cocoa.mm in Sources */ = {isa = PBXBuildFile; fileRef = 471A8C7921A8F95A009B392E /* Cocoa.mm */; };
 		472681E120CCFCCF00CE1BE0 /* GameCenter.mm in Sources */ = {isa = PBXBuildFile; fileRef = 472681E020CCFCCF00CE1BE0 /* GameCenter.mm */; };
 		472681E320CCFEC500CE1BE0 /* GameKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 472681E220CCFEC500CE1BE0 /* GameKit.framework */; };
 		472CB8DC20FD9711007481E6 /* DCInAppPurchase.mm in Sources */ = {isa = PBXBuildFile; fileRef = 472CB8DA20FD9711007481E6 /* DCInAppPurchase.mm */; };
@@ -50,6 +51,7 @@
 		257B6E3315A4490FA0602ED1 /* LaunchScreen.xib */ = {isa = PBXFileReference; lastKnownFileType = "\"\""; path = LaunchScreen.xib; sourceTree = "<group>"; };
 		28FD14FF0DC6FC520079059D /* OpenGLES.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenGLES.framework; path = System/Library/Frameworks/OpenGLES.framework; sourceTree = SDKROOT; };
 		28FD15070DC6FC5B0079059D /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
+		471A8C7921A8F95A009B392E /* Cocoa.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = Cocoa.mm; path = ../src/Cocoa.mm; sourceTree = "<group>"; };
 		472681E020CCFCCF00CE1BE0 /* GameCenter.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = GameCenter.mm; path = ../src/GameCenter.mm; sourceTree = "<group>"; };
 		472681E220CCFEC500CE1BE0 /* GameKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GameKit.framework; path = System/Library/Frameworks/GameKit.framework; sourceTree = SDKROOT; };
 		472CB8DA20FD9711007481E6 /* DCInAppPurchase.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = DCInAppPurchase.mm; path = ../src/DCInAppPurchase.mm; sourceTree = "<group>"; };
@@ -149,6 +151,7 @@
 		00692BD914FF149000D0A05E /* Source */ = {
 			isa = PBXGroup;
 			children = (
+				471A8C7921A8F95A009B392E /* Cocoa.mm */,
 				479022C521608C43000B47A6 /* OsMac.mm */,
 				472CB8DA20FD9711007481E6 /* DCInAppPurchase.mm */,
 				472CB8DB20FD9711007481E6 /* PurchaseDelegate.mm */,
@@ -311,6 +314,7 @@
 				472CB8DD20FD9711007481E6 /* PurchaseDelegate.mm in Sources */,
 				47E3D938203F20CD00275D6D /* AudioSession.mm in Sources */,
 				47EF72EB2043D228002900CF /* Capture.mm in Sources */,
+				471A8C7A21A8F95A009B392E /* Cocoa.mm in Sources */,
 				47E542872003933D0002BD5F /* MyApp.cpp in Sources */,
 				479022C621608C43000B47A6 /* OsMac.mm in Sources */,
 				472CB8DC20FD9711007481E6 /* DCInAppPurchase.mm in Sources */,

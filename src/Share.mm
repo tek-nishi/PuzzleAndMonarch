@@ -2,7 +2,8 @@
 // SNS投稿(iOS専用)
 //
 
-#import "Defines.hpp"
+#include "Defines.hpp"
+#include "Cocoa.h"
 
 
 // 処理を付け足したいので、元クラスを継承したクラスを定義
@@ -41,15 +42,6 @@ bool canPost() noexcept
   return has_class;
 }
 
-
-static NSString* createString(const std::string& text) noexcept
-{
-  return [[[NSString alloc]
-              initWithCString:text.c_str()
-              encoding:NSUTF8StringEncoding] autorelease];
-}
-
-  
 void post(const std::string& text, UIImage* image,
           std::function<void (bool completed)> complete_callback) noexcept
 {

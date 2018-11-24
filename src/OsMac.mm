@@ -8,17 +8,10 @@
 #include <AppKit/AppKit.h>
 #endif
 #include "Os.hpp" 
+#include "Cocoa.h" 
 
 
 namespace ngs { namespace Os {
-
-
-static NSString* createString(const std::string& text)
-{
-  NSString* str = [[[NSString alloc] initWithCString:text.c_str() encoding:NSUTF8StringEncoding] autorelease];
-  return str;
-}
-
 
 // 言語ファイルの取得
 std::string lang()

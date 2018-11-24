@@ -6,6 +6,7 @@
 #include <sstream>
 #include <iomanip>
 #include <cinder/Json.h>
+#include "Cocoa.h"
 #include "GameCenter.h"
 #include "Path.hpp"
 #include "TextCodec.hpp"
@@ -51,12 +52,6 @@ static void sendScore(NSArray* scores)
           NSLOG(@"Sending score OK!");
         }
       }];
-}
-
-static NSString* createString(const std::string& text)
-{
-  NSString* str = [[[NSString alloc] initWithCString:text.c_str() encoding:NSUTF8StringEncoding] autorelease];
-  return str;
 }
 
 static GKScore* createScore(const std::string& id, const double value)

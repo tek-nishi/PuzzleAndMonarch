@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		43498AFBC90B40CEABDC634D /* MyApp.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 82A083D7206440548816D769 /* MyApp.cpp */; };
+		471A8C7C21A8FBBA009B392E /* Cocoa.mm in Sources */ = {isa = PBXBuildFile; fileRef = 471A8C7B21A8FBBA009B392E /* Cocoa.mm */; };
 		47559FD12003441100833AB0 /* Framework.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 47559FD02003441000833AB0 /* Framework.cpp */; };
 		476F8B9A200329D400A394F0 /* assets in Resources */ = {isa = PBXBuildFile; fileRef = 476F8B99200329D400A394F0 /* assets */; };
 		479022C421608A33000B47A6 /* OsMac.mm in Sources */ = {isa = PBXBuildFile; fileRef = 479022C321608A33000B47A6 /* OsMac.mm */; };
@@ -31,6 +32,7 @@
 /* Begin PBXFileReference section */
 		25C101A44F8D496FB5CB84D7 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		37ED1BFD95724281A4782197 /* PuzzleMonarch_Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PuzzleMonarch_Prefix.pch; sourceTree = "<group>"; };
+		471A8C7B21A8FBBA009B392E /* Cocoa.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = Cocoa.mm; path = ../src/Cocoa.mm; sourceTree = "<group>"; };
 		473BE16E2160A3C700273E38 /* zh-HK */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-HK"; path = "zh-HK.lproj/InfoPlist.strings"; sourceTree = "<group>"; };
 		473BE16F2160A3C700273E38 /* zh-HK */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-HK"; path = "zh-HK.lproj/Localizable.strings"; sourceTree = "<group>"; };
 		47559FD02003441000833AB0 /* Framework.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Framework.cpp; path = ../src/Framework.cpp; sourceTree = "<group>"; };
@@ -94,6 +96,7 @@
 		080E96DDFE201D6D7F000001 /* Source */ = {
 			isa = PBXGroup;
 			children = (
+				471A8C7B21A8FBBA009B392E /* Cocoa.mm */,
 				479022C321608A33000B47A6 /* OsMac.mm */,
 				47A6E5532045C3D800AC0CA3 /* TextCodec.cpp */,
 				47559FD02003441000833AB0 /* Framework.cpp */,
@@ -268,6 +271,7 @@
 				47559FD12003441100833AB0 /* Framework.cpp in Sources */,
 				43498AFBC90B40CEABDC634D /* MyApp.cpp in Sources */,
 				47A6E5542045C3D800AC0CA3 /* TextCodec.cpp in Sources */,
+				471A8C7C21A8FBBA009B392E /* Cocoa.mm in Sources */,
 				479022C421608A33000B47A6 /* OsMac.mm in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
