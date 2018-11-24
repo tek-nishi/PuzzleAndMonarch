@@ -719,6 +719,12 @@
         "path": "FuturaCon-Bol.ttf",
         "texture_size": 512,
         "size": 64
+      },
+      {
+        "name": "purchase",
+        "path": "FreeSerif.ttf",
+        "texture_size": 256,
+        "size": 32
       }
     ],
     
