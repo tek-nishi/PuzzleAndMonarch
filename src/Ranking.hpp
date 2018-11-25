@@ -358,8 +358,9 @@ private:
     auto rank = boost::any_cast<u_int>(args.at("total_ranking"));
     convertRankToText(rank, canvas_, "score:10", ranking_text_);
 
-    // パーフェクト
-    if (getValue(args, "perfect", false))
+    // パーフェクト(Tutorialでは無視)
+    if (getValue(args, "no_panels", false)
+        && !getValue(args, "tutorial", false))
     {
       canvas_.enableWidget("perfect");
     }

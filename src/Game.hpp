@@ -66,7 +66,7 @@ struct Game
       {
         // 時間切れ
         DOUT << "Time Up." << std::endl;
-        endPlay(false);
+        endPlay();
       }
     }
   }
@@ -119,7 +119,7 @@ struct Game
   }
 
   // 本編終了
-  void endPlay(bool no_panels) noexcept
+  void endPlay() noexcept
   {
     finished = true;
     calcResults();
@@ -129,7 +129,7 @@ struct Game
       { "total_score",   total_score },
       { "total_ranking", total_ranking },
       { "total_panels",  total_panels },
-      { "perfect",       waiting_panels.empty() },
+      { "no_panels",     waiting_panels.empty() },
       
       { "panel_turned_times", panel_turned_times_ },
       { "panel_moved_times",  panel_moved_times_ },
@@ -139,8 +139,6 @@ struct Game
 
       { "completed_forest", &completed_forests },
       { "completed_path",   &completed_path },
-
-      { "no_panels", no_panels },
 
       { "tutorial", is_tutorial_ },
     };
@@ -209,7 +207,7 @@ struct Game
     {
       // 全パネルを使い切った
       DOUT << "End of panels." << std::endl;
-      endPlay(true);
+      endPlay();
     }
   }
 
@@ -647,7 +645,7 @@ struct Game
     {
       // 全パネルを使い切った
       DOUT << "End of panels." << std::endl;
-      endPlay(true);
+      endPlay();
     }
   }
 
@@ -897,8 +895,9 @@ private:
     DOUT << "Panels: " << score << std::endl;
 
     // Perfect
-    if (waiting_panels.empty())
+    if (waiting_panels.empty() && !is_tutorial_)
     {
+      DOUT << "perfect!!" << std::endl;
       score *= params_.getValueForKey<float>("perfect_score_rate");
     }
 #if defined (DEBUG)

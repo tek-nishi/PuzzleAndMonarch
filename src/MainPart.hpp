@@ -489,7 +489,7 @@ public:
                                 }
 
                                 // スコア計算
-                                auto score      = calcGameScore(args);
+                                auto score      = createGameScore(args);
                                 bool high_score = isHighScore(score);
                                 recordGameScore(score, high_score);
                                 // ランクインしてるか調べる
@@ -1321,7 +1321,7 @@ private:
     return comp_list;
   }
 
-  Score calcGameScore(const Arguments& args) const noexcept
+  Score createGameScore(const Arguments& args) const noexcept
   {
     auto comp_forest = getCompleted(args, "completed_forest");
     auto comp_path   = getCompleted(args, "completed_path");
@@ -1334,7 +1334,7 @@ private:
       boost::any_cast<u_int>(args.at("total_ranking")),
       boost::any_cast<u_int>(args.at("total_panels")),
 
-      boost::any_cast<bool>(args.at("perfect")),
+      boost::any_cast<bool>(args.at("no_panels")),
 
       boost::any_cast<u_int>(args.at("panel_turned_times")),
       boost::any_cast<u_int>(args.at("panel_moved_times")),
