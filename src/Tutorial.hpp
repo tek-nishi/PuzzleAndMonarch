@@ -322,10 +322,12 @@ private:
     canvas_.setWidgetParam("like", "offset", p);
     canvas_.startTween("like");
 
+    using namespace std::literals;
+
     Arguments se_args{
-      { "name", std::string("like") }
+      { "name", "like"s }
     };
-    event_.signal("UI:sound", se_args);
+    event_.signal("UI:sound"s, se_args);
   }
 
 
@@ -361,15 +363,17 @@ private:
       canvas_.startTween("check");
     }
 
+    using namespace std::literals;
+
     for (int i = 0; i < 3; ++i)
     {
       count_exec_.add(2.0 + i * 0.3,
                       [this]()
                       {
                         Arguments args{
-                          { "name", std::string("advice") }
+                          { "name"s, "advice"s }
                         };
-                        event_.signal("UI:sound", args);
+                        event_.signal("UI:sound"s, args);
                       });
     }
 

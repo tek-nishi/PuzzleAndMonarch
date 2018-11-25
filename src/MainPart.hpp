@@ -55,6 +55,8 @@ public:
       transition_color_(Json::getColor<float>(params["ui.transition.color"])),
       rotate_camera_(event, params["field"], std::bind(&MainPart::rotateCamera, this, std::placeholders::_1))
   {
+    using namespace std::literals;
+
     // system
     holder_ += event_.connect("resize",
                               std::bind(&MainPart::resize,
@@ -111,7 +113,7 @@ public:
                                   // FIXME Cinderにあまり依存したくない
                                   touch_began_time_ = ci::app::getElapsedSeconds();
 
-                                  game_event_.insert("Panel:00touch");
+                                  game_event_.insert("Panel:00touch"s);
 
                                   auto ndc_pos = camera_.body().worldToNdc(cursor_pos_);
                                   Arguments args{
@@ -129,7 +131,7 @@ public:
                                   // シングルタッチ操作解除
                                   touch_put_ = false;
                                   event_.signal("Game:PutEnd", Arguments());
-                                  game_event_.insert("Panel:01cancel");
+                                  game_event_.insert("Panel:01cancel"s);
                                 }
                                 if (on_blank_ && !manipulated_)
                                 {
@@ -166,7 +168,7 @@ public:
                                   {
                                     touch_put_ = false;
                                     event_.signal("Game:PutEnd", Arguments());
-                                    game_event_.insert("Panel:01cancel");
+                                    game_event_.insert("Panel:01cancel"s);
                                   }
                                   manipulated_ = manip;
                                 }
@@ -201,7 +203,7 @@ public:
                                 {
                                   touch_put_ = false;
                                   event_.signal("Game:PutEnd", Arguments());
-                                  game_event_.insert("Panel:01cancel");
+                                  game_event_.insert("Panel:01cancel"s);
                                 }
 
                                 if (result.first || result.second)
@@ -212,7 +214,7 @@ public:
                                     game_->rotationHandPanel();
                                     startRotatePanelEase();
                                     can_put_ = game_->canPutToBlank(field_pos_);
-                                    game_event_.insert("Panel:rotate");
+                                    game_event_.insert("Panel:rotate"s);
                                     event_.signal("Game:PanelRotate", Arguments());
                                   }
                                   return;
@@ -225,7 +227,7 @@ public:
                                 // 可能であればパネルを移動
                                 if (calcNewFieldPos(grid_pos_))
                                 {
-                                  game_event_.insert("Panel:move");
+                                  game_event_.insert("Panel:move"s);
                                   event_.signal("Game:PanelMove", Arguments());
                                 }
                               });
@@ -454,7 +456,7 @@ public:
                                 else
                                 {
                                   // Rankingでの再現SE
-                                  game_event_.insert("Panel:reproduce");
+                                  game_event_.insert("Panel:reproduce"s);
                                 }
 
                                 if (args.count("completed")
@@ -473,7 +475,7 @@ public:
 
                                 prohibited_  = true;
                                 manipulated_ = false;
-                                game_event_.insert("Game:finish");
+                                game_event_.insert("Game:finish"s);
 
                                 calcViewRange(false);
                                 view_.endPlay();
@@ -570,7 +572,7 @@ public:
                                    event_.signal("Game:completed", comp_args);
                                  }
                                }
-                               game_event_.insert("Game:completed");
+                               game_event_.insert("Game:completed"s);
                              });
 
     holder_ += event.connect("Game:completed_path",
@@ -596,7 +598,7 @@ public:
                                    event_.signal("Game:completed", comp_args);
                                  }
                                }
-                               game_event_.insert("Game:completed");
+                               game_event_.insert("Game:completed"s);
                              });
     
     holder_ += event.connect("Game:completed_church",
@@ -634,7 +636,7 @@ public:
                                  };
                                  event_.signal("Game:completed", comp_args);
                                }
-                               game_event_.insert("Game:completed");
+                               game_event_.insert("Game:completed"s);
                              });
 
     // Result→Title
@@ -974,6 +976,8 @@ private:
 
 	bool update(double current_time, double delta_time) noexcept override
   {
+    using namespace std::literals;
+
     // NOTICE pause中でもカウンタだけは進める
     //        pause→タイトルへ戻る演出のため
     count_exec_.update(delta_time);
@@ -1001,7 +1005,7 @@ private:
 
         if ((current <= 10) && (prev != current))
         {
-          game_event_.insert("Game:countdown");
+          game_event_.insert("Game:countdown"s);
         }
       }
 
@@ -1026,7 +1030,7 @@ private:
           // パネル設置
           game_->putHandPanel(field_pos_);
           event_.signal("Game:PutEnd", Arguments());
-          game_event_.insert("Panel:put");
+          game_event_.insert("Panel:put"s);
 
           // 次のパネルの準備
           can_put_   = false;
@@ -1056,9 +1060,9 @@ private:
     if (!game_event_.empty())
     {
       Arguments args{
-        { "event", game_event_ }
+        { "event"s, game_event_ }
       };
-      event_.signal("Game:Event", args);
+      event_.signal("Game:Event"s, args);
       game_event_.clear();
     }
 
@@ -1161,6 +1165,8 @@ private:
   // 升目位置からPanel位置を計算する
   bool calcNewFieldPos(const glm::ivec2& grid_pos) noexcept
   {
+    using namespace std::literals;
+
     if (!game_->isBlank(grid_pos)) return false;
 
     field_pos_ = grid_pos;
@@ -1170,7 +1176,7 @@ private:
     // 少し宙に浮いた状態
     cursor_pos_ = glm::vec3(field_pos_.x * PANEL_SIZE, panel_height_, field_pos_.y * PANEL_SIZE);
     startMovePanelEase();
-    game_event_.insert("Panel:move");
+    game_event_.insert("Panel:move"s);
 
     return true;
   }
@@ -1251,8 +1257,10 @@ private:
   // Game本体初期化
   void resetGame() noexcept
   {
+    using namespace std::literals;
+
     view_.removeFieldPanels();
-    game_event_.insert("Panel:clear");
+    game_event_.insert("Panel:clear"s);
 
     paused_ = false;
     count_exec_.pause(false);
@@ -1456,6 +1464,8 @@ private:
   // 過去の記録を読み込む
   void loadGameResult(int rank)
   {
+    using namespace std::literals;
+
     field_camera_.force(true);
     manipulated_ = false;
 
@@ -1467,7 +1477,7 @@ private:
       auto full_path = getDocumentPath() / json[rank].getValueForKey<std::string>("path");
       game_->load(full_path, delay);
       calcViewRange(false);
-      game_event_.insert("Panel:clear");
+      game_event_.insert("Panel:clear"s);
     }
 
     count_exec_.add(params_.getValueForKey<double>("field.auto_camera_duration"),

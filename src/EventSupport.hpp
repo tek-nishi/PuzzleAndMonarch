@@ -13,12 +13,18 @@ namespace ngs {
 // サウンド再生
 void startTimelineSound(Event<Arguments>& event, const ci::JsonTree& params, const std::string& key) noexcept
 {
-  if (!params.hasChild(key)) return;
+  if (!params.hasChild(key))
+  {
+    DOUT << "No timeline sound: " << key << std::endl;
+    return;
+  }
+
+  using namespace std::literals;
 
   Arguments args {
-    { "timeline", params[key] }
+    { "timeline"s, params[key] }
   };
-  event.signal("SE:timeline", args);
+  event.signal("SE:timeline"s, args);
 }
 
 }

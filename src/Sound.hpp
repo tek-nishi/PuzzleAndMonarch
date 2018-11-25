@@ -204,7 +204,10 @@ class Sound
   // Game内サウンドリスト読み込み
   void createEventSound(const ci::JsonTree& params)
   {
-    for (const auto& p : params["game-sound"])
+    using namespace std::literals;
+
+    const auto& pp = params["game-sound"s];
+    for (const auto& p : pp)
     {
       std::function<void ()> func;
 
@@ -275,6 +278,8 @@ public:
   Sound(const ci::JsonTree& params, Event<Arguments>& event) noexcept
     : event_(event)
   {
+    using namespace std::literals;
+
     // TIPS iOS:ヘッドホンプラグの抜き差しに対応
     AudioSession::begin();
 
@@ -285,16 +290,16 @@ public:
     format.channelMode(ci::audio::Node::ChannelMode::SPECIFIED);
 
     // カテゴリ別のNode生成
-    std::map<std::string,
-             std::function<Detail (const std::string&, const std::string&,
-                                   ci::audio::Context*, const ci::audio::SourceFileRef&)>> funcs {
-      { "bgm",
+    const std::map<std::string,
+                   std::function<Detail (const std::string&, const std::string&,
+                                         ci::audio::Context*, const ci::audio::SourceFileRef&)>> funcs{
+      { "bgm"s,
         [this, format](const std::string& type, const std::string& slot,
                  ci::audio::Context* ctx, const ci::audio::SourceFileRef& source) noexcept
         {
           return setupBgm(type, slot, ctx, source, format);
         }},
-      { "se",
+      { "se"s,
         [this, format](const std::string& type, const std::string& slot,
                  ci::audio::Context* ctx, const ci::audio::SourceFileRef& source) noexcept
         {
@@ -302,16 +307,17 @@ public:
         }},
     };
 
-    for (const auto& p : params["sound"])
+    const auto& pp = params["sound"s];
+    for (const auto& p : pp)
     {
-      const auto& path = p.getValueForKey<std::string>("path");
+      const auto& path = p.getValueForKey<std::string>("path"s);
       auto source = ci::audio::load(Asset::load(path), ctx->getSampleRate());
 
-      const auto& type = p.getValueForKey<std::string>("type");
-      auto slot        = Json::getValue(p, "slot", type);
+      const auto& type = p.getValueForKey<std::string>("type"s);
+      auto slot        = Json::getValue(p, "slot"s, type);
       auto detail = funcs.at(type)(type, slot, ctx, source);
 
-      const auto& name = p.getValueForKey<std::string>("name");
+      const auto& name = p.getValueForKey<std::string>("name"s);
       details_.insert({ name, detail });
 
       DOUT << "Sound: " << name
@@ -323,34 +329,34 @@ public:
 
     createEventSound(params);
 
-    holder_ += event.connect("Settings:Changed",
+    holder_ += event.connect("Settings:Changed"s,
                              [this](const Connection&, const Arguments& args) noexcept
                              {
                                // ON/OFF
-                               auto bgm_enable = boost::any_cast<bool>(args.at("bgm-enable"));
-                               enableCategory("bgm", bgm_enable);
+                               auto bgm_enable = boost::any_cast<bool>(args.at("bgm-enable"s));
+                               enableCategory("bgm"s, bgm_enable);
 
-                               auto se_enable  = boost::any_cast<bool>(args.at("se-enable"));
-                               enableCategory("se", se_enable);
+                               auto se_enable  = boost::any_cast<bool>(args.at("se-enable"s));
+                               enableCategory("se"s, se_enable);
 
                                DOUT << "bgm: " << bgm_enable
                                     << " se: " << se_enable
                                     << std::endl;
                              });
 
-    holder_ += event.connect("UI:sound",
+    holder_ += event.connect("UI:sound"s,
                              [this](const Connection&, const Arguments& args) noexcept
                              {
-                               const auto& name = boost::any_cast<const std::string&>(args.at("name"));
+                               const auto& name = boost::any_cast<const std::string&>(args.at("name"s));
                                play(name);
                              });
 
-    holder_ += event.connect("SE:timeline",
+    holder_ += event.connect("SE:timeline"s,
                              [this](const Connection&, const Arguments& args) noexcept
                              {
                                count_exec_.clear();
 
-                               const auto& params = boost::any_cast<const ci::JsonTree&>(args.at("timeline"));
+                               const auto& params = boost::any_cast<const ci::JsonTree&>(args.at("timeline"s));
                                for (const auto& p : params)
                                {
                                  auto delay = p.getValueAtIndex<double>(0);
@@ -363,10 +369,10 @@ public:
                                }
                              });
 
-    holder_ += event.connect("Game:Event",
+    holder_ += event.connect("Game:Event"s,
                              [this](const Connection&, const Arguments& args) noexcept
                              {
-                               const auto& events = boost::any_cast<const std::set<std::string>&>(args.at("event"));
+                               const auto& events = boost::any_cast<const std::set<std::string>&>(args.at("event"s));
                                
                                if (events.empty()) return;
 
@@ -387,7 +393,7 @@ public:
                              });
 
 #if defined (DEBUG)
-    holder_ += event.connect("debug-sound",
+    holder_ += event.connect("debug-sound"s,
                              [this](const Connection&, const Arguments&)
                              {
                                setEnabled(!isEnabled()); 

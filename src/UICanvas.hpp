@@ -427,10 +427,12 @@ private:
 
       if (widget->hasSe())
       {
+        using namespace std::literals;
+
         Arguments args{
-          { "name", widget->getSe() }
+          { "name"s, widget->getSe() }
         };
-        event_.signal("UI:sound", args);
+        event_.signal("UI:sound"s, args);
       }
     }
 

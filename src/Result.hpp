@@ -167,10 +167,12 @@ public:
 
                         {
                           // SE
+                          using namespace std::literals;
+
                           Arguments args{
-                            { "name", std::string("rank-in") }
+                            { "name"s, "rank-in"s }
                           };
-                          event_.signal("UI:sound", args);
+                          event_.signal("UI:sound"s, args);
                         }
                       });
     }
@@ -370,10 +372,12 @@ private:
 
                           {
                             // SE
+                            using namespace std::literals;
+
                             Arguments args{
-                              { "name", std::string(se) }
+                              { "name"s, std::string(se) }
                             };
-                            event_.signal("UI:sound", args);
+                            event_.signal("UI:sound"s, args);
                           }
                         });
       }
@@ -396,10 +400,12 @@ private:
 
                           {
                             // SE
+                            using namespace std::literals;
+
                             Arguments args{
-                              { "name", std::string(se) }
+                              { "name"s, std::string(se) }
                             };
-                            event_.signal("UI:sound", args);
+                            event_.signal("UI:sound"s, args);
                           }
                         });
       }
@@ -438,12 +444,14 @@ private:
 
   void scoreSe()
   {
+    using namespace std::literals;
+
     char text[16];
     sprintf(text, "drum-roll-%d", drum_index_);
     Arguments args{
-      { "name", std::string(text) }
+      { "name"s, std::string(text) }
     };
-    event_.signal("UI:sound", args);
+    event_.signal("UI:sound"s, args);
     drum_index_ = std::min(drum_index_ + 1, 16);
   }
 

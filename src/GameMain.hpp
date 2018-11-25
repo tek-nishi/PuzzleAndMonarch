@@ -267,10 +267,13 @@ public:
                                                    canvas_.setTweenTarget(id, "like", 0);
                                                    canvas_.setWidgetParam(id, "offset", ofs);
                                                    canvas_.startTween("like");
+
+                                                   // SE
+                                                   using namespace std::literals;
                                                    Arguments se_args{
-                                                     { "name", std::string("like") }
+                                                     { "name"s, "like"s }
                                                    };
-                                                   event_.signal("UI:sound", se_args);
+                                                   event_.signal("UI:sound"s, se_args);
 
                                                    if (index >= 0)
                                                    {
