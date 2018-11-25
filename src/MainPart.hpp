@@ -705,15 +705,21 @@ public:
                               });
 
     // System
-    holder_ += event_.connect("App:ResignActive",
-                              [this](const Connection&, const Arguments&) noexcept
-                              {
-                                if (game_->isPlaying() && !paused_)
-                                {
-                                  // 自動ポーズ
-                                  event_.signal("pause:touch_ended"s, Arguments());
-                                }
-                              });
+    holder_ += event.connect("App:BecomeActive",
+                             [this](const Connection&, const Arguments&) noexcept
+                             {
+                               view_.activeCloud();
+                             });
+    holder_ += event.connect("App:ResignActive",
+                             [this](const Connection&, const Arguments&) noexcept
+                             {
+                               if (game_->isPlaying() && !paused_)
+                               {
+                                 // 自動ポーズ
+                                 event_.signal("pause:touch_ended"s, Arguments());
+                               }
+                               view_.activeCloud(false);
+                             });
 
     holder_ += event_.connect("pause:touch_ended",
                               [this](const Connection&, const Arguments&) noexcept

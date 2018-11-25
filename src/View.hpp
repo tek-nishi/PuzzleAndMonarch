@@ -333,7 +333,15 @@ public:
       update_translate_ = false;
     }
 
-    updateClouds(delta_time);
+    if (clouds_active_)
+    {
+      updateClouds(delta_time);
+    }
+    else if (clouds_active_counter_ > 0)
+    {
+      --clouds_active_counter_;
+      clouds_active_ = (clouds_active_counter_ == 0);
+    }
 
     // NOTE 以下Paush中は処理しない
     if (game_paused) return;
@@ -820,6 +828,21 @@ public:
 
     renderShadow(info);
     renderField(info);
+  }
+
+
+  // 雲の計算の有効 or 無効
+  void activeCloud(bool active = true) noexcept
+  {
+    if (active)
+    {
+      clouds_active_counter_ = 3;
+    }
+    else
+    {
+      clouds_active_ = active;
+      clouds_active_counter_ = 0;
+    }
   }
 
   void setCloudAlpha(float alpha) noexcept
@@ -1557,6 +1580,8 @@ private:
   std::list<Effect> effects_;
 
   // 雲演出
+  bool clouds_active_ = true;
+  int clouds_active_counter_ = 0;
   std::vector<ci::gl::VboMeshRef> cloud_models_;
   ci::gl::Texture2dRef cloud_texture_;
   ci::gl::GlslProgRef cloud_shader_;

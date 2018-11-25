@@ -94,6 +94,8 @@ public:
     event_.connect("App:pending-update",
                    [this](const Connection&, const Arguments&) noexcept
                    {
+                     DOUT << "App:pending-update" << std::endl;
+
                      pending_update_ = true;
                      // pending_draw_   = true;
                      // TIPS 画面を暗くしてから描画を止めるため、予約だけしておく
@@ -103,6 +105,8 @@ public:
     event_.connect("App:resume-update",
                    [this](const Connection&, const Arguments&) noexcept
                    {
+                     DOUT << "App:resume-update" << std::endl;
+
                      prev_time_ = getElapsedSeconds();
                      pending_update_    = false;
                      pending_draw_      = false;
