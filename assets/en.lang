@@ -36,7 +36,7 @@ GameMain07		Resume
 GameMain08		Abort
 GameMain09		Put panels,  Spread territory
 GameMain10		Operation and Game rule
-Tutorial00		-20
+Tutorial00		-19
 Tutorial01		Like!!
 Tutorial02		Basic operation
 Tutorial03		Good, It’s moving panel
@@ -73,4 +73,4 @@ Purchase12		Purchased item restore failed
 Purchase13		OK
 Advice01		Spread the territory and earn "Like!!"
 Advice02		The panels are connected to each other
-Advice03		Making paths, forests, churches
+Advice03		Make paths, forests, churches
