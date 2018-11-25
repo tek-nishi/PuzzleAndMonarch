@@ -469,6 +469,7 @@ struct Game
              .addChild(Json::createVecArray("completed_church", completed_church))
              .addChild(ci::JsonTree("panel_turned_times", panel_turned_times_))
              .addChild(ci::JsonTree("panel_moved_times", panel_moved_times_))
+             .addChild(ci::JsonTree("tutorial", is_tutorial_))
              ;
 
 
@@ -535,6 +536,8 @@ struct Game
     panel_turned_times_ = json.getValueForKey<u_int>("panel_turned_times");
     panel_moved_times_  = json.getValueForKey<u_int>("panel_moved_times");
 
+    is_tutorial_ = Json::getValue(json, "tutorial", false);
+
     // 完成したパネル群
     std::set<glm::ivec2, LessVec<glm::ivec2>> completed_panels;
     for (const auto& v : completed_forests)
@@ -556,9 +559,10 @@ struct Game
       completed_panels.insert(p);
     }
 
-    auto panels = field.enumeratePanels();
     double at_time       = params_.getValueForKey<double>("replay.delay") + delay;
     double interval_time = params_.getValueForKey<double>("replay.interval");
+
+    auto panels = field.enumeratePanels();
     for (const auto& status : panels)
     {
       bool comp = completed_panels.count(status.position);
@@ -942,7 +946,9 @@ private:
                         { "panel_turned_times", panel_turned_times_ },
                         { "panel_moved_times",  panel_moved_times_ },
 
-                        { "perfect", waiting_panels.empty() }
+                        { "perfect", waiting_panels.empty() },
+
+                        { "tutorial", is_tutorial_ },
                       };
                       event_.signal("Ranking:UpdateScores", args);
                     });

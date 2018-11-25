@@ -359,11 +359,9 @@ private:
     convertRankToText(rank, canvas_, "score:10", ranking_text_);
 
     // パーフェクト(Tutorialでは無視)
-    if (getValue(args, "no_panels", false)
-        && !getValue(args, "tutorial", false))
-    {
-      canvas_.enableWidget("perfect");
-    }
+    bool perfect = getValue<bool>(args, "perfect") 
+                   && !getValue<bool>(args, "tutorial");
+    canvas_.enableWidget("perfect", perfect);
   }
 
   // メイン画面のボタン演出

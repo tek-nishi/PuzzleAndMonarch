@@ -158,4 +158,10 @@ T getValue(const Arguments& args, const std::string& key, const T& value)
   return value;
 }
 
+template <typename T>
+T getValue(const Arguments& args, const std::string& key)
+{
+  return boost::any_cast<T>(args.at(key));
+}
+
 }
