@@ -119,7 +119,7 @@ public:
                                   Arguments args{
                                     { "pos", ndc_pos }
                                   };
-                                  event_.signal("Game:PutBegin", args);
+                                  event_.signal("Game:PutBegin"s, args);
                                 }
                               });
 
@@ -130,7 +130,7 @@ public:
                                 {
                                   // シングルタッチ操作解除
                                   touch_put_ = false;
-                                  event_.signal("Game:PutEnd", Arguments());
+                                  event_.signal("Game:PutEnd"s, Arguments());
                                   game_event_.insert("Panel:01cancel"s);
                                 }
                                 if (on_blank_ && !manipulated_)
@@ -167,7 +167,7 @@ public:
                                   if (touch_put_ && manip)
                                   {
                                     touch_put_ = false;
-                                    event_.signal("Game:PutEnd", Arguments());
+                                    event_.signal("Game:PutEnd"s, Arguments());
                                     game_event_.insert("Panel:01cancel"s);
                                   }
                                   manipulated_ = manip;
@@ -202,7 +202,7 @@ public:
                                 if (touch_put_)
                                 {
                                   touch_put_ = false;
-                                  event_.signal("Game:PutEnd", Arguments());
+                                  event_.signal("Game:PutEnd"s, Arguments());
                                   game_event_.insert("Panel:01cancel"s);
                                 }
 
@@ -215,7 +215,7 @@ public:
                                     startRotatePanelEase();
                                     can_put_ = game_->canPutToBlank(field_pos_);
                                     game_event_.insert("Panel:rotate"s);
-                                    event_.signal("Game:PanelRotate", Arguments());
+                                    event_.signal("Game:PanelRotate"s, Arguments());
                                   }
                                   return;
                                 }
@@ -228,7 +228,7 @@ public:
                                 if (calcNewFieldPos(grid_pos_))
                                 {
                                   game_event_.insert("Panel:move"s);
-                                  event_.signal("Game:PanelMove", Arguments());
+                                  event_.signal("Game:PanelMove"s, Arguments());
                                 }
                               });
 
@@ -373,7 +373,7 @@ public:
                                                   if (is_tutorial_)
                                                   {
                                                     // チュートリアル開始
-                                                    event_.signal("Tutorial:begin", Arguments());
+                                                    event_.signal("Tutorial:begin"s, Arguments());
                                                     disable_panel_rotate_ = true;
                                                     disable_panel_put_    = true;
                                                   }
@@ -410,7 +410,7 @@ public:
                                   Arguments args{
                                     { "callback", func }
                                   };
-                                  event_.signal("Tutorial:callback", args);
+                                  event_.signal("Tutorial:callback"s, args);
                                 }
                                 {
                                   // Like演出用に関数ポインタを送信
@@ -421,7 +421,7 @@ public:
                                   Arguments args{
                                     { "callback", func }
                                   };
-                                  event_.signal("Game:convertPos", args);
+                                  event_.signal("Game:convertPos"s, args);
                                 }
                               });
 
@@ -484,7 +484,7 @@ public:
                                 if (is_tutorial_)
                                 {
                                   // Tutorial完了
-                                  event_.signal("Game:Tutorial-Finish", Arguments());
+                                  event_.signal("Game:Tutorial-Finish"s, Arguments());
                                   archive_.setRecord("tutorial", false);
                                 }
 
@@ -569,7 +569,7 @@ public:
                                      { "positions", cc },
                                      { "type",      "forests" }
                                    };
-                                   event_.signal("Game:completed", comp_args);
+                                   event_.signal("Game:completed"s, comp_args);
                                  }
                                }
                                game_event_.insert("Game:completed"s);
@@ -595,7 +595,7 @@ public:
                                      { "positions", cc },
                                      { "type",      "path" }
                                    };
-                                   event_.signal("Game:completed", comp_args);
+                                   event_.signal("Game:completed"s, comp_args);
                                  }
                                }
                                game_event_.insert("Game:completed"s);
@@ -634,7 +634,7 @@ public:
                                    { "positions", completed },
                                      { "type",    "church" }
                                  };
-                                 event_.signal("Game:completed", comp_args);
+                                 event_.signal("Game:completed"s, comp_args);
                                }
                                game_event_.insert("Game:completed"s);
                              });
@@ -711,7 +711,7 @@ public:
                                 if (game_->isPlaying() && !paused_)
                                 {
                                   // 自動ポーズ
-                                  event_.signal("pause:touch_ended", Arguments());
+                                  event_.signal("pause:touch_ended"s, Arguments());
                                 }
                               });
 
@@ -1022,14 +1022,14 @@ private:
             { "pos",   ndc_pos },
             { "scale", scale },
           };
-          event_.signal("Game:PutHold", args);
+          event_.signal("Game:PutHold"s, args);
         }
 
         if (put_remaining_ < 0.0)
         {
           // パネル設置
           game_->putHandPanel(field_pos_);
-          event_.signal("Game:PutEnd", Arguments());
+          event_.signal("Game:PutEnd"s, Arguments());
           game_event_.insert("Panel:put"s);
 
           // 次のパネルの準備
@@ -1104,7 +1104,9 @@ private:
   // 結果画面開始
   void beginResult(Arguments& args)
   {
-    event_.signal("Result:begin", args);
+    using namespace std::literals;
+
+    event_.signal("Result:begin"s, args);
     view_.setColor(transition_duration_, ci::Color::white());
   }
 
