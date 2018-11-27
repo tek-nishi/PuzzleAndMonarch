@@ -36,10 +36,10 @@ public:
   {
     startTimelineSound(event_, params, "result.se");
 
-    rank_in_      = boost::any_cast<bool>(args.at("rank_in"));
-    ranking_      = boost::any_cast<u_int>(args.at("ranking"));
-    high_score_   = boost::any_cast<bool>(args.at("high_score"));
-    auto tutorial = boost::any_cast<bool>(args.at("tutorial")); 
+    rank_in_      = getValue<bool>(args,  "rank_in");
+    ranking_      = getValue<u_int>(args, "ranking");
+    high_score_   = getValue<bool>(args,  "high_score");
+    auto tutorial = getValue<bool>(args,  "tutorial"); 
 
     const auto& score = boost::any_cast<const Score&>(args.at("score"));
 

@@ -440,10 +440,10 @@ public:
     holder_ += event_.connect("Game:PutPanel",
                               [this](const Connection&, const Arguments& args) noexcept
                               {
-                                auto panel      = boost::any_cast<int>(args.at("panel"));
-                                const auto& pos = boost::any_cast<glm::ivec2>(args.at("field_pos"));
-                                auto rotation   = boost::any_cast<u_int>(args.at("rotation"));
-                                auto first      = boost::any_cast<bool>(args.at("first"));
+                                auto panel      = getValue<int>(args, "panel");
+                                const auto& pos = getValue<glm::ivec2>(args, "field_pos");
+                                auto rotation   = getValue<u_int>(args, "rotation");
+                                auto first      = getValue<bool>(args, "first");
                                 view_.addPanel(panel, pos, rotation);
                                 view_.startPutEase(game_->getPlayTimeRate(), first);
                                 if (game_->isPlaying())
@@ -494,14 +494,13 @@ public:
 
                                 // 総設置パネル数
                                 auto total_panels = archive_.getRecord<u_int>("total-panels");
-
                                 // 最大森
-                                auto max_forest = boost::any_cast<u_int>(args.at("max_forest"));
+                                auto max_forest = getValue<u_int>(args, "max_forest");
                                 // 最長道
-                                auto max_path = boost::any_cast<u_int>(args.at("max_path"));
+                                auto max_path = getValue<u_int>(args, "max_path");
 
                                 // パネルを置き切った時は少し待つ
-                                auto delay = boost::any_cast<bool>(args.at("no_panels")) ? 2.0 : 0.0;
+                                auto delay = getValue<bool>(args, "no_panels") ? 2.0 : 0.0;
                                 view_.setColor(transition_duration_, transition_color_, delay);
                                 count_exec_.add(params_.getValueForKey<double>("field.result_begin_delay") + delay,
                                                 [this, score, rank_in, ranking,
@@ -640,7 +639,7 @@ public:
                               [this](const Connection&, const Arguments& args) noexcept
                               {
                                 // NOTICE TOP10入りの時はResult→Ranking→Titleと遷移する
-                                bool rank_in = boost::any_cast<bool>(args.at("rank_in"));
+                                bool rank_in = getValue<bool>(args, "rank_in");
                                 if (rank_in)
                                 {
                                   view_.setColor(transition_duration_, transition_color_);
@@ -673,7 +672,7 @@ public:
     holder_ += event_.connect("Ranking:reload",
                               [this](const Connection&, const Arguments& args) noexcept
                               {
-                                auto rank = boost::any_cast<int>(args.at("rank"));
+                                auto rank = getValue<int>(args, "rank");
                                 loadGameResult(rank);
                               });
     
@@ -845,62 +844,62 @@ public:
     holder_ += event_.connect("debug-polygon-factor",
                               [this](const Connection&, const Arguments& args) noexcept
                               {
-                                auto value = boost::any_cast<float>(args.at("value"));
+                                auto value = getValue<float>(args, "value");
                                 view_.setPolygonFactor(value);
                               });
     holder_ += event_.connect("debug-polygon-units",
                               [this](const Connection&, const Arguments& args) noexcept
                               {
-                                auto value = boost::any_cast<float>(args.at("value"));
+                                auto value = getValue<float>(args, "value");
                                 view_.setPolygonUnits(value);
                               });
 
     holder_ += event_.connect("debug-field-specular",
                               [this](const Connection&, const Arguments& args) noexcept
                               {
-                                auto value = boost::any_cast<ci::ColorA>(args.at("value"));
+                                auto value = getValue<ci::ColorA>(args, "value");
                                 view_.setFieldSpecular(value);
                               });
 
     holder_ += event_.connect("debug-field-shininess",
                               [this](const Connection&, const Arguments& args) noexcept
                               {
-                                auto value = boost::any_cast<float>(args.at("value"));
+                                auto value = getValue<float>(args, "value");
                                 view_.setFieldShininess(value);
                               });
 
     holder_ += event_.connect("debug-field-ambient",
                               [this](const Connection&, const Arguments& args) noexcept
                               {
-                                auto value = boost::any_cast<float>(args.at("value"));
+                                auto value = getValue<float>(args, "value");
                                 view_.setFieldAmbient(value);
                               });
 
     holder_ += event_.connect("debug-bg-specular",
                               [this](const Connection&, const Arguments& args) noexcept
                               {
-                                auto value = boost::any_cast<ci::ColorA>(args.at("value"));
+                                auto value = getValue<ci::ColorA>(args, "value");
                                 view_.setBgSpecular(value);
                               });
 
     holder_ += event_.connect("debug-bg-shininess",
                               [this](const Connection&, const Arguments& args) noexcept
                               {
-                                auto value = boost::any_cast<float>(args.at("value"));
+                                auto value = getValue<float>(args, "value");
                                 view_.setBgShininess(value);
                               });
 
     holder_ += event_.connect("debug-bg-ambient",
                               [this](const Connection&, const Arguments& args) noexcept
                               {
-                                auto value = boost::any_cast<float>(args.at("value"));
+                                auto value = getValue<float>(args, "value");
                                 view_.setBgAmbient(value);
                               });
     
     holder_ += event_.connect("debug-light-position",
                               [this](const Connection&, const Arguments& args) noexcept
                               {
-                                auto value = boost::any_cast<glm::vec3>(args.at("value"));
+                                auto value = getValue<glm::vec3>(args, "value");
                                 view_.setLightPosition(value);
                               });
 
@@ -939,7 +938,7 @@ public:
     holder_ += event_.connect("debug-panel-scaling",
                               [this](const Connection&, const Arguments& arg) noexcept
                               {
-                                auto value = boost::any_cast<float>(arg.at("value"));
+                                auto value = getValue<float>(arg, "value");
                                 view_.setPanelScaling(value);
                               });
 
@@ -958,9 +957,9 @@ public:
     holder_ += event_.connect("Test:PutPanel",
                               [this](const Connection&, const Arguments& args) noexcept
                               {
-                                auto panel    = boost::any_cast<int>(args.at("panel"));
-                                auto rotation = boost::any_cast<u_int>(args.at("rotation"));
-                                auto pos      = boost::any_cast<glm::ivec2>(args.at("pos"));
+                                auto panel    = getValue<int>(args, "panel");
+                                auto rotation = getValue<u_int>(args, "rotation");
+                                auto pos      = getValue<glm::ivec2>(args, "pos");
 
                                 game_->testPutPanel(pos, panel, rotation);
                               });
@@ -1329,14 +1328,14 @@ private:
       boost::any_cast<const std::vector<u_int>&>(args.at("scores")),
       comp_forest,
       comp_path,
-      boost::any_cast<u_int>(args.at("total_score")),
-      boost::any_cast<u_int>(args.at("total_ranking")),
-      boost::any_cast<u_int>(args.at("total_panels")),
+      getValue<u_int>(args, "total_score"),
+      getValue<u_int>(args, "total_ranking"),
+      getValue<u_int>(args, "total_panels"),
 
-      boost::any_cast<bool>(args.at("no_panels")),
+      getValue<bool>(args, "no_panels"),
 
-      boost::any_cast<u_int>(args.at("panel_turned_times")),
-      boost::any_cast<u_int>(args.at("panel_moved_times")),
+      getValue<u_int>(args, "panel_turned_times"),
+      getValue<u_int>(args, "panel_moved_times"),
 
       game_->getLimitTime(),
     };

@@ -147,7 +147,7 @@ private:
   {
     if (!active_ || manipulating_) return;
 
-    auto delta_time = boost::any_cast<double>(args.at("delta_time"));
+    auto delta_time = getValue<double>(args, "delta_time");
 
     if (delay_ > 0.0)
     {

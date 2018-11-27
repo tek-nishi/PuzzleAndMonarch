@@ -55,7 +55,7 @@ public:
                              [this](const Connection&, const Arguments& args)
                              {
                                // Tutorialは無視
-                               auto tutorial = boost::any_cast<bool>(args.at("tutorial"));
+                               auto tutorial = getValue<bool>(args, "tutorial");
                                if (tutorial) return;
 
                                GameCenter::submitAchievement("PM.CLEAR");
@@ -76,11 +76,11 @@ public:
                              [this](const Connection&, const Arguments& args)
                              {
                                // スコア送信
-                               auto total_panels = boost::any_cast<u_int>(args.at("total_panels"));
+                               auto total_panels = getValue<u_int>(args, "total_panels");
                                const auto& score = boost::any_cast<const Score&>(args.at("score"));
                                GameCenter::submitScore(score.total_score, total_panels, score.total_panels);
 
-                               auto is_tutorial = boost::any_cast<bool>(args.at("tutorial"));
+                               auto is_tutorial = getValue<bool>(args, "tutorial");
 
                                {
                                  // ハイスコア
@@ -128,7 +128,7 @@ public:
 
                                {
                                  // 最大森
-                                 auto max_forest = double(boost::any_cast<u_int>(args.at("max_forest")));
+                                 auto max_forest = double(getValue<u_int>(args, "max_forest"));
                                  static std::pair<const char*, double> tbl[]
                                  {
                                    { "PM.FOREST5",   5.0 },
@@ -146,7 +146,7 @@ public:
 
                                {
                                  // 最大道
-                                 auto max_path = double(boost::any_cast<u_int>(args.at("max_path")));
+                                 auto max_path = double(getValue<u_int>(args, "max_path"));
                                  static std::pair<const char*, double> tbl[]
                                  {
                                    { "PM.PATH5",   5.0 },

@@ -110,8 +110,8 @@ public:
                               [this](const Connection&, const Arguments& args) noexcept
                               {
                                 // Settingsの変更内容を記録
-                                archive_.setRecord("bgm-enable", boost::any_cast<bool>(args.at("bgm-enable")));
-                                archive_.setRecord("se-enable",  boost::any_cast<bool>(args.at("se-enable")));
+                                archive_.setRecord("bgm-enable", getValue<bool>(args, "bgm-enable"));
+                                archive_.setRecord("se-enable",  getValue<bool>(args, "se-enable"));
                                 archive_.save();
 
                                 startTitle();
@@ -208,14 +208,14 @@ public:
     holder_ += event_.connect("Result:Finished",
                               [this](const Connection&, const Arguments& args) noexcept
                               {
-                                bool rank_in = boost::any_cast<bool>(args.at("rank_in"));
+                                bool rank_in = getValue<bool>(args, "rank_in");
                                 if (rank_in)
                                 {
                                   // TOP10に入っていたらRankingを起動
                                   Arguments ranking_args {
                                     { "games",   archive_.getRecordArray("games") },
                                     { "rank_in", rank_in },
-                                    { "ranking", boost::any_cast<u_int>(args.at("ranking")) },
+                                    { "ranking", getValue<u_int>(args, "ranking") },
                                   };
 
                                   tasks_.pushBack<Ranking>(params_, event_, drawer_, tween_common_, ranking_args);
@@ -308,8 +308,8 @@ public:
 private:
   void update(const Connection&, const Arguments& args)
   {
-    auto current_time = boost::any_cast<double>(args.at("current_time"));
-    auto delta_time   = boost::any_cast<double>(args.at("delta_time"));
+    auto current_time = getValue<double>(args, "current_time");
+    auto delta_time   = getValue<double>(args, "delta_time");
 
     tasks_.update(current_time, delta_time);
   }

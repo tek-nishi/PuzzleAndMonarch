@@ -130,7 +130,7 @@ public:
                              [this](const Connection&, const Arguments& arg) noexcept
                              {
                                char text[64];
-                               auto remaining_time = boost::any_cast<double>(arg.at("remaining_time"));
+                               auto remaining_time = getValue<double>(arg, "remaining_time");
                                if (remaining_time < 10.0)
                                {
                                  // 残り時間10秒切ったら焦らす
@@ -159,8 +159,8 @@ public:
                              {
                                canvas_.active(false);
                                 
-                               auto delay = boost::any_cast<bool>(args.at("no_panels")) ? 2.0 : 0.0;
-                               if (boost::any_cast<bool>(args.at("tutorial")))
+                               auto delay = getValue<bool>(args, "no_panels") ? 2.0 : 0.0;
+                               if (getValue<bool>(args, "tutorial"))
                                {
                                  // チュートリアルの場合はGameMainを決して終了
                                  canvas_.startTween("tutorial-end");
@@ -193,7 +193,7 @@ public:
                              [this](const Connection&, const Arguments& args) noexcept
                              {
                                {
-                                 const auto& pos = boost::any_cast<glm::vec3>(args.at("pos"));
+                                 auto pos    = getValue<glm::vec3>(args, "pos");
                                  auto offset = canvas_.ndcToPos(pos);
                                   
                                  const auto& widget = canvas_.at("put_timer");
@@ -211,11 +211,11 @@ public:
                              [this](const Connection&, const Arguments& args) noexcept
                              {
                                {
-                                 const auto& pos = boost::any_cast<glm::vec3>(args.at("pos"));
+                                 auto pos    = getValue<glm::vec3>(args, "pos");
                                  auto offset = canvas_.ndcToPos(pos);
                                  canvas_.setWidgetParam("put_timer", "offset", offset);
                                }
-                               auto scale = boost::any_cast<float>(args.at("scale"));
+                               auto scale = getValue<float>(args, "scale");
                                auto alpha = getEaseFunc("OutExpo")(scale);
                                canvas_.setWidgetParam("put_timer:fringe", "alpha", alpha);
                                canvas_.setWidgetParam("put_timer:body", "scale", glm::vec2(scale));
@@ -225,7 +225,7 @@ public:
     holder_ += event.connect("Game:PutPanel",
                              [this](const Connection&, const Arguments& args)
                              {
-                               auto panels = boost::any_cast<u_int>(args.at("remain_panel"));
+                               auto panels = getValue<u_int>(args, "remain_panel");
                                updateScoreWidget(3, panels);
                              });
 

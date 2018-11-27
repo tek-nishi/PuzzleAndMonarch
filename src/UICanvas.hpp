@@ -272,7 +272,7 @@ private:
 
   void update(const Connection&, const Arguments& args) noexcept
   {
-    auto delta_time = boost::any_cast<double>(args.at("delta_time"));
+    auto delta_time = getValue<double>(args, "delta_time");
     timeline_->step(delta_time);
   }
 

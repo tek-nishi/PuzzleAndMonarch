@@ -39,8 +39,8 @@ public:
     if (args.count("rank_in"))
     {
       // Result画面の後にランクインした
-      rank_in_ = boost::any_cast<bool>(args.at("rank_in"));
-      ranking_ = boost::any_cast<u_int>(args.at("ranking"));
+      rank_in_ = getValue<bool>(args, "rank_in");
+      ranking_ = getValue<u_int>(args, "ranking");
 
       canvas_.enableWidget("touch_back", false);
       canvas_.enableWidget("touch_agree");
@@ -161,7 +161,7 @@ public:
       // TOP10を閲覧
       applyRankingEffect(0);
 
-      auto num = boost::any_cast<int>(args.at("record_num"));
+      auto num = getValue<int>(args, "record_num");
       for (rank_num = 0; rank_num < num; ++rank_num)
       {
         char id[64];
@@ -352,10 +352,10 @@ private:
     // 教会
     canvas_.setWidgetText("score:7",  std::to_string(scores[6]));
 
-    canvas_.setWidgetText("score:8", std::to_string(boost::any_cast<u_int>(args.at("total_panels"))));
-    canvas_.setWidgetText("score:9", std::to_string(boost::any_cast<u_int>(args.at("total_score"))));
+    canvas_.setWidgetText("score:8", std::to_string(getValue<u_int>(args, "total_panels")));
+    canvas_.setWidgetText("score:9", std::to_string(getValue<u_int>(args, "total_score")));
 
-    auto rank = boost::any_cast<u_int>(args.at("total_ranking"));
+    auto rank = getValue<u_int>(args, "total_ranking");
     convertRankToText(rank, canvas_, "score:10", ranking_text_);
 
     // パーフェクト(Tutorialでは無視)

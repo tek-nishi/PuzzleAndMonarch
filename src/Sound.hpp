@@ -333,10 +333,10 @@ public:
                              [this](const Connection&, const Arguments& args) noexcept
                              {
                                // ON/OFF
-                               auto bgm_enable = boost::any_cast<bool>(args.at("bgm-enable"s));
+                               auto bgm_enable = getValue<bool>(args, "bgm-enable"s);
                                enableCategory("bgm"s, bgm_enable);
 
-                               auto se_enable  = boost::any_cast<bool>(args.at("se-enable"s));
+                               auto se_enable  = getValue<bool>(args, "se-enable"s);
                                enableCategory("se"s, se_enable);
 
                                DOUT << "bgm: " << bgm_enable
