@@ -8,16 +8,21 @@
 #include "Cocoa.h"
 
 
+namespace ngs {
+
 extern std::function<void ()> purchase_completed;
 extern std::function<void ()> purchase_canceled;
 
-namespace ngs { namespace PurchaseDelegate {
+namespace PurchaseDelegate {
 
-DCInAppPurchase *inAppPurchase;
+// FIXME シングルトン設計
+DCInAppPurchase* inAppPurchase;
 
 // FIXME グローバル変数禁止
 std::function<void (std::string price)> price_completed;
-bool got_price = false;
+
+bool checking_price = false;
+bool got_price      = false;
 
 
 void init(const std::function<void ()>& purchase_completed_,
@@ -41,9 +46,14 @@ void restore(const std::string& product_id)
   [inAppPurchase restorePurchase:createString(product_id) view:vc];
 }
 
+// 課金情報の問い合わせ
 void price(const std::string& product_id, const std::function<void (const std::string)>& completed)
 {
+  // 確認中ならスルー
+  if (checking_price) return;
+
   price_completed = completed;
+  checking_price  = true;
 
   id vc = (id<SKProductsRequestDelegate>)ci::app::getWindow()->getNativeViewController();
   SKProductsRequest* request = [[[SKProductsRequest alloc] initWithProductIdentifiers: [NSSet setWithObject: createString(product_id)]] autorelease];
@@ -94,6 +104,8 @@ bool hasPrice()
     std::string p = [localizedPrice UTF8String];
     ngs::PurchaseDelegate::price_completed(p);
     ngs::PurchaseDelegate::got_price = true;
+
+    ngs::PurchaseDelegate::checking_price = false;
   }
 }
 
