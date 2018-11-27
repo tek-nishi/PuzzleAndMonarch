@@ -60,6 +60,7 @@ public:
                                                [this]() noexcept
                                                {
                                                  PurchaseDelegate::start("PM.PERCHASE01");
+                                                 event_.signal("App:pending-update", Arguments());
                                                });
                              });
     holder_ += event.connect("Restore:touch_ended",
@@ -70,6 +71,7 @@ public:
                                                [this]() noexcept
                                                {
                                                  PurchaseDelegate::restore("PM.PERCHASE01");
+                                                 event_.signal("App:pending-update", Arguments());
                                                });
                              });
 
@@ -79,11 +81,13 @@ public:
                              {
                                canvas_.active(true);
                                purchased();
+                               event_.signal("App:resume-update", Arguments());
                              });
     holder_ += event.connect("purchase-canceled",
                              [this](const Connection&, const Arguments&) noexcept
                              {
                                canvas_.active(true);
+                               event_.signal("App:resume-update", Arguments());
                              });
 
     // 課金してるなら、もう課金はできません
