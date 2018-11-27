@@ -47,8 +47,8 @@ public:
       canvas_.at("touch")->setSe("selected");
     }
 
-    auto records = args.count("records") && boost::any_cast<bool>(args.at("records"));
-    if (args.count("view") && records)
+    auto records = getValue(args, "records", false);
+    if (records && args.count("view"))
     {
       // Title→Ranking で、ランクインした記録がある
       canvas_.enableWidget("view");

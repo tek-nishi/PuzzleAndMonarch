@@ -352,11 +352,8 @@ public:
 
                                 // Tutorial開始判定
                                 is_tutorial_ = Archive::isTutorial(archive_);
-                                if (args.count("force-tutorial"))
-                                {
-                                  // 値に関係なく強制Tutorual
-                                  is_tutorial_ = true;
-                                }
+                                // 強制Tutorial判定
+                                is_tutorial_ = getValue(args, "force-tutorial", is_tutorial_);
 
                                 game_->setupPanels(is_tutorial_);
 
@@ -459,8 +456,7 @@ public:
                                   game_event_.insert("Panel:reproduce"s);
                                 }
 
-                                if (args.count("completed")
-                                    && boost::any_cast<bool>(args.at("completed")))
+                                if (getValue(args, "completed", false))
                                 {
                                   view_.effectPanelScaing(pos, game_->getPlayTimeRate() + 0.25f);
                                 }
@@ -1272,6 +1268,9 @@ private:
 
     paused_ = false;
     count_exec_.pause(false);
+
+    disable_panel_rotate_ = false;
+    disable_panel_put_    = false;
 
     // Game再生成
     game_.reset();            // TIPS メモリを２重に確保したくないので先にresetする

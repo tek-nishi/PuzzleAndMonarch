@@ -57,7 +57,7 @@ public:
                               [this](const Connection&, const Arguments& args) noexcept
                               {
                                 auto tutorial = Archive::isTutorial(archive_);
-                                if (args.count("force-tutorial")) tutorial = true;
+                                tutorial      = getValue(args, "force-tutorial", tutorial);
                                 GameMain::Condition condition{
                                   tutorial
                                 };
