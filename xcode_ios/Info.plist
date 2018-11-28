@@ -35,7 +35,7 @@
 	<key>NSMainNibFile~ipad</key>
 	<string></string>
 	<key>NSPhotoLibraryAddUsageDescription</key>
-	<string></string>
+	<string>Allows saving of screenshot to the photo library</string>
 	<key>UILaunchStoryboardName</key>
 	<string>LaunchScreen</string>
 	<key>UIRequiredDeviceCapabilities</key>
