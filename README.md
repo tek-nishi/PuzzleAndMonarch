@@ -44,3 +44,7 @@ City, church, vast forest ... What country would you like to make?
 License All source code files are licensed under the MPLv2.0 license
 
 [MPLv2.0](https://www.mozilla.org/MPL/2.0/)
+
+なおこのリポジトリの内容物の一部を改造した物を商用作品として無許諾で公開する事を禁じます
+
+In addition, it is prohibited to publish contents that have modified part of the contents of this repository as commercial works without permission.
